@@ -1,4 +1,4 @@
-# Backlog of changes to the DB 
+# Backlog of changes 
 
 _Keeping a log of changes and updates to the repo to share with everybody an overview of what has 
 been done_
