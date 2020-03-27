@@ -40,7 +40,7 @@ The following **`3`** steps are required to setup a new virtual environment usin
     ```
 3. Install the Required Package (using the `requirements.txt` file):
     ```shell script
-    $ pip install -r requirements.txt
+    $ pip install -r envs/requirements.txt
     ```
 4. (**Optional**) Create new Jupyter notebook Kernel
 
@@ -68,7 +68,7 @@ If you are using Anaconda Python distribution, it is possible to re-create the v
 environment using the export `.yml` (`YAML`) file:
 
 ```shell script
-$ conda env create -f covid_community_conda_env.yml
+$ conda env create -f envs/covid_community_conda_env.yml
 ```
 
 This will create a new Conda environment named `covid-community` with all the required packages.
