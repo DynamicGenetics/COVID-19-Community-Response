@@ -90,3 +90,7 @@ $ python -m ipykernel install --user --name covid-community --display-name "Pyth
 ```
 
 Further information [here](https://ipython.readthedocs.io/en/stable/install/kernel_install.html)
+
+### Backlog
+
+The **Backlog** of Repo changes and activities can be found here: [backlog.md](backlog.md)  
