@@ -1,15 +1,16 @@
 # Covid-Communities
 Mapping community support in Wales throughout the COVID-19 pandemic
 
-
 ### Setup 
 
-1. Creating Python Virtual Environment
-    a. If you're using standard Python distribution, follow the instructions [here](#venv)
-    b. If you're using Anaconda Python distribution, follow the instructions [here](#conda)
+- [Virtual Environment using `venv`](#venv) for Standard Python Distribution
+- [Conda Virtual Environment](#conda) for Anaconda Python Distribution
     
-2. Create new Jupyter notebook kernel
+### Backlog
 
+The **Backlog** of Repo changes and activities can be found here: [backlog.md](backlog.md)  
+
+---
 
 <a name="venv"></a>
 #### Virtual Environment using `venv`
@@ -91,6 +92,3 @@ $ python -m ipykernel install --user --name covid-community --display-name "Pyth
 
 Further information [here](https://ipython.readthedocs.io/en/stable/install/kernel_install.html)
 
-### Backlog
-
-The **Backlog** of Repo changes and activities can be found here: [backlog.md](backlog.md)  
