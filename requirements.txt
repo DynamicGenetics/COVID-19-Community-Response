@@ -9,3 +9,4 @@ spacy==2.2.3
 plotnine==0.6.0
 scikit-learn==0.22.1
 vaderSentiment==3.3.1
+ipykernel==5.1.4
