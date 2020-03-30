@@ -6,7 +6,7 @@ with open('demographics.csv', newline='', encoding='utf-8') as f:
     
     print("OPENING CSV: demographics.csv")
     # Initialise reader
-    reader = csv.DictReader( f, fieldnames = ("la","id_area","deprivation_30","pop","pop_density","pop_elderly","lhb","language"))
+    reader = csv.DictReader( f, fieldnames = ("la","id_area","deprivation_30","pop","pop_density","pop_elderly","lhb","language","covid"))
     
     demographics={}    
     # Build JSON dictionary for demographics
@@ -18,14 +18,15 @@ with open('demographics.csv', newline='', encoding='utf-8') as f:
             print("Processing: ", row["id_area"])
         
         properties={
-                "id_area" : row["id_area"], 
-                "deprivation_30" : float(row["deprivation_30"].replace(",","",)),
-                "pop_density" : float(row["pop_density"].replace(",","",)),
-                "pop" : float(row["pop"].replace(",","",)),
-                "pop_elderly" : float(row["pop_elderly"].replace(",","",)),
-                "lhb" : row["lhb"],
-                "language" : float(row["language"].replace(",","",))
-            }
+            "id_area" : row["id_area"], 
+            "deprivation_30" : float(row["deprivation_30"].replace(",","",)),
+            "pop_density" : float(row["pop_density"].replace(",","",)),
+            "pop" : float(row["pop"].replace(",","",)),
+            "pop_elderly" : float(row["pop_elderly"].replace(",","",)),
+            "lhb" : row["lhb"],
+            "language" : float(row["language"].replace(",","",)),
+            "covid": float(row["covid"].replace(",","",))
+        }
         
         demographics[row["id_area"]]=properties
 
