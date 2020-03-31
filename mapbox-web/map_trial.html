@@ -1,211 +1,222 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8" />
-<title>Covid Community Help</title>
-<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
-<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet" />
-<style>
-	body { margin: 0; padding: 0; }
-	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
-</style>
+    <meta charset="utf-8" />
+    <title>Covid Community Help</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
+
 <body>
-<style>
-    #menu {
-    background: #fff;
-    position: absolute;
-    z-index: 1;
-    top: 10px;
-    right: 10px;
-    border-radius: 3px;
-    width: 120px;
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    font-family: 'Open Sans', sans-serif;
-    }
-        
-    #menu a {
-    font-size: 13px;
-    color: #404040;
-    display: block;
-    margin: 0;
-    padding: 0;
-    padding: 10px;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-    text-align: center;
-    }
-        
-    #menu a:last-child {
-    border: none;
-    }
-        
-    #menu a:hover {
-    background-color: #f8f8f8;
-    color: #404040;
-    }
-        
-    #menu a.active {
-    background-color: #3887be;
-    color: #ffffff;
-    }
-        
-    #menu a.active:hover {
-    background: #3074a4;
-    }
-</style>
+    <style>
+        #menu {
+            background: #fff;
+            position: absolute;
+            z-index: 1;
+            top: 10px;
+            right: 10px;
+            border-radius: 3px;
+            width: 120px;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            font-family: 'Open Sans', sans-serif;
+        }
 
-<nav id="menu"></nav>
-<div id="map"></div>
+        #menu a {
+            font-size: 13px;
+            color: #404040;
+            display: block;
+            margin: 0;
+            padding: 0;
+            padding: 10px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
 
-<script>
-	mapboxgl.accessToken = 'pk.eyJ1IjoibmluYWRpY2FyYSIsImEiOiJjazNsb2V5ZHgwZjI0M25uNG1jejN2NXI0In0.kqShNz5S95-P9sWvl6YQCA';
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-3.479368, 52.455248], //Mid-Wales ish
-        zoom: 7
-    });
+        #menu a:last-child {
+            border: none;
+        }
 
-    map.on('load', function () {
-        map.addSource('local-authority-boundaries', {
-            'type': 'geojson',
-            'data': '../geoJSON/Boundaries.geojson'
+        #menu a:hover {
+            background-color: #f8f8f8;
+            color: #404040;
+        }
+
+        #menu a.active {
+            background-color: #3887be;
+            color: #ffffff;
+        }
+
+        #menu a.active:hover {
+            background: #3074a4;
+        }
+    </style>
+
+    <nav id="menu"></nav>
+    <div id="map"></div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoibmluYWRpY2FyYSIsImEiOiJjazNsb2V5ZHgwZjI0M25uNG1jejN2NXI0In0.kqShNz5S95-P9sWvl6YQCA';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-3.479368, 52.455248], //Mid-Wales ish
+            zoom: 7
         });
-        map.addLayer({
-            'id': 'local-authority-boundaries',
-            'type': 'line',
-            'source': 'local-authority-boundaries',
-            'layout': {},
-            'paint': {
-                'line-color': '#088',
-                'line-opacity': 0.8
-            }
-        });
-    });
 
-    map.on('load', function () {
-        map.addSource('demographics', {
-            'type': 'geojson',
-            'data': '../geoJSON/demographics.geojson'
+        map.on('load', function () {
+            map.addSource('local-authority-boundaries', {
+                'type': 'geojson',
+                'data': '../geoJSON/Boundaries.geojson'
+            });
+            map.addLayer({
+                'id': 'local-authority-boundaries',
+                'type': 'line',
+                'source': 'local-authority-boundaries',
+                'layout': {},
+                'paint': {
+                    'line-color': '#088',
+                    'line-opacity': 0.8
+                }
+            });
         });
-        
-        map.addLayer({
-            'id': 'deprivation',
-            'type': 'fill',
-            'source': 'demographics',
-            'paint': {
-                'fill-color': {
-                    property: 'deprivation_30',
-                    stops: [[5, '#ffcaff'],
-                    [10.9, '#f0b7ed'],
-                    [16.8, '#e1a4db'],
-                    [22.7, '#d391ca'],
-                    [28.6, '#c47fb9'],
-                    [34.5, '#b56da8'],
-                    [40.4, '#a75b98'],
-                    [46.3, '#984887'],
-                    [52.2, '#8a3678'],
-                    [64, '#7b2268']]
+
+        map.on('load', function () {
+            map.addSource('demographics', {
+                'type': 'geojson',
+                'data': '../geoJSON/demographics.geojson'
+            });
+
+            map.addLayer({
+                'id': 'deprivation',
+                'type': 'fill',
+                'source': 'demographics',
+                'paint': {
+                    'fill-color': {
+                        property: 'deprivation_30',
+                        stops: [[5, '#ffcaff'],
+                        [10.9, '#f0b7ed'],
+                        [16.8, '#e1a4db'],
+                        [22.7, '#d391ca'],
+                        [28.6, '#c47fb9'],
+                        [34.5, '#b56da8'],
+                        [40.4, '#a75b98'],
+                        [46.3, '#984887'],
+                        [52.2, '#8a3678'],
+                        [64, '#7b2268']]
+                    },
+                    'fill-opacity': 0.5
                 },
-                'fill-opacity': 0.5
-            },
-            'filter': ['==', '$type', 'Polygon']
-        });
+                'filter': ['==', '$type', 'Polygon']
+            });
 
-        map.addLayer({
-            'id': 'pop_density',
-            'type': 'fill',
-            'source': 'demographics',
-            'paint': {
-                'fill-color': {
-                    property: 'pop_density',
-                    stops: [[25.6, '#ffff87'],
-                    [281.56, '#fff77f'],
-                    [537.52, '#ffef77'],
-                    [793.48, '#ffe770'],
-                    [1049.44, '#ffdf68'],
-                    [1305.4, '#ffd760'],
-                    [1561.36, '#ffcf58'],
-                    [1817.32, '#ffc750'],
-                    [2073.28, '#ffbe48'],
-                    [2585.2, '#ffb63f']]
+            map.addLayer({
+                'id': 'pop_density',
+                'type': 'fill',
+                'source': 'demographics',
+                'paint': {
+                    'fill-color': {
+                        property: 'pop_density',
+                        stops: [[25.6, '#ffff87'],
+                        [281.56, '#fff77f'],
+                        [537.52, '#ffef77'],
+                        [793.48, '#ffe770'],
+                        [1049.44, '#ffdf68'],
+                        [1305.4, '#ffd760'],
+                        [1561.36, '#ffcf58'],
+                        [1817.32, '#ffc750'],
+                        [2073.28, '#ffbe48'],
+                        [2585.2, '#ffb63f']]
+                    },
+                    'fill-opacity': 0.5
                 },
-                'fill-opacity': 0.5
-            },
-            'filter': ['==', '$type', 'Polygon']
-        });
+                'filter': ['==', '$type', 'Polygon']
+            });
 
-        map.addLayer({
-            'id': 'pop_elderly',
-            'type': 'fill',
-            'source': 'demographics',
-            'paint': {
-                'fill-color': {
-                    property: 'pop_elderly',
-                    stops: [[14.09451802, '#91e5ff'],
-                    [15.429026416, '#84d3f3'],
-                    [16.763534812, '#77c2e7'],
-                    [18.098043208, '#6ab1da'],
-                    [19.432551604, '#5da0ce'],
-                    [20.76706, '#4f90c3'],
-                    [22.101568396, '#417fb7'],
-                    [23.436076792, '#3270ab'],
-                    [24.770585188, '#1f609f'],
-                    [27.43960198, '#005194']]
+            map.addLayer({
+                'id': 'pop_elderly',
+                'type': 'fill',
+                'source': 'demographics',
+                'paint': {
+                    'fill-color': {
+                        property: 'pop_elderly',
+                        stops: [[14.09451802, '#91e5ff'],
+                        [15.429026416, '#84d3f3'],
+                        [16.763534812, '#77c2e7'],
+                        [18.098043208, '#6ab1da'],
+                        [19.432551604, '#5da0ce'],
+                        [20.76706, '#4f90c3'],
+                        [22.101568396, '#417fb7'],
+                        [23.436076792, '#3270ab'],
+                        [24.770585188, '#1f609f'],
+                        [27.43960198, '#005194']]
+                    },
+                    'fill-opacity': 0.5
                 },
-                'fill-opacity': 0.5
-            },
-            'filter': ['==', '$type', 'Polygon']
-        });
+                'filter': ['==', '$type', 'Polygon']
+            });
 
-        map.addLayer({
-            'id': 'language',
-            'type': 'fill',
-            'source': 'demographics',
-            'paint': {
-                'fill-color': {
-                    property: 'language',
-                    stops: [[4.8, '#e689ff'],
-                    [10.83, '#d87cf6'],
-                    [16.86, '#ca70ed'],
-                    [22.89, '#bd63e3'],
-                    [28.92, '#af56da'],
-                    [34.95, '#a249d1'],
-                    [40.98, '#943cc8'],
-                    [47.01, '#862fbf'],
-                    [53.04, '#7820b6'],
-                    [65.1, '#6a0dad']]
+            map.addLayer({
+                'id': 'language',
+                'type': 'fill',
+                'source': 'demographics',
+                'paint': {
+                    'fill-color': {
+                        property: 'language',
+                        stops: [[4.8, '#e689ff'],
+                        [10.83, '#d87cf6'],
+                        [16.86, '#ca70ed'],
+                        [22.89, '#bd63e3'],
+                        [28.92, '#af56da'],
+                        [34.95, '#a249d1'],
+                        [40.98, '#943cc8'],
+                        [47.01, '#862fbf'],
+                        [53.04, '#7820b6'],
+                        [65.1, '#6a0dad']]
+                    },
+                    'fill-opacity': 0.5
                 },
-                'fill-opacity': 0.5
-            },
-            'filter': ['==', '$type', 'Polygon']
+                'filter': ['==', '$type', 'Polygon']
+            });
         });
-    });
-
-     
-    map.on('load', function () {
-        map.addSource('known-groups', {
-            'type': 'geojson',
-            'data': '../geoJSON/groups.GEOJSON'
-        });
-        map.addLayer({
-            'id': 'known-groups',
-            'type': 'circle',
-            'source': 'known-groups',
-            'paint': {
-                'circle-radius': {
-                    'base': 1.75,
-                    'stops': [[12, 2], [22, 180]]
-                },
-                'circle-color': '#223b53'
-            }
-        });
-    });
 
 
-    var toggleableLayerIds = ['known-groups', 'deprivation', 'pop_density', 'pop_elderly', 'language'];
+        map.on('load', function () {
+            map.addSource('known-groups', {
+                'type': 'geojson',
+                'data': '../geoJSON/groups.GEOJSON'
+            });
+            map.addLayer({
+                'id': 'known-groups',
+                'type': 'circle',
+                'source': 'known-groups',
+                'paint': {
+                    'circle-radius': {
+                        'base': 1.75,
+                        'stops': [[12, 2], [22, 180]]
+                    },
+                    'circle-color': '#223b53'
+                }
+            });
+        });
+
+
+        var toggleableLayerIds = ['known-groups', 'deprivation', 'pop_density', 'pop_elderly', 'language'];
 
         for (var i = 0; i < toggleableLayerIds.length; i++) {
             var id = toggleableLayerIds[i];
@@ -235,7 +246,7 @@
             layers.appendChild(link);
         }
 
-</script>
+    </script>
 
 </body>
 
