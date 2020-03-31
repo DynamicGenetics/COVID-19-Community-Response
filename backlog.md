@@ -10,3 +10,8 @@ environment.
 - `README.md` updated with instructions to setup the environment and reference to the backlog
 - minor changes and tweaks to the source code in `tweet-processing`
     -  PEP8 reformatting, removed unused imports, few typos.
+
+### 31st March 2020 `@ninadicara`
+
+- Added `mapbox-web` folder, with a draft of a mapbox html file using geojson layers. 
+- Added `demographics_withstops.xlsx` to show how colour stops were generated for each layer. 
