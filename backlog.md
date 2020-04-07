@@ -15,3 +15,8 @@ environment.
 
 - Added `mapbox-web` folder, with a draft of a mapbox html file using geojson layers. 
 - Added `demographics_withstops.xlsx` to show how colour stops were generated for each layer. 
+
+### 7th April 2020  `@ninadicara`
+
+- Renamed `tweet-processing.py` to `nlp-preprocessing.py`
+- Added `tweet-exploration.py` file with some subsetting to look into potentially useful keywords.  
