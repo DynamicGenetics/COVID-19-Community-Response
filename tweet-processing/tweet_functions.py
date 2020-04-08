@@ -30,7 +30,7 @@ def read_and_tidy(file):
 
 
 def get_welsh_tweets(data, col='place.full_name'):
-    """ Filters dataframe to only include tweets from Wales, by querying on column with place.full_name ('col')"""
+    """ Filters dataframe to only include tweets from Wales, by querying on column with place.full_name ('col'). """
 
     # Filter out non-Wales tweets
     data = data[data[col].str.contains('Wales', regex=False, na=False)]
@@ -39,7 +39,7 @@ def get_welsh_tweets(data, col='place.full_name'):
 
 
 def create_datetime_index(data):
-    """ Using the 'created_at' column from a Twitter export, makes this the index column in a pandas datetime format"""
+    """ Using the 'created_at' column from a Twitter export, makes this the index column in a pandas datetime format. """
 
     # Parse 'created at' to pandas datetime - requires 'from datetime import datetime'
     data['created_at'] = pd.to_datetime(data['created_at'])
@@ -74,8 +74,8 @@ def tidy_text_cols(data):
 ##############################
 
 def analyse_sentiment(data, col='text'):
-    """Given a Pandas dataframe with col 'tweet_text', this will apply the vaderSentiment dictionary
-     in a new column called 'vader'"""
+    """ Given a Pandas dataframe with col 'tweet_text', this will apply the vaderSentiment dictionary
+     in a new column called 'vader'. """
 
     from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
@@ -97,8 +97,8 @@ def analyse_sentiment(data, col='text'):
 
 def split_coords(data, col='geo.coordinates'):
     
-    """Takes a Pandas dataframe with a column geo.coordinates (col) and adds the lat and long to their own columns
-    for easy conversion to geojson."""
+    """ Takes a Pandas dataframe with a column geo.coordinates (col) and adds the lat and long to their own columns
+    for easy conversion to geojson. """
 
     #Split the string on the comma    
     df['long'], df['lat'] = df[col].str.split(',', 1).str
@@ -112,8 +112,8 @@ def split_coords(data, col='geo.coordinates'):
 
 def format_bbox(data, col='place.bounding_box.coordinates'):
     
-    """This function will reformat the bounding boxes from strings to lists of lists,
-    and will append the first coordinate as the last one to allow for geojson conversion."""
+    """ This function will reformat the bounding boxes from strings to lists of lists,
+    and will append the first coordinate as the last one to allow for geojson conversion. """
 
     #Convert the lists from strings to json
     data[col] = data[col].apply(lambda x: json.loads(x))
@@ -132,8 +132,8 @@ def format_bbox(data, col='place.bounding_box.coordinates'):
 
 def write_bbox_geojson(data, col='bbox_geojson')
     
-    """Given a correctly formatted column of bbox polygons, this will convert them to 
-    a geojson object, and write it out to a file """
+    """ Given a correctly formatted column of bbox polygons, this will convert them to 
+    a geojson object, and write it out to a file. """
     
     # Make a Mutlipolygon from the values. 
     features = Feature(geometry=MultiPolygon(data[col].tolist()))
