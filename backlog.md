@@ -21,6 +21,6 @@ environment.
 - Renamed `tweet-processing.py` to `nlp-preprocessing.py`
 - Added `tweet-exploration.py` file with some subsetting to look into potentially useful keywords.  
 
-## 8th April 2020 `@ninadicara`  
+### 8th April 2020 `@ninadicara`  
 
 - Reconfigured `\tweet-processing` so that frequently used dataframe processing scripts are redefined as functions. These can now be found in `tweet_functions`.py. 
