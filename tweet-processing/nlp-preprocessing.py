@@ -1,13 +1,12 @@
 import pandas as pd
 import re
+from tweet_functions import *
 # For text cleaning
 import demoji
 # FIXME: NB for first time use we need to download the lastest emoji codes (since they are updated reguarly)
 # demoji.download_codes()
 import nltk
 import spacy
-# Next we will use VADER to do some basic sentiment analysis (on the original 'text', not 'nlp_text')
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # Read in export from the Virtual Box VM (~420k tweets)
 tweets_vbox = pd.read_csv('vm_export.csv')
@@ -16,42 +15,17 @@ tweets_azure = pd.read_csv('25032020.csv')
 
 # Concatenate the tweets
 tweets = pd.concat([tweets_vbox, tweets_azure])
-
-# Parse 'created at' to pandas datetime - requires 'from datetime import datetime'
-tweets['created_at'] = pd.to_datetime(tweets['created_at'])
-
-# Set the id as the ID of the row
-tweets.index = tweets['created_at']
-del tweets['created_at']
-
 # We also seem to have two tweet ID columns ('id' and 'id_str'), so get rid of one of those.
 del tweets['id_str']
 
-# Now that we have date-time we can take only those tweets after 8th March, as this is when I actually have data for
-# Since data collection stopped between 19th Feb and 8th March
-df = tweets['3/8/2020':]
-
+# Make the datetime the index
+tweets = create_datetime_index(tweets)
+# Subset for relevant dates and locations
+tweets = tweets['3/8/2020':]
+tweets = get_welsh_tweets(tweets)
 
 # Before we go any further, lets tidy up the text columns...
-
-def tidy_text_cols(data):
-    """ Uses values from the short ('text') and extended ('extended_tweet.full_text') columns to make a single 'text' column with the
-    full version of every tweet. """
-
-    # keep the data for where 'tweet_full' is not used
-    keep = pd.isnull(data['extended_tweet.full_text'])
-
-    # Where tweet_full is used, make tweet_full as the text
-    data_valid = data[~keep]
-    data.loc[~keep, 'text'] = data_valid['extended_tweet.full_text']
-
-    return data
-
-
-df = tidy_text_cols(df)
-
-# and then get rid of the now redundant column
-del df['extended_tweet.full_text']
+df = tidy_text_cols(tweets)
 
 ######
 # Now we want to clean the text up a little bit to get it ready for analysis. 
@@ -82,14 +56,8 @@ df['nlp_text'] = df['nlp_text'].apply(lambda x: " ".join(word for word in x.spli
 nlp = spacy.load("en_core_web_sm")
 df['spacy_doc'] = df['nlp_text'].apply(lambda x: nlp(x))
 
-# Define the sentiment analyser object
-analyser = SentimentIntensityAnalyzer()
-
-# Apply sentiment analysis to the data frame (new col for each)
-df['vader_comp'] = df['text'].apply(lambda x: analyser.polarity_scores(x)['compound'])
-df['vader_pos'] = df['text'].apply(lambda x: analyser.polarity_scores(x)['pos'])
-df['vader_neg'] = df['text'].apply(lambda x: analyser.polarity_scores(x)['neg'])
-df['vader_neu'] = df['text'].apply(lambda x: analyser.polarity_scores(x)['neu'])
+# Get the VADER sentiment for each tweet
+df = analyse_sentiment(df)
 
 ########
 # Now the dataframe is read in, cleaned and prepared for analysis we can pickle it out and use another script to analyse it. 
