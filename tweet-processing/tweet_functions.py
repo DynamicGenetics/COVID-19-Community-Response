@@ -101,11 +101,11 @@ def split_coords(data, col='geo.coordinates'):
     for easy conversion to geojson. """
 
     #Split the string on the comma    
-    df['long'], df['lat'] = df[col].str.split(',', 1).str
+    data['long'], data['lat'] = data[col].str.split(',', 1).str
 
     #Remove the left over square brackets
-    df['lat'] = df['lat'].str[:-1]
-    df['long'] = df['long'].str[1:]
+    data['lat'] = data['lat'].str[:-1]
+    data['long'] = data['long'].str[1:]
 
     return data
 
@@ -130,7 +130,7 @@ def format_bbox(data, col='place.bounding_box.coordinates'):
     return data
 
 
-def write_bbox_geojson(data, col='bbox_geojson')
+def write_bbox_geojson(data, col='bbox_geojson'):
     
     """ Given a correctly formatted column of bbox polygons, this will convert them to 
     a geojson object, and write it out to a file. """
