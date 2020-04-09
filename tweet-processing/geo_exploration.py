@@ -18,4 +18,3 @@ tweets = read_and_tidy('../../data/nina_7apr.csv')
 tweets = tweets[tweets['geo.coordinates'].notnull()]
 
 tweets = split_coords(tweets, 'geo.coordinates')
-

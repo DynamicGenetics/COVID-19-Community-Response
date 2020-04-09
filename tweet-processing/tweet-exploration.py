@@ -8,7 +8,7 @@ from tweet_functions import *
 ###################
 
 # Read in
-tweets = read_and_tidy('../../data/06042020.csv')
+tweets = read_and_tidy('../../data/nina_7apr.csv')
 
 ###############
 # EXPLORATION #
