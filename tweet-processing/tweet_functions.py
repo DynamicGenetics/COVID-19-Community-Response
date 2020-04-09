@@ -118,6 +118,9 @@ def format_bbox(data, col='place.bounding_box.coordinates'):
     #Convert the lists from strings to json
     data[col] = data[col].apply(lambda x: json.loads(x))
 
+    print("Strings in the original column are now formatted as lists of lists")
+
+
     # Append the first list to the end of the LOL so the coords make a connected shape
     def append_coords(bbox):
         bbox[0].append(bbox[0][0])
@@ -125,7 +128,7 @@ def format_bbox(data, col='place.bounding_box.coordinates'):
 
     data['bbox_geojson'] = data[col].apply(lambda x: append_coords(x))
 
-    print("Formatted bounding boxes written to the 'bbox_geojson' column")
+    print("Written bboxes in geojson Polygon format to the 'bbox_geojson' column")
 
     return data
 
