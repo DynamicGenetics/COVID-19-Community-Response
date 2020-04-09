@@ -11,3 +11,4 @@ scikit-learn==0.22.1
 vaderSentiment==3.3.1
 ipykernel==5.1.4
 geojson==2.5.0
+shapely==1.7.0
