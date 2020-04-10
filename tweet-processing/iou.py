@@ -6,7 +6,7 @@ from shapely.geometry import box, Polygon
 import geopandas as gpd
 from tweet_functions import read_and_tidy, format_bbox
 import json
-
+import matplotlib.pyplot as plt
 
 # Local Authorities Geoobjects
 la = gpd.read_file('../data/boundaries/LA_boundaries_2019.geojson')
@@ -15,25 +15,27 @@ la = la[la["lad19cd"].str.contains("W")]
 
 # Read in tweets
 tweets = read_and_tidy('../../data/nina_7apr.csv')
-# Fix the bounding boxes in the dataframe. 
+
+# Correctly format the bounding boxes in the dataframe. 
 tweets = format_bbox(tweets)
 
-#Lets try taking the first bounding box in the twitter dataset
+#Make a new column with the bounding boxes and shapely objects
+tweets['bbox_shapely'] = tweets['place.bounding_box.coordinates'].apply(lambda x: Polygon(x[0]))
+
+tweets_invalid = tweets[tweets['isvalid'] == 0]
+
+geo_tweets = gpd.GeoDataFrame(geometry=Polygon(tweets['bbox_geojson'][0]))
+
+# Lets try taking the first bounding box in the twitter dataset
+# NB with this dataset, I know that it's Cardiff, so let's test!
+bbox_tweet = tweets['bbox_shapely'][0] # Need to apply this to all the tweets
+bbox_la = la.loc[la['lad19nm'] == 'Cardiff']['geometry']
+
+#Local Authorities of Interest are those that overlap with the bbox
+laoi = la[la['geometry']overlaps(bbox_tweet)].copy()
+laoi['iou'] = la['geometry'].apply(lambda g: g.intersection(bbox_tweet).area / g.union(bbox_tweet).area)
 
 
-pl1 = 
-pl2 
 
-# Define Each polygon 
-pol1_xy = [[130, 27], [129.52, 27], [129.45, 27.1], [130.13, 26]]
-pol2_xy = [[30, 27.200001], [129.52, 27.34], [129.45, 27.1], [130.13, 26.950001]]
-polygon1_shape = Polygon(pol1_xy)
-polygon2_shape = Polygon(pol2_xy)
-
-# Calculate Intersection and union, and tne IOU
-polygon_intersection = polygon1_shape.intersection(polygon2_shape).area
-polygon_union = polygon1_shape.union(polygon2_shape).area
-IOU = polygon_intersection / polygon_union 
-
-
-
+# Need to write a function and run it on every tweet. 
+# Take the maximum for each and write it to a new column. 
