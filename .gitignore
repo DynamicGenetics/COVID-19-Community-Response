@@ -1,3 +1,6 @@
+# venv
+venv/
+
 # PyCharm Conf Folder
 .idea
 .DS_Store
