@@ -20,12 +20,61 @@ len(tweets[tweets['lang'].str.contains('cy')])
 # Can keywords produce useful subsets of the data?
 tw1 = tweets[tweets["text"].str.contains("(\w{4})?\s?-?isolat", regex=True  , na=False)]
 tw2 = tweets[tweets["text"].str.contains("community support | support group | community group", regex=True  , na=False)]
-tw3 = tweets[tweets["text"].str.contains("help | support |", regex=True  , na=False)]
+tw3 = tweets[tweets["text"].str.contains("help | support ", regex=True  , na=False)]
 tw4 = tweets[tweets["text"].str.contains("street | neighbour | medic | pharmac", regex=True  , na=False)]
-tw4 = tweets[tweets["text"].str.contains("shop | food | medic | pharmac", regex=True  , na=False)]
+tw5 = tweets[tweets["text"].str.contains("shop | food | medic | pharmac", regex=True  , na=False)]
+tw6 = tweets[tweets["text"].str.contains("facebook | whatsapp ", regex=True, na=False)]
+tw7 = tweets[tweets["text"].str.contains("volunt", regex=True, na=False)]
+
+covid_keyws = [
+            'corona',
+            'covid'
+            'pandemic,'
+            'outbreak'
+            'c19',
+            'workingfromhome',
+            'workfromhome',
+            'homeschooling',
+            'socialdistancing',
+            'socialdistance',
+            'quarantine',
+            'staythefhome',
+            'stayhome'
+            'stay home',
+            'stay at home',
+            'stayathome',
+            'flattenthecurve',
+            'flatten the curve'
+            'covidiot',
+            'notgoingout',
+            'lockdown',
+            'lock down',
+            'NHS',
+            'whenthisisallover'
+            ]
+
+tw8 = tweets[tweets['text'].str.contains('|'.join(covid_keyws))]
+
+#Join all of the tweets
+df_list = [tw1, tw2, tw3, tw4, tw5, tw6, tw7] #7093 tweets from nina_apr7.csv data
+tws = pd.concat(df_list).drop_duplicates('id_str')
 
 # TO DO
 # Explore number of tweets being returned by each query - overlaps?
+# Inner join in Python is pd.merge:
+# pd.merge(left=survey_sub, right=species_sub, left_on='species_id', right_on='species_id')
+
+## TFIDF
+from sklearn.feature_extraction.text import TfidfVectorizer
+corpus = [tweets['text'].tolist()]
+
+>>> vectorizer = TfidfVectorizer()
+>>> X = vectorizer.fit_transform(corpus)
+>>> print(vectorizer.get_feature_names())
+['and', 'document', 'first', 'is', 'one', 'second', 'the', 'third', 'this']
+>>> print(X.shape)
+(4, 9)
+
 
 # NLP experiments
 nlp = spacy.load('en_core_web_sm')
