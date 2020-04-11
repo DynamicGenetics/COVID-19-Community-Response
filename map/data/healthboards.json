@@ -1,0 +1,73 @@
+{
+    "Aneurin Bevan" : {
+        "phwName": "Aneurin Bevan",
+        "onsName": "Aneurin Bevan University Health Board",
+        "LSOAs": [
+                    "Blaenau Gwent",
+                    "Caerphilly",
+                    "Monmouthshire",
+                    "Newport",
+                    "Torfaen"
+        ]
+    },
+    
+    "Betsi Cadwaladr": {
+        "phwName": "Betsi Cadwaladr",
+        "onsName": "Betsi Cadwaladr University Health Board",
+        "LSOAs": [
+                    "Conwy",
+                    "Denbighshire",
+                    "Flintshire",
+                    "Gwynedd",
+                    "Isle of Anglesey",
+                    "Wrexham"   
+        ]
+    },
+
+    "Cardiff and Vale": {
+        "phwName": "Cardiff and Vale",
+        "onsName": "Cardiff and Vale University Health Board",
+        "LSOAs": [
+                    "Cardiff",
+                    "Vale of Glamorgan"
+        ]
+    },
+
+    "Cwm Taf Morgannwg": {
+        "phwName": "Cwm Taf Morgannwg",
+        "onsName": "Cwm Taf Morgannwg University Health Board",
+        "LSOAs": [
+                    "Bridgend",
+                    "Merthyr Tydfil",
+                    "Rhondda Cynon Taf"
+        ]
+    },
+
+    "Hywel Dda": {
+        "phwName": "Hywel Dda",
+        "onsName": "Hywel Dda University Health Board",
+        "LSOAs": [
+                    "Carmarthenshire",
+                    "Ceredigion",
+                    "Pembrokeshire"
+        ]
+    },
+
+    "Powys": {
+        "phwName": "Powys",
+        "onsName": "Powys Teaching Health Board",
+        "LSOAs": [
+                    "Powys"
+        ]
+    },
+
+    "Swansea Bay": {
+        "phwName": "Swansea Bay",
+        "onsName": "Swansea Bay University Health Board",
+        "LSOAs": [
+                    "Neath Port Talbot",
+                    "Swansea"
+        ]
+    }
+
+}
