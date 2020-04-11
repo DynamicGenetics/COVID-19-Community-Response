@@ -1,0 +1,1 @@
+This utility converts demographics data from CSV to geoJSON using LSOA boundaries
