@@ -1,47 +1,38 @@
-import json
-import csv
+import csv  
+import json  
 
-def assimilate(csvFile, geojsonFile, rownames, idHeadName):
+data_toAssimilate={}
+
+def assimilate(filename_input, filename_boundaries, lsoaIDColName, filename_output):
+    print("ASSIMILATING: ", filename_input)
     
-    #Import files
-    
-    with open(geojsonFile) as boundaryFile:
-        boundaries = json.load(boundaryFile)
-    
-    with open(csvFile, newline='', encoding='utf-8') as dataFile:
-        csvData = csv.DictReader(data_CSV, fieldnames = rownames)
-    
-    
-    #Assimilate properties in csv into geojson
-    
-    for LSOA in boundaries:
-        print(LSOA)
+    # Open the CSV as dictionary  
+    with open(filename_input, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
         
-        properties = LSOA["properties"]
-        print("Synthesising: ", properties["lad18cd"])        
-        
-        for row in csvData:
-        
-            if properties["lad18cd"] == row['lad18cd']: 
+        # Make dictionary of all columns in csv
+        for row in reader:
+            properties=[]
+            
+            for key in row:
+                properties.append({key:row[key]})
+                continue
                 
-            for name in rownames:
-       
+            data_toAssimilate[row[lsoaIDColName]]=properties  
+            continue
             
+        # Open boundary geoJSON file
+        with open(filename_boundaries, 'r') as boundaryFile:
+            boundaries = json.load(boundaryFile)
+                        
+            # For row in CSV insert columns as properties in geoJSON
+            for boundary in boundaries["features"]:
+                properties = boundary["properties"]
+                boundary["properties"]=data_toAssimilate[properties["lad18cd"]]
+                
+            data_assimilated = boundaries
 
-                print("Row found: ", properties["lad18cd"])
-                lad18cd = properties["lad18cd"]
-                cases_total = float(row['Cumulative  cases'].replace(" ","",))
-                break  
-
-        print("Final properties: ", lad18cd, cases_total)
-        
-        properties["cases_total"] = cases_total    
-        output.append(LSOA)
-    
-    #Export output
-    geoJSON_cases = {"type": "FeatureCollection", "features": output}
-    with open('../{}.geoJSON'.format(filename.replace("csv", ""), 'w')) as cses:
-           json.dump(geoJSON_groups, grps)
-            
-def deconstruct(geojson):
-    pass
+    # Save
+    with open(filename_output, 'w') as out:
+       json.dump(data_assimilated, out)
+    print("ASSIMILATED TO: ", filename_output)
