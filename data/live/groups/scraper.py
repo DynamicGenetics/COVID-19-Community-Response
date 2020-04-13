@@ -5,16 +5,15 @@ import csv
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-from recompiler import convertGroups
 
-def googleScrape():
+def googleScrape(URL, SpreadsheetID, SpreadsheetRange):
 
     # If modifying these scopes, delete the file token.pickle.
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+    SCOPES = [URL]
 
     # The ID and range of a sample spreadsheet.
-    SAMPLE_SPREADSHEET_ID = '117ukLjXiz8EfMjP-q9Aiu5XepQ39XK1W4DTMsE87llw'
-    SAMPLE_RANGE_NAME = 'Support groups'
+    SAMPLE_SPREADSHEET_ID = SpreadsheetID
+    SAMPLE_RANGE_NAME = SpreadsheetRange
 
     def main():
         """Shows basic usage of the Sheets API.

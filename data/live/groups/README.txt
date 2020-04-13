@@ -1,13 +1,25 @@
+Description:
 A utility which gets the live source data for covid community locations and converts it into a validated geoJSON format. 
 
-
-ACTIVE VERSION (v3+)
-3 Python (live):
+Instructions:
+ACTIVE VERSION (v3+) - 3 Python (live)
 WIP. Simply run the index file and a python server to scrape the police coders google sheet, using google docs / sheets API
- 
+
+Methods:
+Scrape data from google sheet (scrape), 
+Remove duplicates (removeDuplicates), 
+Geolocate groups to Wales and remove non-welsh groups (geoLocate)
+
+Definition:
+def googleScrape(URL, SpreadsheetID, SpreadsheetRange)
+
+Arguments:
+URL = url of spreadsheet (i.e., http:/google.com/sheets/)
+SpreadsheetID = ID of spreadsheet (i.e., .../5874587230fds)
+SpreadsheetRange = range of data in spreadsheet to obtain (e.g., sheet name or rows)
 
 
-##Archived versions
+Legacy versions
 
 (Deprecated)
 1 Javascript:

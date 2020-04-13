@@ -2,17 +2,15 @@ import csv
 import json  
 import re
 from shapely.geometry import shape, Point
-from QC.QC import QCFilter
-
 
 URLs={}
 
-def convertGroups():
+def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_csv, filename_demographics, filename_output_groups, filename_output_groupCount, filename_output_URLs, filename_output_review):
 
     #Import welsh boundaries
     # load GeoJSON file containing sectors
     wales_identified = False
-    with open('../../boundaries_Wales.GEOJSON') as boundaries:
+    with open(filename_boundaries_wales) as boundaries:
         boundaries_js = json.load(boundaries)
 
         features = boundaries_js['features']
@@ -27,7 +25,7 @@ def convertGroups():
     LSOA_polygons = []
     LSOAs_identified = 0
     welshLSOAs=[]
-    with open('../../boundaries_LSOAs.GEOJSON') as LSOAs:
+    with open(filename_boundaries_LSOA) as LSOAs:
         LSOAs_js = json.load(LSOAs)
 
         features = LSOAs_js['features']
@@ -56,9 +54,9 @@ def convertGroups():
                                      })
 
     # Open the demographics CSV  
-    with open('groups.csv', newline='', encoding='utf-8') as f:
+    with open(filename_csv, newline='', encoding='utf-8') as f:
 
-        print("OPENING CSV: groups.csv")
+        print("OPENING groups CSV: ", filename_csv)
         # Initialise reader
         groups_QC = csv.DictReader( f, fieldnames = ("Location","Lat","Lng","Title","URL","Display","Source","Notes"))
         #groups_unfiltered
@@ -151,9 +149,9 @@ def convertGroups():
     #Count groups per area
     
     output=[]
-    with open('../../static/demographics/demographics.csv', newline='', encoding='utf-8') as f:
+    with open(filename_demographics, newline='', encoding='utf-8') as f:
 
-        print("OPENING CSV: demographics.csv")
+        print("OPENING demographics CSV: ", filename_demographics)
         reader = csv.DictReader( f, fieldnames = ("la","id_area","deprivation_30","pop","pop_density","pop_elderly","lhb","language","covid"))
 
         demographics={} 
@@ -192,7 +190,7 @@ def convertGroups():
             output.append(lsoa)
             
             #Save output
-            saveOutput(groups, output, geomWelshGrps)
+            saveOutput(groups, output, geomWelshGrps, filename_output_groups, filename_output_groupCount, filename_output_URLs, filename_output_review)
             
             
     #Finished
@@ -256,23 +254,23 @@ def detectDuplicate(LSOA, URL):
         URLs[LSOA].append(standardisedLink)
         return(False)    
     
-def saveOutput(groups, output, geomWelshGrps):      
+def saveOutput(groups, output, geomWelshGrps, filename_output_groups, filename_output_groupCount, filename_output_URLs, filename_output_review):      
 
     #Write to geojson
     geoJSON_groups = {"type": "FeatureCollection", "features": groups}
-    with open('../../groups.geojson', 'w') as grps:
+    with open(filename_output_groups, 'w') as grps:
        json.dump(geoJSON_groups, grps)
 
     geoJSON_groupsCount = {"type": "FeatureCollection", "features": output}
-    with open('../../groupsCount.geojson', 'w') as grpsC:
+    with open(filename_output_groupCount, 'w') as grpsC:
        json.dump(geoJSON_groupsCount, grpsC)
     
     #Write URLs to json
-    with open('urls.json', 'w') as urls:
+    with open(filename_output_URLs, 'w') as urls:
        json.dump(URLs, urls)
 
     #To CSV Operation
-    f = open('QC/groupsSampleForReview.csv', 'w', encoding='utf-8', newline="")
+    f = open(filename_output_review, 'w', encoding='utf-8', newline="")
 
     with f:
 
