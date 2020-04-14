@@ -17,8 +17,9 @@ def assimilate(dataType, input_data, filename_boundaries, lsoaIDColName, filenam
                 properties=[]
 
                 for key in row:
-                    properties.append({key:row[key]})
-                    continue
+                    properties.append((key,row[key]))
+                
+                properties = {key: value for key, value in properties}
 
                 data_toAssimilate[row[lsoaIDColName]]=properties  
                 continue
