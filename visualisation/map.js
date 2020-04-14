@@ -32,17 +32,6 @@ map.on('load', function () {
     
     //Add layers
     map.addLayer({
-        'id': 'local-authority-boundaries',
-        'type': 'line',
-        'source': 'local-authority-boundaries',
-        'layout': {},
-        'paint': {
-            'line-color': '#088',
-            'line-opacity': 1.0
-        }
-    });
-    
-    map.addLayer({
         'id': 'deprivation',
         'type': 'fill',
         'source': 'demographics',
@@ -213,6 +202,17 @@ map.on('load', function () {
                 'stops': [[12, 2], [22, 180]]
             },
             'circle-color': '#223b53'
+        }
+    });
+
+    map.addLayer({
+        'id': 'local-authority-boundaries',
+        'type': 'line',
+        'source': 'local-authority-boundaries',
+        'layout': {},
+        'paint': {
+            'line-color': '#088',
+            'line-opacity': 1.0
         }
     });
 
