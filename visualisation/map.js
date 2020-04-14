@@ -23,10 +23,10 @@ map.on('load', function () {
         'type': 'geojson',
         'data': '../data/groupCount.geojson'
     });
-
+    
     map.addSource('known-groups', {
         'type': 'geojson',
-        'data': '../data/groups.GEOJSON'
+        'data': '../data/groups.geojson'
     });
     
     
