@@ -1,8 +1,4 @@
-import pandas as pd
-import re
-from tweet_functions import *
-import json
-import geojson
+from .tweet_functions import read_and_tidy, split_coords
 
 ###################
 # DATASET TIDYING #
