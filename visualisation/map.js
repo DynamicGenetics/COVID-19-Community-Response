@@ -16,7 +16,7 @@ map.on('load', function () {
     
     map.addSource('demographics', {
         'type': 'geojson',
-        'data': '../data/demographics.geojson'
+        'data': '../data/demographics_floats.geojson'
     });
     
     map.addSource('known-groups_count', {
