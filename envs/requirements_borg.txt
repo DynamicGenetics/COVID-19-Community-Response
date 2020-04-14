@@ -36,4 +36,4 @@ uritemplate==3.0.1
 urllib3==1.25.8
 virtualenv==16.4.3
 virtualenvwrapper-win==1.2.5
-Werkzeug==0.14.1
+Werkzeug==0.15.3
