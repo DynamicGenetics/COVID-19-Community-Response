@@ -1,5 +1,7 @@
 #deprec (chris' temporary bin folders)
 data/deprec/
+# leriomaggio: ignored as this is a folder for local dev exps.
+data/local
 
 # venv
 venv/
