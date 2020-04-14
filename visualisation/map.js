@@ -23,6 +23,11 @@ map.on('load', function () {
         'type': 'geojson',
         'data': '../data/groupCount.geojson'
     });
+
+    map.addSource('known-groups', {
+        'type': 'geojson',
+        'data': '../data/groups.GEOJSON'
+    });
     
     
     //Add layers
@@ -158,7 +163,7 @@ map.on('load', function () {
         'source': 'known-groups_count',
         'paint': {
             'fill-color': {
-                property: 'groupsCount_pop',
+                property: 'groupCount_pop',
                 stops: [[4.8, '#e689ff'],
                 [10.83, '#d87cf6'],
                 [16.86, '#ca70ed'],
@@ -181,7 +186,7 @@ map.on('load', function () {
         'source': 'known-groups_count',
         'paint': {
             'fill-color': {
-                property: 'groupsCount_elderly',
+                property: 'groupCount_elderly',
                 stops: [[4.8, '#e689ff'],
                 [10.83, '#d87cf6'],
                 [16.86, '#ca70ed'],
@@ -197,13 +202,7 @@ map.on('load', function () {
         },
         'filter': ['==', '$type', 'Polygon']
     });
-});
 
-map.on('load', function () {
-    map.addSource('known-groups', {
-        'type': 'geojson',
-        'data': '../data/groups.GEOJSON'
-    });
     map.addLayer({
         'id': 'known-groups',
         'type': 'circle',
@@ -216,6 +215,8 @@ map.on('load', function () {
             'circle-color': '#223b53'
         }
     });
+
+
 });
 
 
