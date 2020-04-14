@@ -5,7 +5,7 @@ I've had a go at putting the geojson files onto mapbox.
 
 To run: 
 - Start a local Python web server using cmd `python -m http.server`  
-- Open up `map_trial.html`  
+- Open up `index.html`  
 - In the top right-hand corner you should see a list of boxes with the names of layers. They default as 'visible', but if you click the names it should hide them.   
 
 Resources used:
