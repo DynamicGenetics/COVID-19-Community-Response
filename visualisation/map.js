@@ -1,6 +1,6 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoibmluYWRpY2FyYSIsImEiOiJjazNsb2V5ZHgwZjI0M25uNG1jejN2NXI0In0.kqShNz5S95-P9sWvl6YQCA';
+mapboxgl.accessToken = 'pk.eyJ1IjoibmluYWRpY2FyYSIsImEiOiJjazNsb3V3Ym0wNTdqM2JvaGRhdjFlN21vIn0.Q4kTCqSpKI00NAJzezecZg';
 var map = new mapboxgl.Map({
-    accessToken: 'pk.eyJ1IjoiY21vcmVub3N0b2tvZSIsImEiOiJjazg5MGZ4OHYwMXA5M25wazBtZXA2dGxwIn0.-6W7ECy-ha5nIUXZ-1o8mg',
+    accessToken: 'pk.eyJ1IjoibmluYWRpY2FyYSIsImEiOiJjazNsb3V3Ym0wNTdqM2JvaGRhdjFlN21vIn0.Q4kTCqSpKI00NAJzezecZg',
     container: 'map',
     style: 'mapbox://styles/cmorenostokoe/ck8isca7j0zsk1iqx4k4khk4u', //mapbox://styles/mapbox/streets-v11
     center: [-3.479368, 52.455248], //Mid-Wales ish
@@ -12,17 +12,17 @@ map.on('load', function () {
     //Add sources
     map.addSource('local-authority-boundaries', {
         'type': 'geojson',
-        'data': '../geoJSON/boundaries.geojson'
+        'data': '../data/boundaries_LSOAs.geojson'
     });
     
     map.addSource('demographics', {
         'type': 'geojson',
-        'data': '../geoJSON/demographics.geojson'
+        'data': '../data/demographics.geojson'
     });
     
     map.addSource('known-groups_count', {
         'type': 'geojson',
-        'data': '../geoJSON/groupsCount.geojson'
+        'data': '../data/groupCount.geojson'
     });
     
     
@@ -203,7 +203,7 @@ map.on('load', function () {
 map.on('load', function () {
     map.addSource('known-groups', {
         'type': 'geojson',
-        'data': '../geoJSON/groups.GEOJSON'
+        'data': '../data/groups.GEOJSON'
     });
     map.addLayer({
         'id': 'known-groups',
