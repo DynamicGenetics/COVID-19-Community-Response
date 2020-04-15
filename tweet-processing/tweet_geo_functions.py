@@ -1,30 +1,40 @@
 # %%
 import pandas as pd
+from shapely.geometry import Polygon
 
 
 # %%
-def get_laoi(bbox_tweet, la):
-
+def get_laoi(bbox_tweet, la, only_top=False):
     """ Get the likelihood for the the Local Authorities that
     overlap with the bounding box. Requires 'geometry' col in LA geopandas df. 
     Returns df of local authorities of interest. """
 
+    if not isinstance(bbox_tweet, Polygon):
+        bbox_tweet = Polygon(bbox_tweet)
+
     # Local Authorities of Interest are those that overlap with the bbox
-    laoi = la[la['geometry'].overlaps(bbox_tweet)].copy()
+    laoi = la[la['geometry'].intersects(bbox_tweet)].copy()
 
     if laoi.shape[0] == 0:
+        if only_top:
+            return ('', '', '')
         return None
 
     # Intersection over the union is a measure of how exactly the bounding box and the la overlap
-    laoi['iou'] = la['geometry'].apply(lambda g: g.intersection(bbox_tweet).area / g.union(bbox_tweet).area)
-
+    laoi['iou'] = la['geometry'].apply(lambda g: g.intersection(
+        bbox_tweet).area / g.union(bbox_tweet).area)
     # Pop weight is the proportion of the la population covered by the bounding box.
-    laoi['pop_weight'] = laoi['geometry'].apply(lambda g: (g.intersection(bbox_tweet).area / g.area)) * laoi['pop']
-    
+    laoi['pop_weight'] = laoi['geometry'].apply(lambda g: (
+        g.intersection(bbox_tweet).area / g.area)) * laoi['pop']
+
     # The final likelihood is the IoU multiplied by the population weight
     laoi['likelihood'] = laoi['iou'] * laoi['pop_weight']
-    
-    return laoi
+
+    if not only_top:
+        return laoi
+
+    laoi = laoi.sort_values(by='likelihood', ascending=False)
+    return laoi['lad18nm'].iat[0], laoi['lad18cd'].iat[0], laoi['lhb'].iat[0]
 
 
 # %% 
@@ -42,9 +52,9 @@ def get_tweets_loc(tweets_df, la):
         #Sort tweets_dfframe by highest to lowest 
         laoi = laoi.sort_values(by='likelihood', ascending=False)
 
-        laoi = laoi.reset_index()
+        # laoi = laoi.reset_index()
         
-        classes = [laoi['lad18nm'][0], laoi['lad18cd'][0], laoi['lhb'][0]]
+        classes = [laoi['lad18nm'].iat[0], laoi['lad18cd'].iat[0], laoi['lhb'][0]]
         
         return pd.Series(classes)
 
