@@ -1,16 +1,21 @@
-from .tweet_functions import read_and_tidy, split_coords
+# %%
+from tweet_functions import read_and_tidy, split_coords
 
 ###################
 # DATASET TIDYING #
 ###################
 
+# %%
 # Read in export from the Virtual Box VM (~420k tweets)
-tweets = read_and_tidy('../../data/nina_7apr.csv')
+tweets = read_and_tidy("../../data/nina_7apr.csv")
 
 ###############
 # EXPLORATION #
 ###############
 
-tweets = tweets[tweets['geo.coordinates'].notnull()]
+tweets = tweets[tweets["geo.coordinates"].notnull()]
 
-tweets = split_coords(tweets, 'geo.coordinates')
+tweets = split_coords(tweets, "geo.coordinates")
+
+
+# %%
