@@ -11,7 +11,7 @@ map.on('load', function () {
     //Add sources
     map.addSource('local-authority-boundaries', {
         'type': 'geojson',
-        'data': '../data/boundaries_LSOAs.geojson'
+        'data': '../data/boundaries_LAs.geoJSON'
     });
     
     map.addSource('demographics', {

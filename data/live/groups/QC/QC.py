@@ -5,7 +5,7 @@ def QCFilter(groups, referenceList):
     f2 = open(referenceList, 'r', encoding='utf-8')
 
     with f2:
-        references = csv.DictReader(f2, fieldnames = ("Title", "location", "LSOA", "ACTION", "ammendments", "notes", "link"))
+        references = csv.DictReader(f2, fieldnames = ("Title", "location", "LA", "ACTION", "ammendments", "notes", "link"))
 
         groups_QCFiltered = []
         
@@ -42,13 +42,13 @@ def QCFilter(groups, referenceList):
                                 print("Group {} deleted for reason {}".format(group["Title"], ref["notes"]))
 
                             elif ref["Action"] == "CHANGE":
-                                group["LSOA"]=ref["ammendments"]
+                                group["LA"]=ref["ammendments"]
                                 groups_QCFiltered.append(group)
                                 print("Group {} changed for reason {}".format(group["Title"], ref["notes"]))
 
                             elif ref["Action"] == "SPLIT":
                                 groups_QCFiltered.append(group)
-                                group["LSOA"]=ref["ammendments"]
+                                group["LA"]=ref["ammendments"]
                                 groups_QCFiltered.append(group)
                                 print("Group {} split for reason {}".format(group["Title"], ref["notes"]))
 

@@ -5,7 +5,7 @@ from shapely.geometry import shape, Point
 
 URLs={}
 
-def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_csv, filename_demographics, filename_output_groups, filename_output_groupCount, filename_output_URLs, filename_output_review):
+def convertGroups(filename_boundaries_wales, filename_boundaries_LA, filename_csv, filename_demographics, filename_output_groups, filename_output_groupCount, filename_output_URLs, filename_output_review):
 
     #Import welsh boundaries
     # load GeoJSON file containing sectors
@@ -22,13 +22,13 @@ def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_
                 print("BOUNDARY GEOJSON: Welsh borders found and imported.")
 
     # load GeoJSON file containing sectors
-    LSOA_polygons = []
-    LSOAs_identified = 0
-    welshLSOAs=[]
-    with open(filename_boundaries_LSOA) as LSOAs:
-        LSOAs_js = json.load(LSOAs)
+    LA_polygons = []
+    LAs_identified = 0
+    welshLAs=[]
+    with open(filename_boundaries_LA) as LAs:
+        LAs_js = json.load(LAs)
 
-        features = LSOAs_js['features']
+        features = LAs_js['features']
         for feature in features:
             properties = feature["properties"]    
 
@@ -41,16 +41,16 @@ def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_
             #Check polygon for Wales to see if it contains the point
             if polygon.contains(point):
 
-                welshLSOAs.append(feature)
+                welshLAs.append(feature)
 
-                print ('LSOA boundary found within polygon:', point)
-                LSOAs_identified+=1
-                LSOA_polygons.append({
+                print ('LA boundary found within polygon:', point)
+                LAs_identified+=1
+                LA_polygons.append({
                                         "lad18nm": properties["lad18nm"], 
                                         "lad18cd": properties["lad18cd"], 
-                                        "LSOA_shape": shape(feature['geometry']),
-                                        "LSOA_groupCount": 0,
-                                        "LSOA_groups":[]
+                                        "LA_shape": shape(feature['geometry']),
+                                        "LA_groupCount": 0,
+                                        "LA_groups":[]
                                      })
 
     # Open the demographics CSV  
@@ -70,7 +70,7 @@ def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_
         exceptions_names=[]
         display0=0
         rowCount=0
-        pointsInLSOAs=0
+        pointsInLAs=0
         geomWelshGrps=[]
         duplicates=0
 
@@ -124,16 +124,16 @@ def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_
                     else:
                         nonWelshGroups+=1
 
-                    for lsoa in LSOA_polygons:
-                        if lsoa["LSOA_shape"].contains(point):
+                    for LA in LA_polygons:
+                        if LA["LA_shape"].contains(point):
 
-                            if detectDuplicate(lsoa["lad18cd"], row["URL"]) == False:
-                                geomWelshGrps.append([row["Location"],row["Title"],lsoa["lad18nm"], lsoa["lad18cd"], row["URL"], row["Notes"]])
+                            if detectDuplicate(LA["lad18cd"], row["URL"]) == False:
+                                geomWelshGrps.append([row["Location"],row["Title"],LA["lad18nm"], LA["lad18cd"], row["URL"], row["Notes"]])
 
-                                print("Point located in LSOA", point)
-                                lsoa["LSOA_groupCount"]+=1
-                                lsoa["LSOA_groups"].append(row["Title"])
-                                pointsInLSOAs+=1
+                                print("Point located in LA", point)
+                                LA["LA_groupCount"]+=1
+                                LA["LA_groups"].append(row["Title"])
+                                pointsInLAs+=1
 
                             else:
                                 duplicates+=1
@@ -158,9 +158,9 @@ def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_
         
         # Build JSON dictionary for demographics
         
-        for lsoa in welshLSOAs:
+        for LA in welshLAs:
 
-            properties = lsoa["properties"]
+            properties = LA["properties"]
             print("Synthesising: ", properties["lad18cd"])
             #print("Start props: ", properties)
             for row in reader:
@@ -171,10 +171,10 @@ def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_
                     pop_elderly = float(row["pop_elderly"].replace(",","",))
                     break
 
-            for LSOA in LSOA_polygons:
-                if properties["lad18cd"] == LSOA["lad18cd"]: 
-                    print("LSOA polygon match: ", LSOA["lad18cd"])
-                    groupCount = LSOA["LSOA_groupCount"]
+            for LA in LA_polygons:
+                if properties["lad18cd"] == LA["lad18cd"]: 
+                    print("LA polygon match: ", LA["lad18cd"])
+                    groupCount = LA["LA_groupCount"]
                     groupCount_pop = groupCount / pop
                     groupCount_elderly = groupCount / (pop_elderly / 100 * pop)
                     break
@@ -187,7 +187,7 @@ def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_
             properties["groupCount_elderly"] = groupCount_elderly
 
             #print(properties)
-            output.append(lsoa)
+            output.append(LA)
             
             #Save output
             saveOutput(groups, output, geomWelshGrps, filename_output_groups, filename_output_groupCount, filename_output_URLs, filename_output_review)
@@ -199,7 +199,7 @@ def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_
     print("#####################################################")
     print("################ GEOGRAPHICAL BORDERS ###############")
     print("WELSH BORDER IDENTIFIED: ", wales_identified)
-    print("NUMBER OF LSOA BOUNDARIES IDENTIFIED: ", LSOAs_identified)
+    print("NUMBER OF LA BOUNDARIES IDENTIFIED: ", LAs_identified)
     print("############## COMMUNITY SUPPORT GROUPS #############")
     print("TOTAL: ", rowCount)
     print("WELSH: ", welshGroups)
@@ -208,14 +208,14 @@ def convertGroups(filename_boundaries_wales, filename_boundaries_LSOA, filename_
     print("DUPLICATES: ", duplicates)
     print("EXCEPTIONS / ERRs: ", exceptions)
     print("GROUPS THROWING ERRORS: ", exceptions_names)
-    print("################### COUNT PER LSOA ##################")
-    print("LSOAs: ", len(LSOA_polygons))
-    print("GROUPS LOCALISED TO LSOAs: ", pointsInLSOAs)
-    print("LSOAs in output: ", len(output))
+    print("################### COUNT PER LA ##################")
+    print("LAs: ", len(LA_polygons))
+    print("GROUPS LOCALISED TO LAs: ", pointsInLAs)
+    print("LAs in output: ", len(output))
     print("#####################################################")
     
 
-def detectDuplicate(LSOA, URL):
+def detectDuplicate(LA, URL):
     
     #Find root URL
     if re.search('facebook', URL):
@@ -245,13 +245,13 @@ def detectDuplicate(LSOA, URL):
         standardisedLink = URL
         print(standardisedLink)
     
-    if LSOA not in URLs:
-        URLs[LSOA]=[]
+    if LA not in URLs:
+        URLs[LA]=[]
         return(False)
-    elif standardisedLink in URLs[LSOA]:
+    elif standardisedLink in URLs[LA]:
         return(True)
     else:
-        URLs[LSOA].append(standardisedLink)
+        URLs[LA].append(standardisedLink)
         return(False)    
     
 def saveOutput(groups, output, geomWelshGrps, filename_output_groups, filename_output_groupCount, filename_output_URLs, filename_output_review):      

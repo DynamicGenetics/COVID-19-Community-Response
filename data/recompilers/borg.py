@@ -1,15 +1,14 @@
 import csv  
 import json  
 
-def assimilate(dataType, input_data, filename_boundaries, lsoaIDColName, filename_output):
+def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path):
     data_toAssimilate={}
-    print("ASSIMILATING: ", input_data)
     
     #If input is csv
-    if dataType == "csv":
+    if data_type == "csv":
 
         # Open the CSV as dictionary  
-        with open(input_data, newline='', encoding='utf-8') as f:
+        with open(data_path, newline='', encoding='utf-8') as f:
             reader = csv.DictReader(f)
 
             # Make dictionary of all columns in csv
@@ -17,42 +16,46 @@ def assimilate(dataType, input_data, filename_boundaries, lsoaIDColName, filenam
                 properties=[]
 
                 for key in row:
-                    properties.append((key,row[key]))
+
+                    try:
+                        properties.append((key,float(row[key].replace(",","",))))
+                    except:
+                        properties.append((key,row[key]))
                 
                 properties = {key: value for key, value in properties}
-
-                data_toAssimilate[row[lsoaIDColName]]=properties  
+                
+                data_toAssimilate[row[data_idName]]=properties  
                 continue
 
             # Open boundary geoJSON file
-            with open(filename_boundaries, 'r') as boundaryFile:
+            with open(geo_path, 'r') as boundaryFile:
+                
                 boundaries = json.load(boundaryFile)
-
                 # For row in CSV insert columns as properties in geoJSON
                 for boundary in boundaries["features"]:
                     properties = boundary["properties"]
-                    boundary["properties"]=data_toAssimilate[properties["lad18cd"]]
+                    boundary["properties"]=data_toAssimilate[properties[geo_idName]]
 
                 data_assimilated = boundaries
                 
     
     #If input is dictionary / json
-    elif dataType == "dict":
+    elif data_type == "dict":
         
-        data_toAssimilate=input_data
-        
+        data_toAssimilate=data_path
         # Open boundary geoJSON file
-        with open(filename_boundaries, 'r') as boundaryFile:
+        with open(geo_path, 'r') as boundaryFile:
             boundaries = json.load(boundaryFile)
 
             # For row in CSV insert columns as properties in geoJSON
             for boundary in boundaries["features"]:
                 properties = boundary["properties"]
-                boundary["properties"]=data_toAssimilate[properties["lad18cd"]]
+                boundary["properties"]=data_toAssimilate[properties[geo_idName]]
 
             data_assimilated = boundaries
     
     # Save
-    print("ASSIMILATED TO: ", filename_output)
-    with open(filename_output, 'w') as out:
+    with open(out_path, 'w') as out:
        json.dump(data_assimilated, out)
+       
+    print("Message (B2): Successfully assimilated: ", out_path)
