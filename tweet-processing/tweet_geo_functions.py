@@ -1,6 +1,6 @@
 # %%
 import pandas as pd
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, Point
 
 
 # %%
@@ -10,7 +10,12 @@ def get_laoi(bbox_tweet, la, only_top=False):
     Returns df of local authorities of interest. """
 
     if not isinstance(bbox_tweet, Polygon):
-        bbox_tweet = Polygon(bbox_tweet)
+        polygon = Polygon(bbox_tweet)
+        if not polygon.is_valid:
+            # fallback to a point
+            bbox_tweet = Point(bbox_tweet[0])
+        else:
+            bbox_tweet= polygon
 
     # Local Authorities of Interest are those that overlap with the bbox
     laoi = la[la['geometry'].intersects(bbox_tweet)].copy()
