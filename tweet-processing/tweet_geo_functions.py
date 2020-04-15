@@ -37,7 +37,7 @@ def get_tweets_loc(tweets_df, la):
         laoi = get_laoi(bbox_tweet, la)
 
         if laoi is None:
-            return ('', '', '')
+            return pd.Series(['', '', ''])
         
         #Sort tweets_dfframe by highest to lowest 
         laoi = laoi.sort_values(by='likelihood', ascending=False)
@@ -48,9 +48,11 @@ def get_tweets_loc(tweets_df, la):
         
         return pd.Series(classes)
 
-    tweets_df[['lad18nm', 'lad18cd', 'lhb']] == tweets_df['bbox_shapely'].apply(laoi_classes)
+    #tweets_df[['lad18nm', 'lad18cd', 'lhb']] = tweets_df['bbox_shapely'].apply(laoi_classes)
+    tweets_df['lad18nm'], tweets_df['lad18cd'], tweets_df['lhb']  = tweets_df['bbox_shapely'].apply(laoi_classes)
 
     return tweets_df
+
 
 # %%
 # In progress - how to define how certain the match is
@@ -64,7 +66,7 @@ def class_uncertainty(laoi):
     # Get the list of values
     a = laoi['likelihood']
     a.reset_index().drop()
-    del l['index']
+    del a['index']
 
     #If there was only one, the  
     if len(a) == 1 :
