@@ -220,18 +220,30 @@ map.on('load', function () {
 });
 
 
-var toggleableLayerIds = ['local-authority-boundaries', 'known-groups', 'deprivation', 'pop_density', 'pop_elderly', 'language', 'groupsCount', 'groupsCount_pop', 'groupsCount_elderly'];
+var toggleableLayers = [
+    { id: 'local-authority-boundaries', name: 'Local authority boundaries' },
+    { id: 'known-groups', name: 'Known groups' },
+    { id: 'deprivation', name: 'Index of multiple deprivation' },
+    { id: 'pop_density', name: 'Population density' },
+    { id: 'pop_elderly', name: 'Elderly population' },
+    { id: 'language', name: 'Language' },
+    { id: 'groupsCount', name: 'Number of groups' },
+    { id: 'groupsCount_pop', name: 'Number of groups by population' },
+    { id: 'groupsCount_elderly', name: 'Number of groups by elderly population' }
+];
 
-for (var i = 0; i < toggleableLayerIds.length; i++) {
-    var id = toggleableLayerIds[i];
+for (var i = 0; i < toggleableLayers.length; i++) {
+    var id = toggleableLayers[i].id;
+    var name = toggleableLayers[i].name;
 
     var link = document.createElement('a');
     link.href = '#';
     link.className = 'active';
-    link.textContent = id;
+    link.textContent = name;
+    link.setAttribute('data-layer', id);
 
     link.onclick = function (e) {
-        var clickedLayer = this.textContent;
+        var clickedLayer = this.getAttribute('data-layer');
         e.preventDefault();
         e.stopPropagation();
 
