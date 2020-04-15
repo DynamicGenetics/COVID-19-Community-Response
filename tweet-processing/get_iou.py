@@ -17,8 +17,7 @@ tweets = format_bbox(tweets)
 # Make a new column with the bounding boxes and shapely objects
 tweets['bbox_shapely'] = tweets['place.bounding_box.coordinates'].apply(lambda x: Polygon(x[0]))
 
-bbox_tweet = tweets['bbox_shapely'][0] # Take first tweet in the bbox_shapely col
-
+# bbox_tweet = tweets['bbox_shapely'][0] # Take first tweet in the bbox_shapely col
 #laoi_example = get_laoi(bbox_tweet, la)
 
 tweets2 = get_tweets_loc(tweets, la)
