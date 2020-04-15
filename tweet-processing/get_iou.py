@@ -8,8 +8,8 @@ import json
 # Read in tweets
 tweets = read_and_tidy('../../data/nina_7apr.csv')
 
-# Read in lsoa key
-la = gpd.read_file('lsoa_key.geojson')
+# Read in LA key
+la = gpd.read_file('LA_key.geojson')
 
 # Correctly format the bounding boxes in the dataframe. 
 tweets = format_bbox(tweets)
