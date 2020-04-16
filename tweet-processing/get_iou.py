@@ -1,16 +1,26 @@
+
+
+# %%
 from shapely.geometry import box, Polygon
-from tweet_functions import read_and_tidy, format_bbox
-from tweet_geo_functions import get_tweets_loc
+from tweet_functions import filter_and_reformat, format_bbox
+from tweet_geo_functions import add_reference_la
+from datasets import load_tweets, load_local_authorities
 import geopandas as gpd
 import pandas as pd
 import json
 
-# Read in tweets
-tweets = read_and_tidy("../../data/nina_7apr.csv")
 
+# %% Load Tweets
+tweets = load_tweets('nina_7apr.csv', local_dev=True)
+
+# %% 
+tweets = filter_and_reformat(tweets)
+
+# %%
 # Read in LA key
-la = gpd.read_file("LA_key.geojson")
+la = load_local_authorities()
 
+# %%
 # Correctly format the bounding boxes in the dataframe.
 tweets = format_bbox(tweets)
 
@@ -189,8 +199,8 @@ tweets["lad18nm"], tweets["lad18cd"], tweets["lhb"] = tweets["bbox"].apply(
 
 # %%
 # Run
-tweets2 = get_tweets_loc(tweets_sm, la)
+tweets2 = add_reference_la(tweets_sm, la)
 
 # laoi_example = get_laoi(bbox_tweet, la)
 
-tweets2 = get_tweets_loc(tweets, la)
+tweets2 = add_reference_la(tweets, la)
