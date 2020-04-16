@@ -31,9 +31,9 @@ var layers = [
             paint: {
                 'circle-radius': {
                     base: 1.75,
-                    stops: [[12, 2], [22, 180]]
+                    stops: [[12, 2.7], [22, 180]]
                 },
-                'circle-color': '#223b53'
+                'circle-color': '#7a0177'
             }
         }
     },
