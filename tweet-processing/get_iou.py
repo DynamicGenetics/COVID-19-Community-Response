@@ -1,44 +1,33 @@
 
 
-# %%
-from shapely.geometry import box, Polygon
-from tweet_functions import filter_and_reformat, format_bbox
+# %% Imports
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib import cm
+from shapely.geometry import Point
+from tweet_geo_functions import get_laoi
+from functools import partial
+from pipelines import TwitterPipeline
 from tweet_geo_functions import add_reference_la
 from datasets import load_tweets, load_local_authorities
 import geopandas as gpd
 import pandas as pd
-import json
 
 
 # %% Load Tweets
-tweets = load_tweets('nina_7apr.csv', local_dev=True)
+tweets = load_tweets()
 
-# %% 
-tweets = filter_and_reformat(tweets)
+# %% Filter the tweets from Wales and format the text
+tweets = TwitterPipeline().apply(tweets.data, verbosity=1)
 
-# %%
-# Read in LA key
-la = load_local_authorities()
+# %% Read in Local Authorities key
+la_dataset = load_local_authorities()
 
-# %%
-# Correctly format the bounding boxes in the dataframe.
-tweets = format_bbox(tweets)
-
-# Make a new column with the bounding boxes and shapely objects
-tweets["bbox_shapely"] = tweets["place.bounding_box.coordinates"].apply(
-    lambda x: Polygon(x[0])
-)
-
-# %%
-tweets["bbox"] = tweets["bbox_geojson"].apply(lambda c: tuple(map(tuple, c[0][:-1])))
-
-# %%
+# %% THIS PIECE IS NOT NEEDED ANYMORE
 # Write processed df to pkl for quicker reading in future
-pd.to_pickle(tweets, "../data/local/processed_tweets.pkl")
-
-# %%
+# pd.to_pickle(tweets, "../data/local/processed_tweets.pkl")
 # Alternative read in from pkl.
-tweets = pd.read_pickle("../data/local/processed_tweets.pkl")
+# tweets = pd.read_pickle("../data/local/processed_tweets.pkl")
 
 # # %%
 # ## TESTING - create a smaller tweets df with one row per unique bounding box
@@ -55,8 +44,6 @@ unique_coords = set(tweets["bbox"].values)
 
 
 # %%
-from functools import partial
-from tweet_geo_functions import get_laoi
 
 fetch_laoi = partial(get_laoi, la=la, only_top=True)
 laoi_map = {coords: fetch_laoi(coords) for coords in unique_coords}
@@ -124,10 +111,6 @@ none_coords = [
 ]
 
 # %%
-from shapely.geometry import Point
-import geopandas as gpd
-from matplotlib import cm
-from matplotlib import pyplot as plt
 
 # %%
 # Draw LAs on a map using viridis CMAP
@@ -139,7 +122,6 @@ plt.show()
 
 
 # %%
-import numpy as np
 
 missing_point = np.asarray([-2.991277, 53.233156]) - 0.01
 
@@ -148,7 +130,8 @@ viridis = cm.get_cmap("viridis")
 
 ax = la.geometry.plot(figsize=(15, 15), cmap=viridis)
 
-centroids = la["geometry"].apply(lambda g: list(g.centroid.coords)[0]).values.tolist()
+centroids = la["geometry"].apply(
+    lambda g: list(g.centroid.coords)[0]).values.tolist()
 names = la["lad18nm"].values.tolist()
 assert len(centroids) == len(names)
 
