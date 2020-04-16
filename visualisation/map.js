@@ -116,7 +116,7 @@ var layers = [
         }
     },
     {
-        name: 'Language',
+        name: 'Welsh language',
         shownByDefault: false,
         layerSpec: {
             id: 'language',
