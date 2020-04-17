@@ -1,4 +1,4 @@
-[
+var layers = [
     {
         "layerSpec": {
             "filter": [
@@ -51,7 +51,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/bias_language.geojson",
             "type": "fill"
         },
         "name": "language",
@@ -109,7 +109,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/community_cohesion+deprivation.geojson",
             "type": "fill"
         },
         "name": "communityCohesion",
@@ -167,7 +167,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/community_cohesion+deprivation.geojson",
             "type": "fill"
         },
         "name": "deprivation_30",
@@ -225,7 +225,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/covid_vulnerable.geojson",
             "type": "fill"
         },
         "name": "vulnerable_pct",
@@ -283,7 +283,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/covid_vulnerable.geojson",
             "type": "fill"
         },
         "name": "pop_density",
@@ -341,7 +341,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/covid_vulnerable.geojson",
             "type": "fill"
         },
         "name": "pop_elderly",
@@ -399,7 +399,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/covid_vulnerable.geojson",
             "type": "fill"
         },
         "name": "pop",
@@ -457,7 +457,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/covid_cases.geojson",
             "type": "fill"
         },
         "name": "covid_per100k",
@@ -515,7 +515,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/groupCount.geojson",
             "type": "fill"
         },
         "name": "long",
@@ -573,7 +573,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/groupCount.geojson",
             "type": "fill"
         },
         "name": "lat",
@@ -631,7 +631,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/groupCount.geojson",
             "type": "fill"
         },
         "name": "st_areashape",
@@ -689,7 +689,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/groupCount.geojson",
             "type": "fill"
         },
         "name": "st_lengthshape",
@@ -747,7 +747,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/groupCount.geojson",
             "type": "fill"
         },
         "name": "groupCount",
@@ -805,7 +805,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/groupCount.geojson",
             "type": "fill"
         },
         "name": "groupCount_pop",
@@ -863,7 +863,7 @@
                 },
                 "fill-opacity": 0.16666666666666666
             },
-            "source": "demographics",
+            "source": "../data/groupCount.geojson",
             "type": "fill"
         },
         "name": "groupCount_elderly",

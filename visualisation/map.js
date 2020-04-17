@@ -9,19 +9,16 @@ var map = new mapboxgl.Map({
 map.on('load', function () {
 
     //Add sources
-    map.addSource('local-authority-boundaries', {
-        'type': 'geojson',
-        'data': '../data/boundaries_LAs.geoJSON'
-    });
+    // map.addSource('local-authority-boundaries', {
+    //     'type': 'geojson',
+    //     'data': '../data/boundaries_LAs.geoJSON'
+    // });
 
-    map.addSource('demographics', {
-        'type': 'geojson',
-        'data': '../data/demographics_floats.geojson'
-    });
-
-    map.addSource('known-groups', {
-        'type': 'geojson',
-        'data': '../data/groups.geojson'
+    layers.forEach(function(e){
+        map.addSource(e.layerSpec.id, {
+            'type': 'geojson',
+            'data': e.layerSpec.source
+        });
     });
 
     //Add layers

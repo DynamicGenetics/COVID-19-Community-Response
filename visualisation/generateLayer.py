@@ -61,24 +61,24 @@ def generateLayer(filenames, color, filename_output):
         stp=dataField['dataStops']
 
         output.append({
-            'name': name,
+            'name': name.replace('data/', ""),
             'shownByDefault': False,
             'layerSpec': {
                 'id': name,
                 'type': 'fill',
-                'source': origins[name],
+                'source': join("../",origins[name]),
                 'paint': {
                     'fill-color': {
                         'property': name,
-                        'stops': [[stp*1, 'rgb({},0,0)'.format(256/9*1)],
-                                [stp*2, 'rgb({},0,0)'.format(256/9*2)],
-                                [stp*3, 'rgb({},0,0)'.format(256/9*3)],
-                                [stp*4, 'rgb({},0,0)'.format(256/9*4)],
-                                [stp*5, 'rgb({},0,0)'.format(256/9*5)],
-                                [stp*6, 'rgb({},0,0)'.format(256/9*6)],
-                                [stp*7, 'rgb({},0,0)'.format(256/9*7)],
-                                [stp*8, 'rgb({},0,0)'.format(256/9*8)],
-                                [stp*9, 'rgb({},0,0)'.format(256/9*9)]]
+                        'stops': [[stp*1, 'rgb({},0,0)'.format(255/9*1)],
+                                [stp*2, 'rgb({},0,0)'.format(255/9*2)],
+                                [stp*3, 'rgb({},0,0)'.format(255/9*3)],
+                                [stp*4, 'rgb({},0,0)'.format(255/9*4)],
+                                [stp*5, 'rgb({},0,0)'.format(255/9*5)],
+                                [stp*6, 'rgb({},0,0)'.format(255/9*6)],
+                                [stp*7, 'rgb({},0,0)'.format(255/9*7)],
+                                [stp*8, 'rgb({},0,0)'.format(255/9*8)],
+                                [stp*9, 'rgb({},0,0)'.format(255/9*9)]]
                     },
                     'fill-opacity': opacity
                 },
