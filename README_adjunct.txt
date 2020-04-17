@@ -1,7 +1,7 @@
 Assimilate function help:
 
 Description:
-Assimilates given data
+Slave function to borg.py; Assimilates given data
 
 Definition:
 def assimilate(dataType, input_data, filename_boundaries, LAIDColName, filename_output):

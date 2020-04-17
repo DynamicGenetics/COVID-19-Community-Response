@@ -1,9 +1,11 @@
-def detectDuplicate(LA, URL):
+import re
+
+def detectDuplicate(LA, URL, URLs):
     
     #Find root URL
     if re.search('facebook', URL):
         
-        print("facebook URL found: ", URL)
+        #print("facebook URL found: ", URL)
         
         if re.search('groups/', URL):
             fbGroupId = URL.split('groups/')[1]
@@ -11,28 +13,28 @@ def detectDuplicate(LA, URL):
 
             if fbGroupId_tail:
                 standardisedLink = fbGroupId.split('/')[0]
-                print(standardisedLink)
+                #print(standardisedLink)
 
             else:
                 standardisedLink = fbGroupId
-                print(standardisedLink)
+                #print(standardisedLink)
                 
         elif re.search('facebook.com/', URL): 
             standardisedLink = URL.split('facebook.com/')[1]
-            print(standardisedLink)
+            #print(standardisedLink)
         
         else: 
             standardisedLink = URL 
-            print(standardisedLink)
+            #print(standardisedLink)
     else:
         standardisedLink = URL
-        print(standardisedLink)
+        #print(standardisedLink)
     
     if LA not in URLs:
         URLs[LA]=[]
-        return(False)
+        return(False, URLs)
     elif standardisedLink in URLs[LA]:
-        return(True)
+        return(True, URLs)
     else:
         URLs[LA].append(standardisedLink)
-        return(False)   
+        return(False, URLs)   

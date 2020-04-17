@@ -15,8 +15,6 @@ def googleScrape(URL, SpreadsheetID, SpreadsheetRange, path_creds, path_out):
     SAMPLE_SPREADSHEET_ID = SpreadsheetID
     SAMPLE_RANGE_NAME = SpreadsheetRange
 
-    print("scraping: ",SCOPES, SAMPLE_SPREADSHEET_ID,SAMPLE_RANGE_NAME)
-
     def main():
         """Shows basic usage of the Sheets API.
         Prints values from a sample spreadsheet.
@@ -61,6 +59,8 @@ def googleScrape(URL, SpreadsheetID, SpreadsheetRange, path_creds, path_out):
                     writer.writerow(row)
                     # Print column A, which correspond to index 0.
                     print("Writing (CSV): ", row[0])
+
+    print("Message (googleScrape): Scraped googleSheet ID {} (range={}) ".format(SAMPLE_SPREADSHEET_ID, SAMPLE_RANGE_NAME))
 
     if __name__ == '__main__':
         main()
