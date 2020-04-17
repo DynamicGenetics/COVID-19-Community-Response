@@ -61,13 +61,15 @@ def generateLayer(filenames, color, filename_output):
         name=dataField['dataField']
         stp=dataField['dataStops']
 
+        fileName = origins[name].replace('/data',"")
+
         output.append({
-            'name': name.replace('data/', ""),
+            'name': name,
             'shownByDefault': False,
             'ref': '{}{}'.format("../",origins[name]),
             'layerSpec': {
-                'id': id_count,
-                'source': origins[name].replace('data/',""),
+                'id': name,
+                'source': fileName.replace('.geojson',""),
                 'type': 'fill',
                 'paint': {
                     'fill-color': {
