@@ -11,7 +11,7 @@ def generateLayer(dataSources, nicknames, filename_output):
     id_count=0
     categories={}
 
-    opacity = 1/len(dataSources)
+    opacity = 2/len(dataSources)
     type_filter = 'Polygon'
 
     #data/{}.geojson'.format(data['name']

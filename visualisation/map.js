@@ -1,7 +1,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoibmluYWRpY2FyYSIsImEiOiJjazNsb3V3Ym0wNTdqM2JvaGRhdjFlN21vIn0.Q4kTCqSpKI00NAJzezecZg';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/cmorenostokoe/ck8isca7j0zsk1iqx4k4khk4u', //mapbox://styles/cmorenostokoe/ck8isca7j0zsk1iqx4k4khk4u
+    style: 'mapbox://styles/mapbox/streets-v11', //mapbox://styles/cmorenostokoe/ck8isca7j0zsk1iqx4k4khk4u
     center: [-3.479368, 52.455248], //Mid-Wales ish
     zoom: 7
 });

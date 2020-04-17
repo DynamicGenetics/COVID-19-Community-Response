@@ -89,12 +89,10 @@ filenames = {
 nicknames = {
     'language' : 'Welsh language use',
     'communityCohesion' : 'Community cohesion',
-    'deprivation_30' : 'Multiple deprivation (n30)',
+    'deprivation_30' : 'Multiple deprivation',
     'vulnerable_pct' : 'Vulnerable (%)',
     'pop_density' : 'Population density',
     'pop_elderly' : 'Elderly population (%)',
-    'pop' : 'Population',
     'covid_per100k' : 'COVID cases (/100k)',
-    'groupCount' : 'Identified community support groups',
-    'groupCount_pop' : 'Identified community support groups (/capita)',
+    'groupCount_pop' : 'Community support groups (/capita)',
 }
