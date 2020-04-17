@@ -27,6 +27,7 @@ body {
 
 #menu label {
     margin-left: 1rem;
+    font-size: 15px !important;
 }
 
 .checkbox {
