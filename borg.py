@@ -8,10 +8,14 @@ from data.community_measures.scraper import googleScrape
 from data.community_measures.QC.QC import QCFilter
 from data.community_measures.QC.detectDuplicate import detectDuplicate
 from data.community_measures.saveOutput import saveOutput
+from visualisation.generateLayer import generateLayer
 
 count_data = 0
 count_dataEnabled = 0
 count_dataSuccess = 0
+
+# Setting this to true will run the scraping operations when this file is ran
+runScraping = False
 
 # Iterate over data sources in dataSources dictionary 
 for data in dataSources:
@@ -32,7 +36,8 @@ for data in dataSources:
             elif data["type"] == 'scrape':
 
                     # Scrape data from google sheet, remove duplicates, geolocate to Wales and convert csv to geoJSON
-                    googleScrape('https://www.googleapis.com/auth/spreadsheets.readonly', '1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY', 'Support groups v2', filenames['credentials'], filenames['csv'])
+                    if runScraping == True:
+                        googleScrape('https://www.googleapis.com/auth/spreadsheets.readonly', '1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY', 'Support groups v2', filenames['credentials'], filenames['csv'])
                     groupsData = groupProcessing(filenames)
                     saveOutput(groupsData[0], groupsData[1], groupsData[2], groupsData[3], filenames)
                     #for row in groupsData[4]: print(row)
@@ -49,5 +54,15 @@ for data in dataSources:
     else:
         print("Warning (Borg): Skipping disabled data: ", data['name'])
     count_data +=1
+
+#Dynamically generate layers
+layersToProduce=[]
+
+for data in dataSources:
+    layersToProduce.append('data/{}.geojson'.format(data['name']))
+
+layers=generateLayer(layersToProduce, 'red', 'visualisation/borgLayers.json')
+
+print(layers)
 
 print("BORG HAS ASSIMILATED {} / {} COMPATIABLE DATA SOURCES ({} enabled)".format(count_dataSuccess, count_data, count_dataEnabled))

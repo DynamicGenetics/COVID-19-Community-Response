@@ -36,6 +36,13 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/community_measures/groups.csv',
         'ID_name' : None
+    },{
+        'name' : 'groupCount',
+        'type' : 'scrape',
+        'res' : 'LA',
+        'enabled' : False,
+        'path' : 'data/community_measures/groupCount.csv',
+        'ID_name' : None
     },
 ]
 
