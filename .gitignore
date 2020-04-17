@@ -3,8 +3,12 @@ data/deprec/
 # leriomaggio: ignored as this is a folder for local dev exps.
 data/local
 
+# LA Keys
+data/la_keys.geojson
+
 #Twitter Dataset should be ignored
 data/tweets_dataset.csv
+
 # venv
 venv/
 
