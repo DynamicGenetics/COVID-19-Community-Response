@@ -5,10 +5,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import cm
 from shapely.geometry import Point
-from tweet_geo_functions import get_laoi
+# from tweet_geo_functions import get_laoi
 from functools import partial
 from pipelines import TwitterPipeline
-from tweet_geo_functions import add_reference_la
+# from tweet_geo_functions import add_reference_la
 from datasets import load_tweets, load_local_authorities
 import geopandas as gpd
 import pandas as pd
