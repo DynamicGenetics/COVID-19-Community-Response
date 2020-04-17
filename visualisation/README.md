@@ -1,12 +1,9 @@
-#  Mapbox Web - log
+#  Mapbox Web App
 
-### 31st March 2020 - `@ninadicara`  
-I've had a go at putting the geojson files onto mapbox.   
-
-To run: 
-- Start a local Python web server using cmd `python -m http.server`  
+To run the webapp locally: 
+- Start a local Python web server in the root folder of the repository using cmd `python -m http.server`  
 - Open up `index.html`  
-- In the top right-hand corner you should see a list of boxes with the names of layers. They default as 'visible', but if you click the names it should hide them.   
+- Go to the local host address in your web browser, and navigate to `visualisation`.
 
 Resources used:
 - Geojson files from geoJSON folder.   
