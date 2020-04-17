@@ -8,7 +8,7 @@ var map = new mapboxgl.Map({
 
 var layers = [
     {
-        name: 'Local authority boundaries',
+        name: 'Local Authority boundaries',
         shownByDefault: true,
         layerSpec: {
             id: 'local-authority-boundaries',
@@ -38,7 +38,7 @@ var layers = [
         }
     },
     {
-        name: 'Index of multiple deprivation',
+        name: 'Index of Multiple Deprivation',
         shownByDefault: false,
         layerSpec: {
             id: 'deprivation',
