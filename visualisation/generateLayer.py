@@ -64,10 +64,11 @@ def generateLayer(filenames, color, filename_output):
         output.append({
             'name': name.replace('data/', ""),
             'shownByDefault': False,
+            'ref': '{}{}'.format("../",origins[name]),
             'layerSpec': {
                 'id': id_count,
+                'source': origins[name].replace('data/',""),
                 'type': 'fill',
-                'source': '{}{}'.format("../",origins[name]),
                 'paint': {
                     'fill-color': {
                         'property': name,
