@@ -7,6 +7,7 @@ from typing import Sequence, Tuple, Union
 from abc import ABC, abstractmethod
 from functools import partial
 from shapely.geometry import Polygon, Point
+from datetime import datetime
 
 # -------------------------------
 # Type Hints (Custom Definitions)
@@ -68,11 +69,18 @@ class Pipeline(ABC):
         """
         data_df = data.copy()
         for name, step in self._steps:
-            if verbosity > 0:
-                print(f'{name} ...', end='')
+            if verbosity:
+                print(f'{name}...', end='')
+            # Timing
+            start = datetime.now()
             data_df = step(data_df)
-            if verbosity > 0:
-                print('..complete.')
+            end = datetime.now()
+
+            if verbosity:
+                if verbosity > 1:
+                    print(f'..completed in {(end-start)}')
+                else:
+                    print('..complete.')
         return data_df
 
 
