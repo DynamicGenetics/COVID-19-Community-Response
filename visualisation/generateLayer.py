@@ -75,11 +75,11 @@ def generateLayer(dataSources, nicknames, filename_output):
             stp = dataField['dataStops']*count
 
             if category == 'covid':
-                col = 'rgb({},0,0)'.format(255/9*count)
+                col = 'rgb({},125,125)'.format(255/9*count)
             elif category == 'community':
-                col = 'rgb(0,{},0)'.format(255/9*count)
+                col = 'rgb(125,{},125)'.format(255/9*count)
             elif category == 'bias':
-                col = 'rgb(0,0,{})'.format(255/9*count)
+                col = 'rgb(125,125,{})'.format(255/9*count)
 
             stops.append([stp,col])
             count+=1
@@ -93,7 +93,7 @@ def generateLayer(dataSources, nicknames, filename_output):
                 "*ref*": '../data/{}.geojson'.format(origins[name]),
                 "*layerSpec*": {
                     "*id*": name,
-                    "*source*": origins[name],
+                    "*source*": name, #origins[name]
                     "*type*": 'fill',
                     "*paint*": {
                         'fill-color': {
