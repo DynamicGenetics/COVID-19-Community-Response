@@ -10,7 +10,7 @@ dataSources = [
         'ID_name' : 'areaID',
         'category' : 'bias'
     },{
-        'name' : 'community_cohesion+deprivation',
+        'name' : 'community_cohesion_deprivation',
         'type' : 'csv',
         'res' : 'LA',
         'enabled' : True,
@@ -83,4 +83,18 @@ filenames = {
     "output_URLs" : "data/community_measures/URLs.json", 
     "output_groupCopyForReview" : "data/community_measures/QC/groupsForReview.csv",
     "credentials" : 'data/community_measures/credentials.json',
+}
+
+# Nicknames
+nicknames = {
+    'language' : 'Welsh language use',
+    'communityCohesion' : 'Community cohesion',
+    'deprivation_30' : 'Multiple deprivation (n30)',
+    'vulnerable_pct' : 'Vulnerable (%)',
+    'pop_density' : 'Population density',
+    'pop_elderly' : 'Elderly population (%)',
+    'pop' : 'Population',
+    'covid_per100k' : 'COVID cases (/100k)',
+    'groupCount' : 'Identified community support groups',
+    'groupCount_pop' : 'Identified community support groups (/capita)',
 }

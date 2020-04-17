@@ -1,5 +1,5 @@
 # Import data sources dict
-from dataSources import dataSources, boundaryFiles, filenames
+from dataSources import dataSources, boundaryFiles, filenames, nicknames
 
 # Import slave functions to call in these master functions (debug name = B1)
 from assimilator import assimilate
@@ -56,13 +56,7 @@ for data in dataSources:
     count_data +=1
 
 #Dynamically generate layers
-layersToProduce=[]
-
-for data in dataSources:
-    layersToProduce.append('data/{}.geojson'.format(data['name']))
-    #colors[data['name']]
-
-layers=generateLayer(layersToProduce, 'red', 'visualisation/borgLayers.js')
+layers=generateLayer(dataSources, nicknames, 'visualisation/borgLayers.js')
 
 print(layers)
 

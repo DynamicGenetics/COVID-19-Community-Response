@@ -2,21 +2,23 @@ import json
 
 geoLabelsToIgnore = ['objectid', 'bng_e', 'bng_n']
 
-def generateLayer(filenames, color, filename_output):
+def generateLayer(dataSources, nicknames, filename_output):
     dictionary={}
     data=[]
     output=[]
     exceptions=[]
     origins={}
     id_count=0
+    categories={}
 
-    opacity = 1/len(filenames)
+    opacity = 1/len(dataSources)
     type_filter = 'Polygon'
 
     #data/{}.geojson'.format(data['name']
 
-    for filename in filenames:
+    for src in dataSources:
         try:
+            filename = 'data/{}.geojson'.format(src['name'])
             with open(filename, 'r') as geojson_file:
 
                     geojson = json.load(geojson_file)
@@ -33,11 +35,13 @@ def generateLayer(filenames, color, filename_output):
 
                                 if dataField in dictionary.keys():
                                     dictionary[dataField].append(dataValue)
-                                    origins[dataField]=filename
+                                    origins[dataField]=src['name']
+                                    categories[dataField]=src['category']
                                 else:
                                     dictionary[dataField]=[]
                                     dictionary[dataField].append(dataValue)
-                                    origins[dataField]=filename
+                                    origins[dataField]=src['name']
+                                    categories[dataField]=src['category']
         except:
             #print("COULDN't find file", filename)
             exceptions.append(filename)
@@ -61,8 +65,7 @@ def generateLayer(filenames, color, filename_output):
     for dataField in data:
         #print("dataField for output", dataField)
         name=dataField['dataField']
-
-        fileName = origins[name].replace('/data','')
+        category = categories[dataField['dataField']]
 
         stops = []
         count=0
@@ -71,34 +74,43 @@ def generateLayer(filenames, color, filename_output):
         for _ in range(8):
             stp = dataField['dataStops']*count
 
-            if color == 'red':
+            if category == 'covid':
                 col = 'rgb({},0,0)'.format(255/9*count)
-            elif color == 'green':
+            elif category == 'community':
                 col = 'rgb(0,{},0)'.format(255/9*count)
-            else:
+            elif category == 'bias':
                 col = 'rgb(0,0,{})'.format(255/9*count)
 
             stops.append([stp,col])
             count+=1
 
-        output.append({
-            "*name*": name,
-            "*shownByDefault*": False,
-            "*ref*": '{}{}'.format('../',origins[name]),
-            "*layerSpec*": {
-                "*id*": name,
-                "*source*": name,
-                "*type*": 'fill',
-                "*paint*": {
-                    'fill-color': {
-                        "*property*": name,
-                        "*stops*": stops
+        try:
+            nickNm = nicknames[name]
+
+            output.append({
+                "*name*": nickNm,
+                "*shownByDefault*": False,
+                "*ref*": '../data/{}.geojson'.format(origins[name]),
+                "*layerSpec*": {
+                    "*id*": name,
+                    "*source*": origins[name],
+                    "*type*": 'fill',
+                    "*paint*": {
+                        'fill-color': {
+                            "*property*": name,
+                            "*stops*": stops
+                        },
+                        'fill-opacity': opacity
                     },
-                    'fill-opacity': opacity
+                    "*filter*": ['==', '$type', type_filter]
                 },
-                "*filter*": ['==', '$type', type_filter]
-            },
-        })
+            })
+
+        except:
+            #print("Warning (generateLayer): Property has no nickname and so was skipped for output: ", name)
+            exceptions.append(name)
+            continue
+
 
         id_count+=1
     
