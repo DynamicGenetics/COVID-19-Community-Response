@@ -7,42 +7,48 @@ dataSources = [
         'res' : 'LA',
         'enabled' : True,
         'path' : 'data/bias_measures/censusData_bias.csv',
-        'ID_name' : 'areaID'
+        'ID_name' : 'areaID',
+        'category' : 'bias'
     },{
         'name' : 'community_cohesion+deprivation',
         'type' : 'csv',
         'res' : 'LA',
         'enabled' : True,
         'path' : 'data/community_measures/censusData_comm.csv',
-        'ID_name' : 'areaID'
+        'ID_name' : 'areaID',
+        'category' : 'community'
     },{
         'name' : 'covid_vulnerable',
         'type' : 'csv',
         'res' : 'LA',
         'enabled' : True,
         'path' : 'data/covid_measures/censusData_covidVuln.csv',
-        'ID_name' : 'areaID'
+        'ID_name' : 'areaID',
+        'category' : 'covid'
     },{
         'name' : 'covid_cases',
         'type' : 'csv',
         'res' : 'LA',
         'enabled' : True,
         'path' : 'data/covid_measures/covidCases_phw.csv',
-        'ID_name' : 'areaID'
+        'ID_name' : 'areaID',
+        'category' : 'covid'
     },{
         'name' : 'groups',
         'type' : 'scrape',
         'res' : 'LA',
         'enabled' : True,
         'path' : 'data/community_measures/groups.csv',
-        'ID_name' : None
+        'ID_name' : None,
+        'category' : 'community'
     },{
         'name' : 'groupCount',
         'type' : 'scrape',
         'res' : 'LA',
         'enabled' : False,
         'path' : 'data/community_measures/groupCount.csv',
-        'ID_name' : None
+        'ID_name' : 'areaID',
+        'category' : 'community'
     },
 ]
 

@@ -51,7 +51,7 @@ def generateLayer(filenames, color, filename_output):
                 'dataStops' : (max(dataValues) - min(dataValues))/9
             })
         else:
-            continue;
+            continue
 
     #print(data)
     # Build output dictionary for JSON layer production AFTER establishing min/maxes
@@ -59,34 +59,42 @@ def generateLayer(filenames, color, filename_output):
     for dataField in data:
         #print("dataField for output", dataField)
         name=dataField['dataField']
-        stp=dataField['dataStops']
 
-        fileName = origins[name].replace('/data',"")
+        fileName = origins[name].replace('/data','')
+
+        stops = []
+        count=0
+
+        #compute stops and colors (given color)
+        for _ in range(8):
+            stp = dataField['dataStops']*count
+
+            if color == 'red':
+                col = 'rgb({},0,0)'.format(255/9*count)
+            elif color == 'green':
+                col = 'rgb(0,{},0)'.format(255/9*count)
+            else:
+                col = 'rgb(0,0,{})'.format(255/9*count)
+
+            stops.append([stp,col])
+            count+=1
 
         output.append({
-            'name': name,
-            'shownByDefault': False,
-            'ref': '{}{}'.format("../",origins[name]),
-            'layerSpec': {
-                'id': name,
-                'source': fileName.replace('.geojson',""),
-                'type': 'fill',
-                'paint': {
+            "*name*": name,
+            "*shownByDefault*": False,
+            "*ref*": '{}{}'.format('../',origins[name]),
+            "*layerSpec*": {
+                "*id*": name,
+                "*source*": fileName.replace('.geojson',''),
+                "*type*": 'fill',
+                "*paint*": {
                     'fill-color': {
-                        'property': name,
-                        'stops': [[stp*1, 'rgb({},0,0)'.format(255/9*1)],
-                                [stp*2, 'rgb({},0,0)'.format(255/9*2)],
-                                [stp*3, 'rgb({},0,0)'.format(255/9*3)],
-                                [stp*4, 'rgb({},0,0)'.format(255/9*4)],
-                                [stp*5, 'rgb({},0,0)'.format(255/9*5)],
-                                [stp*6, 'rgb({},0,0)'.format(255/9*6)],
-                                [stp*7, 'rgb({},0,0)'.format(255/9*7)],
-                                [stp*8, 'rgb({},0,0)'.format(255/9*8)],
-                                [stp*9, 'rgb({},0,0)'.format(255/9*9)]]
+                        "*property*": name,
+                        "*stops*": stops
                     },
                     'fill-opacity': opacity
                 },
-                'filter': ['==', '$type', type_filter]
+                "*filter*": ['==', '$type', type_filter]
             },
         })
 
