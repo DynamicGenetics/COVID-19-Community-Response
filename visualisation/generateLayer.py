@@ -8,6 +8,7 @@ def generateLayer(filenames, color, filename_output):
     output=[]
     exceptions=[]
     origins={}
+    id_count=0
 
     opacity = 1/len(filenames)
     type_filter = 'Polygon'
@@ -64,9 +65,9 @@ def generateLayer(filenames, color, filename_output):
             'name': name.replace('data/', ""),
             'shownByDefault': False,
             'layerSpec': {
-                'id': name,
+                'id': id_count,
                 'type': 'fill',
-                'source': join("../",origins[name]),
+                'source': '{}{}'.format("../",origins[name]),
                 'paint': {
                     'fill-color': {
                         'property': name,
@@ -85,9 +86,11 @@ def generateLayer(filenames, color, filename_output):
                 'filter': ['==', '$type', type_filter]
             },
         })
+
+        id_count+=1
     
     with open(filename_output, 'w') as outs:
-      json.dump(output, outs, indent=4, sort_keys=True)
-
+        #jsonDumps = json.dump(output, indent=4, sort_keys=True)
+        outs.write('var layers={}'.format(output))
     
     return("Message (generateLayers): Layers produced: {}. Exceptions: {}".format(len(output),exceptions))
