@@ -140,84 +140,6 @@ var layers = [
             },
             filter: ['==', '$type', 'Polygon']
         }
-    },
-    {
-        name: 'Number of groups',
-        shownByDefault: false,
-        layerSpec: {
-            id: 'groupsCount',
-            type: 'fill',
-            source: 'known-groups_count',
-            paint: {
-                'fill-color': {
-                    property: 'groupCount',
-                    stops: [[4.8, '#e689ff'],
-                            [10.83, '#d87cf6'],
-                            [16.86, '#ca70ed'],
-                            [22.89, '#bd63e3'],
-                            [28.92, '#af56da'],
-                            [34.95, '#a249d1'],
-                            [40.98, '#943cc8'],
-                            [47.01, '#862fbf'],
-                            [53.04, '#7820b6'],
-                            [65.1, '#6a0dad']]
-                },
-                'fill-opacity': 0.5
-            },
-            filter: ['==', '$type', 'Polygon']
-        }
-    },
-    {
-        name: 'Number of groups by population',
-        shownByDefault: false,
-        layerSpec: {
-            id: 'groupsCount_pop',
-            type: 'fill',
-            source: 'known-groups_count',
-            paint: {
-                'fill-color': {
-                    property: 'groupCount_pop',
-                    stops: [[4.8, '#e689ff'],
-                            [10.83, '#d87cf6'],
-                            [16.86, '#ca70ed'],
-                            [22.89, '#bd63e3'],
-                            [28.92, '#af56da'],
-                            [34.95, '#a249d1'],
-                            [40.98, '#943cc8'],
-                            [47.01, '#862fbf'],
-                            [53.04, '#7820b6'],
-                            [65.1, '#6a0dad']]
-                },
-                'fill-opacity': 0.5
-            },
-            filter: ['==', '$type', 'Polygon']
-        }
-    },
-    {
-        name: 'Number of groups by elderly population',
-        shownByDefault: false,
-        layerSpec: {
-            id: 'groupsCount_elderly',
-            type: 'fill',
-            source: 'known-groups_count',
-            paint: {
-                'fill-color': {
-                    property: 'groupCount_elderly',
-                    stops: [[4.8, '#e689ff'],
-                            [10.83, '#d87cf6'],
-                            [16.86, '#ca70ed'],
-                            [22.89, '#bd63e3'],
-                            [28.92, '#af56da'],
-                            [34.95, '#a249d1'],
-                            [40.98, '#943cc8'],
-                            [47.01, '#862fbf'],
-                            [53.04, '#7820b6'],
-                            [65.1, '#6a0dad']]
-                },
-                'fill-opacity': 0.5
-            },
-            filter: ['==', '$type', 'Polygon']
-        }
     }
 ];
 
@@ -232,11 +154,6 @@ map.on('load', function () {
     map.addSource('demographics', {
         'type': 'geojson',
         'data': '../data/demographics_floats.geojson'
-    });
-
-    map.addSource('known-groups_count', {
-        'type': 'geojson',
-        'data': '../data/groupCount.geojson'
     });
 
     map.addSource('known-groups', {
