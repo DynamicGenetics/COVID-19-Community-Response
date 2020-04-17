@@ -6,7 +6,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
-def googleScrape(URL, SpreadsheetID, SpreadsheetRange):
+def googleScrape(URL, SpreadsheetID, SpreadsheetRange, path_creds, path_out):
 
     # If modifying these scopes, delete the file token.pickle.
     SCOPES = [URL]
@@ -19,6 +19,7 @@ def googleScrape(URL, SpreadsheetID, SpreadsheetRange):
         """Shows basic usage of the Sheets API.
         Prints values from a sample spreadsheet.
         """
+        print("main called")
         creds = None
         # The file token.pickle stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
@@ -32,7 +33,7 @@ def googleScrape(URL, SpreadsheetID, SpreadsheetRange):
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', SCOPES)
+                    path_creds, SCOPES)
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
             with open('token.pickle', 'wb') as token:
@@ -51,7 +52,7 @@ def googleScrape(URL, SpreadsheetID, SpreadsheetRange):
         else:
             print('Data found:')
             #To CSV Operation
-            f = open('groups.csv', 'w', encoding="utf-8")
+            f = open('path_out', 'w', encoding="utf-8")
             with f:
                 writer = csv.writer(f)
                 for row in values:
@@ -59,5 +60,7 @@ def googleScrape(URL, SpreadsheetID, SpreadsheetRange):
                     # Print column A, which correspond to index 0.
                     print("Writing (CSV): ", row[0])
 
-#    if __name__ == '__main__':
-#        main()
+    print("Message (googleScrape): Scraped googleSheet ID {} (range={}) ".format(SAMPLE_SPREADSHEET_ID, SAMPLE_RANGE_NAME))
+
+    if __name__ == '__main__':
+        main()

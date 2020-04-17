@@ -19,8 +19,10 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
 
                     try:
                         properties.append((key,float(row[key].replace(",","",))))
+                        #print((key,float(row[key].replace(",","",))))
                     except:
                         properties.append((key,row[key]))
+                        #print((key,row[key]))
                 
                 properties = {key: value for key, value in properties}
                 
@@ -58,4 +60,4 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
     with open(out_path, 'w') as out:
        json.dump(data_assimilated, out)
        
-    print("Message (B2): Successfully assimilated: ", out_path)
+    print("Message (Assimilator): Successfully assimilated: ", out_path)

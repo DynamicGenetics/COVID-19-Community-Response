@@ -1,1 +1,0 @@
-This utility converts demographics data from CSV to geoJSON using LA boundaries
