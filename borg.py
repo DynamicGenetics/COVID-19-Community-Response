@@ -60,6 +60,7 @@ layersToProduce=[]
 
 for data in dataSources:
     layersToProduce.append('data/{}.geojson'.format(data['name']))
+    #colors[data['name']]
 
 layers=generateLayer(layersToProduce, 'red', 'visualisation/borgLayers.js')
 

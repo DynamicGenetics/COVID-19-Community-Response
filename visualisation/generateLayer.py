@@ -13,6 +13,8 @@ def generateLayer(filenames, color, filename_output):
     opacity = 1/len(filenames)
     type_filter = 'Polygon'
 
+    #data/{}.geojson'.format(data['name']
+
     for filename in filenames:
         try:
             with open(filename, 'r') as geojson_file:
@@ -85,7 +87,7 @@ def generateLayer(filenames, color, filename_output):
             "*ref*": '{}{}'.format('../',origins[name]),
             "*layerSpec*": {
                 "*id*": name,
-                "*source*": fileName.replace('.geojson',''),
+                "*source*": name,
                 "*type*": 'fill',
                 "*paint*": {
                     'fill-color': {
