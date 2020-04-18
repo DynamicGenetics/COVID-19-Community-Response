@@ -8,13 +8,7 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/bias_measures/censusData_bias.csv',
         'ID_name' : 'areaID',
-        'category' : 'bias',
-        'reverseColors' : False,
-        'layers' : {
-            'language' : 'Welsh language use',
-        },
-        'geometry' : 'Polygons',
-        'shownByDefault' : False
+        'category' : 'bias'
     },{
         'name' : 'community_cohesion_deprivation',
         'type' : 'csv',
@@ -22,14 +16,7 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/community_measures/censusData_comm.csv',
         'ID_name' : 'areaID',
-        'category' : 'community',
-        'reverseColors' : False,
-        'layers' : {
-            'communityCohesion' : 'Community cohesion',
-            'deprivation_30' : 'Multiple deprivation',
-        },
-        'geometry' : 'Polygons',
-        'shownByDefault' : False
+        'category' : 'community'
     },{
         'name' : 'covid_vulnerable',
         'type' : 'csv',
@@ -37,16 +24,7 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/covid_measures/censusData_covidVuln.csv',
         'ID_name' : 'areaID',
-        'category' : 'covid',
-        'reverseColors' : True,
-        'layers' : {
-            'vulnerable_pct' : 'Vulnerable (% with >=1 comorbidity)',
-            'pop_density' : 'Population density',
-            'pop_elderly' : 'Elderly population (% over 65)',
-            'pop' : 'DISABLED'
-        },
-        'geometry' : 'Polygons',
-        'shownByDefault' : False
+        'category' : 'covid'
     },{
         'name' : 'covid_cases',
         'type' : 'csv',
@@ -54,57 +32,23 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/covid_measures/covidCases_phw.csv',
         'ID_name' : 'areaID',
-        'category' : 'covid',
-        'reverseColors' : True,
-        'layers' : {
-            'covid_per100k' : 'COVID cases (per 100k)'
-        },
-        'geometry' : 'Polygons',
-        'shownByDefault' : False
+        'category' : 'covid'
     },{
-        'name' : 'groups_points',
+        'name' : 'groups',
         'type' : 'scrape',
         'res' : 'LA',
         'enabled' : True,
         'path' : 'data/community_measures/groups.csv',
         'ID_name' : None,
-        'category' : 'community',
-        'reverseColors' : False,
-        'layers' : {
-            'groups_points':'Community support groups'
-        },
-        'geometry' : 'Points',
-        'shownByDefault' : True
+        'category' : 'community'
     },{
         'name' : 'groupCount',
         'type' : 'scrape',
         'res' : 'LA',
-        'enabled' : True,
+        'enabled' : False,
         'path' : 'data/community_measures/groupCount.csv',
         'ID_name' : 'areaID',
-        'category' : 'community',
-        'reverseColors' : True,
-        'layers' : {
-            "groupCount":'DISABLED', 
-            "groupCount_pop": 'Community support groups (per capita)', 
-            "groupCount_elderly": 'DISABLED'
-        },
-        'geometry' : 'Polygons',
-        'shownByDefault' : True
-    },{
-        'name' : 'twitterCount',
-        'type' : 'geojson',
-        'res' : 'LA',
-        'enabled' : True,
-        'path' : 'data/twitterCount.geojson',
-        'ID_name' : None,
-        'category' : 'bias',
-        'reverseColors' : True,
-        'layers' : {
-            "tweets_per_pop":'Tweets (per capita)'
-        },
-        'geometry' : 'Polygons',
-        'shownByDefault' : True
+        'category' : 'community'
     },
 ]
 
@@ -139,4 +83,16 @@ filenames = {
     "output_URLs" : "data/community_measures/URLs.json", 
     "output_groupCopyForReview" : "data/community_measures/QC/groupsForReview.csv",
     "credentials" : 'data/community_measures/credentials.json',
+}
+
+# Nicknames
+nicknames = {
+    'language' : 'Welsh language use',
+    'communityCohesion' : 'Community cohesion',
+    'deprivation_30' : 'Multiple deprivation',
+    'vulnerable_pct' : 'Vulnerable (%)',
+    'pop_density' : 'Population density',
+    'pop_elderly' : 'Elderly population (%)',
+    'covid_per100k' : 'COVID cases (/100k)',
+    'groupCount_pop' : 'Community support groups (/capita)',
 }
