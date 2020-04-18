@@ -13,35 +13,39 @@ var layers=[
                     stops: [
                         [
                             6.699999999999999,
-                            "#fff7ec"
+                            "#f7fcf0"
                         ],
                         [
                             13.399999999999999,
-                            "#fee8c8"
+                            "#e0f3db"
                         ],
                         [
                             20.099999999999998,
-                            "#fdd49e"
+                            "#ccebc5"
                         ],
                         [
                             26.799999999999997,
-                            "#fdbb84"
+                            "#a8ddb5"
                         ],
                         [
                             33.5,
-                            "#fc8d59"
+                            "#7bccc4"
                         ],
                         [
                             40.199999999999996,
-                            "#ef6548"
+                            "#4eb3d3"
                         ],
                         [
                             46.89999999999999,
-                            "#d7301f"
+                            "#2b8cbe"
                         ],
                         [
                             53.599999999999994,
-                            "#b30000"
+                            "#0868ac"
+                        ],
+                        [
+                            60.3,
+                            "#084081"
                         ]
                     ]
                 },
@@ -52,7 +56,9 @@ var layers=[
         },
         name: "Welsh language use",
         ref: "../data/bias_language.geojson",
-        shownByDefault: false
+        shownByDefault: false,
+        "category": "Bias",
+        "colorsReversed": false
     },
     {
         layerSpec: {
@@ -68,35 +74,39 @@ var layers=[
                     stops: [
                         [
                             0.04005816855555549,
-                            "#ffffe5"
+                            "#fff7ec"
                         ],
                         [
                             0.08011633711111098,
-                            "#f7fcb9"
+                            "#fee8c8"
                         ],
                         [
                             0.12017450566666646,
-                            "#d9f0a3"
+                            "#fdd49e"
                         ],
                         [
                             0.16023267422222195,
-                            "#addd8e"
+                            "#fdbb84"
                         ],
                         [
                             0.20029084277777745,
-                            "#78c679"
+                            "#fc8d59"
                         ],
                         [
                             0.24034901133333292,
-                            "#41ab5d"
+                            "#ef6548"
                         ],
                         [
                             0.2804071798888884,
-                            "#238443"
+                            "#d7301f"
                         ],
                         [
                             0.3204653484444439,
-                            "#006837"
+                            "#b30000"
+                        ],
+                        [
+                            0.3605235169999994,
+                            "#7f0000"
                         ]
                     ]
                 },
@@ -107,7 +117,9 @@ var layers=[
         },
         name: "Community cohesion",
         ref: "../data/community_cohesion_deprivation.geojson",
-        shownByDefault: false
+        shownByDefault: false,
+        "category": "Community vulnerability",
+        "colorsReversed": false
     },
     {
         layerSpec: {
@@ -123,35 +135,39 @@ var layers=[
                     stops: [
                         [
                             6.555555555555555,
-                            "#ffffe5"
+                            "#fff7ec"
                         ],
                         [
                             13.11111111111111,
-                            "#f7fcb9"
+                            "#fee8c8"
                         ],
                         [
                             19.666666666666664,
-                            "#d9f0a3"
+                            "#fdd49e"
                         ],
                         [
                             26.22222222222222,
-                            "#addd8e"
+                            "#fdbb84"
                         ],
                         [
                             32.77777777777778,
-                            "#78c679"
+                            "#fc8d59"
                         ],
                         [
                             39.33333333333333,
-                            "#41ab5d"
+                            "#ef6548"
                         ],
                         [
                             45.888888888888886,
-                            "#238443"
+                            "#d7301f"
                         ],
                         [
                             52.44444444444444,
-                            "#006837"
+                            "#b30000"
+                        ],
+                        [
+                            59.0,
+                            "#7f0000"
                         ]
                     ]
                 },
@@ -162,7 +178,9 @@ var layers=[
         },
         name: "Multiple deprivation",
         ref: "../data/community_cohesion_deprivation.geojson",
-        shownByDefault: false
+        shownByDefault: false,
+        "category": "Community vulnerability",
+        "colorsReversed": false
     },
     {
         layerSpec: {
@@ -178,35 +196,39 @@ var layers=[
                     stops: [
                         [
                             1.966666666666667,
-                            "#084081"
+                            "#004529"
                         ],
                         [
                             3.933333333333334,
-                            "#e0f3db"
+                            "#006837"
                         ],
                         [
                             5.900000000000001,
-                            "#2b8cbe"
+                            "#238443"
                         ],
                         [
                             7.866666666666668,
-                            "#a8ddb5"
+                            "#41ab5d"
                         ],
                         [
                             9.833333333333336,
-                            "#7bccc4"
+                            "#78c679"
                         ],
                         [
                             11.800000000000002,
-                            "#4eb3d3"
+                            "#addd8e"
                         ],
                         [
                             13.76666666666667,
-                            "#ccebc5"
+                            "#d9f0a3"
                         ],
                         [
                             15.733333333333336,
-                            "#0868ac"
+                            "#f7fcb9"
+                        ],
+                        [
+                            17.700000000000003,
+                            "#ffffe5"
                         ]
                     ]
                 },
@@ -215,9 +237,11 @@ var layers=[
             source: "vulnerable_pct",
             type: "fill"
         },
-        name: "Vulnerable (% with >=1 comorbidity)",
+        name: "Vulnerable (% with comorbidities)",
         ref: "../data/covid_vulnerable.geojson",
-        shownByDefault: false
+        shownByDefault: false,
+        "category": "COVID vulnerability",
+        "colorsReversed": true
     },
     {
         layerSpec: {
@@ -233,35 +257,39 @@ var layers=[
                     stops: [
                         [
                             284.4,
-                            "#084081"
+                            "#004529"
                         ],
                         [
                             568.8,
-                            "#e0f3db"
+                            "#006837"
                         ],
                         [
                             853.1999999999999,
-                            "#2b8cbe"
+                            "#238443"
                         ],
                         [
                             1137.6,
-                            "#a8ddb5"
+                            "#41ab5d"
                         ],
                         [
                             1422.0,
-                            "#7bccc4"
+                            "#78c679"
                         ],
                         [
                             1706.3999999999999,
-                            "#4eb3d3"
+                            "#addd8e"
                         ],
                         [
                             1990.7999999999997,
-                            "#ccebc5"
+                            "#d9f0a3"
                         ],
                         [
                             2275.2,
-                            "#0868ac"
+                            "#f7fcb9"
+                        ],
+                        [
+                            2559.6,
+                            "#ffffe5"
                         ]
                     ]
                 },
@@ -272,7 +300,9 @@ var layers=[
         },
         name: "Population density",
         ref: "../data/covid_vulnerable.geojson",
-        shownByDefault: false
+        shownByDefault: false,
+        "category": "COVID vulnerability",
+        "colorsReversed": true
     },
     {
         layerSpec: {
@@ -288,35 +318,39 @@ var layers=[
                     stops: [
                         [
                             1.4827871066666665,
-                            "#084081"
+                            "#004529"
                         ],
                         [
                             2.965574213333333,
-                            "#e0f3db"
+                            "#006837"
                         ],
                         [
                             4.448361319999999,
-                            "#2b8cbe"
+                            "#238443"
                         ],
                         [
                             5.931148426666666,
-                            "#a8ddb5"
+                            "#41ab5d"
                         ],
                         [
                             7.4139355333333326,
-                            "#7bccc4"
+                            "#78c679"
                         ],
                         [
                             8.896722639999998,
-                            "#4eb3d3"
+                            "#addd8e"
                         ],
                         [
                             10.379509746666665,
-                            "#ccebc5"
+                            "#d9f0a3"
                         ],
                         [
                             11.862296853333332,
-                            "#0868ac"
+                            "#f7fcb9"
+                        ],
+                        [
+                            13.345083959999998,
+                            "#ffffe5"
                         ]
                     ]
                 },
@@ -327,7 +361,9 @@ var layers=[
         },
         name: "Elderly population (% over 65)",
         ref: "../data/covid_vulnerable.geojson",
-        shownByDefault: false
+        shownByDefault: false,
+        "category": "COVID vulnerability",
+        "colorsReversed": true
     },
     {
         layerSpec: {
@@ -343,35 +379,39 @@ var layers=[
                     stops: [
                         [
                             37.02222222222222,
-                            "#084081"
+                            "#004529"
                         ],
                         [
                             74.04444444444444,
-                            "#e0f3db"
+                            "#006837"
                         ],
                         [
                             111.06666666666666,
-                            "#2b8cbe"
+                            "#238443"
                         ],
                         [
                             148.08888888888887,
-                            "#a8ddb5"
+                            "#41ab5d"
                         ],
                         [
                             185.1111111111111,
-                            "#7bccc4"
+                            "#78c679"
                         ],
                         [
                             222.13333333333333,
-                            "#4eb3d3"
+                            "#addd8e"
                         ],
                         [
                             259.1555555555555,
-                            "#ccebc5"
+                            "#d9f0a3"
                         ],
                         [
                             296.17777777777775,
-                            "#0868ac"
+                            "#f7fcb9"
+                        ],
+                        [
+                            333.2,
+                            "#ffffe5"
                         ]
                     ]
                 },
@@ -382,7 +422,9 @@ var layers=[
         },
         name: "COVID cases (per 100k)",
         ref: "../data/covid_cases.geojson",
-        shownByDefault: false
+        shownByDefault: false,
+        "category": "COVID vulnerability",
+        "colorsReversed": true
     },
     {
         layerSpec: {
@@ -398,35 +440,39 @@ var layers=[
                     stops: [
                         [
                             3.0175542246553237e-05,
-                            "#004529"
+                            "#7f0000"
                         ],
                         [
                             6.035108449310647e-05,
-                            "#f7fcb9"
+                            "#b30000"
                         ],
                         [
                             9.052662673965972e-05,
-                            "#238443"
+                            "#d7301f"
                         ],
                         [
                             0.00012070216898621295,
-                            "#addd8e"
+                            "#ef6548"
                         ],
                         [
                             0.00015087771123276618,
-                            "#78c679"
+                            "#fc8d59"
                         ],
                         [
                             0.00018105325347931943,
-                            "#41ab5d"
+                            "#fdbb84"
                         ],
                         [
                             0.00021122879572587266,
-                            "#d9f0a3"
+                            "#fdd49e"
                         ],
                         [
                             0.0002414043379724259,
-                            "#006837"
+                            "#fee8c8"
+                        ],
+                        [
+                            0.0002715798802189791,
+                            "#fff7ec"
                         ]
                     ]
                 },
@@ -435,9 +481,72 @@ var layers=[
             source: "groupCount_pop",
             type: "fill"
         },
-        name: "Community support groups (per capita)",
+        name: "Community support groups (per population)",
         ref: "../data/groupCount.geojson",
-        shownByDefault: false
+        shownByDefault: false,
+        "category": "Community vulnerability",
+        "colorsReversed": true
+    },
+    {
+        layerSpec: {
+            filter: [
+                "==",
+                "$type",
+                "Polygon"
+            ],
+            id: "tweets_per_pop",
+            paint: {
+                "fill-color": {
+                    property: "tweets_per_pop",
+                    stops: [
+                        [
+                            0.09542583156415292,
+                            "#084081"
+                        ],
+                        [
+                            0.19085166312830584,
+                            "#0868ac"
+                        ],
+                        [
+                            0.2862774946924588,
+                            "#2b8cbe"
+                        ],
+                        [
+                            0.3817033262566117,
+                            "#4eb3d3"
+                        ],
+                        [
+                            0.4771291578207646,
+                            "#7bccc4"
+                        ],
+                        [
+                            0.5725549893849176,
+                            "#a8ddb5"
+                        ],
+                        [
+                            0.6679808209490704,
+                            "#ccebc5"
+                        ],
+                        [
+                            0.7634066525132234,
+                            "#e0f3db"
+                        ],
+                        [
+                            0.8588324840773763,
+                            "#f7fcf0"
+                        ]
+                    ]
+                },
+                "fill-opacity": 0.5
+            },
+            source: "tweets_per_pop",
+            type: "fill"
+        },
+        name: "Tweets (per population)",
+        ref: "../data/twitter_count.geojson",
+        shownByDefault: false,
+        "category": "Bias",
+        "colorsReversed": true
     },
     {
         layerSpec: {
@@ -463,6 +572,8 @@ var layers=[
         },
         name: "Community support groups",
         ref: "../data/groups.geojson",
-        shownByDefault: false
+        shownByDefault: false,
+        "category": "Community vulnerability",
+        "colorsReversed": true
     }
 ]

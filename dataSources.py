@@ -8,7 +8,7 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/bias_measures/censusData_bias.csv',
         'ID_name' : 'areaID',
-        'category' : 'bias',
+        'category' : 'Bias',
         'reverseColors' : False,
         'layers' : {
             'language' : 'Welsh language use',
@@ -22,7 +22,7 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/community_measures/censusData_comm.csv',
         'ID_name' : 'areaID',
-        'category' : 'community',
+        'category' : 'Community vulnerability',
         'reverseColors' : False,
         'layers' : {
             'communityCohesion' : 'Community cohesion',
@@ -37,10 +37,10 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/covid_measures/censusData_covidVuln.csv',
         'ID_name' : 'areaID',
-        'category' : 'covid',
+        'category' : 'COVID vulnerability',
         'reverseColors' : True,
         'layers' : {
-            'vulnerable_pct' : 'Vulnerable (% with >=1 comorbidity)',
+            'vulnerable_pct' : 'Vulnerable (% with comorbidities)',
             'pop_density' : 'Population density',
             'pop_elderly' : 'Elderly population (% over 65)',
             'pop' : 'DISABLED'
@@ -54,7 +54,7 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/covid_measures/covidCases_phw.csv',
         'ID_name' : 'areaID',
-        'category' : 'covid',
+        'category' : 'COVID vulnerability',
         'reverseColors' : True,
         'layers' : {
             'covid_per100k' : 'COVID cases (per 100k)'
@@ -68,7 +68,7 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/community_measures/groups.csv',
         'ID_name' : None,
-        'category' : 'community',
+        'category' : 'Community vulnerability',
         'reverseColors' : False,
         'layers' : {
             'groups_points':'Community support groups'
@@ -82,30 +82,30 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/community_measures/groupCount.csv',
         'ID_name' : 'areaID',
-        'category' : 'community',
+        'category' : 'Community vulnerability',
         'reverseColors' : True,
         'layers' : {
             "groupCount":'DISABLED', 
-            "groupCount_pop": 'Community support groups (per capita)', 
+            "groupCount_pop": 'Community support groups (per population)', 
             "groupCount_elderly": 'DISABLED'
         },
         'geometry' : 'Polygons',
         'shownByDefault' : True
     },{
-        'name' : 'twitterCount',
+        'name' : 'twitter_count',
         'type' : 'geojson',
         'res' : 'LA',
         'enabled' : True,
-        'path' : 'data/twitterCount.geojson',
+        'path' : 'data/twitter_count.geojson',
         'ID_name' : None,
-        'category' : 'bias',
+        'category' : 'Bias',
         'reverseColors' : True,
         'layers' : {
-            "tweets_per_pop":'Tweets (per capita)'
+            "tweets_per_pop":'Tweets (per population)'
         },
         'geometry' : 'Polygons',
         'shownByDefault' : True
-    },
+    }
 ]
 
 #boundary files to assimilate data into (as 'properties')

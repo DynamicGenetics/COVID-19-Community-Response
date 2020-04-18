@@ -39,46 +39,47 @@ def generateLayer(dataSources, filename_output):
                 filename = 'data/{}.geojson'.format(src['name'])
                 with open(filename, 'r') as geojson_file:
 
-                        geojson = json.load(geojson_file)
+                    geojson = json.load(geojson_file)
 
-                        # For row in geoJSON, count values and assign color values
-                        for feature in geojson["features"]:
+                    # For row in geoJSON, count values and assign color values
+                    for feature in geojson["features"]:
 
-                            properties = feature["properties"]
+                        properties = feature["properties"]
 
-                            for dataField in properties.keys():
+                        for dataField in properties.keys():
 
-                                #If dataField in dataSource found AND not disabled then process further
-                                if dataField in src['layers'].keys(): 
-                                    if src['layers'][dataField] != 'DISABLED':
+                            #If dataField in dataSource found AND not disabled then process further
+                            if dataField in src['layers'].keys(): 
+                                if src['layers'][dataField] != 'DISABLED':
 
-                                        dataValue = properties[dataField]
+                                    dataValue = properties[dataField]
 
-                                        if dataField in dictionary.keys():
-                                            dictionary[dataField].append(dataValue)
-                                            origins[dataField]=src['name']
-                                            categories[dataField]=src['category']
-                                            nicknames[dataField]=src['layers'][dataField]
-                                            reversedLayers[src['name']]=src['reverseColors']
-                                            
-                                        else:
-                                            dictionary[dataField]=[]
-                                            dictionary[dataField].append(dataValue)
-                                            origins[dataField]=src['name']
-                                            categories[dataField]=src['category']
-                                            nicknames[dataField]=src['layers'][dataField]
-                                            reversedLayers[dataField]=src['reverseColors']
-                                    
-                                    else: exceptions.append('{}(disabled)'.format(dataField))
-                                else: 
-                                    exceptions.append(dataField)
-                                    #print("ERROR (generateLayer): datafield found in dataSource not specified in dataSources")
+                                    if dataField in dictionary.keys():
+                                        dictionary[dataField].append(dataValue)
+                                        origins[dataField]=src['name']
+                                        categories[dataField]=src['category']
+                                        nicknames[dataField]=src['layers'][dataField]
+                                        reversedLayers[src['name']]=src['reverseColors']
+                                        
+                                    else:
+                                        dictionary[dataField]=[]
+                                        dictionary[dataField].append(dataValue)
+                                        origins[dataField]=src['name']
+                                        categories[dataField]=src['category']
+                                        nicknames[dataField]=src['layers'][dataField]
+                                        reversedLayers[dataField]=src['reverseColors']
                                 
+                                else: exceptions.append('{}(disabled)'.format(dataField))
+                            else: 
+                                exceptions.append(dataField)
+                                #print("ERROR (generateLayer): datafield found in dataSource not specified in dataSources")
+                            
         except:
             #print("ERROR w/ reading data sources.py for src: ", filename)
             exceptions.append(filename)
 
-    # Get range of each property dataField in geoJSON
+
+    # Get range of each property dataField in geoJSON (for polygon data only)
     for dataField in dictionary.keys():
         dataValues = dictionary[dataField]
         
@@ -91,41 +92,46 @@ def generateLayer(dataSources, filename_output):
         else:
             continue
 
-    #print(data)
-    # Build output dictionary for JSON layer production AFTER establishing min/maxes
     
+    # Assign colors to categories
+    assignCatColors = {}
+    count=0
+    for category in categories.values():
+        if category not in assignCatColors:
+            assignCatColors[category]=count
+            count+=1
+        else: continue
+
+
+    # First process polygon data
     for dataField in data:
-        #print(dataField)
-        #print("dataField for output", dataField)
+        
         name=dataField['dataField']
         category = categories[dataField['dataField']]
 
         stops = []
 
-        colorHexes = {
-            'yellow-blue':['#f7fcf0','#e0f3db','#ccebc5','#a8ddb5','#7bccc4','#4eb3d3','#2b8cbe','#0868ac','#084081'],
-            'yellow-red':[ '#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000'],
-            'yellow-green':['#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529']
-        }
+        colorHexes = [
+            ['#f7fcf0','#e0f3db','#ccebc5','#a8ddb5','#7bccc4','#4eb3d3','#2b8cbe','#0868ac','#084081'], #'yellow-blue'
+            [ '#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000'], #'yellow-red'
+            ['#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529'] #'yellow-green'
+        ]
 
         #try:
         nickNm = nicknames[name]
 
         # Compute stops and colors (given color)
-        for i in range(8):
+        for i in range(9):
             stp = dataField['dataStops']*(i+1)
 
-            if category == 'covid':
-                hexList = colorHexes['yellow-blue']
-            elif category == 'community':
-                hexList = colorHexes['yellow-green']
-            elif category == 'bias':
-                hexList = colorHexes['yellow-red']
-            else: print("ERROR (generateLayer): Layer has no category")
-            
-            if reversedLayers[name]==True: hexList.reverse()
-            
-            col = hexList[i]
+            hexList = colorHexes[assignCatColors[category]]
+
+            if reversedLayers[name]==True: 
+                colorsReversed=True
+                col = hexList[(8-i)]
+            else:
+                colorsReversed=False
+                col = hexList[i]
 
             stops.append([stp,col])
             opacity = 1/categoryCount[categories[name]]
@@ -135,6 +141,8 @@ def generateLayer(dataSources, filename_output):
             "*name*": nickNm,
             "*shownByDefault*": False,
             "*ref*": '../data/{}.geojson'.format(origins[name]),
+            "category": category,
+            "colorsReversed":colorsReversed,
             "*layerSpec*": {
                 "*id*": name,
                 "*source*": name, #origins[name]
@@ -154,16 +162,20 @@ def generateLayer(dataSources, filename_output):
         #    #print("Warning (generateLayer): Property has no nickname and so was skipped for output: ", name)
         #    exceptions.append(name)
 
+    # Now process point data
     for dataField in points:
         #print(dataField)
         try:
             name = dataField
             nickNm = nicknames[name]
+            category = categories[dataField]
             
             output.append({
                 "*name*": nickNm,
                 "*shownByDefault*": False,
                 "*ref*": '../data/{}.geojson'.format(origins[name]),
+                "category": category,
+                "colorsReversed":colorsReversed,
                 "*layerSpec*": {
                     "*id*": name,
                     "*type*": 'circle',

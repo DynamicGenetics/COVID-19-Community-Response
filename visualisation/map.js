@@ -6,35 +6,6 @@ var map = new mapboxgl.Map({
     zoom: 7
 });
 
-var extra_layers = [
-    {
-        name: 'Tweets by LA Population',
-        shownByDefault: false,
-        layerSpec: {
-            id: 'tweet',
-            type: 'fill',
-            source: 'tweet',
-            paint: {
-                'fill-color': {
-                    property: 'tweets_per_pop',
-                    stops: [[0.1, '#F7FBFF'],
-                            [0.2, '#DEEBF7'],
-                            [0.3, '#C6DBEF'],
-                            [0.4, '#9ECAE1'],
-                            [0.5, '#6BAED6'],
-                            [0.6, '#4292C6'],
-                            [0.7, '#2171B5'],
-                            [0.8, '#984887'],
-                            [0.9, '#08519C'],
-                            [1, '#08306B']]
-                },
-                'fill-opacity': 0.46666666666666666
-            },
-            filter: ['==', '$type', 'Polygon']
-        }
-    },
-    ];
-
 map.on('load', function () {
 
     // Add Source
@@ -45,19 +16,8 @@ map.on('load', function () {
         });
     }
 
-    map.addSource('tweet', {
-        'type': 'geojson',
-        'data': '../data/twitter_count.geojson'
-        });
-
     // Add Layers
     for (const layer of layers){
-        const visibility = layer.shownByDefault ? 'visible' : 'none';
-        map.addLayer(layer.layerSpec);
-        map.setLayoutProperty(layer.layerSpec.id, 'visibility', visibility);
-    }
-
-    for (const layer of extra_layers){
         const visibility = layer.shownByDefault ? 'visible' : 'none';
         map.addLayer(layer.layerSpec);
         map.setLayoutProperty(layer.layerSpec.id, 'visibility', visibility);
@@ -66,11 +26,15 @@ map.on('load', function () {
 
 
 var menu = document.getElementById('menu');
+var categoriesProcessed = []
+var subheadings = {}
 
 for (const layer of layers) {
     var id = layer.layerSpec.id;
     var name = layer.name;
     var checked = layer.shownByDefault;
+    var category = layer.category;
+    var colorsReversed = layer.colorsReversed;
 
     var container = document.createElement('div');
     var checkbox = document.createElement('input');
@@ -83,61 +47,93 @@ for (const layer of layers) {
     checkbox.setAttribute('class', 'checkbox')
 
     label.setAttribute('for', id);
-    label.textContent = name;
-
+    
+    if (colorsReversed == true){
+        label.textContent = name.concat('*')
+    } else {label.textContent = name}
     checkbox.addEventListener('change', checkboxChange);
 
     container.appendChild(checkbox);
     container.appendChild(label);
 
-    menu.appendChild(container);
+    //add item to legend for each category
+    if (categoriesProcessed.includes(category)){
+        subheadings[category].push(container)
+        //console.log("apready processed: ", category)
+    }else{
+        subheadings[category]=[]
+        subheadings[category].push(container)
+        
+        var subhead = document.createElement('div');
+            subhead.innerHTML = `<strong> ${category} </strong>`
+            subhead.className = 'menu-subhead';
+            subhead.id = category
+
+        var item = document.createElement('div');
+        //get color stops
+        for (const color_stop of layer.layerSpec.paint['fill-color'].stops) {
+            var key = document.createElement('div');
+            key.className = 'legend-key';
+            key.style.backgroundColor = color_stop[1];
+            if (colorsReversed == true){
+                item.insertBefore(key, item.childNodes[0]);
+            }else{
+                item.appendChild(key);
+            }
+        }
+        
+        //append key and subheading
+        subhead.append(item);
+        subheadings[category].unshift(subhead);
+
+        //make legend label text
+        // var value = document.createElement('span');
+        // value.innerHTML = category;
+        // value.className = 'legend-label';
+        // item.appendChild(value);
+
+        //add category to completed list so key/label is not duplicated in legend
+        categoriesProcessed.push(category);
+    }
 }
 
-for (const layer of extra_layers) {
-    var id = layer.layerSpec.id;
-    var name = layer.name;
-    var checked = layer.shownByDefault;
-
-    var container = document.createElement('div');
-    var checkbox = document.createElement('input');
-    var label = document.createElement('label');
-
-    checkbox.type = 'checkbox';
-    checkbox.value = id;
-    checkbox.id = id;
-    checkbox.checked = checked;
-    checkbox.setAttribute('class', 'checkbox')
-
-    label.setAttribute('for', id);
-    label.textContent = name;
-
-    checkbox.addEventListener('change', checkboxChange);
-
-    container.appendChild(checkbox);
-    container.appendChild(label);
-
-    menu.appendChild(container);
+for (const cat of categoriesProcessed){
+    for (const div of subheadings[cat]){
+        menu.appendChild(div);
+    }
 }
 
 function checkboxChange(evt) {
     var id = evt.target.value;
     var visibility = evt.target.checked ? 'visible' : 'none';
     map.setLayoutProperty(id, 'visibility', visibility);
-
-
 }
 
-for (i = 0; i < layers.length; i++) {
-    var layer = layer[i];
-    var color = 'red';
-    var item = document.createElement('div');
-    var key = document.createElement('span');
-    key.className = 'legend-key';
-    key.style.backgroundColor = color;
+map.on('mousemove', function(e) {
+    var showVal = map.queryRenderedFeatures(e.point, {
+      layers: ['groupCount_pop']
+    });
+    
+    areaName = showVal[0].properties.lad18nm
+    areaValue = showVal[0].properties.groupCount
   
-    var value = document.createElement('span');
-    value.innerHTML = layer;
-    item.appendChild(key);
-    item.appendChild(value);
-    legend.appendChild(item);
-  }
+    if (showVal.length > 0) {
+      document.getElementById('pd').innerHTML = '<h3><strong>' + areaName + '</strong></h3><p><strong><em>' + areaValue + '</strong> groups </em></p>';
+    } else {
+      document.getElementById('pd').innerHTML = '<p>Hover over an area for values</p>';
+    }
+  });
+
+/*
+map.on('mousemove', function(e) {
+    var showVal = map.queryRenderedFeatures(e.point, {
+        layers: ['groupCount_pop']
+    });
+
+    if (showVal.length > 0) {
+        document.getElementById('pd').innerHTML = '<h3><strong>' + showVal[0].properties.name + '</strong></h3><p><strong><em>' + showVal[0].properties.density + '</strong> people per square mile</em></p>';
+    } else {
+        document.getElementById('pd').innerHTML = '<p>Hover over a state!</p>';
+    }
+});
+*/
