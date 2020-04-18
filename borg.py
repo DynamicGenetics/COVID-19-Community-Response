@@ -1,5 +1,5 @@
 # Import data sources dict
-from dataSources import dataSources, boundaryFiles, filenames, nicknames
+from dataSources import dataSources, boundaryFiles, filenames
 
 # Import slave functions to call in these master functions (debug name = B1)
 from assimilator import assimilate
@@ -13,6 +13,7 @@ from visualisation.generateLayer import generateLayer
 count_data = 0
 count_dataEnabled = 0
 count_dataSuccess = 0
+skipped_data=[]
 
 # Setting this to true will run the scraping operations when this file is ran
 runScraping = False
@@ -42,6 +43,9 @@ for data in dataSources:
                     saveOutput(groupsData[0], groupsData[1], groupsData[2], groupsData[3], filenames)
                     #for row in groupsData[4]: print(row)
             
+            elif data["type"] == 'geojson':
+                continue
+
             count_dataSuccess += 1
             print('Message (Borg): Assimilating {} (type={}) '.format(data['name'],data['type']))
 
@@ -52,12 +56,13 @@ for data in dataSources:
         
     # Skip data marked as 'disabled'
     else:
-        print("Warning (Borg): Skipping disabled data: ", data['name'])
+        #print("Warning (Borg): Skipping disabled data: ", data['name'])
+        skipped_data.append(data['name'])
     count_data +=1
 
 #Dynamically generate layers
-layers=generateLayer(dataSources, nicknames, 'visualisation/borgLayers.js')
+layers=generateLayer(dataSources, 'visualisation/borgLayers.js')
 
 print(layers)
 
-print("BORG HAS ASSIMILATED {} / {} COMPATIABLE DATA SOURCES ({} enabled)".format(count_dataSuccess, count_data, count_dataEnabled))
+print("BORG HAS ASSIMILATED {} / {} COMPATIABLE DATA SOURCES ({} enabled, disabled: {})".format(count_dataSuccess, count_data, count_dataEnabled, skipped_data))
