@@ -140,7 +140,15 @@ map.on('mousemove', function(e) {
             name = showVal[i].layer.id
             nickName = nickNames[name]
             areaValue = showVal[i].properties[name]
-            htmlText.push(nickName + ': <strong><em>' + areaValue.toFixed(4) + '</em></strong></p>');
+            if (areaValue < 0.001) {
+                areaValue=areaValue.toFixed(4)
+            } else if  (areaValue < 1){
+                areaValue=areaValue.toFixed(2)
+            } else if (areaValue.countDecimals()>4) {
+                areaValue=areaValue.toFixed(1)
+            }
+            
+            htmlText.push(nickName + ': <strong><em>' + areaValue + '</em></strong></p>');
         }
         document.getElementById('pd').innerHTML = htmlText
       //document.getElementById('pd').innerHTML = '<h3><strong>' + areaName + '</strong></h3><p><strong><em>' + (areaValue*divisor).toFixed(2) + '</strong> groups per '  + divisor + ' people </em></p>';
@@ -148,3 +156,8 @@ map.on('mousemove', function(e) {
       document.getElementById('pd').innerHTML = '<p>Hover over an area for values</p>';
     }
   });
+
+Number.prototype.countDecimals = function () {
+    if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
+    return this.toString().split(".")[1].length || 0; 
+}
