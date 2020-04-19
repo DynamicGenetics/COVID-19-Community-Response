@@ -1,3 +1,16 @@
+#groupNames
+community = 'Community support'
+covid = 'COVID vulnerability'
+demographics = 'Demographics'
+bias = 'Risk of bias in our sources'
+
+layerColors = [
+    ['#f7fcf0','#e0f3db','#ccebc5','#a8ddb5','#7bccc4','#4eb3d3','#2b8cbe','#0868ac','#084081'], #9-class GnBu (white-green-blue, @colorbrewer2)
+    [ '#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000','#7f0000'], #9-class OrRd (white-orange-red, @colorbrewer2)
+    ['#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529'], #9-class YlGn (yellow-green, @colorbrewer2)
+    ['#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1','#dd3497','#ae017e','#7a0177','#49006a'], #9-class RdPu (white-purple, @colorbrewer2)
+    ['#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b'], #9-class BuPu (white-blue-purple, @colorbrewer2)
+]
 
 #data sources to assimilate
 dataSources = [
@@ -8,10 +21,14 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/bias_measures/censusData_bias.csv',
         'ID_name' : 'areaID',
-        'category' : 'Bias',
-        'reverseColors' : False,
         'layers' : {
-            'language' : 'Welsh language use',
+            'language' : {
+                'nickName':'Welsh language use',
+                'category':bias,
+                'disabled':False,
+                'reverseColors' : False,
+                'enabledByDefault' : False
+            },
         },
         'geometry' : 'Polygons',
         'shownByDefault' : False
@@ -22,11 +39,21 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/community_measures/censusData_comm.csv',
         'ID_name' : 'areaID',
-        'category' : 'Community vulnerability',
-        'reverseColors' : False,
         'layers' : {
-            'communityCohesion' : 'Community cohesion',
-            'deprivation_30' : 'Multiple deprivation',
+            'communityCohesion' : {
+                'nickName' : 'Community cohesion',
+                'category':community,
+                'disabled':False,
+                'reverseColors' : True,
+                'enabledByDefault' : False
+            },
+            'deprivation_30' : {
+                'nickName' : 'Multiple deprivation',
+                'category':demographics,
+                'disabled':False,
+                'reverseColors' : False,
+                'enabledByDefault' : False
+            },            
         },
         'geometry' : 'Polygons',
         'shownByDefault' : False
@@ -37,13 +64,35 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/covid_measures/censusData_covidVuln.csv',
         'ID_name' : 'areaID',
-        'category' : 'COVID vulnerability',
-        'reverseColors' : True,
         'layers' : {
-            'vulnerable_pct' : 'Vulnerable (% with comorbidities)',
-            'pop_density' : 'Population density',
-            'pop_elderly' : 'Elderly population (% over 65)',
-            'pop' : 'DISABLED'
+            'vulnerable_pct' : {
+                'nickName' : 'COVID vulnerable (comobidity %)',
+                'category':covid,
+                'disabled':False,
+                'reverseColors' : False,
+                'enabledByDefault' : False
+            },     
+            'pop_density' : {
+                'nickName' : 'Population density',
+                'category':demographics,
+                'disabled':False,
+                'reverseColors' : False,
+                'enabledByDefault' : False
+            },     
+            'pop_elderly' : {
+                'nickName' : 'Elderly population (% over 65)',
+                'category':covid,
+                'disabled':False,
+                'reverseColors' : False,
+                'enabledByDefault' : False
+            },     
+            'pop' : {
+                'nickName' : 'Population',
+                'category':demographics,
+                'disabled':False,
+                'reverseColors' : False,
+                'enabledByDefault' : False
+            },     
         },
         'geometry' : 'Polygons',
         'shownByDefault' : False
@@ -54,24 +103,32 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/covid_measures/covidCases_phw.csv',
         'ID_name' : 'areaID',
-        'category' : 'COVID vulnerability',
-        'reverseColors' : True,
-        'layers' : {
-            'covid_per100k' : 'COVID cases (per 100k)'
+        'layers' : {     
+            'covid_per100k' : {
+                'nickName' : 'COVID cases (per 100k)',
+                'category':covid,
+                'disabled':False,
+                'reverseColors' : False,
+                'enabledByDefault' : False
+            },    
         },
         'geometry' : 'Polygons',
         'shownByDefault' : False
     },{
-        'name' : 'groups_points',
-        'type' : 'scrape',
+        'name' : 'groups',
+        'type' : 'geojson',
         'res' : 'LA',
         'enabled' : True,
         'path' : 'data/community_measures/groups.csv',
         'ID_name' : None,
-        'category' : 'Community vulnerability',
-        'reverseColors' : False,
         'layers' : {
-            'groups_points':'Community support groups'
+            'groups' : {
+                'nickName' : 'Community support groups',
+                'category' : community,
+                'disabled' : False,
+                'reverseColors' : False,
+                'enabledByDefault' : True
+            },    
         },
         'geometry' : 'Points',
         'shownByDefault' : True
@@ -82,12 +139,28 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/community_measures/groupCount.csv',
         'ID_name' : 'areaID',
-        'category' : 'Community vulnerability',
-        'reverseColors' : True,
         'layers' : {
-            "groupCount":'DISABLED', 
-            "groupCount_pop": 'Community support groups (per population)', 
-            "groupCount_elderly": 'DISABLED'
+            'groupCount' : {
+                'nickName' : 'Community support groups',
+                'category' : community,
+                'disabled' : True,
+                'reverseColors' : False,
+                'enabledByDefault' : False
+            },    
+            'groupCount_pop' : {
+                'nickName' : 'Community support groups (per population)',
+                'category' : community,
+                'disabled' : False,
+                'reverseColors' : False,
+                'enabledByDefault' : True
+            },    
+            'groupCount_elderly' : {
+                'nickName' : 'Community support groups (per elderly population)',
+                'category' : community,
+                'disabled' : True,
+                'reverseColors' : False,
+                'enabledByDefault' : False
+            },
         },
         'geometry' : 'Polygons',
         'shownByDefault' : True
@@ -98,10 +171,15 @@ dataSources = [
         'enabled' : True,
         'path' : 'data/twitter_count.geojson',
         'ID_name' : None,
-        'category' : 'Bias',
-        'reverseColors' : True,
-        'layers' : {
-            "tweets_per_pop":'Tweets (per population)'
+        'category' : community,
+        'layers' : { 
+            'tweets_per_pop' : {
+                'nickName' : 'Support related tweets (per population)',
+                'category' : community,
+                'disabled' : False,
+                'reverseColors' : False,
+                'enabledByDefault' : True
+            },
         },
         'geometry' : 'Polygons',
         'shownByDefault' : True

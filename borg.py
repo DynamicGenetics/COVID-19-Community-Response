@@ -1,5 +1,5 @@
 # Import data sources dict
-from dataSources import dataSources, boundaryFiles, filenames
+from dataSources import dataSources, boundaryFiles, filenames, layerColors
 
 # Import slave functions to call in these master functions (debug name = B1)
 from assimilator import assimilate
@@ -35,13 +35,12 @@ for data in dataSources:
 
              # If data marked as 'scrape', scrape data first then recompile as geojson
             elif data["type"] == 'scrape':
-
-                    # Scrape data from google sheet, remove duplicates, geolocate to Wales and convert csv to geoJSON
-                    if runScraping == True:
-                        googleScrape('https://www.googleapis.com/auth/spreadsheets.readonly', '1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY', 'Support groups v2', filenames['credentials'], filenames['csv'])
-                    groupsData = groupProcessing(filenames)
-                    saveOutput(groupsData[0], groupsData[1], groupsData[2], groupsData[3], filenames)
-                    #for row in groupsData[4]: print(row)
+                # Scrape data from google sheet, remove duplicates, geolocate to Wales and convert csv to geoJSON
+                if runScraping == True:
+                    googleScrape('https://www.googleapis.com/auth/spreadsheets.readonly', '1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY', 'Support groups v2', filenames['credentials'], filenames['csv'])
+                groupsData = groupProcessing(filenames)
+                saveOutput(groupsData[0], groupsData[1], groupsData[2], groupsData[3], filenames)
+                #for row in groupsData[4]: print(row)
             
             elif data["type"] == 'geojson':
                 continue

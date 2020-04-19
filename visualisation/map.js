@@ -6,6 +6,9 @@ var map = new mapboxgl.Map({
     zoom: 7
 });
 
+var visibleLayers=[]
+var nickNames={}
+
 map.on('load', function () {
 
     // Add Source
@@ -21,6 +24,8 @@ map.on('load', function () {
         const visibility = layer.shownByDefault ? 'visible' : 'none';
         map.addLayer(layer.layerSpec);
         map.setLayoutProperty(layer.layerSpec.id, 'visibility', visibility);
+        if (visibility=='visible'){visibleLayers.push(layer.layerSpec.id)}
+        nickNames[layer.layerSpec.id]=layer.name
     }
 });
 
@@ -107,33 +112,39 @@ function checkboxChange(evt) {
     var id = evt.target.value;
     var visibility = evt.target.checked ? 'visible' : 'none';
     map.setLayoutProperty(id, 'visibility', visibility);
+    if (visibleLayers.includes(id)){
+        visibleLayers.pop(id)
+    }else{visibleLayers.push(id)}
 }
 
 map.on('mousemove', function(e) {
+
+    //console.log("visible:",visibleLayers)
+
     var showVal = map.queryRenderedFeatures(e.point, {
-      layers: ['groupCount_pop']
+      layers: visibleLayers
     });
     
-    areaName = showVal[0].properties.lad18nm
-    areaValue = showVal[0].properties.groupCount
+    if (typeof(showVal[0].properties.lad18nm)=="string"){
+        areaName = showVal[0].properties.lad18nm
+    } else if (typeof(showVal[0].properties.areaID)=="string"){
+        areaName = showVal[0].properties.areaID
+        console.log(showVal[0].properties)
+    }
   
     if (showVal.length > 0) {
-      document.getElementById('pd').innerHTML = '<h3><strong>' + areaName + '</strong></h3><p><strong><em>' + areaValue + '</strong> groups </em></p>';
+        htmlText = []
+        htmlText.push('<p class="pd_p"><h3><strong>' + areaName + '</strong></h3>')
+
+        for (i in showVal){
+            name = showVal[i].layer.id
+            nickName = nickNames[name]
+            areaValue = showVal[i].properties[name]
+            htmlText.push(nickName + ': <strong><em>' + areaValue.toFixed(4) + '</em></strong></p>');
+        }
+        document.getElementById('pd').innerHTML = htmlText
+      //document.getElementById('pd').innerHTML = '<h3><strong>' + areaName + '</strong></h3><p><strong><em>' + (areaValue*divisor).toFixed(2) + '</strong> groups per '  + divisor + ' people </em></p>';
     } else {
       document.getElementById('pd').innerHTML = '<p>Hover over an area for values</p>';
     }
   });
-
-/*
-map.on('mousemove', function(e) {
-    var showVal = map.queryRenderedFeatures(e.point, {
-        layers: ['groupCount_pop']
-    });
-
-    if (showVal.length > 0) {
-        document.getElementById('pd').innerHTML = '<h3><strong>' + showVal[0].properties.name + '</strong></h3><p><strong><em>' + showVal[0].properties.density + '</strong> people per square mile</em></p>';
-    } else {
-        document.getElementById('pd').innerHTML = '<p>Hover over a state!</p>';
-    }
-});
-*/

@@ -5,7 +5,6 @@ from data.community_measures.QC.detectDuplicate import detectDuplicate
 from data.community_measures.QC.QC import QCFilter
 
 def groupProcessing(filenames):
-
     URLs={}
 
     filename_boundaries_wales = filenames["boundaries_wales"]
@@ -43,7 +42,6 @@ def groupProcessing(filenames):
             lat = float(properties["lat"])
             #Construct point from coords
             point = Point(long,lat)
-            #print("p1",point)
             #Check polygon for Wales to see if it contains the point
             if polygon.contains(point):
 
@@ -97,7 +95,6 @@ def groupProcessing(filenames):
                 
             else:
                 # try:
-                #print("Compiling geoJSON: ", row["Title"])
 
                 #Convert long/lat strings into numbers
                 long = float(row["Lng"])
@@ -105,11 +102,9 @@ def groupProcessing(filenames):
 
                 #Construct point from coords
                 point = Point(long,lat)
-                #print("p2",point)
 
                 #Check polygon for Wales to see if it contains the point
                 if polygon.contains(point):
-                    #print ('Found containing polygon:', point)  
 
                     geoJSON = {
                                 "type":"Feature",
@@ -134,13 +129,12 @@ def groupProcessing(filenames):
 
                 for LA_ply in LA_polygons:
                     if LA_ply["LA_shape"].contains(point):
-
+                        
                         duplicateTest = detectDuplicate(LA_ply["lad18cd"], row["URL"], URLs)
 
                         if duplicateTest[0] == False:
                             geomWelshGrps.append([row["Location"],row["Title"],LA_ply["lad18nm"], LA_ply["lad18cd"], row["URL"], row["Notes"]])
 
-                            #print("Point located in LA_ply", point)
                             LA_ply["LA_groupCount"]+=1
                             LA_ply["LA_groups"].append(row["Title"])
                             pointsInLAs+=1
@@ -157,51 +151,45 @@ def groupProcessing(filenames):
                 #     continue        
 
     
-    #Count groups per area
-    
+    # Build dictionary for demographics
     output=[]
+    demographics={}
     with open(filename_demographics, newline='', encoding='utf-8') as f:
-
-        #print("OPENING demographics CSV: ", filename_demographics)
         reader = csv.DictReader(f)
-
-        demographics={} 
         
-        # Build JSON dictionary for demographics
-        for LA in welshLAs:
-            #print("len LA before: ", len(LA))
-            #print("keys LA before: ", LA.keys())
-            properties = LA["properties"]
-            #print("Synthesising: ", properties["lad18cd"])
-            #print("Start props: ", properties)
-            for row in reader:
-                if properties["lad18cd"] == row["id_area"]:  
-                    #print("Row found: ", properties["lad18cd"])
-                    lad18cd = properties["lad18cd"]
-                    pop = float(row["pop"].replace(",","",))
-                    pop_elderly = float(row["pop_elderly"].replace(",","",))
-                    break
-            #print("len LA_polygons: ", len(LA_polygons))
+        for row in reader:
+            demographics[row["id_area"]]={
+                'pop' : float(row["pop"].replace(",","",)),
+                'pop_elderly' : float(row["pop_elderly"].replace(",","",))
+            }
 
-            for LA_p in LA_polygons:
-                if properties["lad18cd"] == LA_p["lad18cd"]: 
-                    #print("LA polygon match: ", LA["lad18cd"])
-                    groupCount = LA_p["LA_groupCount"]
-                    groupCount_pop = groupCount / pop
-                    groupCount_elderly = groupCount / (pop_elderly / 100 * pop)
-                    break
-            
-            #print("len LA after: ", len(LA))
-            #print("keys LA after: ", LA.keys())
-            #print("Final properties: ", lad18cd, pop, pop_elderly, groupCount)
+    #Count groups per area
+    for LA in welshLAs:
+        properties = LA["properties"]
+        lad18cd = properties["lad18cd"]
+        pop=demographics[lad18cd]['pop']
+        pop_elderly=demographics[lad18cd]['pop_elderly']
 
-            properties["lad18cd"] = lad18cd
-            properties["groupCount"] = groupCount
-            properties["groupCount_pop"] = groupCount_pop
-            properties["groupCount_elderly"] = groupCount_elderly
+        #print('LA:', lad18cd, pop, pop_elderly)
 
-            #print(properties)
-            output.append(LA)
+        for LA_p in LA_polygons:
+            if lad18cd == LA_p["lad18cd"]: 
+                groupCount = LA_p["LA_groupCount"]
+                groupCount_pop = groupCount / pop
+                groupCount_elderly = groupCount / (pop_elderly / 100 * pop)
+                #print("MATCH: LA_p: ",lad18cd, LA_p["lad18cd"])
+                break
+            else:
+                continue        
+
+        print('LA:', lad18cd, groupCount, groupCount_pop, groupCount_elderly)
+
+        properties["groupCount"] = groupCount
+        properties["groupCount_pop"] = groupCount_pop
+        properties["groupCount_elderly"] = groupCount_elderly
+        
+        #print("output",lad18cd)
+        output.append(LA)
 
     print("Message (groupProcessing): {} groups identified".format(pointsInLAs))
 

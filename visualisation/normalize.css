@@ -274,8 +274,24 @@ legend {
   margin-top: 1rem !important;
 }
 
-#pd{
+.pd{
   padding: 20px;
+}
+
+#overlay_pd{
+  position: absolute;
+  top: 0;
+  right: 10rem;
+  width: 20rem;
+  text-align: center;
+  background-color: rgba(256,256,256,0.6);
+  font-family: 'Roboto', sans-serif;
+  border-radius: 20px;
+}
+
+.pd-p{
+  padding: 5px !important;
+  margin: 5px !important;
 }
 
 /**
