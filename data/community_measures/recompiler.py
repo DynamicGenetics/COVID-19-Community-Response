@@ -192,7 +192,7 @@ def groupProcessing(filenames):
             else:
                 continue
 
-        print("LA:", lad18cd, groupCount, groupCount_pop, groupCount_elderly)
+        #print("LA:", lad18cd, groupCount, groupCount_pop, groupCount_elderly)
 
         properties["groupCount"] = groupCount
         properties["groupCount_pop"] = groupCount_pop

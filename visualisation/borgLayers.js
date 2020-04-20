@@ -208,7 +208,7 @@ var layers=[
             type: "fill",
             "ID_name": "areaID"
         },
-        name: "Community support groups (per population)",
+        name: "Community support groups (PP)",
         ref: "../data/groupCount.geojson",
         shownByDefault: true,
         "category": "Community support",
@@ -270,7 +270,7 @@ var layers=[
             type: "fill",
             "ID_name": null
         },
-        name: "Support related tweets (per population)",
+        name: "Support related tweets (PP)",
         ref: "../data/twitter_count.geojson",
         shownByDefault: true,
         "category": "Community support",

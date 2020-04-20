@@ -294,6 +294,17 @@ legend {
   margin: 5px !important;
 }
 
+.dense{
+  font-size: 1rem !important;
+  margin: 0px;
+  padding: 0px;
+}
+
+.spacey{
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 /**
  * Add the correct vertical alignment in Chrome, Firefox, and Opera.
  */

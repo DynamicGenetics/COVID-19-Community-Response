@@ -49,9 +49,10 @@ for (const layer of layers) {
     checkbox.value = id;
     checkbox.id = id;
     checkbox.checked = checked;
-    checkbox.setAttribute('class', 'checkbox')
+    checkbox.setAttribute('class', 'checkbox dense')
 
     label.setAttribute('for', id);
+    label.setAttribute('class', 'dense');
     
     if (colorsReversed == true){
         label.textContent = name.concat('*')
@@ -72,6 +73,7 @@ for (const layer of layers) {
         var subhead = document.createElement('div');
             subhead.innerHTML = `<strong> ${category} </strong>`
             subhead.className = 'menu-subhead';
+            subhead.setAttribute('class', 'dense');
             subhead.id = category
 
         var item = document.createElement('div');

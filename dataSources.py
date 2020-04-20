@@ -203,7 +203,7 @@ dataSources = [
                 "enabledByDefault": False,
             },
             "groupCount_pop": {
-                "nickName": "Community support groups (per population)",
+                "nickName": "Community support groups (PP)",
                 "category": community,
                 "disabled": False,
                 "reverseColors": False,
@@ -230,7 +230,7 @@ dataSources = [
         "category": community,
         "layers": {
             "tweets_per_pop": {
-                "nickName": "Support related tweets (per population)",
+                "nickName": "Support related tweets (PP)",
                 "category": community,
                 "disabled": False,
                 "reverseColors": False,
