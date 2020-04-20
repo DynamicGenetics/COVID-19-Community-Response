@@ -118,7 +118,7 @@ DATASOURCES = [
         "ID_name": "areaID",
         "layers": {
             "vulnerable_pct": {
-                "nickName": "COVID vulnerable (comobidity %)",
+                "nickName": "COVID vulnerable (comorbidity %)",
                 "category": COVID,
                 "disabled": False,
                 "reverseColors": False,
