@@ -29,6 +29,11 @@ map.on('load', function () {
         }
         nickNames[layer.layerSpec.id] = layer.name
     }
+
+    map.fitBounds([
+        [-5.7395, 51.2403],
+        [-1.6619, 53.6833]
+    ]);
 });
 
 
@@ -40,7 +45,7 @@ let subheadings = {}
 let orders = {}
 
 for (const layer of layers) {
-    console.log(layer.name)
+    // console.log(layer.name)
     const id = layer.layerSpec.id;
     const name = layer.name;
     const checked = layer.shownByDefault;
@@ -57,10 +62,10 @@ for (const layer of layers) {
     checkbox.value = id;
     checkbox.id = id;
     checkbox.checked = checked;
-    checkbox.setAttribute('class', 'checkbox dense')
+    checkbox.setAttribute('class', 'checkbox')
 
     label.setAttribute('for', id);
-    label.setAttribute('class', 'dense');
+    // label.setAttribute('class', 'dense');
 
     if (colorsReversed === true) {
         label.textContent = name.concat('*')
@@ -87,7 +92,7 @@ for (const layer of layers) {
             let subhead = document.createElement('div');
             subhead.innerHTML = `<strong> ${category} </strong>`
             subhead.className = 'menu-subhead';
-            subhead.setAttribute('class', 'dense');
+            subhead.setAttribute('class', 'category');
             subhead.id = category
 
             let item = document.createElement('div');
@@ -143,30 +148,6 @@ function checkboxChange(evt) {
     }
 }
 
-
-// Sidebar opener and closer
-const sdbr = d3.select("div.sidebar");
-const bdy = d3.select("body");
-const open_close = bdy.append("svg").attr("id", "open_close");
-open_close.append("circle").attr("id", "opener").attr("cx", 20).attr("cy", 20).attr("r", 20).attr("fill", "#fff").attr("opacity", 0.5);
-let sidebar_open = true;
-const cross_lines = open_close.append("g").attr("class", "cross_lines");
-cross_lines.append("path").attr("d", "M 20 10 V 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
-cross_lines.append("path").attr("d", "M 10 20 H 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
-open_close.style("transform", "rotate(-45deg)");
-
-d3.select("#opener").on("click", e => {
-    if (sidebar_open) {
-        sdbr.transition().duration(750).style("right", "-23rem");
-        open_close.transition().duration(750).style("transform", "rotate(90deg)");
-        sidebar_open = false;
-    } else {
-        sdbr.transition().duration(750).style("right", "0rem");
-        open_close.transition().duration(750).style("transform", "rotate(-45deg)");
-        sidebar_open = true;
-    }
-});
-
 // Mouse - over data pop up
 map.on('mousemove', function (e) {
 
@@ -192,8 +173,6 @@ map.on('mousemove', function (e) {
         }
 
         let htmlText = '<div class="pd_p"><h3><strong>' + areaName + '</strong></h3>';
-
-        // for (let feature in features) {
         let htmlParagraphs = features.reverse().map(function (feature) {
             name = feature.layer.id
             nickName = nickNames[name]
@@ -211,7 +190,6 @@ map.on('mousemove', function (e) {
         });
         htmlText += htmlParagraphs.reduce(reducer);
         htmlText += "</div>";
-        // }
         document.getElementById('pd').innerHTML = htmlText
         //document.getElementById('pd').innerHTML = '<h3><strong>' + areaName + '</strong></h3><p><strong><em>' + (areaValue*divisor).toFixed(2) + '</strong> groups per '  + divisor + ' people </em></p>';
     } else {
@@ -222,4 +200,34 @@ map.on('mousemove', function (e) {
 Number.prototype.countDecimals = function () {
     if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
     return this.toString().split(".")[1].length || 0;
+}
+
+// Sidebar opener and closer
+const sdbr = d3.select("div.sidebar");
+const bdy = d3.select("body");
+const open_close = bdy.append("svg").attr("id", "open_close");
+open_close.append("circle").attr("id", "opener").attr("cx", 20).attr("cy", 20).attr("r", 20).attr("fill", "#fff").attr("opacity", 0.5);
+let sidebar_open = true;
+const cross_lines = open_close.append("g").attr("class", "cross_lines");
+cross_lines.append("path").attr("d", "M 20 10 V 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
+cross_lines.append("path").attr("d", "M 10 20 H 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
+open_close.style("transform", "rotate(-45deg)");
+
+d3.select("#opener").on("click", _ => {
+    if (sidebar_open) {
+        sdbr.transition().duration(750).style("right", "-23rem");
+        open_close.transition().duration(750).style("transform", "rotate(90deg)");
+        sidebar_open = false;
+    } else {
+        sdbr.transition().duration(750).style("right", "0rem");
+        open_close.transition().duration(750).style("transform", "rotate(-45deg)");
+        sidebar_open = true;
+    }
+});
+
+const mq = window.matchMedia("(max-width: 813px)");
+if (mq.matches){
+    const b = document.getElementById('opener');
+    let evt = new MouseEvent("click");
+    b.dispatchEvent(evt);
 }
