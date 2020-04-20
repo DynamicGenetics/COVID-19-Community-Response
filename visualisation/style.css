@@ -4,6 +4,7 @@ body {
     display: flex;
     height: 100vh;
     font-family: 'Roboto', sans-serif;
+    font-size: 14px;
 }
 
 .sidebar {
@@ -50,7 +51,6 @@ body {
 
 #menu label {
     margin-left: 1rem;
-    font-size: 15px !important;
 }
 
 .checkbox {
@@ -84,4 +84,18 @@ body {
 
 #overlay_pd {
   z-index: 5;
+}
+
+.pd_p p {
+    text-align: left;
+}
+
+@media only screen and (max-width: 813px){
+    #menu {
+        font-size: smaller !important;
+    }
+
+    h2 {
+        font-size: medium;
+    }
 }
