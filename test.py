@@ -1,3 +1,3 @@
 import collections
 
-Point = namedtuple('Point', ['x', 'y'])
+Point = namedtuple("Point", ["x", "y"])
