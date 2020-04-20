@@ -1,5 +1,4 @@
-from __future__ import print_function
-from dataSources import layerColors as colorHexes
+from dataSources import LAYERCOLORS as colorHexes
 import json
 
 geoLabelsToIgnore = ["objectid", "bng_e", "bng_n"]

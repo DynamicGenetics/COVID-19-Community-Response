@@ -1,5 +1,5 @@
 # Import data sources dict
-from dataSources import dataSources, boundaryFiles, filenames, layerColors
+from dataSources import DATASOURCES, BOUNDARYFILES, FILENAMES, LAYERCOLORS
 
 # Import slave functions to call in these master functions (debug name = B1)
 from assimilator import assimilate
@@ -19,7 +19,7 @@ skipped_data = []
 runScraping = False
 
 # Iterate over data sources in dataSources dictionary
-for data in dataSources:
+for data in DATASOURCES:
 
     # Proceed with data unless marked as 'disabled'
     if data["enabled"] == True:
@@ -30,7 +30,7 @@ for data in dataSources:
             if data["type"] == "csv":
 
                 # Assimilate() csv as properties into geojson boundary file
-                geo = boundaryFiles[data["res"]]
+                geo = BOUNDARYFILES[data["res"]]
                 assimilate(
                     data["type"],
                     data["path"],
@@ -48,16 +48,16 @@ for data in dataSources:
                         "https://www.googleapis.com/auth/spreadsheets.readonly",
                         "1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY",
                         "Support groups v2",
-                        filenames["credentials"],
-                        filenames["csv"],
+                        FILENAMES["credentials"],
+                        FILENAMES["csv"],
                     )
-                groupsData = groupProcessing(filenames)
+                groupsData = groupProcessing(FILENAMES)
                 saveOutput(
                     groupsData[0],
                     groupsData[1],
                     groupsData[2],
                     groupsData[3],
-                    filenames,
+                    FILENAMES,
                 )
                 # for row in groupsData[4]: print(row)
 
@@ -83,7 +83,7 @@ for data in dataSources:
     count_data += 1
 
 # Dynamically generate layers
-layers = generateLayer(dataSources, "visualisation/borgLayers.js")
+layers = generateLayer(DATASOURCES, "visualisation/borgLayers.js")
 
 print(layers)
 

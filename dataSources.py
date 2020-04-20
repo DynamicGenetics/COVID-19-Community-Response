@@ -1,10 +1,10 @@
 # groupNames
-community = "Community support"
-covid = "COVID vulnerability"
-demographics = "Demographics"
-bias = "Risk of bias in our sources"
+COMMUNITY = "Community support"
+COVID = "COVID vulnerability"
+DEMOGRAPHICS = "Demographics"
+BIAS = "Risk of bias in our sources"
 
-layerColors = [
+LAYERCOLORS = [
     [
         "#f7fcf0",
         "#e0f3db",
@@ -63,7 +63,7 @@ layerColors = [
 ]
 
 # data sources to assimilate
-dataSources = [
+DATASOURCES = [
     {
         "name": "bias_language",
         "type": "csv",
@@ -74,7 +74,7 @@ dataSources = [
         "layers": {
             "language": {
                 "nickName": "Welsh language use",
-                "category": bias,
+                "category": BIAS,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
@@ -93,14 +93,14 @@ dataSources = [
         "layers": {
             "communityCohesion": {
                 "nickName": "Community cohesion",
-                "category": community,
+                "category": COMMUNITY,
                 "disabled": False,
                 "reverseColors": True,
                 "enabledByDefault": False,
             },
             "deprivation_30": {
                 "nickName": "Multiple deprivation",
-                "category": demographics,
+                "category": DEMOGRAPHICS,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
@@ -119,28 +119,28 @@ dataSources = [
         "layers": {
             "vulnerable_pct": {
                 "nickName": "COVID vulnerable (comobidity %)",
-                "category": covid,
+                "category": COVID,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
             "pop_density": {
                 "nickName": "Population density",
-                "category": demographics,
+                "category": DEMOGRAPHICS,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
             "pop_elderly": {
                 "nickName": "Elderly population (% over 65)",
-                "category": covid,
+                "category": COVID,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
             "pop": {
                 "nickName": "Population",
-                "category": demographics,
+                "category": DEMOGRAPHICS,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
@@ -159,7 +159,7 @@ dataSources = [
         "layers": {
             "covid_per100k": {
                 "nickName": "COVID cases (per 100k)",
-                "category": covid,
+                "category": COVID,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
@@ -178,7 +178,7 @@ dataSources = [
         "layers": {
             "groups": {
                 "nickName": "Community support groups",
-                "category": community,
+                "category": COMMUNITY,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": True,
@@ -197,21 +197,21 @@ dataSources = [
         "layers": {
             "groupCount": {
                 "nickName": "Community support groups",
-                "category": community,
+                "category": COMMUNITY,
                 "disabled": True,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
             "groupCount_pop": {
                 "nickName": "Community support groups (PP)",
-                "category": community,
+                "category": COMMUNITY,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": True,
             },
             "groupCount_elderly": {
                 "nickName": "Community support groups (per elderly population)",
-                "category": community,
+                "category": COMMUNITY,
                 "disabled": True,
                 "reverseColors": False,
                 "enabledByDefault": False,
@@ -227,11 +227,11 @@ dataSources = [
         "enabled": True,
         "path": "data/twitter_count.geojson",
         "ID_name": None,
-        "category": community,
+        "category": COMMUNITY,
         "layers": {
             "tweets_per_pop": {
                 "nickName": "Support related tweets (PP)",
-                "category": community,
+                "category": COMMUNITY,
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": True,
@@ -242,8 +242,8 @@ dataSources = [
     },
 ]
 
-# boundary files to assimilate data into (as 'properties')
-boundaryFiles = {
+# Boundary files to assimilate data into (as 'properties')
+BOUNDARYFILES = {
     "LA": {"path": "data/geography/boundaries_LAs.geojson", "ID_name": "lad18cd"},
     "LSOA": {"path": "data/geography/boundaries_LSOAs.geojson", "ID_name": "LA11CD"},
     "LHB": {"path": "data/geography/boundaries_LHBs.geojson", "ID_name": "lhb19cd"},
@@ -251,7 +251,7 @@ boundaryFiles = {
 }
 
 # Filenames for GoogleScrape
-filenames = {
+FILENAMES = {
     "boundaries_wales": "data/geography/boundaries_wales.geoJSON",
     "boundaries_LA": "data/geography/boundaries_LAs.geoJSON",
     "csv": "data/community_measures/groups.csv",
