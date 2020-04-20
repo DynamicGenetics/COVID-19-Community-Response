@@ -1,5 +1,5 @@
 # Import data sources dict
-from dataSources import DATASOURCES, BOUNDARYFILES, FILENAMES, LAYERCOLORS
+from dataSources import *
 
 # Import slave functions to call in these master functions (debug name = B1)
 from assimilator import assimilate

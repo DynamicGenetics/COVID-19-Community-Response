@@ -58,8 +58,9 @@ var layers=[
         name: "Welsh language use",
         ref: "../data/bias_language.geojson",
         shownByDefault: false,
-        "category": "Risk of bias in our sources",
-        "colorsReversed": false
+        "category": "Factors affecting data quality",
+        "colorsReversed": false,
+        "displayOrder": 3
     },
     {
         layerSpec: {
@@ -75,39 +76,39 @@ var layers=[
                     stops: [
                         [
                             3.875464684,
-                            "#7f0000"
+                            "#ffffe5"
                         ],
                         [
                             3.9205301236250003,
-                            "#b30000"
+                            "#f7fcb9"
                         ],
                         [
                             3.96559556325,
-                            "#d7301f"
+                            "#d9f0a3"
                         ],
                         [
                             4.010661002875,
-                            "#ef6548"
+                            "#addd8e"
                         ],
                         [
                             4.0557264425,
-                            "#fc8d59"
+                            "#78c679"
                         ],
                         [
                             4.100791882125,
-                            "#fdbb84"
+                            "#41ab5d"
                         ],
                         [
                             4.145857321749999,
-                            "#fdd49e"
+                            "#238443"
                         ],
                         [
                             4.190922761375,
-                            "#fee8c8"
+                            "#006837"
                         ],
                         [
                             4.235988201,
-                            "#fff7ec"
+                            "#004529"
                         ]
                     ]
                 },
@@ -121,7 +122,8 @@ var layers=[
         ref: "../data/community_cohesion_deprivation.geojson",
         shownByDefault: false,
         "category": "Community support",
-        "colorsReversed": true
+        "colorsReversed": false,
+        "displayOrder": 0
     },
     {
         layerSpec: {
@@ -150,7 +152,8 @@ var layers=[
         ref: "../data/groups.geojson",
         shownByDefault: true,
         "category": "Community support",
-        "colorsReversed": false
+        "colorsReversed": false,
+        "displayOrder": 0
     },
     {
         layerSpec: {
@@ -166,39 +169,39 @@ var layers=[
                     stops: [
                         [
                             1.9569216318117182e-05,
-                            "#fff7ec"
+                            "#ffffe5"
                         ],
                         [
                             3.6942312732451155e-05,
-                            "#fee8c8"
+                            "#f7fcb9"
                         ],
                         [
                             5.431540914678513e-05,
-                            "#fdd49e"
+                            "#d9f0a3"
                         ],
                         [
                             7.16885055611191e-05,
-                            "#fdbb84"
+                            "#addd8e"
                         ],
                         [
                             8.906160197545308e-05,
-                            "#fc8d59"
+                            "#78c679"
                         ],
                         [
                             0.00010643469838978706,
-                            "#ef6548"
+                            "#41ab5d"
                         ],
                         [
                             0.000123807794804121,
-                            "#d7301f"
+                            "#238443"
                         ],
                         [
                             0.000141180891218455,
-                            "#b30000"
+                            "#006837"
                         ],
                         [
                             0.00015855398763278897,
-                            "#7f0000"
+                            "#004529"
                         ]
                     ]
                 },
@@ -212,7 +215,8 @@ var layers=[
         ref: "../data/groupCount.geojson",
         shownByDefault: true,
         "category": "Community support",
-        "colorsReversed": false
+        "colorsReversed": false,
+        "displayOrder": 0
     },
     {
         layerSpec: {
@@ -228,39 +232,39 @@ var layers=[
                     stops: [
                         [
                             0.1411675159226237,
-                            "#fff7ec"
+                            "#ffffe5"
                         ],
                         [
                             0.24852157643229572,
-                            "#fee8c8"
+                            "#f7fcb9"
                         ],
                         [
                             0.3558756369419678,
-                            "#fdd49e"
+                            "#d9f0a3"
                         ],
                         [
                             0.4632296974516398,
-                            "#fdbb84"
+                            "#addd8e"
                         ],
                         [
                             0.5705837579613119,
-                            "#fc8d59"
+                            "#78c679"
                         ],
                         [
                             0.6779378184709839,
-                            "#ef6548"
+                            "#41ab5d"
                         ],
                         [
                             0.7852918789806559,
-                            "#d7301f"
+                            "#238443"
                         ],
                         [
                             0.892645939490328,
-                            "#b30000"
+                            "#006837"
                         ],
                         [
                             1.0,
-                            "#7f0000"
+                            "#004529"
                         ]
                     ]
                 },
@@ -274,7 +278,8 @@ var layers=[
         ref: "../data/twitter_count.geojson",
         shownByDefault: true,
         "category": "Community support",
-        "colorsReversed": false
+        "colorsReversed": false,
+        "displayOrder": 0
     },
     {
         layerSpec: {
@@ -290,43 +295,43 @@ var layers=[
                     stops: [
                         [
                             5.0,
-                            "#ffffe5"
+                            "#fff7f3"
                         ],
                         [
                             12.375,
-                            "#f7fcb9"
+                            "#fde0dd"
                         ],
                         [
                             19.75,
-                            "#d9f0a3"
+                            "#fcc5c0"
                         ],
                         [
                             27.125,
-                            "#addd8e"
+                            "#fa9fb5"
                         ],
                         [
                             34.5,
-                            "#78c679"
+                            "#f768a1"
                         ],
                         [
                             41.875,
-                            "#41ab5d"
+                            "#dd3497"
                         ],
                         [
                             49.25,
-                            "#238443"
+                            "#ae017e"
                         ],
                         [
                             56.625,
-                            "#006837"
+                            "#7a0177"
                         ],
                         [
                             64.0,
-                            "#004529"
+                            "#49006a"
                         ]
                     ]
                 },
-                "fill-opacity": 0.3333333333333333
+                "fill-opacity": 0.5
             },
             source: "deprivation_30",
             type: "fill",
@@ -336,7 +341,8 @@ var layers=[
         ref: "../data/community_cohesion_deprivation.geojson",
         shownByDefault: false,
         "category": "Demographics",
-        "colorsReversed": false
+        "colorsReversed": false,
+        "displayOrder": 2
     },
     {
         layerSpec: {
@@ -352,43 +358,43 @@ var layers=[
                     stops: [
                         [
                             25.6,
-                            "#ffffe5"
+                            "#fff7f3"
                         ],
                         [
                             345.55,
-                            "#f7fcb9"
+                            "#fde0dd"
                         ],
                         [
                             665.5,
-                            "#d9f0a3"
+                            "#fcc5c0"
                         ],
                         [
                             985.4499999999999,
-                            "#addd8e"
+                            "#fa9fb5"
                         ],
                         [
                             1305.3999999999999,
-                            "#78c679"
+                            "#f768a1"
                         ],
                         [
                             1625.35,
-                            "#41ab5d"
+                            "#dd3497"
                         ],
                         [
                             1945.2999999999997,
-                            "#238443"
+                            "#ae017e"
                         ],
                         [
                             2265.25,
-                            "#006837"
+                            "#7a0177"
                         ],
                         [
                             2585.2,
-                            "#004529"
+                            "#49006a"
                         ]
                     ]
                 },
-                "fill-opacity": 0.3333333333333333
+                "fill-opacity": 0.5
             },
             source: "pop_density",
             type: "fill",
@@ -398,69 +404,8 @@ var layers=[
         ref: "../data/covid_vulnerable.geojson",
         shownByDefault: false,
         "category": "Demographics",
-        "colorsReversed": false
-    },
-    {
-        layerSpec: {
-            filter: [
-                "==",
-                "$type",
-                "Polygon"
-            ],
-            id: "pop",
-            paint: {
-                "fill-color": {
-                    property: "pop",
-                    stops: [
-                        [
-                            60183.0,
-                            "#ffffe5"
-                        ],
-                        [
-                            98191.125,
-                            "#f7fcb9"
-                        ],
-                        [
-                            136199.25,
-                            "#d9f0a3"
-                        ],
-                        [
-                            174207.375,
-                            "#addd8e"
-                        ],
-                        [
-                            212215.5,
-                            "#78c679"
-                        ],
-                        [
-                            250223.625,
-                            "#41ab5d"
-                        ],
-                        [
-                            288231.75,
-                            "#238443"
-                        ],
-                        [
-                            326239.875,
-                            "#006837"
-                        ],
-                        [
-                            364248.0,
-                            "#004529"
-                        ]
-                    ]
-                },
-                "fill-opacity": 0.3333333333333333
-            },
-            source: "pop",
-            type: "fill",
-            "ID_name": "areaID"
-        },
-        name: "Population",
-        ref: "../data/covid_vulnerable.geojson",
-        shownByDefault: false,
-        "category": "Demographics",
-        "colorsReversed": false
+        "colorsReversed": false,
+        "displayOrder": 2
     },
     {
         layerSpec: {
@@ -476,39 +421,39 @@ var layers=[
                     stops: [
                         [
                             32.3,
-                            "#fff7f3"
+                            "#fff7ec"
                         ],
                         [
                             34.512499999999996,
-                            "#fde0dd"
+                            "#fee8c8"
                         ],
                         [
                             36.724999999999994,
-                            "#fcc5c0"
+                            "#fdd49e"
                         ],
                         [
                             38.9375,
-                            "#fa9fb5"
+                            "#fdbb84"
                         ],
                         [
                             41.15,
-                            "#f768a1"
+                            "#fc8d59"
                         ],
                         [
                             43.3625,
-                            "#dd3497"
+                            "#ef6548"
                         ],
                         [
                             45.575,
-                            "#ae017e"
+                            "#d7301f"
                         ],
                         [
                             47.7875,
-                            "#7a0177"
+                            "#b30000"
                         ],
                         [
                             50.0,
-                            "#49006a"
+                            "#7f0000"
                         ]
                     ]
                 },
@@ -518,11 +463,12 @@ var layers=[
             type: "fill",
             "ID_name": "areaID"
         },
-        name: "COVID vulnerable (comobidity %)",
+        name: "COVID vulnerable (comorbidity %)",
         ref: "../data/covid_vulnerable.geojson",
         shownByDefault: false,
         "category": "COVID vulnerability",
-        "colorsReversed": false
+        "colorsReversed": false,
+        "displayOrder": 1
     },
     {
         layerSpec: {
@@ -538,39 +484,39 @@ var layers=[
                     stops: [
                         [
                             14.09451802,
-                            "#fff7f3"
+                            "#fff7ec"
                         ],
                         [
                             15.762653515,
-                            "#fde0dd"
+                            "#fee8c8"
                         ],
                         [
                             17.43078901,
-                            "#fcc5c0"
+                            "#fdd49e"
                         ],
                         [
                             19.098924505,
-                            "#fa9fb5"
+                            "#fdbb84"
                         ],
                         [
                             20.76706,
-                            "#f768a1"
+                            "#fc8d59"
                         ],
                         [
                             22.435195495000002,
-                            "#dd3497"
+                            "#ef6548"
                         ],
                         [
                             24.10333099,
-                            "#ae017e"
+                            "#d7301f"
                         ],
                         [
                             25.771466484999998,
-                            "#7a0177"
+                            "#b30000"
                         ],
                         [
                             27.43960198,
-                            "#49006a"
+                            "#7f0000"
                         ]
                     ]
                 },
@@ -584,7 +530,8 @@ var layers=[
         ref: "../data/covid_vulnerable.geojson",
         shownByDefault: false,
         "category": "COVID vulnerability",
-        "colorsReversed": false
+        "colorsReversed": false,
+        "displayOrder": 1
     },
     {
         layerSpec: {
@@ -600,39 +547,39 @@ var layers=[
                     stops: [
                         [
                             42.5,
-                            "#fff7f3"
+                            "#fff7ec"
                         ],
                         [
                             84.15,
-                            "#fde0dd"
+                            "#fee8c8"
                         ],
                         [
                             125.8,
-                            "#fcc5c0"
+                            "#fdd49e"
                         ],
                         [
                             167.45,
-                            "#fa9fb5"
+                            "#fdbb84"
                         ],
                         [
                             209.1,
-                            "#f768a1"
+                            "#fc8d59"
                         ],
                         [
                             250.75,
-                            "#dd3497"
+                            "#ef6548"
                         ],
                         [
                             292.4,
-                            "#ae017e"
+                            "#d7301f"
                         ],
                         [
                             334.05,
-                            "#7a0177"
+                            "#b30000"
                         ],
                         [
                             375.7,
-                            "#49006a"
+                            "#7f0000"
                         ]
                     ]
                 },
@@ -646,6 +593,7 @@ var layers=[
         ref: "../data/covid_cases.geojson",
         shownByDefault: false,
         "category": "COVID vulnerability",
-        "colorsReversed": false
+        "colorsReversed": false,
+        "displayOrder": 1
     }
 ]

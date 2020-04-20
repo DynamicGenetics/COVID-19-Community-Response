@@ -1,4 +1,3 @@
-from dataSources import LAYERCOLORS as colorHexes
 import json
 
 geoLabelsToIgnore = ["objectid", "bng_e", "bng_n"]
@@ -24,20 +23,22 @@ def generateLayer(dataSources, filename_output):
                     layer = src["layers"][dataField]
 
                     if not layer["disabled"]:
+                        
+                        category = layer["categoryInfo"]['name']
 
-                        if layer["category"] not in layers.keys():
-                            layers[layer["category"]] = {}
+                        if category not in layers.keys():
+                            layers[category] = {}
 
-                        layers[layer["category"]][dataField] = {
+                        layers[category][dataField] = {
                             "dataField": dataField,
                             "origin": src["name"],
                             "path": src["path"],
-                            "category": layer["category"],
                             "nickName": layer["nickName"],
                             "reverseColors": layer["reverseColors"],
                             "geometry": src["geometry"],
                             "values": None,
                             "ID_name": src["ID_name"],
+                            "categoryInfo": layer["categoryInfo"],
                             "enabledByDefault": layer["enabledByDefault"],
                         }
 
@@ -59,40 +60,38 @@ def generateLayer(dataSources, filename_output):
 
                                     dataValue = properties[dataField]
 
-                                    if layer["category"] not in layers.keys():
-                                        layers[layer["category"]] = {}
+                                    category = layer["categoryInfo"]['name']
+
+                                    if category not in layers.keys():
+                                        layers[category] = {}
 
                                     if (
                                         dataField
-                                        not in layers[layer["category"]].keys()
+                                        not in layers[category].keys()
                                     ):
-                                        layers[layer["category"]][dataField] = {
+                                        layers[category][dataField] = {
                                             "dataField": dataField,
                                             "origin": src["name"],
                                             "path": src["path"],
-                                            "category": layer["category"],
                                             "nickName": layer["nickName"],
                                             "reverseColors": layer["reverseColors"],
                                             "geometry": src["geometry"],
                                             "dataValues": [dataValue],
                                             "ID_name": src["ID_name"],
-                                            "enabledByDefault": layer[
-                                                "enabledByDefault"
-                                            ],
+                                            "enabledByDefault": layer["enabledByDefault"],
+                                            "categoryInfo": layer["categoryInfo"],
                                         }
                                     else:
-                                        layers[layer["category"]][dataField][
-                                            "dataValues"
-                                        ].append(dataValue)
+                                        layers[category][dataField]["dataValues"].append(dataValue)
 
-                                    # print("dataField: {}, origins: {}, categories: {}, nickNames: {}, reversedLayers: {}".format(dataField,origins,categories,nickNames,reversedLayers))
+                                    #print("Added layer: ", layer)
 
                                 else:
                                     exceptions.append("{}(disabled)".format(dataField))
 
                             else:
                                 exceptions.append(dataField)
-                                # print("ERROR (generateLayer): datafield found in dataSource not specified in dataSources")
+                                #print("Warning (generateLayer): datafield found in dataSource not specified in dataSources")
 
         except:
             # print("ERROR w/ reading data sources.py for src: ", filename)
@@ -103,9 +102,8 @@ def generateLayer(dataSources, filename_output):
     for key_category in layers:
         layerCategory = layers[key_category]
 
-        # Assign colors to categories
+        # Assign opacity by length of categories
         opacity = 1 / len(layerCategory)
-        hexList = colorHexes[o]
 
         for key_layer in layerCategory:
             layer = layerCategory[key_layer]
@@ -113,7 +111,9 @@ def generateLayer(dataSources, filename_output):
             # Get properties of layers under category
             dataField = layer["dataField"]
             origin = layer["origin"]
-            category = layer["category"]
+            category = layer["categoryInfo"]['name']
+            hexList = layer["categoryInfo"]['colors']
+            displayOrder = layer["categoryInfo"]['displayOrder']
             nickName = layer["nickName"]
             reverseColors = layer["reverseColors"]
             geometry = layer["geometry"]
@@ -150,6 +150,7 @@ def generateLayer(dataSources, filename_output):
                         "*ref*": "../data/{}.geojson".format(origin),
                         "category": category,
                         "colorsReversed": reverseColors,
+                        "displayOrder": displayOrder,
                         "*layerSpec*": {
                             "ID_name": ID_name,
                             "*id*": dataField,
@@ -177,6 +178,7 @@ def generateLayer(dataSources, filename_output):
                         "*ref*": "../data/{}.geojson".format(origin),
                         "category": category,
                         "colorsReversed": reverseColors,
+                        "displayOrder": displayOrder,
                         "*layerSpec*": {
                             "ID_name": ID_name,
                             "*id*": dataField,

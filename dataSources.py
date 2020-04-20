@@ -1,66 +1,26 @@
-# groupNames
-COMMUNITY = "Community support"
-COVID = "COVID vulnerability"
-DEMOGRAPHICS = "Demographics"
-BIAS = "Risk of bias in our sources"
-
-LAYERCOLORS = [
-    [
-        "#f7fcf0",
-        "#e0f3db",
-        "#ccebc5",
-        "#a8ddb5",
-        "#7bccc4",
-        "#4eb3d3",
-        "#2b8cbe",
-        "#0868ac",
-        "#084081",
-    ],  # 9-class GnBu (white-green-blue, @colorbrewer2)
-    [
-        "#fff7ec",
-        "#fee8c8",
-        "#fdd49e",
-        "#fdbb84",
-        "#fc8d59",
-        "#ef6548",
-        "#d7301f",
-        "#b30000",
-        "#7f0000",
-    ],  # 9-class OrRd (white-orange-red, @colorbrewer2)
-    [
-        "#ffffe5",
-        "#f7fcb9",
-        "#d9f0a3",
-        "#addd8e",
-        "#78c679",
-        "#41ab5d",
-        "#238443",
-        "#006837",
-        "#004529",
-    ],  # 9-class YlGn (yellow-green, @colorbrewer2)
-    [
-        "#fff7f3",
-        "#fde0dd",
-        "#fcc5c0",
-        "#fa9fb5",
-        "#f768a1",
-        "#dd3497",
-        "#ae017e",
-        "#7a0177",
-        "#49006a",
-    ],  # 9-class RdPu (white-purple, @colorbrewer2)
-    [
-        "#f7fcfd",
-        "#e0ecf4",
-        "#bfd3e6",
-        "#9ebcda",
-        "#8c96c6",
-        "#8c6bb1",
-        "#88419d",
-        "#810f7c",
-        "#4d004b",
-    ],  # 9-class BuPu (white-blue-purple, @colorbrewer2)
-]
+# group names & display order
+DATAGROUPS = {
+    'community':{
+        'name':"Community support",
+        'displayOrder':0,
+        'colors':["#ffffe5","#f7fcb9","#d9f0a3","#addd8e","#78c679","#41ab5d","#238443","#006837","#004529",],  # 9-class YlGn (yellow-green, @colorbrewer2)
+    },
+    'covid':{
+        'name':"COVID vulnerability",
+        'displayOrder':1,
+        'colors':["#fff7ec","#fee8c8","#fdd49e","#fdbb84","#fc8d59","#ef6548","#d7301f","#b30000","#7f0000",],  # 9-class OrRd (white-orange-red, @colorbrewer2)
+    },
+    'demographics':{
+        'name':"Demographics",
+        'displayOrder':2,
+        'colors':["#fff7f3","#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a",],  # 9-class RdPu (white-purple, @colorbrewer2)
+    },
+    'bias':{
+        'name':"Factors affecting data quality",
+        'displayOrder':3,
+        'colors':["#f7fcf0","#e0f3db","#ccebc5","#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081",],  # 9-class GnBu (white-green-blue, @colorbrewer2)
+    }
+}
 
 # data sources to assimilate
 DATASOURCES = [
@@ -74,7 +34,8 @@ DATASOURCES = [
         "layers": {
             "language": {
                 "nickName": "Welsh language use",
-                "category": BIAS,
+                "category": DATAGROUPS['bias']['name'],
+                "categoryInfo": DATAGROUPS['bias'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
@@ -93,14 +54,16 @@ DATASOURCES = [
         "layers": {
             "communityCohesion": {
                 "nickName": "Community cohesion",
-                "category": COMMUNITY,
+                "category": DATAGROUPS['community']['name'],
+                "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
             "deprivation_30": {
                 "nickName": "Multiple deprivation",
-                "category": DEMOGRAPHICS,
+                "category": DATAGROUPS['demographics']['name'],
+                "categoryInfo": DATAGROUPS['demographics'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
@@ -119,29 +82,33 @@ DATASOURCES = [
         "layers": {
             "vulnerable_pct": {
                 "nickName": "COVID vulnerable (comorbidity %)",
-                "category": COVID,
+                "category": DATAGROUPS['covid']['name'],
+                "categoryInfo": DATAGROUPS['covid'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
             "pop_density": {
                 "nickName": "Population density",
-                "category": DEMOGRAPHICS,
+                "category": DATAGROUPS['demographics']['name'],
+                "categoryInfo": DATAGROUPS['demographics'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
             "pop_elderly": {
                 "nickName": "Elderly population (% over 65)",
-                "category": COVID,
+                "category": DATAGROUPS['covid']['name'],
+                "categoryInfo": DATAGROUPS['covid'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
             "pop": {
                 "nickName": "Population",
-                "category": DEMOGRAPHICS,
-                "disabled": False,
+                "category": DATAGROUPS['demographics']['name'],
+                "categoryInfo": DATAGROUPS['demographics'],
+                "disabled": True,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
@@ -159,7 +126,8 @@ DATASOURCES = [
         "layers": {
             "covid_per100k": {
                 "nickName": "COVID cases (per 100k)",
-                "category": COVID,
+                "category": DATAGROUPS['covid']['name'],
+                "categoryInfo": DATAGROUPS['covid'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
@@ -178,7 +146,8 @@ DATASOURCES = [
         "layers": {
             "groups": {
                 "nickName": "Community support groups",
-                "category": COMMUNITY,
+                "category": DATAGROUPS['community']['name'],
+                "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": True,
@@ -197,21 +166,24 @@ DATASOURCES = [
         "layers": {
             "groupCount": {
                 "nickName": "Community support groups",
-                "category": COMMUNITY,
+                "category": DATAGROUPS['community']['name'],
+                "categoryInfo": DATAGROUPS['community'],
                 "disabled": True,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
             "groupCount_pop": {
                 "nickName": "Community support groups (PP)",
-                "category": COMMUNITY,
+                "category": DATAGROUPS['community']['name'],
+                "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": True,
             },
             "groupCount_elderly": {
                 "nickName": "Community support groups (per elderly population)",
-                "category": COMMUNITY,
+                "category": DATAGROUPS['community']['name'],
+                "categoryInfo": DATAGROUPS['community'],
                 "disabled": True,
                 "reverseColors": False,
                 "enabledByDefault": False,
@@ -227,11 +199,11 @@ DATASOURCES = [
         "enabled": True,
         "path": "data/twitter_count.geojson",
         "ID_name": None,
-        "category": COMMUNITY,
         "layers": {
             "tweets_per_pop": {
                 "nickName": "Support related tweets (PP)",
-                "category": COMMUNITY,
+                "category": DATAGROUPS['community']['name'],
+                "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": True,

@@ -30,16 +30,22 @@ map.on('load', function () {
 });
 
 
+// Dynamically generate sidebar menu & integrated legend
+
 var menu = document.getElementById('menu');
 var categoriesProcessed = []
 var subheadings = {}
+var orders = {}
 
 for (const layer of layers) {
+    console.log(layer.name)
     var id = layer.layerSpec.id;
     var name = layer.name;
     var checked = layer.shownByDefault;
     var category = layer.category;
+    var displayOrder = layer.displayOrder;
     var colorsReversed = layer.colorsReversed;
+    var layerType = layer.layerSpec.type;
 
     var container = document.createElement('div');
     var checkbox = document.createElement('input');
@@ -62,66 +68,83 @@ for (const layer of layers) {
     container.appendChild(checkbox);
     container.appendChild(label);
 
-    //add item to legend for each category
+    //add item to legend for each category        
     if (categoriesProcessed.includes(category)){
         subheadings[category].push(container)
-        //console.log("apready processed: ", category)
+        
     }else{
+        
         subheadings[category]=[]
         subheadings[category].push(container)
-        
-        var subhead = document.createElement('div');
-            subhead.innerHTML = `<strong> ${category} </strong>`
-            subhead.className = 'menu-subhead';
-            subhead.setAttribute('class', 'dense');
-            subhead.id = category
 
-        var item = document.createElement('div');
-        //get color stops
-        for (const color_stop of layer.layerSpec.paint['fill-color'].stops) {
-            var key = document.createElement('div');
-            key.className = 'legend-key';
-            key.style.backgroundColor = color_stop[1];
-            if (colorsReversed == true){
-                item.insertBefore(key, item.childNodes[0]);
-            }else{
-                item.appendChild(key);
+        //Build headings & legends for categories
+        if (layerType != 'circle'){
+
+            var subhead = document.createElement('div');
+                subhead.innerHTML = `<strong> ${category} </strong>`
+                subhead.className = 'menu-subhead';
+                subhead.setAttribute('class', 'dense');
+                subhead.id = category
+
+            var item = document.createElement('div');
+
+            //get color stops
+            for (const color_stop of layer.layerSpec.paint['fill-color'].stops) {
+                var key = document.createElement('div');
+                key.className = 'legend-key';
+                key.style.backgroundColor = color_stop[1];
+                if (colorsReversed == true){
+                    item.insertBefore(key, item.childNodes[0]);
+                }else{
+                    item.appendChild(key);
+                }
             }
+            
+            //append key and subheading
+            subhead.append(item);
+            subheadings[category].unshift(subhead);
         }
-        
-        //append key and subheading
-        subhead.append(item);
-        subheadings[category].unshift(subhead);
-
-        //make legend label text
-        // var value = document.createElement('span');
-        // value.innerHTML = category;
-        // value.className = 'legend-label';
-        // item.appendChild(value);
-
-        //add category to completed list so key/label is not duplicated in legend
         categoriesProcessed.push(category);
+        orders[category]=displayOrder
     }
 }
 
-for (const cat of categoriesProcessed){
-    for (const div of subheadings[cat]){
+categoriesOrdered=[]
+//Order categories and append to menu
+for (const o of categoriesProcessed){
+    categoriesOrdered.push([orders[o],o])
+}
+categoriesOrdered.sort()
+
+for (const cat of categoriesOrdered){
+    for (const div of subheadings[cat[1]]){
         menu.appendChild(div);
     }
+
 }
 
 function checkboxChange(evt) {
     var id = evt.target.value;
     var visibility = evt.target.checked ? 'visible' : 'none';
+
     map.setLayoutProperty(id, 'visibility', visibility);
+
     if (visibleLayers.includes(id)){
-        visibleLayers.pop(id)
-    }else{visibleLayers.push(id)}
+
+        const index = visibleLayers.indexOf(id);
+        if (index > -1) {
+            visibleLayers.splice(id, 1);
+        }
+
+    }else{
+
+        visibleLayers.push(id)
+    }
 }
 
-map.on('mousemove', function(e) {
 
-    //console.log("visible:",visibleLayers)
+// Mouse - over data pop up
+map.on('mousemove', function(e) {
 
     var showVal = map.queryRenderedFeatures(e.point, {
       layers: visibleLayers
@@ -131,7 +154,6 @@ map.on('mousemove', function(e) {
         areaName = showVal[0].properties.lad18nm
     } else if (typeof(showVal[0].properties.areaID)=="string"){
         areaName = showVal[0].properties.areaID
-        console.log(showVal[0].properties)
     }
   
     if (showVal.length > 0) {
