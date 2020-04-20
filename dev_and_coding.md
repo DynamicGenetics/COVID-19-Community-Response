@@ -1,4 +1,12 @@
-# Development Environment
+
+# Backlog
+
+The **Backlog** of Repo changes and activities can be found here: [backlog.md](backlog.md)  
+
+---
+If you would like to contribute to the project, please follow the guidelines below: 
+
+### Development Environment Setup
 
 Instructions to setup the (local) Python development environment.
 
@@ -8,6 +16,7 @@ Instructions to setup the (local) Python development environment.
 ---
 
 <a name="venv"></a>
+
 #### Virtual Environment using `venv`
 
 The `venv` module provides support for creating lightweight “virtual environments” 
@@ -25,17 +34,23 @@ The following **`3`** steps are required to setup a new virtual environment
 using `venv`:
 
 1. Create the environment:
+
     ```shell script
-    $ python -m venv /path/to/new/virtual/environment
+    python -m venv /path/to/new/virtual/environment
     ```
+
 2. Activate the environment:
+
     ```shell script
-    $ source /path/to/new/virtual/environment/bin/activate
+    source /path/to/new/virtual/environment/bin/activate
     ```
+
 3. Install the Required Package (using the `requirements.txt` file):
+
     ```shell script
-    $ pip install -r envs/requirements.txt
+    pip install -r envs/requirements.txt
     ```
+
 4. (**Optional**) Create new Jupyter notebook Kernel
 
 To avoid re-installing the entire Jupyter stack into the new environment, 
@@ -46,32 +61,35 @@ To do so, please make sure that the `ipykernel` package is installed in the **ne
 Python environment:
 
 ```shell script
-$ pip install ipykernel  ## this should be the default pip 
+pip install ipykernel  ## this should be the default pip 
 ```
 
 Then, execute the following command:
+
 ```shell script
-$ python -m ipykernel install --user --prefix /path/to/new/virtual/environment --display-name "Python 3 (Covid-Community)"
+python -m ipykernel install --user --prefix /path/to/new/virtual/environment --display-name "Python 3 (Covid-Community)"
 ```
 
 Further information [here](https://ipython.readthedocs.io/en/stable/install/kernel_install.html)
 
-<a name="conda"></a>
+<a name="conda"> </a>
+
 #### Setting up `conda` environment
 
 If you are using Anaconda Python distribution, it is possible to re-create the 
 virtual (conda) environment using the export `.yml` (`YAML`) file:
 
 ```shell script
-$ conda env create -f envs/covid_community_conda_env.yml
+conda env create -f envs/covid_community_conda_env.yml
 ```
 
 This will create a new Conda environment named `covid-community` with all the 
 required packages.
 
 To **activate** the environment:
+
 ```shell script
-$ conda activate covid-community
+conda activate covid-community
 ``` 
 
 ##### (**Optional**) Create new Jupyter notebook Kernel
@@ -84,12 +102,27 @@ To do so, please make sure that the `ipykernel` package is installed in the **ne
 conda environment:
 
 ```shell script
-$ conda install ipykernel 
+conda install ipykernel 
 ```
 
 Then, still remaining in the **new** conda environment, execute the following command:
+
 ```shell script
-$ python -m ipykernel install --user --name covid-community --display-name "Python 3.7 (Covid-Community)"
+python -m ipykernel install --user --name covid-community --display-name "Python 3.7 (Covid-Community)"
 ```
 
 Further information [here](https://ipython.readthedocs.io/en/stable/install/kernel_install.html)
+
+#### Code formatting
+
+If possible, use the [black code formatter](https://github.com/python/black) (e.g.
+`pip install black`) and run it before submitting your code to the repository. 
+This helps maintain consistency.
+
+Formatting is as simple as running:
+
+```bash
+black .
+```
+
+in the root of the project.
