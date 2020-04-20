@@ -133,8 +133,7 @@ map.on('mousemove', function(e) {
     }
   
     if (showVal.length > 0) {
-        htmlText = []
-        htmlText.push('<p class="pd_p"><h3><strong>' + areaName + '</strong></h3>')
+        htmlText = '<p class="pd_p"><h3><strong>' + areaName + '</strong></h3>';
 
         for (i in showVal){
             name = showVal[i].layer.id
@@ -148,7 +147,7 @@ map.on('mousemove', function(e) {
                 areaValue=areaValue.toFixed(1)
             }
             
-            htmlText.push(nickName + ': <strong><em>' + areaValue + '</em></strong></p>');
+            htmlText = htmlText + nickName + ': <strong><em>' + areaValue + '</em></strong></p>';
         }
         document.getElementById('pd').innerHTML = htmlText
       //document.getElementById('pd').innerHTML = '<h3><strong>' + areaName + '</strong></h3><p><strong><em>' + (areaValue*divisor).toFixed(2) + '</strong> groups per '  + divisor + ' people </em></p>';
