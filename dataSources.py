@@ -95,7 +95,7 @@ DATASOURCES = [
                 "nickName": "Community cohesion",
                 "category": COMMUNITY,
                 "disabled": False,
-                "reverseColors": True,
+                "reverseColors": False,
                 "enabledByDefault": False,
             },
             "deprivation_30": {
