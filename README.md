@@ -14,9 +14,9 @@ group and [Public Health Wales](https://phw.nhs.wales).
 
 ## Interactive Map
 
-[COVID-19 Community Support Mat]('./visualisation/index.html')
+[COVID-19 Community Support Map](https://dynamicgenetics.github.io/Covid-Communities-Map/visualisation/)
 
 ## Documentation
 
-You can view the **documentation** for this project, and the data sources, 
-on our [wiki](https://github.com/DynamicGenetics/Covid-Communities-Map/wiki).
+You can view the **documentation** for this project, and the data sources,
+on our [wiki](https://github.com/DynamicGenetics/Covid-Communities-Map/wiki)
