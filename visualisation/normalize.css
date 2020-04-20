@@ -279,9 +279,9 @@ legend {
 }
 
 #overlay_pd{
-  position: absolute;
-  top: 0;
-  right: 10rem;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
   width: 20rem;
   text-align: center;
   background-color: rgba(256,256,256,0.6);

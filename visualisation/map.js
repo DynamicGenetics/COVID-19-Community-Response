@@ -59,7 +59,7 @@ for (const layer of layers) {
 
     label.setAttribute('for', id);
     label.setAttribute('class', 'dense');
-    
+
     if (colorsReversed == true){
         label.textContent = name.concat('*')
     } else {label.textContent = name}
@@ -68,12 +68,12 @@ for (const layer of layers) {
     container.appendChild(checkbox);
     container.appendChild(label);
 
-    //add item to legend for each category        
+    //add item to legend for each category
     if (categoriesProcessed.includes(category)){
         subheadings[category].push(container)
-        
+
     }else{
-        
+
         subheadings[category]=[]
         subheadings[category].push(container)
 
@@ -99,7 +99,7 @@ for (const layer of layers) {
                     item.appendChild(key);
                 }
             }
-            
+
             //append key and subheading
             subhead.append(item);
             subheadings[category].unshift(subhead);
@@ -143,20 +143,46 @@ function checkboxChange(evt) {
 }
 
 
+// Sidebar opener and closer
+const sdbr = d3.select("div.sidebar");
+const bdy = d3.select("body");
+const open_close = bdy.append("svg").attr("id","open_close");
+open_close.append("circle").attr("id", "opener").attr("cx", 20).attr("cy", 20).attr("r", 20).attr("fill", "#fff").attr("opacity", 0.5);
+let sidebar_open = true;
+const cross_lines = open_close.append("g").attr("class", "cross_lines");
+cross_lines.append("path").attr("d", "M 20 10 V 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
+cross_lines.append("path").attr("d", "M 10 20 H 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
+open_close.style("transform", "rotate(-45deg)");
+
+d3.select("#opener").on("click", e => {
+	if(sidebar_open){
+		sdbr.transition().duration(750).style("right", "-23rem");
+		open_close.transition().duration(750).style("transform", "rotate(90deg)");
+		sidebar_open = false;
+	} else {
+		sdbr.transition().duration(750).style("right", "0rem");
+		open_close.transition().duration(750).style("transform", "rotate(-45deg)");
+		sidebar_open = true;
+	}
+});
+
 // Mouse - over data pop up
 map.on('mousemove', function(e) {
 
     var showVal = map.queryRenderedFeatures(e.point, {
       layers: visibleLayers
     });
-    
-    if (typeof(showVal[0].properties.lad18nm)=="string"){
-        areaName = showVal[0].properties.lad18nm
-    } else if (typeof(showVal[0].properties.areaID)=="string"){
-        areaName = showVal[0].properties.areaID
-    }
-  
+
     if (showVal.length > 0) {
+
+      var areaName, name, nickName, areaValue;
+
+      if (typeof(showVal[0].properties.lad18nm)=="string"){
+          areaName = showVal[0].properties.lad18nm
+      } else if (typeof(showVal[0].properties.areaID)=="string"){
+          areaName = showVal[0].properties.areaID
+      }
+
         htmlText = '<p class="pd_p"><h3><strong>' + areaName + '</strong></h3>';
 
         for (i in showVal){
@@ -170,7 +196,7 @@ map.on('mousemove', function(e) {
             } else if (areaValue.countDecimals()>4) {
                 areaValue=areaValue.toFixed(1)
             }
-            
+
             htmlText = htmlText + nickName + ': <strong><em>' + areaValue + '</em></strong></p>';
         }
         document.getElementById('pd').innerHTML = htmlText
@@ -182,5 +208,5 @@ map.on('mousemove', function(e) {
 
 Number.prototype.countDecimals = function () {
     if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
-    return this.toString().split(".")[1].length || 0; 
+    return this.toString().split(".")[1].length || 0;
 }
