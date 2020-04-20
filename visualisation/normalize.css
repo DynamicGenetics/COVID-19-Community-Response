@@ -244,6 +244,65 @@ legend {
   max-width: 100%; /* 1 */
   padding: 0; /* 3 */
   white-space: normal; /* 1 */
+  height: 200px;
+}
+
+#legend {
+  height: 200px;
+  margin-top: 1rem;
+}
+
+.legend-key {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+}
+
+.legend-label {
+  margin: 10px;
+  font-size: 15px;
+}
+
+#legendHelp {
+  padding-left: 2rem;
+  text-align: left
+}
+
+.menu-subhead {
+  font-size: 1.2rem;
+  display: inline-block;
+  margin-top: 1rem !important;
+}
+
+.pd{
+  padding: 20px;
+}
+
+#overlay_pd{
+  position: absolute;
+  top: 0;
+  right: 10rem;
+  width: 20rem;
+  text-align: center;
+  background-color: rgba(256,256,256,0.6);
+  font-family: 'Roboto', sans-serif;
+  border-radius: 20px;
+}
+
+.pd-p{
+  padding: 5px !important;
+  margin: 5px !important;
+}
+
+.dense{
+  font-size: 1rem !important;
+  margin: 0px;
+  padding: 0px;
+}
+
+.spacey{
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 /**

@@ -1,161 +1,13 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoibmluYWRpY2FyYSIsImEiOiJjazNsb3V3Ym0wNTdqM2JvaGRhdjFlN21vIn0.Q4kTCqSpKI00NAJzezecZg';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    // style: 'mapbox://styles/cmorenostokoe/ck8isca7j0zsk1iqx4k4khk4u', //mapbox://styles/cmorenostokoe/ck8isca7j0zsk1iqx4k4khk4u
+    style: 'mapbox://styles/mapbox/light-v10', // style: 'mapbox://styles/cmorenostokoe/ck8isca7j0zsk1iqx4k4khk4u'
     center: [-3.479368, 52.455248], //Mid-Wales ish
     zoom: 7
 });
 
-var extra_layers = [
-    {
-        name: 'Tweets by LA Population',
-        shownByDefault: false,
-        layerSpec: {
-            id: 'tweet',
-            type: 'fill',
-            source: 'tweet',
-            paint: {
-                'fill-color': {
-                    property: 'tweets_per_pop',
-                    stops: [[0.1, '#F7FBFF'],
-                            [0.2, '#DEEBF7'],
-                            [0.3, '#C6DBEF'],
-                            [0.4, '#9ECAE1'],
-                            [0.5, '#6BAED6'],
-                            [0.6, '#4292C6'],
-                            [0.7, '#2171B5'],
-                            [0.8, '#984887'],
-                            [0.9, '#08519C'],
-                            [1, '#08306B']]
-                },
-                'fill-opacity': 0.46666666666666666
-            },
-            filter: ['==', '$type', 'Polygon']
-        }
-    },
-    ];
-    // {
-    //     name: 'Known groups',
-    //     shownByDefault: true,
-    //     layerSpec: {
-    //         id: 'known-groups',
-    //         type: 'circle',
-    //         source: 'known-groups',
-    //         paint: {
-    //             'circle-radius': {
-    //                 base: 1.75,
-    //                 stops: [[12, 2.7], [22, 180]]
-    //             },
-    //             'circle-color': '#7a0177'
-    //         }
-    //     }
-    // },
-    // {
-    //     name: 'Index of Multiple Deprivation',
-    //     shownByDefault: false,
-    //     layerSpec: {
-    //         id: 'deprivation',
-    //         type: 'fill',
-    //         source: 'demographics',
-    //         paint: {
-    //             'fill-color': {
-    //                 property: 'deprivation_30',
-    //                 stops: [[5, '#ffcaff'],
-    //                         [10.9, '#f0b7ed'],
-    //                         [16.8, '#e1a4db'],
-    //                         [22.7, '#d391ca'],
-    //                         [28.6, '#c47fb9'],
-    //                         [34.5, '#b56da8'],
-    //                         [40.4, '#a75b98'],
-    //                         [46.3, '#984887'],
-    //                         [52.2, '#8a3678'],
-    //                         [64, '#7b2268']]
-    //             },
-    //             'fill-opacity': 0.5
-    //         },
-    //         filter: ['==', '$type', 'Polygon']
-    //     }
-    // },
-    // {
-    //     name: 'Population density',
-    //     shownByDefault: false,
-    //     layerSpec: {
-    //         id: 'pop_density',
-    //         type: 'fill',
-    //         source: 'demographics',
-    //         paint: {
-    //             'fill-color': {
-    //                 property: 'pop_density',
-    //                 stops: [[25.6, '#ffff87'],
-    //                         [281.56, '#fff77f'],
-    //                         [537.52, '#ffef77'],
-    //                         [793.48, '#ffe770'],
-    //                         [1049.44, '#ffdf68'],
-    //                         [1305.4, '#ffd760'],
-    //                         [1561.36, '#ffcf58'],
-    //                         [1817.32, '#ffc750'],
-    //                         [2073.28, '#ffbe48'],
-    //                         [2585.2, '#ffb63f']]
-    //             },
-    //             'fill-opacity': 0.5
-    //         },
-    //         filter: ['==', '$type', 'Polygon']
-    //     }
-    // },
-    // {
-    //     name: 'Elderly population',
-    //     shownByDefault: false,
-    //     layerSpec: {
-    //         id: 'pop_elderly',
-    //         type: 'fill',
-    //         source: 'demographics',
-    //         paint: {
-    //             'fill-color': {
-    //                 property: 'pop_elderly',
-    //                 stops: [[14.09451802, '#91e5ff'],
-    //                         [15.429026416, '#84d3f3'],
-    //                         [16.763534812, '#77c2e7'],
-    //                         [18.098043208, '#6ab1da'],
-    //                         [19.432551604, '#5da0ce'],
-    //                         [20.76706, '#4f90c3'],
-    //                         [22.101568396, '#417fb7'],
-    //                         [23.436076792, '#3270ab'],
-    //                         [24.770585188, '#1f609f'],
-    //                         [27.43960198, '#005194']]
-    //             },
-    //             'fill-opacity': 0.5
-    //         },
-    //         filter: ['==', '$type', 'Polygon']
-    //     }
-    // },
-    // {
-    //     name: 'Welsh language',
-    //     shownByDefault: false,
-    //     layerSpec: {
-    //         id: 'language',
-    //         type: 'fill',
-    //         source: 'demographics',
-    //         paint: {
-    //             'fill-color': {
-    //                 property: 'language',
-    //                 stops: [[4.8, '#e689ff'],
-    //                         [10.83, '#d87cf6'],
-    //                         [16.86, '#ca70ed'],
-    //                         [22.89, '#bd63e3'],
-    //                         [28.92, '#af56da'],
-    //                         [34.95, '#a249d1'],
-    //                         [40.98, '#943cc8'],
-    //                         [47.01, '#862fbf'],
-    //                         [53.04, '#7820b6'],
-    //                         [65.1, '#6a0dad']]
-    //             },
-    //             'fill-opacity': 0.5
-    //         },
-    //         filter: ['==', '$type', 'Polygon']
-    //     }
-    // }
-// ];
+var visibleLayers=[]
+var nickNames={}
 
 map.on('load', function () {
 
@@ -167,32 +19,27 @@ map.on('load', function () {
         });
     }
 
-    map.addSource('tweet', {
-        'type': 'geojson',
-        'data': '../data/twitter_count.geojson'
-        });
-
     // Add Layers
     for (const layer of layers){
         const visibility = layer.shownByDefault ? 'visible' : 'none';
         map.addLayer(layer.layerSpec);
         map.setLayoutProperty(layer.layerSpec.id, 'visibility', visibility);
-    }
-
-    for (const layer of extra_layers){
-        const visibility = layer.shownByDefault ? 'visible' : 'none';
-        map.addLayer(layer.layerSpec);
-        map.setLayoutProperty(layer.layerSpec.id, 'visibility', visibility);
+        if (visibility=='visible'){visibleLayers.push(layer.layerSpec.id)}
+        nickNames[layer.layerSpec.id]=layer.name
     }
 });
 
 
 var menu = document.getElementById('menu');
+var categoriesProcessed = []
+var subheadings = {}
 
 for (const layer of layers) {
     var id = layer.layerSpec.id;
     var name = layer.name;
     var checked = layer.shownByDefault;
+    var category = layer.category;
+    var colorsReversed = layer.colorsReversed;
 
     var container = document.createElement('div');
     var checkbox = document.createElement('input');
@@ -202,49 +49,116 @@ for (const layer of layers) {
     checkbox.value = id;
     checkbox.id = id;
     checkbox.checked = checked;
-    checkbox.setAttribute('class', 'checkbox')
+    checkbox.setAttribute('class', 'checkbox dense')
 
     label.setAttribute('for', id);
-    label.textContent = name;
-
+    label.setAttribute('class', 'dense');
+    
+    if (colorsReversed == true){
+        label.textContent = name.concat('*')
+    } else {label.textContent = name}
     checkbox.addEventListener('change', checkboxChange);
 
     container.appendChild(checkbox);
     container.appendChild(label);
 
-    menu.appendChild(container);
+    //add item to legend for each category
+    if (categoriesProcessed.includes(category)){
+        subheadings[category].push(container)
+        //console.log("apready processed: ", category)
+    }else{
+        subheadings[category]=[]
+        subheadings[category].push(container)
+        
+        var subhead = document.createElement('div');
+            subhead.innerHTML = `<strong> ${category} </strong>`
+            subhead.className = 'menu-subhead';
+            subhead.setAttribute('class', 'dense');
+            subhead.id = category
+
+        var item = document.createElement('div');
+        //get color stops
+        for (const color_stop of layer.layerSpec.paint['fill-color'].stops) {
+            var key = document.createElement('div');
+            key.className = 'legend-key';
+            key.style.backgroundColor = color_stop[1];
+            if (colorsReversed == true){
+                item.insertBefore(key, item.childNodes[0]);
+            }else{
+                item.appendChild(key);
+            }
+        }
+        
+        //append key and subheading
+        subhead.append(item);
+        subheadings[category].unshift(subhead);
+
+        //make legend label text
+        // var value = document.createElement('span');
+        // value.innerHTML = category;
+        // value.className = 'legend-label';
+        // item.appendChild(value);
+
+        //add category to completed list so key/label is not duplicated in legend
+        categoriesProcessed.push(category);
+    }
 }
 
-for (const layer of extra_layers) {
-    var id = layer.layerSpec.id;
-    var name = layer.name;
-    var checked = layer.shownByDefault;
-
-    var container = document.createElement('div');
-    var checkbox = document.createElement('input');
-    var label = document.createElement('label');
-
-    checkbox.type = 'checkbox';
-    checkbox.value = id;
-    checkbox.id = id;
-    checkbox.checked = checked;
-    checkbox.setAttribute('class', 'checkbox')
-
-    label.setAttribute('for', id);
-    label.textContent = name;
-
-    checkbox.addEventListener('change', checkboxChange);
-
-    container.appendChild(checkbox);
-    container.appendChild(label);
-
-    menu.appendChild(container);
+for (const cat of categoriesProcessed){
+    for (const div of subheadings[cat]){
+        menu.appendChild(div);
+    }
 }
 
 function checkboxChange(evt) {
     var id = evt.target.value;
     var visibility = evt.target.checked ? 'visible' : 'none';
     map.setLayoutProperty(id, 'visibility', visibility);
+    if (visibleLayers.includes(id)){
+        visibleLayers.pop(id)
+    }else{visibleLayers.push(id)}
+}
 
+map.on('mousemove', function(e) {
 
+    //console.log("visible:",visibleLayers)
+
+    var showVal = map.queryRenderedFeatures(e.point, {
+      layers: visibleLayers
+    });
+    
+    if (typeof(showVal[0].properties.lad18nm)=="string"){
+        areaName = showVal[0].properties.lad18nm
+    } else if (typeof(showVal[0].properties.areaID)=="string"){
+        areaName = showVal[0].properties.areaID
+        console.log(showVal[0].properties)
+    }
+  
+    if (showVal.length > 0) {
+        htmlText = '<p class="pd_p"><h3><strong>' + areaName + '</strong></h3>';
+
+        for (i in showVal){
+            name = showVal[i].layer.id
+            nickName = nickNames[name]
+            areaValue = showVal[i].properties[name]
+            if (areaValue < 0.001) {
+                areaValue=areaValue.toFixed(4)
+            } else if  (areaValue < 1){
+                areaValue=areaValue.toFixed(2)
+            } else if (areaValue.countDecimals()>4) {
+                areaValue=areaValue.toFixed(1)
+            }
+            
+            htmlText = htmlText + nickName + ': <strong><em>' + areaValue + '</em></strong></p>';
+        }
+        document.getElementById('pd').innerHTML = htmlText
+      //document.getElementById('pd').innerHTML = '<h3><strong>' + areaName + '</strong></h3><p><strong><em>' + (areaValue*divisor).toFixed(2) + '</strong> groups per '  + divisor + ' people </em></p>';
+    } else {
+      document.getElementById('pd').innerHTML = '<p>Hover over an area for values</p>';
+    }
+  });
+
+Number.prototype.countDecimals = function () {
+    if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
+    return this.toString().split(".")[1].length || 0; 
 }

@@ -1,4 +1,3 @@
-
 # %%
 import pandas as pd
 import numpy as np
@@ -31,8 +30,8 @@ MatchingLA = Union[Tuple[str, str, str], pd.DataFrame]
 
 #     Returns
 #     -------
-#     A tuple containing the name, the code, and the reference of 
-#     the top matching LA, or all of them (in the form of 
+#     A tuple containing the name, the code, and the reference of
+#     the top matching LA, or all of them (in the form of
 #     a pandas.DataFrame)
 #     """
 
