@@ -43,7 +43,7 @@ for data in dataSources:
             # If data marked as 'scrape', scrape data first then recompile as geojson
             elif data["type"] == "scrape":
                 # Scrape data from google sheet, remove duplicates, geolocate to Wales and convert csv to geoJSON
-                if runScraping == True:
+                if runScraping:
                     googleScrape(
                         "https://www.googleapis.com/auth/spreadsheets.readonly",
                         "1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY",

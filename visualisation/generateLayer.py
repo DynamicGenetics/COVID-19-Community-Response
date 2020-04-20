@@ -24,7 +24,7 @@ def generateLayer(dataSources, filename_output):
                 for dataField in src["layers"].keys():
                     layer = src["layers"][dataField]
 
-                    if layer["disabled"] == False:
+                    if not layer["disabled"]:
 
                         if layer["category"] not in layers.keys():
                             layers[layer["category"]] = {}
@@ -56,7 +56,7 @@ def generateLayer(dataSources, filename_output):
                             if dataField in src["layers"].keys():
                                 layer = src["layers"][dataField]
 
-                                if layer["disabled"] == False:
+                                if not layer["disabled"]:
 
                                     dataValue = properties[dataField]
 
@@ -136,7 +136,7 @@ def generateLayer(dataSources, filename_output):
                     for i in range(9):
                         stp = min(dataValues) + (dataStop * i)
 
-                        if reverseColors == True:
+                        if reverseColors:
                             col = hexList[(8 - i)]
                         else:
                             col = hexList[i]
