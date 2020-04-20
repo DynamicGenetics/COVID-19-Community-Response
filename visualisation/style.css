@@ -23,12 +23,13 @@ body {
 }
 
 #open_close {
-    position: fixed;
-    top: 5px;
-    right: 5px;
-    height: 40px;
-    width: 40px;
-    z-index: 7;
+	position: fixed;
+	top: 5px;
+	right: 5px;
+	height: 40px;
+	width: 40px;
+	z-index: 7;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #open_close circle {
