@@ -6,17 +6,17 @@
     <title>COVID-19 Community Support Map</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet" />
     <link href="normalize.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet" />
 </head>
 
 <body>
-
     <div class="sidebar">
-        <h2>COVID Community Support Map</h2>
-        <p class="dense"><font size="-1">This map shows currently known sources of community support in Wales, alongside community risk factors and 
-            risk factors for COVID-19. For a full explanation of the methdology and data sources please see the 
+        <h2>COVID Community Support</h2>
+        <p class="dense"><font size="-1">This map shows currently known sources of community support in Wales, alongside community risk factors and
+            risk factors for COVID-19. For a full explanation of the methdology and data sources please see the
             <a href="https://github.com/DynamicGenetics/Covid-Communities-Map/wiki">wiki page</a>.</font></p>
         <h2 class=" spacey">Layers</h2>
         <nav id="menu"></nav>
@@ -31,7 +31,7 @@
     <div id="map"></div>
 
     <div class="map-overlay" id="overlay_pd">
-        <div id='pd' class='pd'>Hover over an area for statistics</div> 
+        <div id='pd' class='pd'>Hover over an area for statistics</div>
     </div>
 
 </body>
