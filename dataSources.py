@@ -165,7 +165,7 @@ DATASOURCES = [
         "ID_name": "areaID",
         "layers": {
             "groupCount": {
-                "nickName": "Community support groups",
+                "nickName": "Community support group count",
                 "category": DATAGROUPS['community']['name'],
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,

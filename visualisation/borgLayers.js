@@ -1,16 +1,16 @@
 var layers=[
     {
-        layerSpec: {
-            filter: [
+        "*layerSpec*": {
+            "*filter*": [
                 "==",
                 "$type",
                 "Polygon"
             ],
-            id: "communityCohesion",
-            paint: {
+            "*id*": "communityCohesion",
+            "*paint*": {
                 "fill-color": {
-                    property: "communityCohesion",
-                    stops: [
+                    "*property*": "communityCohesion",
+                    "*stops*": [
                         [
                             3.875464684,
                             "#ffffe5"
@@ -51,25 +51,25 @@ var layers=[
                 },
                 "fill-opacity": 0.25
             },
-            source: "communityCohesion",
-            type: "fill",
+            "*source*": "communityCohesion",
+            "*type*": "fill",
             "ID_name": "areaID"
         },
-        name: "Community cohesion",
-        ref: "../data/community_cohesion_deprivation.geojson",
-        shownByDefault: false,
+        "*name*": "Community cohesion",
+        "*ref*": "../data/community_cohesion_deprivation.geojson",
+        "*shownByDefault*": false,
         "category": "Community support",
         "colorsReversed": false,
         "displayOrder": 0
     },
     {
-        layerSpec: {
-            id: "groups",
-            paint: {
+        "*layerSpec*": {
+            "*id*": "groups",
+            "*paint*": {
                 "circle-color": "#111",
                 "circle-radius": {
-                    base: 1.75,
-                    stops: [
+                    "*base*": 1.75,
+                    "*stops*": [
                         [
                             12,
                             2.7
@@ -81,29 +81,29 @@ var layers=[
                     ]
                 }
             },
-            source: "groups",
-            type: "circle",
+            "*source*": "groups",
+            "*type*": "circle",
             "ID_name": null
         },
-        name: "Community support groups",
-        ref: "../data/groups.geojson",
-        shownByDefault: true,
+        "*name*": "Community support groups",
+        "*ref*": "../data/groups.geojson",
+        "*shownByDefault*": true,
         "category": "Community support",
         "colorsReversed": false,
         "displayOrder": 0
     },
     {
-        layerSpec: {
-            filter: [
+        "*layerSpec*": {
+            "*filter*": [
                 "==",
                 "$type",
                 "Polygon"
             ],
-            id: "groupCount",
-            paint: {
+            "*id*": "groupCount",
+            "*paint*": {
                 "fill-color": {
-                    property: "groupCount",
-                    stops: [
+                    "*property*": "groupCount",
+                    "*stops*": [
                         [
                             0.0,
                             "#ffffe5"
@@ -144,29 +144,29 @@ var layers=[
                 },
                 "fill-opacity": 0.25
             },
-            source: "groupCount",
-            type: "fill",
+            "*source*": "groupCount",
+            "*type*": "fill",
             "ID_name": "areaID"
         },
-        name: "Community support groups",
-        ref: "../data/groupCount.geojson",
-        shownByDefault: false,
+        "*name*": "Community support group count",
+        "*ref*": "../data/groupCount.geojson",
+        "*shownByDefault*": false,
         "category": "Community support",
         "colorsReversed": false,
         "displayOrder": 0
     },
     {
-        layerSpec: {
-            filter: [
+        "*layerSpec*": {
+            "*filter*": [
                 "==",
                 "$type",
                 "Polygon"
             ],
-            id: "tweets_per_pop",
-            paint: {
+            "*id*": "tweets_per_pop",
+            "*paint*": {
                 "fill-color": {
-                    property: "tweets_per_pop",
-                    stops: [
+                    "*property*": "tweets_per_pop",
+                    "*stops*": [
                         [
                             0.1411675159226237,
                             "#ffffe5"
@@ -207,29 +207,29 @@ var layers=[
                 },
                 "fill-opacity": 0.25
             },
-            source: "tweets_per_pop",
-            type: "fill",
+            "*source*": "tweets_per_pop",
+            "*type*": "fill",
             "ID_name": null
         },
-        name: "Support related tweets (PP)",
-        ref: "../data/twitter_count.geojson",
-        shownByDefault: true,
+        "*name*": "Support related tweets (PP)",
+        "*ref*": "../data/twitter_count.geojson",
+        "*shownByDefault*": true,
         "category": "Community support",
         "colorsReversed": false,
         "displayOrder": 0
     },
     {
-        layerSpec: {
-            filter: [
+        "*layerSpec*": {
+            "*filter*": [
                 "==",
                 "$type",
                 "Polygon"
             ],
-            id: "vulnerable_pct",
-            paint: {
+            "*id*": "vulnerable_pct",
+            "*paint*": {
                 "fill-color": {
-                    property: "vulnerable_pct",
-                    stops: [
+                    "*property*": "vulnerable_pct",
+                    "*stops*": [
                         [
                             32.3,
                             "#fff7ec"
@@ -270,29 +270,29 @@ var layers=[
                 },
                 "fill-opacity": 0.3333333333333333
             },
-            source: "vulnerable_pct",
-            type: "fill",
+            "*source*": "vulnerable_pct",
+            "*type*": "fill",
             "ID_name": "areaID"
         },
-        name: "COVID vulnerable (comorbidity %)",
-        ref: "../data/covid_vulnerable.geojson",
-        shownByDefault: false,
+        "*name*": "COVID vulnerable (comorbidity %)",
+        "*ref*": "../data/covid_vulnerable.geojson",
+        "*shownByDefault*": false,
         "category": "COVID vulnerability",
         "colorsReversed": false,
         "displayOrder": 1
     },
     {
-        layerSpec: {
-            filter: [
+        "*layerSpec*": {
+            "*filter*": [
                 "==",
                 "$type",
                 "Polygon"
             ],
-            id: "pop_elderly",
-            paint: {
+            "*id*": "pop_elderly",
+            "*paint*": {
                 "fill-color": {
-                    property: "pop_elderly",
-                    stops: [
+                    "*property*": "pop_elderly",
+                    "*stops*": [
                         [
                             14.09451802,
                             "#fff7ec"
@@ -333,29 +333,29 @@ var layers=[
                 },
                 "fill-opacity": 0.3333333333333333
             },
-            source: "pop_elderly",
-            type: "fill",
+            "*source*": "pop_elderly",
+            "*type*": "fill",
             "ID_name": "areaID"
         },
-        name: "Elderly population (% over 65)",
-        ref: "../data/covid_vulnerable.geojson",
-        shownByDefault: false,
+        "*name*": "Elderly population (% over 65)",
+        "*ref*": "../data/covid_vulnerable.geojson",
+        "*shownByDefault*": false,
         "category": "COVID vulnerability",
         "colorsReversed": false,
         "displayOrder": 1
     },
     {
-        layerSpec: {
-            filter: [
+        "*layerSpec*": {
+            "*filter*": [
                 "==",
                 "$type",
                 "Polygon"
             ],
-            id: "covid_per100k",
-            paint: {
+            "*id*": "covid_per100k",
+            "*paint*": {
                 "fill-color": {
-                    property: "covid_per100k",
-                    stops: [
+                    "*property*": "covid_per100k",
+                    "*stops*": [
                         [
                             42.5,
                             "#fff7ec"
@@ -396,29 +396,29 @@ var layers=[
                 },
                 "fill-opacity": 0.3333333333333333
             },
-            source: "covid_per100k",
-            type: "fill",
+            "*source*": "covid_per100k",
+            "*type*": "fill",
             "ID_name": "areaID"
         },
-        name: "COVID cases (per 100k)",
-        ref: "../data/covid_cases.geojson",
-        shownByDefault: false,
+        "*name*": "COVID cases (per 100k)",
+        "*ref*": "../data/covid_cases.geojson",
+        "*shownByDefault*": false,
         "category": "COVID vulnerability",
         "colorsReversed": false,
         "displayOrder": 1
     },
     {
-        layerSpec: {
-            filter: [
+        "*layerSpec*": {
+            "*filter*": [
                 "==",
                 "$type",
                 "Polygon"
             ],
-            id: "pop_density",
-            paint: {
+            "*id*": "pop_density",
+            "*paint*": {
                 "fill-color": {
-                    property: "pop_density",
-                    stops: [
+                    "*property*": "pop_density",
+                    "*stops*": [
                         [
                             25.6,
                             "#fff7f3"
@@ -459,29 +459,29 @@ var layers=[
                 },
                 "fill-opacity": 0.5
             },
-            source: "pop_density",
-            type: "fill",
+            "*source*": "pop_density",
+            "*type*": "fill",
             "ID_name": "areaID"
         },
-        name: "Population density",
-        ref: "../data/covid_vulnerable.geojson",
-        shownByDefault: false,
+        "*name*": "Population density",
+        "*ref*": "../data/covid_vulnerable.geojson",
+        "*shownByDefault*": false,
         "category": "Demographics",
         "colorsReversed": false,
         "displayOrder": 2
     },
     {
-        layerSpec: {
-            filter: [
+        "*layerSpec*": {
+            "*filter*": [
                 "==",
                 "$type",
                 "Polygon"
             ],
-            id: "WIMD_rank",
-            paint: {
+            "*id*": "WIMD_rank",
+            "*paint*": {
                 "fill-color": {
-                    property: "WIMD_rank",
-                    stops: [
+                    "*property*": "WIMD_rank",
+                    "*stops*": [
                         [
                             1.0,
                             "#fff7f3"
@@ -522,13 +522,13 @@ var layers=[
                 },
                 "fill-opacity": 0.5
             },
-            source: "WIMD_rank",
-            type: "fill",
+            "*source*": "WIMD_rank",
+            "*type*": "fill",
             "ID_name": "areaID"
         },
-        name: "Multiple deprivation",
-        ref: "../data/demos_LSOA.geojson",
-        shownByDefault: false,
+        "*name*": "Multiple deprivation",
+        "*ref*": "../data/demos_LSOA.geojson",
+        "*shownByDefault*": false,
         "category": "Demographics",
         "colorsReversed": false,
         "displayOrder": 2
