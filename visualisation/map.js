@@ -38,8 +38,6 @@ map.on('load', function () {
 
 
 // Dynamically generate sidebar menu & integrated legend
-
-let menu = document.getElementById('menu');
 let categoriesProcessed = []
 let subheadings = {}
 let orders = {}
@@ -53,6 +51,7 @@ for (const layer of layers) {
     const displayOrder = layer.displayOrder;
     const colorsReversed = layer.colorsReversed;
     const layerType = layer.layerSpec.type;
+    const catid = layer.catid;
 
     let container = document.createElement('div');
     let checkbox = document.createElement('input');
@@ -72,7 +71,7 @@ for (const layer of layers) {
     } else {
         label.textContent = name
     }
-    checkbox.addEventListener('change', checkboxChange);
+    // checkbox.addEventListener('change', checkboxChange);
 
     container.appendChild(checkbox);
     container.appendChild(label);
@@ -80,37 +79,36 @@ for (const layer of layers) {
     //add item to legend for each category
     if (categoriesProcessed.includes(category)) {
         subheadings[category].push(container)
-
     } else {
-
         subheadings[category] = []
         subheadings[category].push(container)
-
         //Build headings & legends for categories
         if (layerType !== 'circle') {
-
             let subhead = document.createElement('div');
-            subhead.innerHTML = `<strong> ${category} </strong>`
+            subhead.innerHTML = '<h3 class="' + catid + '">' + category + '</h3>';
             subhead.className = 'menu-subhead';
-            subhead.setAttribute('class', 'category');
+            subhead.setAttribute('class', 'category group');
             subhead.id = category
 
-            let item = document.createElement('div');
+            let cat_container = document.createElement('div');
+            cat_container.setAttribute('class', 'cat_container');
 
+            let colorbar = document.createElement('div');
             //get color stops
             for (const color_stop of layer.layerSpec.paint['fill-color'].stops) {
                 let key = document.createElement('div');
                 key.className = 'legend-key';
                 key.style.backgroundColor = color_stop[1];
                 if (colorsReversed === true) {
-                    item.insertBefore(key, item.childNodes[0]);
+                    colorbar.insertBefore(key, colorbar.childNodes[0]);
                 } else {
-                    item.appendChild(key);
+                    colorbar.appendChild(key);
                 }
             }
+            cat_container.append(colorbar);
 
-            //append key and subheading
-            subhead.append(item);
+            // append key and subheading
+            subhead.append(cat_container);
             subheadings[category].unshift(subhead);
         }
         categoriesProcessed.push(category);
@@ -126,10 +124,13 @@ for (const o of categoriesProcessed) {
 categoriesOrdered.sort()
 
 for (const cat of categoriesOrdered) {
-    for (const div of subheadings[cat[1]]) {
-        menu.appendChild(div);
+    const category = cat[1];
+    const category_acc = subheadings[category][0];
+    const subhead = $(category_acc).children('div.cat_container');
+    for (const div of subheadings[category].slice(1)) {
+        subhead.append($(div));
     }
-
+    $('#accordion').append(category_acc);
 }
 
 function checkboxChange(evt) {
@@ -152,6 +153,7 @@ function checkboxChange(evt) {
 map.on('mousemove', function (e) {
 
     let defaultTag = "<p>Hover over an area for values</p>";
+    // Erase content of InnerHTML to avoid inconstistency when zooming in/out.
     document.getElementById('pd').innerHTML = '';
 
     let features = map.queryRenderedFeatures(e.point, {
@@ -159,7 +161,6 @@ map.on('mousemove', function (e) {
     });
 
     if (features.length > 0) {
-
         let areaName, name, nickName, areaValue;
         // Reducer function to concatenate visible layers info
         const reducer = (tag, paragraph) => tag + paragraph;
@@ -226,7 +227,7 @@ d3.select("#opener").on("click", _ => {
 });
 
 const mq = window.matchMedia("(max-width: 813px)");
-if (mq.matches){
+if (mq.matches) {
     const b = document.getElementById('opener');
     let evt = new MouseEvent("click");
     b.dispatchEvent(evt);
