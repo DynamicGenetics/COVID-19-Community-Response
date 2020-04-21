@@ -6,6 +6,69 @@ var layers=[
                 "$type",
                 "Polygon"
             ],
+            id: "language",
+            paint: {
+                "fill-color": {
+                    property: "language",
+                    stops: [
+                        [
+                            4.8,
+                            "#f7fcf0"
+                        ],
+                        [
+                            21.54455652324579,
+                            "#e0f3db"
+                        ],
+                        [
+                            38.28911304649158,
+                            "#ccebc5"
+                        ],
+                        [
+                            55.03366956973737,
+                            "#a8ddb5"
+                        ],
+                        [
+                            71.77822609298316,
+                            "#7bccc4"
+                        ],
+                        [
+                            88.52278261622895,
+                            "#4eb3d3"
+                        ],
+                        [
+                            105.26733913947474,
+                            "#2b8cbe"
+                        ],
+                        [
+                            122.01189566272053,
+                            "#0868ac"
+                        ],
+                        [
+                            138.75645218596634,
+                            "#084081"
+                        ]
+                    ]
+                },
+                "fill-opacity": 1.0
+            },
+            source: "language",
+            type: "fill",
+            "ID_name": "areaID"
+        },
+        name: "Welsh language use",
+        ref: "../data/bias_language.geojson",
+        shownByDefault: false,
+        "category": "Factors affecting data quality",
+        "colorsReversed": false,
+        "displayOrder": 3
+    },
+    {
+        layerSpec: {
+            filter: [
+                "==",
+                "$type",
+                "Polygon"
+            ],
             id: "communityCohesion",
             paint: {
                 "fill-color": {

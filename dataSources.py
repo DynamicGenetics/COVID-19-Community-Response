@@ -36,7 +36,7 @@ DATASOURCES = [
                 "nickName": "Welsh language use",
                 "category": DATAGROUPS['bias']['name'],
                 "categoryInfo": DATAGROUPS['bias'],
-                "disabled": True,
+                "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
             },
