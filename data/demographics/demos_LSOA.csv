@@ -1,4 +1,4 @@
-LSOA Code,LSOA Name (English),WIMD 2019 LSOA Rank,language
+areaID,area_name,WIMD_rank,language
 W01000001,Aberffraw & Rhosneigr 1,885,50
 W01000002,Aberffraw & Rhosneigr 2,1324,50.2
 W01000003,Amlwch Port,550,64.5

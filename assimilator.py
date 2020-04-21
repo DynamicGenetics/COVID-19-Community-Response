@@ -7,9 +7,8 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
 
     # If input is csv
     if data_type == "csv":
-
         # Open the CSV as dictionary
-        with open(data_path, newline="", encoding="utf-8") as f:
+        with open(data_path, newline="") as f:
             reader = csv.DictReader(f)
 
             # Make dictionary of all columns in csv
@@ -29,7 +28,6 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
 
                 data_toAssimilate[row[data_idName]] = properties
                 continue
-
             # Open boundary geoJSON file
             with open(geo_path, "r") as boundaryFile:
 
@@ -37,6 +35,8 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
                 # For row in CSV insert columns as properties in geoJSON
                 for boundary in boundaries["features"]:
                     properties = boundary["properties"]
+                    #print(properties)
+                    
                     boundary["properties"] = data_toAssimilate[properties[geo_idName]]
 
                 data_assimilated = boundaries

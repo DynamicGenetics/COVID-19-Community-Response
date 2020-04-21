@@ -1,4 +1,5 @@
 import json
+from statistics import stdev 
 
 geoLabelsToIgnore = ["objectid", "bng_e", "bng_n"]
 
@@ -98,6 +99,7 @@ def generateLayer(dataSources, filename_output):
             exceptions.append(filename)
 
     o = 0
+    finishedLayers=[]
     # First process polygon data
     for key_category in layers:
         layerCategory = layers[key_category]
@@ -121,7 +123,7 @@ def generateLayer(dataSources, filename_output):
             enabledByDefault = layer["enabledByDefault"]
 
             # try:
-
+            
             if geometry == "Polygons":
 
                 dataValues = layer["dataValues"]
@@ -129,8 +131,9 @@ def generateLayer(dataSources, filename_output):
 
                 # Get range of each property dataField in geoJSON (for numerical polygon data only) & compute stops / colors
                 if isinstance(dataValues[0], int) or isinstance(dataValues[0], float):
-
-                    dataStop = (max(dataValues) - min(dataValues)) / 8
+                    
+                    dataStop=stdev(dataValues)
+                    #dataStop = (max(dataValues) - min(dataValues)) / 8
 
                     for i in range(9):
                         stp = min(dataValues) + (dataStop * i)
@@ -167,6 +170,8 @@ def generateLayer(dataSources, filename_output):
                         },
                     }
                 )
+                
+                finishedLayers.append(dataField)
 
             # Now process point data
             elif layer["geometry"] == "Points":
@@ -194,7 +199,8 @@ def generateLayer(dataSources, filename_output):
                         },
                     }
                 )
-
+                
+                finishedLayers.append(dataField)
             #    except:
             #        exceptions.append(dataField)
 
@@ -205,6 +211,6 @@ def generateLayer(dataSources, filename_output):
         jsonDumps = json.dumps(output, indent=4, sort_keys=True)
         outs.write("var layers={}".format(jsonDumps))
 
-    return "Message (generateLayers): Layers produced: {}. Exceptions: {}".format(
-        len(output), set(exceptions)
+    return "Message (generateLayers): Layers produced: {} ({}). Exceptions: {}".format(
+        len(output), finishedLayers, len(set(exceptions))
     )

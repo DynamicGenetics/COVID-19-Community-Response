@@ -52,7 +52,6 @@ def groupProcessing(filenames, boundaryfile):
             if polygon.contains(point):
 
                 LAs_identified += 1
-                print
                 try:
                     LA_polygons.append(
                         {
@@ -172,13 +171,16 @@ def groupProcessing(filenames, boundaryfile):
     # Build dictionary for demographics
     output = []
     demographics = {}
-    with open(filename_demographics, newline="", encoding="utf-8") as f:
+    with open(filename_demographics, newline="") as f:
         reader = csv.DictReader(f)
 
         for row in reader:
-            demographics[row["id_area"]] = {
-                "pop": float(row["pop"].replace(",", "",)),
-                "pop_elderly": float(row["pop_elderly"].replace(",", "",)),
+
+            demographics[row["areaID"]] = {
+                "pop": float(row["WIMD_rank"].replace(",", "",)),
+                "pop_elderly": float(row["language"].replace(",", "",)),
+                #"pop": float(row["WIMD_rank"].replace(",", "",)),
+                #"pop_elderly": float(row["language"].replace(",", "",)),
             }
 
     # Count groups per area

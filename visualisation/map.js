@@ -169,6 +169,8 @@ map.on('mousemove', function (e) {
             areaName = features[0].properties.lad18nm
         } else if (features[0].properties.hasOwnProperty('areaID')) {
             areaName = features[0].properties.areaID
+        } else if (features[0].properties.hasOwnProperty('LSOA11NM')) {
+            areaName = features[0].properties.LSOA11NM
         } else {
             areaName = '';
         }
