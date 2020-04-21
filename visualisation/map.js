@@ -160,6 +160,8 @@ map.on('mousemove', function (e) {
         layers: visibleLayers
     });
 
+    console.log(layers)
+
     if (features.length > 0) {
         let areaName, name, nickName, areaValue;
         // Reducer function to concatenate visible layers info
@@ -182,7 +184,10 @@ map.on('mousemove', function (e) {
             areaValue = feature.properties[name]
             if (areaValue === undefined)  // this may happen when we have only Community Support Group Visible
                 return "";
-            if (areaValue < 0.001) {
+            if (areaValue == 0) {
+                areaValue = areaValue
+            } 
+            else if (areaValue < 0.001) {
                 areaValue = areaValue.toFixed(4)
             } else if (areaValue < 1) {
                 areaValue = areaValue.toFixed(2)
