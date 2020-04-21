@@ -59,6 +59,7 @@ var layers=[
         "*ref*": "../data/bias_language.geojson",
         "*shownByDefault*": false,
         "category": "Factors affecting data quality",
+        "catid": "bias",
         "colorsReversed": false,
         "displayOrder": 3
     },
@@ -341,6 +342,7 @@ var layers=[
         "*ref*": "../data/community_cohesion_deprivation.geojson",
         "*shownByDefault*": false,
         "category": "Demographics",
+        "catid": "demographics",
         "colorsReversed": false,
         "displayOrder": 2
     },
@@ -404,6 +406,7 @@ var layers=[
         "*ref*": "../data/covid_vulnerable.geojson",
         "*shownByDefault*": false,
         "category": "Demographics",
+        "catid": "demographics",
         "colorsReversed": false,
         "displayOrder": 2
     },
