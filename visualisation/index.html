@@ -2,29 +2,49 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>COVID-19 Community Support Map</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    
+    <!--  JAVASCRIPT  -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet" />
-    <link href="normalize.css" rel="stylesheet" />
-    <link href="style.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <!--  CSS  -->
+    <link type="text/css"
+          href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link type="text/css" href="style.css" rel="stylesheet"/>
+    <link type="text/css" href="normalize.css" rel="stylesheet"/>
+    
 </head>
 
 <body>
     <div class="sidebar">
         <h2>COVID Community Support</h2>
-        <p class="dense"><font size="-1">This map shows currently known sources of community support in Wales, alongside community risk factors and
-            risk factors for COVID-19. For a full explanation of the methdology and data sources please see the
-            <a href="https://github.com/DynamicGenetics/Covid-Communities-Map/wiki">wiki page</a>.</font></p>
+        <p class="dense">
+            This map shows currently known sources of
+            community support in Wales, alongside community risk factors and
+            risk factors for COVID-19. For a full explanation of the methodology
+            and data sources please see the
+            <a href="https://github.com/DynamicGenetics/Covid-Communities-Map/wiki">
+                wiki page</a>.
+        </p>
         <h2 class=" spacey">Layers</h2>
-        <nav id="menu"></nav>
+        <nav id="menu">
+            <div id="accordion"></div>
+        </nav>
         <!--<small>For layers marked with an * darker colors indicate lower values so that multiple layers within the same category can be
             overlayed to show the combined vulnerability in this category</small>-->
         <footer>
             <!--<small style="color: black">For inverted layers marked with * darker = less</small>-->
-            <p>© Dynamic Genetics 2020</p>
+            <p>
+                © <a href="http://dynamicgenetics.org" title="Dynamic Genetics Lab"
+                        target="_blank"> Dynamic Genetics</a> 2020
+            </p>
         </footer>
     </div>
 
@@ -35,6 +55,30 @@
     </div>
 
 </body>
-    <script src="borgLayers.js"></script>
-    <script src="map.js"></script>
+
+<script type="text/javascript" src="borgLayers.js"></script>
+<script type="text/javascript" src="map.js"></script>
+<script>
+      $(document).ready(function () {
+          
+          // Set OnChange Handlers on Checkbox - after document is ready.
+          // this is to allow JQuery to properly trigger the change
+          // effect on checkboxes.
+          $("input[type='checkbox']").change(function(evt) {
+              checkboxChange(evt);
+          });
+          // Set JQuery UI Accordion
+          $("#accordion")
+              .accordion({
+                  header: "> div > h3",
+                  collapsible: true,
+                  heightStyle: "content",
+                  beforeActivate : function(event, ui) {
+                    if (ui.newHeader){
+                        $("input[type='checkbox']").prop('checked', false).change();
+                    }
+                  },
+              });
+      });
+  </script>
 </html>
