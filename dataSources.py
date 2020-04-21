@@ -170,7 +170,7 @@ DATASOURCES = [
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,
                 "reverseColors": False,
-                "enabledByDefault": False,
+                "enabledByDefault": True,
             },
             "groupCount_pop": {
                 "nickName": "Community support groups (PP)",
@@ -178,7 +178,7 @@ DATASOURCES = [
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": True,
                 "reverseColors": False,
-                "enabledByDefault": True,
+                "enabledByDefault": False,
             },
             "groupCount_elderly": {
                 "nickName": "Community support groups (per elderly population)",
