@@ -5,13 +5,17 @@ from data.community_measures.QC.detectDuplicate import detectDuplicate
 from data.community_measures.QC.QC import QCFilter
 
 
-def groupProcessing(filenames):
+def groupProcessing(filenames, boundaryfile):
+
     URLs = {}
 
     filename_boundaries_wales = filenames["boundaries_wales"]
     filename_boundaries_LA = filenames["boundaries_LA"]
     filename_csv = filenames["csv"]
     filename_demographics = filenames["demographics_legacy"]
+
+    varNm_geog_areaID =  boundaryfile['ID_name']
+    varNm_geog_areaNm = boundaryfile['area_name']
 
     # Import welsh boundaries
     # load GeoJSON file containing sectors
@@ -27,10 +31,12 @@ def groupProcessing(filenames):
                 wales_identified = True
                 # print("BOUNDARY GEOJSON: Welsh borders found and imported.")
 
-    # load GeoJSON file containing sectors
+    # load welsh LSOAs only from LSOA boundary file
     LA_polygons = []
     LAs_identified = 0
     welshLAs = []
+    wrongAreaIDcode=[]
+
     with open(filename_boundaries_LA) as LAs:
         LAs_js = json.load(LAs)
 
@@ -38,27 +44,29 @@ def groupProcessing(filenames):
         for feature in features:
             properties = feature["properties"]
 
-            # Convert long/lat strings into numbers
-            long = float(properties["long"])
-            lat = float(properties["lat"])
             # Construct point from coords
-            point = Point(long, lat)
+            point = shape(feature["geometry"]).representative_point()
+            #print(point)
+
             # Check polygon for Wales to see if it contains the point
             if polygon.contains(point):
 
-                welshLAs.append(feature)
-
-                # print ('LA boundary found within polygon:', point)
                 LAs_identified += 1
-                LA_polygons.append(
-                    {
-                        "lad18nm": properties["lad18nm"],
-                        "lad18cd": properties["lad18cd"],
-                        "LA_shape": shape(feature["geometry"]),
-                        "LA_groupCount": 0,
-                        "LA_groups": [],
-                    }
-                )
+                print
+                try:
+                    LA_polygons.append(
+                        {
+                            "area_name": properties[varNm_geog_areaNm],
+                            "areaID": properties[varNm_geog_areaID],
+                            "LA_shape": shape(feature["geometry"]),
+                            "LA_groupCount": 0,
+                            "LA_groups": [],
+                        }
+                    )
+                    welshLAs.append(feature)
+                except:
+                    wrongAreaIDcode.append([properties.keys()])
+    print("ERROR (assimilator): Wrong AreaID code for {} features (keys available: {})".format(len(wrongAreaIDcode),wrongAreaIDcode[0]))
 
     # Open the demographics CSV
     with open(filename_csv, newline="", encoding="utf-8") as f:
@@ -131,7 +139,7 @@ def groupProcessing(filenames):
                     if LA_ply["LA_shape"].contains(point):
 
                         duplicateTest = detectDuplicate(
-                            LA_ply["lad18cd"], row["URL"], URLs
+                            LA_ply["areaID"], row["URL"], URLs
                         )
 
                         if duplicateTest[0] == False:
@@ -139,8 +147,8 @@ def groupProcessing(filenames):
                                 [
                                     row["Location"],
                                     row["Title"],
-                                    LA_ply["lad18nm"],
-                                    LA_ply["lad18cd"],
+                                    LA_ply["area_name"],
+                                    LA_ply["areaID"],
                                     row["URL"],
                                     row["Notes"],
                                 ]
@@ -176,18 +184,18 @@ def groupProcessing(filenames):
     # Count groups per area
     for LA in welshLAs:
         properties = LA["properties"]
-        lad18cd = properties["lad18cd"]
-        pop = demographics[lad18cd]["pop"]
-        pop_elderly = demographics[lad18cd]["pop_elderly"]
+        areaID_name = properties[varNm_geog_areaID]
+        pop = demographics[areaID_name]["pop"]
+        pop_elderly = demographics[areaID_name]["pop_elderly"]
 
         # print('LA:', lad18cd, pop, pop_elderly)
 
         for LA_p in LA_polygons:
-            if lad18cd == LA_p["lad18cd"]:
+            if areaID_name == LA_p["areaID"]:
                 groupCount = LA_p["LA_groupCount"]
                 groupCount_pop = groupCount / pop
                 groupCount_elderly = groupCount / (pop_elderly / 100 * pop)
-                # print("MATCH: LA_p: ",lad18cd, LA_p["lad18cd"])
+                # print("MATCH: LA_p: ",areaID_name, LA_p["lad18cd"])
                 break
             else:
                 continue

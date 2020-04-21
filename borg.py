@@ -24,55 +24,55 @@ for data in DATASOURCES:
     # Proceed with data unless marked as 'disabled'
     if data["enabled"] == True:
 
-        try:
+        #try:
 
-            # If data marked as 'csv' directly recompile as geojson
-            if data["type"] == "csv":
+        # If data marked as 'csv' directly recompile as geojson
+        if data["type"] == "csv":
 
-                # Assimilate() csv as properties into geojson boundary file
-                geo = BOUNDARYFILES[data["res"]]
-                assimilate(
-                    data["type"],
-                    data["path"],
-                    data["ID_name"],
-                    geo["path"],
-                    geo["ID_name"],
-                    "data/{}.geojson".format(data["name"]),
-                )
-
-            # If data marked as 'scrape', scrape data first then recompile as geojson
-            elif data["type"] == "scrape":
-                # Scrape data from google sheet, remove duplicates, geolocate to Wales and convert csv to geoJSON
-                if runScraping:
-                    googleScrape(
-                        "https://www.googleapis.com/auth/spreadsheets.readonly",
-                        "1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY",
-                        "Support groups v2",
-                        FILENAMES["credentials"],
-                        FILENAMES["csv"],
-                    )
-                groupsData = groupProcessing(FILENAMES)
-                saveOutput(
-                    groupsData[0],
-                    groupsData[1],
-                    groupsData[2],
-                    groupsData[3],
-                    FILENAMES,
-                )
-                # for row in groupsData[4]: print(row)
-
-            elif data["type"] == "geojson":
-                continue
-
-            count_dataSuccess += 1
-            print(
-                "Message (Borg): Assimilating {} (type={}) ".format(
-                    data["name"], data["type"]
-                )
+            # Assimilate() csv as properties into geojson boundary file
+            geo = BOUNDARYFILES[data["res"]]
+            assimilate(
+                data["type"],
+                data["path"],
+                data["ID_name"],
+                geo["path"],
+                geo["ID_name"],
+                "data/{}.geojson".format(data["name"]),
             )
 
-        except:
-            print("ERROR (Borg): Could not assimilate: ", data["name"])
+        # If data marked as 'scrape', scrape data first then recompile as geojson
+        elif data["type"] == "scrape":
+            # Scrape data from google sheet, remove duplicates, geolocate to Wales and convert csv to geoJSON
+            if runScraping:
+                googleScrape(
+                    "https://www.googleapis.com/auth/spreadsheets.readonly",
+                    "1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY",
+                    "Support groups v2",
+                    FILENAMES["credentials"],
+                    FILENAMES["csv"],
+                )
+            groupsData = groupProcessing(FILENAMES, BOUNDARYFILES[data["res"]])
+            saveOutput(
+                groupsData[0],
+                groupsData[1],
+                groupsData[2],
+                groupsData[3],
+                FILENAMES,
+            )
+            # for row in groupsData[4]: print(row)
+
+        elif data["type"] == "geojson":
+            continue
+
+        count_dataSuccess += 1
+        print(
+            "Message (Borg): Assimilating {} (type={}) ".format(
+                data["name"], data["type"]
+            )
+        )
+
+        #except:
+        #    print("ERROR (Borg): Could not assimilate: ", data["name"])
 
         count_dataEnabled += 1
 

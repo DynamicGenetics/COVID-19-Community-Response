@@ -139,7 +139,7 @@ DATASOURCES = [
     {
         "name": "groups",
         "type": "geojson",
-        "res": "LA",
+        "res": "LSOA",
         "enabled": True,
         "path": "data/community_measures/groups.csv",
         "ID_name": None,
@@ -159,7 +159,7 @@ DATASOURCES = [
     {
         "name": "groupCount",
         "type": "scrape",
-        "res": "LA",
+        "res": "LSOA",
         "enabled": True,
         "path": "data/community_measures/groupCount.csv",
         "ID_name": "areaID",
@@ -216,16 +216,16 @@ DATASOURCES = [
 
 # Boundary files to assimilate data into (as 'properties')
 BOUNDARYFILES = {
-    "LA": {"path": "data/geography/boundaries_LAs.geojson", "ID_name": "lad18cd"},
-    "LSOA": {"path": "data/geography/boundaries_LSOAs.geojson", "ID_name": "LA11CD"},
-    "LHB": {"path": "data/geography/boundaries_LHBs.geojson", "ID_name": "lhb19cd"},
-    "wales": {"path": "data/geography/boundaries_Wales.geojson", "ID_name": "ctry19cd"},
+    "LA": {"path": "data/geography/boundaries_LAs.geojson", "ID_name": "lad18cd", "area_name":"lad18nm"},
+    "LSOA": {"path": "data/geography/boundaries_LSOAs.geojson", "ID_name": "LSOA11CD", "area_name":"LSOA11NM"},
+    "LHB": {"path": "data/geography/boundaries_LHBs.geojson", "ID_name": "lhb19cd", "area_name":"lhb19nm"},
+    "wales": {"path": "data/geography/boundaries_Wales.geojson", "ID_name": "ctry19cd", "area_name":"ctry19nm"},
 }
 
 # Filenames for GoogleScrape
 FILENAMES = {
     "boundaries_wales": "data/geography/boundaries_wales.geoJSON",
-    "boundaries_LA": "data/geography/boundaries_LAs.geoJSON",
+    "boundaries_LA": "data/geography/boundaries_LSOAs.geoJSON",
     "csv": "data/community_measures/groups.csv",
     "demographics_legacy": "data/community_measures/demographics.csv",
     "output_groups": "data/groups.geojson",
