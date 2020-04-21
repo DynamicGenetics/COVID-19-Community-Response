@@ -201,7 +201,7 @@ DATASOURCES = [
         "ID_name": None,
         "layers": {
             "tweets_per_pop": {
-                "nickName": "Support related tweets (PP)",
+                "nickName": "Support related tweets",
                 "category": DATAGROUPS['community']['name'],
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,

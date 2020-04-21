@@ -274,7 +274,7 @@ var layers=[
             type: "fill",
             "ID_name": null
         },
-        name: "Support related tweets (PP)",
+        name: "Support related tweets",
         ref: "../data/twitter_count.geojson",
         shownByDefault: true,
         "category": "Community support",
