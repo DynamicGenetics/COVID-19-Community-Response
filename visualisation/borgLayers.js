@@ -59,6 +59,7 @@ var layers=[
         ref: "../data/bias_language.geojson",
         shownByDefault: false,
         "category": "Factors affecting data quality",
+        "catid": "bias",
         "colorsReversed": false,
         "displayOrder": 3
     },
@@ -118,10 +119,11 @@ var layers=[
             type: "fill",
             "ID_name": "areaID"
         },
-        name: "Community cohesion",
+        name: "Community Cohesion",
         ref: "../data/community_cohesion_deprivation.geojson",
         shownByDefault: false,
-        "category": "Community support",
+        "category": "Community Support",
+        "catid": "community",
         "colorsReversed": false,
         "displayOrder": 0
     },
@@ -148,10 +150,11 @@ var layers=[
             type: "circle",
             "ID_name": null
         },
-        name: "Community support groups",
+        name: "Community Support Groups",
         ref: "../data/groups.geojson",
         shownByDefault: true,
-        "category": "Community support",
+        "category": "Community Support",
+        "catid": "community",
         "colorsReversed": false,
         "displayOrder": 0
     },
@@ -211,10 +214,11 @@ var layers=[
             type: "fill",
             "ID_name": "areaID"
         },
-        name: "Community support groups (PP)",
+        name: "Community Support Groups (PP)",
         ref: "../data/groupCount.geojson",
         shownByDefault: true,
-        "category": "Community support",
+        "category": "Community Support",
+        "catid": "community",
         "colorsReversed": false,
         "displayOrder": 0
     },
@@ -274,10 +278,11 @@ var layers=[
             type: "fill",
             "ID_name": null
         },
-        name: "Support related tweets (PP)",
+        name: "Support related Tweets (PP)",
         ref: "../data/twitter_count.geojson",
         shownByDefault: true,
-        "category": "Community support",
+        "category": "Community Support",
+        "catid": "community",
         "colorsReversed": false,
         "displayOrder": 0
     },
@@ -341,6 +346,7 @@ var layers=[
         ref: "../data/community_cohesion_deprivation.geojson",
         shownByDefault: false,
         "category": "Demographics",
+        "catid": "demographics",
         "colorsReversed": false,
         "displayOrder": 2
     },
@@ -404,6 +410,7 @@ var layers=[
         ref: "../data/covid_vulnerable.geojson",
         shownByDefault: false,
         "category": "Demographics",
+        "catid": "demographics",
         "colorsReversed": false,
         "displayOrder": 2
     },
@@ -466,7 +473,8 @@ var layers=[
         name: "COVID vulnerable (comorbidity %)",
         ref: "../data/covid_vulnerable.geojson",
         shownByDefault: false,
-        "category": "COVID vulnerability",
+        "category": "COVID Vulnerability",
+        "catid": "covid",
         "colorsReversed": false,
         "displayOrder": 1
     },
@@ -529,7 +537,8 @@ var layers=[
         name: "Elderly population (% over 65)",
         ref: "../data/covid_vulnerable.geojson",
         shownByDefault: false,
-        "category": "COVID vulnerability",
+        "category": "COVID Vulnerability",
+        "catid": "covid",
         "colorsReversed": false,
         "displayOrder": 1
     },
@@ -592,7 +601,8 @@ var layers=[
         name: "COVID cases (per 100k)",
         ref: "../data/covid_cases.geojson",
         shownByDefault: false,
-        "category": "COVID vulnerability",
+        "category": "COVID Vulnerability",
+        "catid": "covid",
         "colorsReversed": false,
         "displayOrder": 1
     }
