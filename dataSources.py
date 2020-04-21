@@ -139,7 +139,7 @@ DATASOURCES = [
     {
         "name": "groups",
         "type": "geojson",
-        "res": "LSOA",
+        "res": "LA",
         "enabled": True,
         "path": "data/community_measures/groups.csv",
         "ID_name": None,
@@ -159,7 +159,7 @@ DATASOURCES = [
     {
         "name": "groupCount",
         "type": "scrape",
-        "res": "LSOA",
+        "res": "LA",
         "enabled": True,
         "path": "data/community_measures/groupCount.csv",
         "ID_name": "areaID",
