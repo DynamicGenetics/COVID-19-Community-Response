@@ -3,13 +3,23 @@ import pandas as pd
 import geopandas as gpd
 
 # %% Read in the data
-welsh = pd.read_csv("2011census_welsh_lang.csv",
-                    usecols=[2, 3], skiprows=8)
+welsh = pd.read_csv("2011census_welsh_lang_original.csv",
+                    usecols=[2, 3])
 population = pd.read_csv("2019_pop.csv", usecols=[4, 7, 8], encoding="ISO-8859-1")
 imd = pd.read_csv("2019IMD_deciles.csv", usecols=[1, 2], encoding="ISO-8859-1")
 # Read from Excel file, sheet index 3
 popdensity = pd.read_excel("mid2018_popdensity_engandwales.xlsx", sheet_name=3, usecols="A,B,E", skiprows=4)
 
 lsoa = gpd.read_file("../geography/boundaries_LSOAs.geojson")
+
+# %% Remove English data from lsoa
+lsoa = lsoa[lsoa['LSOA11CD'].str.contains("W", na=False)]
+
+# %% Fix Welsh col names and drop rows with no LSOA code
+welsh.rename(columns={'Unnamed: 2': 'LSOA11CD'}, inplace=True)
+welsh.dropna(subset=['LSOA11CD'], inplace=True)
+
+# %% Welsh - drop rows with no LSOA code
+
 
 # %%
