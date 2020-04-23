@@ -102,6 +102,7 @@ def generateLayer(dataSources, filename_output):
     finishedLayers=[]
     # First process polygon data
     for key_category in layers:
+        
         layerCategory = layers[key_category]
 
         # Assign opacity by length of categories
@@ -206,6 +207,8 @@ def generateLayer(dataSources, filename_output):
 
         # print("Processed category: ", key_category)
         o += 1
+        
+        #print(layers[key_category].keys())
 
     with open(filename_output, "w") as outs:
         jsonDumps = json.dumps(output, indent=4, sort_keys=True)

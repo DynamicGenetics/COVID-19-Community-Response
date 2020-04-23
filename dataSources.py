@@ -28,13 +28,12 @@ DATASOURCES = [
         "name": "bias_language",
         "type": "csv",
         "res": "LA",
-        "enabled": False,
-        "path": "data/bias_measures/censusData_bias.csv",
+        "enabled": True,
+        "path": "data/transformed/censusData_bias.csv",
         "ID_name": "areaID",
         "layers": {
             "language": {
                 "nickName": "Welsh language use",
-                "category": DATAGROUPS['bias']['name'],
                 "categoryInfo": DATAGROUPS['bias'],
                 "disabled": False,
                 "reverseColors": False,
@@ -42,19 +41,17 @@ DATASOURCES = [
             },
         },
         "geometry": "Polygons",
-        "shownByDefault": False,
     },
     {
         "name": "community_cohesion_deprivation",
         "type": "csv",
         "res": "LA",
         "enabled": True,
-        "path": "data/community_measures/censusData_comm.csv",
+        "path": "data/transformed/censusData_comm.csv",
         "ID_name": "areaID",
         "layers": {
             "communityCohesion": {
                 "nickName": "Community cohesion",
-                "category": DATAGROUPS['community']['name'],
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,
                 "reverseColors": False,
@@ -70,19 +67,17 @@ DATASOURCES = [
             },
         },
         "geometry": "Polygons",
-        "shownByDefault": False,
     },
     {
         "name": "covid_vulnerable",
         "type": "csv",
         "res": "LA",
         "enabled": True,
-        "path": "data/covid_measures/censusData_covidVuln.csv",
+        "path": "data/transformed/censusData_covidVuln.csv",
         "ID_name": "areaID",
         "layers": {
             "vulnerable_pct": {
                 "nickName": "COVID vulnerable (comorbidity %)",
-                "category": DATAGROUPS['covid']['name'],
                 "categoryInfo": DATAGROUPS['covid'],
                 "disabled": False,
                 "reverseColors": False,
@@ -90,7 +85,6 @@ DATASOURCES = [
             },
             "pop_density": {
                 "nickName": "Population density",
-                "category": DATAGROUPS['demographics']['name'],
                 "categoryInfo": DATAGROUPS['demographics'],
                 "disabled": False,
                 "reverseColors": False,
@@ -98,7 +92,6 @@ DATASOURCES = [
             },
             "pop_elderly": {
                 "nickName": "Elderly population (% over 65)",
-                "category": DATAGROUPS['covid']['name'],
                 "categoryInfo": DATAGROUPS['covid'],
                 "disabled": False,
                 "reverseColors": False,
@@ -106,7 +99,6 @@ DATASOURCES = [
             },
             "pop": {
                 "nickName": "Population",
-                "category": DATAGROUPS['demographics']['name'],
                 "categoryInfo": DATAGROUPS['demographics'],
                 "disabled": True,
                 "reverseColors": False,
@@ -114,19 +106,17 @@ DATASOURCES = [
             },
         },
         "geometry": "Polygons",
-        "shownByDefault": False,
     },
     {
         "name": "covid_cases",
         "type": "csv",
         "res": "LA",
         "enabled": True,
-        "path": "data/covid_measures/covidCases_phw.csv",
+        "path": "data/transformed/covidCases_phw.csv",
         "ID_name": "areaID",
         "layers": {
             "covid_per100k": {
                 "nickName": "COVID cases (per 100k)",
-                "category": DATAGROUPS['covid']['name'],
                 "categoryInfo": DATAGROUPS['covid'],
                 "disabled": False,
                 "reverseColors": False,
@@ -134,19 +124,17 @@ DATASOURCES = [
             },
         },
         "geometry": "Polygons",
-        "shownByDefault": False,
     },
     {
         "name": "groups",
         "type": "geojson",
         "res": "LSOA",
         "enabled": True,
-        "path": "data/community_measures/groups.csv",
+        "path": "data/transformed/groups.csv",
         "ID_name": None,
         "layers": {
             "groups": {
                 "nickName": "Community support groups",
-                "category": DATAGROUPS['community']['name'],
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,
                 "reverseColors": False,
@@ -154,19 +142,17 @@ DATASOURCES = [
             },
         },
         "geometry": "Points",
-        "shownByDefault": True,
     },
     {
         "name": "groupCount",
         "type": "geojson",
         "res": "LSOA",
         "enabled": True,
-        "path": "data/community_measures/groupCount.csv",
+        "path": "data/transformed/groupCount.csv",
         "ID_name": "areaID",
         "layers": {
             "groupCount": {
                 "nickName": "Community support group count",
-                "category": DATAGROUPS['community']['name'],
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,
                 "reverseColors": False,
@@ -174,7 +160,6 @@ DATASOURCES = [
             },
             "groupCount_pop": {
                 "nickName": "Community support groups (PP)",
-                "category": DATAGROUPS['community']['name'],
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": True,
                 "reverseColors": False,
@@ -182,7 +167,6 @@ DATASOURCES = [
             },
             "groupCount_elderly": {
                 "nickName": "Community support groups (per elderly population)",
-                "category": DATAGROUPS['community']['name'],
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": True,
                 "reverseColors": False,
@@ -190,7 +174,6 @@ DATASOURCES = [
             },
         },
         "geometry": "Polygons",
-        "shownByDefault": True,
     },
     {
         "name": "twitter_count",
@@ -202,7 +185,6 @@ DATASOURCES = [
         "layers": {
             "tweets_per_pop": {
                 "nickName": "Support related tweets",
-                "category": DATAGROUPS['community']['name'],
                 "categoryInfo": DATAGROUPS['community'],
                 "disabled": False,
                 "reverseColors": False,
@@ -210,19 +192,17 @@ DATASOURCES = [
             },
         },
         "geometry": "Polygons",
-        "shownByDefault": True,
     },
     {
         "name": "demos_LSOA",
         "type": "csv",
         "res": "LSOA",
         "enabled": True,
-        "path": "data/demographics/demos_LSOA.csv",
+        "path": "data/transformed/demos_LSOA.csv",
         "ID_name": 'areaID',
         "layers": {
             "WIMD_rank": {
                 "nickName": "Multiple deprivation",
-                "category": DATAGROUPS['demographics']['name'],
                 "categoryInfo": DATAGROUPS['demographics'],
                 "disabled": False,
                 "reverseColors": False,
@@ -230,7 +210,6 @@ DATASOURCES = [
             },
             "language_lsoa": {
                 "nickName": "Welsh language",
-                "category": DATAGROUPS['bias']['name'],
                 "categoryInfo": DATAGROUPS['bias'],
                 "disabled": False,
                 "reverseColors": False,
@@ -238,7 +217,6 @@ DATASOURCES = [
             },
         },
         "geometry": "Polygons",
-        "shownByDefault": True,
     },
 ]
 
@@ -254,7 +232,7 @@ BOUNDARYFILES = {
 FILENAMES = {
     "boundaries_wales": "data/geography/boundaries_wales.geoJSON",
     "boundaries_LA": "data/geography/boundaries_LSOAs.geoJSON",
-    "csv": "data/community_measures/groups.csv",
+    "csv": "data/transformed/groups.csv",
     "demographics_legacy": "data/demographics/demos_LSOA.csv",
     "output_groups": "data/groups.geojson",
     "output_groupCount": "data/groupCount.geojson",
