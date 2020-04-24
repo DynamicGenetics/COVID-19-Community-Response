@@ -130,7 +130,7 @@ DATASOURCES = [
         "type": "geojson",
         "res": "LSOA",
         "enabled": True,
-        "path": "data/transformed/groups.csv",
+        "path": "map/data/groups.geojson",
         "ID_name": None,
         "layers": {
             "groups": {
@@ -148,7 +148,7 @@ DATASOURCES = [
         "type": "geojson",
         "res": "LSOA",
         "enabled": True,
-        "path": "data/transformed/groupCount.csv",
+        "path": "map/data/groupCount.geojson",
         "ID_name": "areaID",
         "layers": {
             "groupCount": {
@@ -180,7 +180,7 @@ DATASOURCES = [
         "type": "geojson",
         "res": "LA",
         "enabled": True,
-        "path": "data/twitter_count.geojson",
+        "path": "map/data/twitter_count.geojson",
         "ID_name": None,
         "layers": {
             "tweets_per_pop": {
@@ -234,9 +234,9 @@ FILENAMES = {
     "boundaries_LA": "data/geography/boundaries_LSOAs.geoJSON",
     "csv": "data/transformed/groups.csv",
     "demographics_legacy": "data/demographics/demos_LSOA.csv",
-    "output_groups": "data/groups.geojson",
-    "output_groupCount": "data/groupCount.geojson",
-    "output_URLs": "data/community_measures/URLs.json",
-    "output_groupCopyForReview": "data/community_measures/QC/groupsForReview.csv",
-    "credentials": "data/community_measures/credentials.json",
+    "output_groups": "map/data/groups.geojson",
+    "output_groupCount": "map/data/groupCount.geojson",
+    "output_URLs": "data/scrapers/community_measures/URLs.json",
+    "output_groupCopyForReview": "data/scrapers/community_measures/QC/groupsForReview.csv",
+    "credentials": "data/scrapers/community_measures/credentials.json",
 }
