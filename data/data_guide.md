@@ -8,18 +8,18 @@ For a full explanation of the different data sources please see the [project wik
   
 At present the data is structured as follows:
   
-📦data
- ┣ 📂live
- ┣ 📂static
- ┣ 📜Data sources.xlsx
- ┣ 📜boundaries_LAs.geojson
- ┣ 📜boundaries_LHBs.geojson
- ┣ 📜boundaries_LSOAs.geojson
- ┣ 📜boundaries_Wales.geojson
- ┣ 📜cases.geojson
- ┣ 📜data_guide.md
- ┣ 📜demographics.geojson
- ┣ 📜groupCount.geojson
- ┗ 📜groups.geojson
-
+📦data  
+ ┣ 📂live  
+ ┣ 📂static  
+ ┣ 📜Data sources.xlsx  
+ ┣ 📜boundaries_LAs.geojson  
+ ┣ 📜boundaries_LHBs.geojson  
+ ┣ 📜boundaries_LSOAs.geojson  
+ ┣ 📜boundaries_Wales.geojson  
+ ┣ 📜cases.geojson  
+ ┣ 📜data_guide.md  
+ ┣ 📜demographics.geojson  
+ ┣ 📜groupCount.geojson  
+ ┗ 📜groups.geojson  
+  
 Where the live and static folders contain source material and compilers for generating the `geojson` files to map. 
