@@ -236,7 +236,7 @@ FILENAMES = {
     "demographics_legacy": "data/demographics/demos_LSOA.csv",
     "output_groups": "dashboard/data/groups.geojson",
     "output_groupCount": "dashboard/data/groupCount.geojson",
-    "output_URLs": "data/scrapers/community_measures/URLs.json",
-    "output_groupCopyForReview": "data/scrapers/community_measures/QC/groupsForReview.csv",
-    "credentials": "data/scrapers/community_measures/credentials.json",
+    "output_URLs": "data/scrapers/police_coders_groups/URLs.json",
+    "output_groupCopyForReview": "data/scrapers/police_coders_groups/QC/groupsForReview.csv",
+    "credentials": "data/scrapers/police_coders_groups/credentials.json",
 }
