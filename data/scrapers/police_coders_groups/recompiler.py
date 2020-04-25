@@ -14,8 +14,8 @@ def groupProcessing(filenames, boundaryfile):
     filename_csv = filenames["csv"]
     filename_demographics = filenames["demographics_legacy"]
 
-    varNm_geog_areaID =  boundaryfile['ID_name']
-    varNm_geog_areaNm = boundaryfile['area_name']
+    varNm_geog_areaID = boundaryfile["ID_name"]
+    varNm_geog_areaNm = boundaryfile["area_name"]
 
     # Import welsh boundaries
     # load GeoJSON file containing sectors
@@ -35,7 +35,7 @@ def groupProcessing(filenames, boundaryfile):
     LA_polygons = []
     LAs_identified = 0
     welshLAs = []
-    wrongAreaIDcode=[]
+    wrongAreaIDcode = []
 
     with open(filename_boundaries_LA) as LAs:
         LAs_js = json.load(LAs)
@@ -46,7 +46,7 @@ def groupProcessing(filenames, boundaryfile):
 
             # Construct point from coords
             point = shape(feature["geometry"]).representative_point()
-            #print(point)
+            # print(point)
 
             # Check polygon for Wales to see if it contains the point
             if polygon.contains(point):
@@ -65,7 +65,11 @@ def groupProcessing(filenames, boundaryfile):
                     welshLAs.append(feature)
                 except:
                     wrongAreaIDcode.append([properties.keys()])
-    print("ERROR (assimilator): Wrong AreaID code for {} features (keys available: {})".format(len(wrongAreaIDcode),wrongAreaIDcode[0]))
+    print(
+        "ERROR (assimilator): Wrong AreaID code for {} features (keys available: {})".format(
+            len(wrongAreaIDcode), wrongAreaIDcode[0]
+        )
+    )
 
     # Open the demographics CSV
     with open(filename_csv, newline="", encoding="utf-8") as f:
@@ -179,8 +183,8 @@ def groupProcessing(filenames, boundaryfile):
             demographics[row["areaID"]] = {
                 "pop": float(row["WIMD_rank"].replace(",", "",)),
                 "pop_elderly": float(row["language"].replace(",", "",)),
-                #"pop": float(row["WIMD_rank"].replace(",", "",)),
-                #"pop_elderly": float(row["language"].replace(",", "",)),
+                # "pop": float(row["WIMD_rank"].replace(",", "",)),
+                # "pop_elderly": float(row["language"].replace(",", "",)),
             }
 
     # Count groups per area
@@ -202,7 +206,7 @@ def groupProcessing(filenames, boundaryfile):
             else:
                 continue
 
-        #print("LA:", lad18cd, groupCount, groupCount_pop, groupCount_elderly)
+        # print("LA:", lad18cd, groupCount, groupCount_pop, groupCount_elderly)
 
         properties["groupCount"] = groupCount
         properties["groupCount_pop"] = groupCount_pop

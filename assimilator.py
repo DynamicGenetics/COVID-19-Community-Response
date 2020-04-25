@@ -35,8 +35,8 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
                 # For row in CSV insert columns as properties in geoJSON
                 for boundary in boundaries["features"]:
                     properties = boundary["properties"]
-                    #print(properties)
-                    
+                    # print(properties)
+
                     boundary["properties"] = data_toAssimilate[properties[geo_idName]]
 
                 data_assimilated = boundaries
@@ -55,7 +55,7 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
                 boundary["properties"] = data_toAssimilate[properties[geo_idName]]
 
             data_assimilated = boundaries
-    #print(boundary["properties"].keys())
+    # print(boundary["properties"].keys())
 
     # Save
     with open(out_path, "w") as out:

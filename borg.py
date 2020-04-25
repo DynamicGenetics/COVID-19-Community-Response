@@ -24,7 +24,7 @@ for data in DATASOURCES:
     # Proceed with data unless marked as 'disabled'
     if data["enabled"] == True:
 
-        #try:
+        # try:
 
         # If data marked as 'csv' directly recompile as geojson
         if data["type"] == "csv":
@@ -53,11 +53,7 @@ for data in DATASOURCES:
                 )
             groupsData = groupProcessing(FILENAMES, BOUNDARYFILES[data["res"]])
             saveOutput(
-                groupsData[0],
-                groupsData[1],
-                groupsData[2],
-                groupsData[3],
-                FILENAMES,
+                groupsData[0], groupsData[1], groupsData[2], groupsData[3], FILENAMES,
             )
             # for row in groupsData[4]: print(row)
 
@@ -71,7 +67,7 @@ for data in DATASOURCES:
             )
         )
 
-        #except:
+        # except:
         #    print("ERROR (Borg): Could not assimilate: ", data["name"])
 
         count_dataEnabled += 1

@@ -1,5 +1,5 @@
 import json
-from statistics import stdev 
+from statistics import stdev
 
 geoLabelsToIgnore = ["objectid", "bng_e", "bng_n"]
 
@@ -24,8 +24,8 @@ def generateLayer(dataSources, filename_output):
                     layer = src["layers"][dataField]
 
                     if not layer["disabled"]:
-                        
-                        category = layer["categoryInfo"]['name']
+
+                        category = layer["categoryInfo"]["name"]
 
                         if category not in layers.keys():
                             layers[category] = {}
@@ -61,15 +61,12 @@ def generateLayer(dataSources, filename_output):
 
                                     dataValue = properties[dataField]
 
-                                    category = layer["categoryInfo"]['name']
+                                    category = layer["categoryInfo"]["name"]
 
                                     if category not in layers.keys():
                                         layers[category] = {}
 
-                                    if (
-                                        dataField
-                                        not in layers[category].keys()
-                                    ):
+                                    if dataField not in layers[category].keys():
                                         layers[category][dataField] = {
                                             "dataField": dataField,
                                             "origin": src["name"],
@@ -79,30 +76,34 @@ def generateLayer(dataSources, filename_output):
                                             "geometry": src["geometry"],
                                             "dataValues": [dataValue],
                                             "ID_name": src["ID_name"],
-                                            "enabledByDefault": layer["enabledByDefault"],
+                                            "enabledByDefault": layer[
+                                                "enabledByDefault"
+                                            ],
                                             "categoryInfo": layer["categoryInfo"],
                                         }
                                     else:
-                                        layers[category][dataField]["dataValues"].append(dataValue)
+                                        layers[category][dataField][
+                                            "dataValues"
+                                        ].append(dataValue)
 
-                                    #print("Added layer: ", layer)
+                                    # print("Added layer: ", layer)
 
                                 else:
                                     exceptions.append("{}(disabled)".format(dataField))
 
                             else:
                                 exceptions.append(dataField)
-                                #print("Warning (generateLayer): datafield found in dataSource not specified in dataSources")
+                                # print("Warning (generateLayer): datafield found in dataSource not specified in dataSources")
 
         except:
             # print("ERROR w/ reading data sources.py for src: ", filename)
             exceptions.append(filename)
 
     o = 0
-    finishedLayers=[]
+    finishedLayers = []
     # First process polygon data
     for key_category in layers:
-        
+
         layerCategory = layers[key_category]
 
         # Assign opacity by length of categories
@@ -114,9 +115,9 @@ def generateLayer(dataSources, filename_output):
             # Get properties of layers under category
             dataField = layer["dataField"]
             origin = layer["origin"]
-            category = layer["categoryInfo"]['name']
-            hexList = layer["categoryInfo"]['colors']
-            displayOrder = layer["categoryInfo"]['displayOrder']
+            category = layer["categoryInfo"]["name"]
+            hexList = layer["categoryInfo"]["colors"]
+            displayOrder = layer["categoryInfo"]["displayOrder"]
             nickName = layer["nickName"]
             reverseColors = layer["reverseColors"]
             geometry = layer["geometry"]
@@ -124,7 +125,7 @@ def generateLayer(dataSources, filename_output):
             enabledByDefault = layer["enabledByDefault"]
 
             # try:
-            
+
             if geometry == "Polygons":
 
                 dataValues = layer["dataValues"]
@@ -132,9 +133,9 @@ def generateLayer(dataSources, filename_output):
 
                 # Get range of each property dataField in geoJSON (for numerical polygon data only) & compute stops / colors
                 if isinstance(dataValues[0], int) or isinstance(dataValues[0], float):
-                    
-                    dataStop=stdev(dataValues)
-                    #dataStop = (max(dataValues) - min(dataValues)) / 8
+
+                    dataStop = stdev(dataValues)
+                    # dataStop = (max(dataValues) - min(dataValues)) / 8
 
                     for i in range(9):
                         stp = min(dataValues) + (dataStop * i)
@@ -171,7 +172,7 @@ def generateLayer(dataSources, filename_output):
                         },
                     }
                 )
-                
+
                 finishedLayers.append(dataField)
 
             # Now process point data
@@ -200,15 +201,15 @@ def generateLayer(dataSources, filename_output):
                         },
                     }
                 )
-                
+
                 finishedLayers.append(dataField)
             #    except:
             #        exceptions.append(dataField)
 
         # print("Processed category: ", key_category)
         o += 1
-        
-        #print(layers[key_category].keys())
+
+        # print(layers[key_category].keys())
 
     with open(filename_output, "w") as outs:
         jsonDumps = json.dumps(output, indent=4, sort_keys=True)
