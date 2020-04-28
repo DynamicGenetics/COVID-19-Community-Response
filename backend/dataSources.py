@@ -170,7 +170,7 @@ DATASOURCES = [
         "type": "geojson",
         "res": "LSOA",
         "enabled": True,
-        "path": "dashboard/data/groups.geojson",
+        "path": "../dashboard/data/groups.geojson",
         "ID_name": None,
         "layers": {
             "groups": {
@@ -188,7 +188,7 @@ DATASOURCES = [
         "type": "geojson",
         "res": "LSOA",
         "enabled": True,
-        "path": "dashboard/data/groupCount.geojson",
+        "path": "../dashboard/data/groupCount.geojson",
         "ID_name": "areaID",
         "layers": {
             "groupCount": {
@@ -220,7 +220,7 @@ DATASOURCES = [
         "type": "geojson",
         "res": "LA",
         "enabled": True,
-        "path": "dashboard/data/twitter_count.geojson",
+        "path": "../dashboard/data/twitter_count.geojson",
         "ID_name": None,
         "layers": {
             "tweets_per_pop": {
@@ -289,10 +289,10 @@ FILENAMES = {
     "boundaries_wales": "data/static/geoboundaries/boundaries_wales.geoJSON",
     "boundaries_LA": "data/static/geoboundaries/boundaries_LSOAs.geoJSON",
     "csv": "data/transformed/groups.csv",
-    "demographics_legacy": "data/demographics/demos_LSOA.csv",
-    "output_groups": "dashboard/data/groups.geojson",
-    "output_groupCount": "dashboard/data/groupCount.geojson",
-    "output_URLs": "data/scrapers/police_coders_groups/URLs.json",
-    "output_groupCopyForReview": "data/scrapers/police_coders_groups/QC/groupsForReview.csv",
-    "credentials": "data/scrapers/police_coders_groups/credentials.json",
+    "demographics_legacy": "data/transformed/demos_LSOA.csv",
+    "output_groups": "../dashboard/data/groups.geojson",
+    "output_groupCount": "../dashboard/data/groupCount.geojson",
+    "output_URLs": "scrapers/police_coders_groups/URLs.json",
+    "output_groupCopyForReview": "scrapers/police_coders_groups/QC/groupsForReview.csv",
+    "credentials": "scrapers/police_coders_groups/credentials.json",
 }
