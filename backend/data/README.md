@@ -19,12 +19,6 @@ For example: `lsoa_welsh_speakers.csv`
 ### Transformed
 Transformed data may have been standardised or transformed in some way. It should be ready to be handled by processing files to turn it into geojson, and not require any further manipulation before being used for the dashboard. 
 
-### Scrapers
-Contains subfolders, each of which is scraping from one specific source. For example `scrapers/police_coders_groups/` is responsible for scraping data from the Police Coders group, and should have no other purpose than producing an output file with this information.  
-
 ### Static
 Static files are used for reference only. As such this should also be a 'READ ONLY' folder. The main purpose of this folder is to hold geographic boundary reference files. 
-
-### Tweet-Processing
-Scripts for processing, cleaning and exporting Twitter data belong here. Raw tweet counts should export to `cleaned/`. 
 
