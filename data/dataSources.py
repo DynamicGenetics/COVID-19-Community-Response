@@ -127,10 +127,10 @@ DATASOURCES = [
     },
     {
         "name": "groups",
-        "type": "geojson",
+        "type": "points",
         "res": "LSOA",
         "enabled": True,
-        "path": "data/transformed/groups.csv",
+        "path": "data/scrapers/police_coders_groups/groups.csv",
         "ID_name": None,
         "layers": {
             "groups": {
@@ -145,10 +145,10 @@ DATASOURCES = [
     },
     {
         "name": "groupCount",
-        "type": "geojson",
+        "type": "csv",
         "res": "LSOA",
-        "enabled": True,
-        "path": "data/transformed/groupCount.csv",
+        "enabled": False,
+        "path": "data/scrapers/police_coders_groups/groupCount.csv",
         "ID_name": "areaID",
         "layers": {
             "groupCount": {
@@ -230,9 +230,10 @@ BOUNDARYFILES = {
 
 # Filenames for GoogleScrape
 FILENAMES = {
-    "boundaries_wales": "data/geography/boundaries_wales.geoJSON",
-    "boundaries_LA": "data/geography/boundaries_LSOAs.geoJSON",
-    "csv": "data/transformed/groups.csv",
+    'boundaries_wales' : BOUNDARYFILES['wales']['path'], #"boundaries_wales": "data/geography/boundaries_wales.geoJSON",
+    "boundaries_LA": BOUNDARYFILES['LA']['path'],
+    "boundaries_LSOA": BOUNDARYFILES['LSOA']['path'],
+    "csv": 'data/transformed/groupCount.csv',
     "demographics_legacy": "data/demographics/demos_LSOA.csv",
     "output_groups": "data/groups.geojson",
     "output_groupCount": "data/groupCount.geojson",

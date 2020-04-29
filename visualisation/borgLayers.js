@@ -112,7 +112,7 @@ var layers=[
                         ]
                     ]
                 },
-                "fill-opacity": 0.25
+                "fill-opacity": 0.3333333333333333
             },
             source: "communityCohesion",
             type: "fill",
@@ -150,69 +150,6 @@ var layers=[
         },
         name: "Community support groups",
         ref: "../data/groups.geojson",
-        shownByDefault: true,
-        "category": "Community support",
-        "colorsReversed": false,
-        "displayOrder": 0
-    },
-    {
-        layerSpec: {
-            filter: [
-                "==",
-                "$type",
-                "Polygon"
-            ],
-            id: "groupCount",
-            paint: {
-                "fill-color": {
-                    property: "groupCount",
-                    stops: [
-                        [
-                            0.0,
-                            "#ffffe5"
-                        ],
-                        [
-                            0.3923357763560534,
-                            "#f7fcb9"
-                        ],
-                        [
-                            0.7846715527121068,
-                            "#d9f0a3"
-                        ],
-                        [
-                            1.1770073290681602,
-                            "#addd8e"
-                        ],
-                        [
-                            1.5693431054242135,
-                            "#78c679"
-                        ],
-                        [
-                            1.9616788817802668,
-                            "#41ab5d"
-                        ],
-                        [
-                            2.3540146581363204,
-                            "#238443"
-                        ],
-                        [
-                            2.7463504344923737,
-                            "#006837"
-                        ],
-                        [
-                            3.138686210848427,
-                            "#004529"
-                        ]
-                    ]
-                },
-                "fill-opacity": 0.25
-            },
-            source: "groupCount",
-            type: "fill",
-            "ID_name": "areaID"
-        },
-        name: "Community support group count",
-        ref: "../data/groupCount.geojson",
         shownByDefault: true,
         "category": "Community support",
         "colorsReversed": false,
@@ -268,7 +205,7 @@ var layers=[
                         ]
                     ]
                 },
-                "fill-opacity": 0.25
+                "fill-opacity": 0.3333333333333333
             },
             source: "tweets_per_pop",
             type: "fill",
