@@ -3,6 +3,24 @@
 
 The **Backlog** of Repo changes and activities can be found here: [backlog.md](backlog.md)  
 
+## Pre-commit
+
+In order to automate the `black` and `flake8` code formatting, integration with 
+the Python `pre-commit` package has been added to this repo. 
+
+To do so, it is just necessary to:
+
+1. Install `pre-commit` Python package 
+    (already **included** in the `requirements.txt` file):
+    ```shell script
+    pip install pre-commit
+    ```
+
+2. Install the git hooks in your `./git/hooks` directory:
+    ```shell script
+    pre-commit install
+    ``` 
+
 ---
 If you would like to contribute to the project, please follow the guidelines below: 
 
@@ -112,17 +130,3 @@ python -m ipykernel install --user --name covid-community --display-name "Python
 ```
 
 Further information [here](https://ipython.readthedocs.io/en/stable/install/kernel_install.html)
-
-#### Code formatting
-
-If possible, use the [black code formatter](https://github.com/python/black) (e.g.
-`pip install black`) and run it before submitting your code to the repository. 
-This helps maintain consistency.
-
-Formatting is as simple as running:
-
-```bash
-black .
-```
-
-in the root of the project.
