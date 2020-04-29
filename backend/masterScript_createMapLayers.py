@@ -1,9 +1,9 @@
 # Import data sources dict
-from dataSources import *
+from data.dataSources import *
 
 # Import slave functions to call in these master functions (debug name = B1)
 from assimilator import assimilate
-from visualisation.generateLayer import generateLayer
+from generateLayer import generateLayer
 
 count_data = 0
 count_dataEnabled = 0
@@ -29,12 +29,12 @@ for data in DATASOURCES:
                 data["ID_name"],
                 geo["path"],
                 geo["ID_name"],
-                "data/{}.geojson".format(data["name"]),
+                "dashboard/data/{}.geojson".format(data["name"]),
             )
 
         count_dataSuccess += 1
         print(
-            "Message (Borg): Assimilating {} (type={}) ".format(
+            "Message (createMapLayers): Assimilating {} (type={}) ".format(
                 data["name"], data["type"]
             )
         )
@@ -51,12 +51,12 @@ for data in DATASOURCES:
     count_data += 1
 
 # Dynamically generate layers
-layers = generateLayer(DATASOURCES, "visualisation/borgLayers.js")
+layers = generateLayer(DATASOURCES, "dashboard/layers.js")
 
 print(layers)
 
 print(
-    "BORG HAS ASSIMILATED {} / {} COMPATIABLE DATA SOURCES ({} enabled, disabled: {})".format(
+    "ASSIMILATED {} / {} COMPATIABLE DATA SOURCES ({} enabled, disabled: {})".format(
         count_dataSuccess, count_data, count_dataEnabled, skipped_data
     )
 )

@@ -4,7 +4,7 @@ import geopandas as gpd
 
 # %% Read in the LSOA reference data
 LSOA = gpd.read_file(
-    "static/geoboundaries/Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson"
+    "geoboundaries/boundaries_LSOA.geojson"
 )
 # %% Remove English data from LSOA
 LSOA = LSOA[LSOA["LSOA11CD"].str.contains("W", na=False)]

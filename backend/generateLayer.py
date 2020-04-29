@@ -12,8 +12,6 @@ def generateLayer(dataSources, filename_output):
     # opacity = 1/len(dataSources)
     type_filter = "Polygon"
 
-    # data/{}.geojson'.format(data['name']
-
     for src in dataSources:
 
         try:
@@ -44,7 +42,7 @@ def generateLayer(dataSources, filename_output):
                         }
 
             else:
-                filename = "data/{}.geojson".format(src["name"])
+                filename = "dashboard/data/{}.geojson".format(src["name"])
                 with open(filename, "r") as geojson_file:
 
                     # For row in geoJSON, count values and assign color values
@@ -152,7 +150,7 @@ def generateLayer(dataSources, filename_output):
                     {
                         "*name*": nickName,
                         "*shownByDefault*": enabledByDefault,
-                        "*ref*": "../data/{}.geojson".format(origin),
+                        "*ref*": "data/{}.geojson".format(origin),
                         "category": category,
                         "colorsReversed": reverseColors,
                         "displayOrder": displayOrder,
@@ -182,7 +180,7 @@ def generateLayer(dataSources, filename_output):
                     {
                         "*name*": nickName,
                         "*shownByDefault*": enabledByDefault,
-                        "*ref*": "../data/{}.geojson".format(origin),
+                        "*ref*": "data/{}.geojson".format(origin),
                         "category": category,
                         "colorsReversed": reverseColors,
                         "displayOrder": displayOrder,
