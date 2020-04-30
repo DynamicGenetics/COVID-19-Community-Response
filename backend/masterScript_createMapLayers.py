@@ -22,6 +22,9 @@ Intended purpose of this script:
 Assimilate () function:
 If input is csv then rows are inserted as properties into geojson boundary file
 else If input is geojson then point features are formatted into geojson
+
+generateLayer() function:
+Generates an objetice JS formatted entry in the layer.js from each geoJSON
 '''
 
 # Use source information to access filenames and metadata to produce geojsons 
@@ -69,7 +72,7 @@ layers = generateLayer(DATASOURCES, "dashboard/layers.js")
 print(layers)
 
 print(
-    "ASSIMILATED {} / {} COMPATIABLE DATA SOURCES ({} enabled, disabled: {})".format(
-        count_dataSuccess, count_data, count_dataEnabled, skipped_data
+    "ASSIMILATED {} / {} COMPATIABLE DATA SOURCES ({} disabled: {})".format(
+        count_dataSuccess, count_data, count_data-count_dataEnabled, skipped_data
     )
 )

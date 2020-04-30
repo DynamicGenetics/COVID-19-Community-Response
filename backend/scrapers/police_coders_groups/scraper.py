@@ -1,11 +1,5 @@
 import pickle
 import os.path
-
-#DEBUG: Current working directory
-import os 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-print("Directory = ", dir_path)
-
 import csv
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -68,7 +62,7 @@ def googleScrape(filename):
                 writer = csv.writer(f)
                 for row in values:
                     writer.writerow(row)
-                    print("Writing (CSV): ", row[0])
+                    #print("Writing (CSV): ", row[0])
 
             f = open("{}_raw.csv".format(filename), "w", encoding="utf-8")
             with f:

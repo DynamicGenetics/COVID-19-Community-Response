@@ -221,7 +221,7 @@ def generateLayer(dataSources, filename_output):
                         },
                         "fill-opacity": opacity,
                     },
-                    "*filter*": ["==", "$type", geometry],
+                    "*filter*": ["==", "$type", 'Polygon'],
                 },
             }
         )

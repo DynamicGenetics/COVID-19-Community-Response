@@ -112,11 +112,11 @@ DATASOURCES = [
         "type": "csv",
         "res": "LA",
         "enabled": True,
-        "path": "backend/data/cleaned/covidCases_phw.csv",
+        "path": "backend/data/cleaned/phwCovidStatement.csv",
         "ID_name": "areaID",
         "layers": {
-            "covid_per100k": {
-                "nickName": "COVID cases (per 100k)",
+            "Cumulative incidence per 100,000 population": {
+                "nickName": "COVID incidence per 100k",
                 "categoryInfo": DATAGROUPS['covid'],
                 "disabled": False,
                 "reverseColors": False,
@@ -211,6 +211,31 @@ DATASOURCES = [
             "language_lsoa": {
                 "nickName": "Welsh language",
                 "categoryInfo": DATAGROUPS['bias'],
+                "disabled": False,
+                "reverseColors": False,
+                "enabledByDefault": False,
+            },
+        },
+        "geometry": "Polygons",
+    },
+    {
+        "name": "internetUse",
+        "type": "csv",
+        "res": "LA",
+        "enabled": True,
+        "path": "backend/data/cleaned/internetUse.csv",
+        "ID_name": 'areaID',
+        "layers": {
+            "internetUse_none_%": {
+                "nickName": "No internet use",
+                "categoryInfo": DATAGROUPS['demographics'],
+                "disabled": False,
+                "reverseColors": False,
+                "enabledByDefault": False,
+            },
+            "internetUse_severalTimesDaily_%": {
+                "nickName": "Frequent daily internet use",
+                "categoryInfo": DATAGROUPS['demographics'],
                 "disabled": False,
                 "reverseColors": False,
                 "enabledByDefault": False,
