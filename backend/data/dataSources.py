@@ -247,10 +247,25 @@ DATASOURCES = [
 
 # Boundary files to assimilate data into (as 'properties')
 BOUNDARYFILES = {
-    "LA": {"path": "backend/data/geoboundaries/boundaries_LA.geojson", "ID_name": "lad18cd", "area_name":"lad18nm"},
-    "LSOA": {"path": "backend/data/geoboundaries/boundaries_LSOA.geojson", "ID_name": "LSOA11CD", "area_name":"LSOA11NM"},
-    "LHB": {"path": "backend/data/geoboundaries/boundaries_LHB.geojson", "ID_name": "lhb19cd", "area_name":"lhb19nm"},
-    "wales": {"path": "backend/data/geoboundaries/boundaries_Wales.geojson", "ID_name": "ctry19cd", "area_name":"ctry19nm"},
+    "LA": {
+        "path": "backend/data/geoboundaries/boundaries_LA.geojson", 
+        "ID_name": "lad18cd", "area_name":"lad18nm"
+    },
+    "LSOA": {
+        "path": "backend/data/geoboundaries/boundaries_LSOA.geojson", 
+        "ID_name": "LSOA11CD", 
+        "area_name":"LSOA11NM"
+    },
+    "LHB": {
+        "path": "backend/data/geoboundaries/boundaries_LHB.geojson", 
+        "ID_name": "lhb19cd", 
+        "area_name":"lhb19nm"
+    },
+    "wales": {
+        "path": "backend/data/geoboundaries/boundaries_Wales.geojson", 
+        "ID_name": "ctry19cd", 
+        "area_name":"ctry19nm"
+    },
 }
 
 # Filenames for GoogleScrape
