@@ -6,57 +6,82 @@ import geopandas as gpd
 LSOA = gpd.read_file(
     "static/geoboundaries/Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson"
 )
-# %% Remove English data from LSOA
-LSOA = LSOA[LSOA["LSOA11CD"].str.contains("W", na=False)]
+# Keep only Welsh codes.
+LSOA = clean_LSOAs(LSOA)
 
+
+
+welsh_data = pd.read_csv("raw/lsoa_welsh_language_2011.csv", usecols=[2, 3])
+population_data = = pd.read_excel("raw/lsoa_population_2018-19.xlsx",
+                             sheet_name="Mid-2018 Persons", #Sheet 4
+                             usecols="A, C, D, BR:CQ", #Reads columns - Area Codes, LSOA, All Ages, 65:90+
+                             skiprows=4 # Data starts on row 5
+                             )
+
+
+WELSH = {
+        "data": welsh_data,
+        "LSOA11CD_col": 'Unnamed: 2',
+        "rename_dict": {"Percentage able to speak Welsh ": "welsh_speakers_percent"},
+        "keep_cols": {['LSOA11CD', 'welsh_speakers_percent']}
+        }
+        
+POPULATION = {
+        "data": population_data,
+        "LSOA11CD_col": '"Area Codes",
+        "rename_dict": 'All Ages': 'population_count',
+        "keep_cols": {['LSOA11CD', 'population_count', 'over_65_count']}
+        }
+        
+
+
+DATASETS = [WELSH, POPULATION, POPDENSITY, IMD]
+
+for dataset in DATASETS:
 
 # ++++++++
 # WELSH
 # ++++++++
 
-# %% Read in the data
-WELSH = pd.read_csv("raw/lsoa_welsh_language_2011.csv", usecols=[2, 3])
+# %% Apply functions
+WELSH = clean_LSOAs(WELSH, LSOA11CD_col = 'Unnamed: 2')
 
-# %% Fix Welsh col names and drop rows with no LSOA code
-WELSH.rename(
-    columns={
-        "Unnamed: 2": "LSOA11CD",
-        "Percentage able to speak Welsh ": "percent_welsh_speakers",
-    },
-    inplace=True,
-)
-WELSH.dropna(subset=["LSOA11CD"], inplace=True)
-# lastly, reset the index after dropping rows.
-WELSH.reset_index(drop=True, inplace=True)
+# %% 
+WELSH = tidy_LSOAs(WELSH, keep_cols=['LSOA11CD', 'welsh_speakers_percent'])
 
-# %% Strip whitespace from LSOA11CD (ready to merge)
-WELSH["LSOA11CD"] = WELSH["LSOA11CD"].apply(lambda x: x.strip())
+# +++++++++++
+# POULATION (Creates total pop count and 65+ count)
+# +++++++++++
+# %% Read population level data
+POPULATION = pd.read_excel("raw/lsoa_population_2018-19.xlsx",
+                             sheet_name="Mid-2018 Persons", #Sheet 4
+                             usecols="A, C, D, BR:CQ", #Reads columns - Area Codes, LSOA, All Ages, 65:90+
+                             skiprows=4 # Data starts on row 5
+                             )
 
-# %% Join the Welsh speaking data with the LSOA
-WELSH_CLEAN = LSOA.merge(welsh, on="LSOA11CD", how="inner")
 
-# %% Write cleaned data to CSV with necessary columns
-WELSH_CLEAN.to_csv(
-    "cleaned/lsoa_welsh_speakers.csv",
-    columns=["LSOA11CD", "LSOA11NM", "percent_welsh_speakers"],
+# %% Sum columns of ages 65-90+
+POPULATION['over_65_count']= POPULATION.iloc[:,3:].sum(axis=1)
+
+# %% Rename columns
+POPULATION.rename(columns={"Area Codes": "LSOA11CD",
+                           'All Ages': 'population_count'}, inplace=True)
+
+# %% Join on LSOA for accurate LSOA11NM
+POPULATION_TIDY = LSOA[['LSOA11CD', 'LSOA11NM']].merge(POPULATION[['LSOA11CD', 'population_count', 'over_65_count']], on="LSOA11CD", how="inner")
+# %% Read out population count
+POPULATION_TIDY.to_csv(
+    "cleaned/lsoa_population_count.csv",
+    columns=["LSOA11CD", "LSOA11NM", "population_count"],
     index=False,
 )
 
-# +++++++++++
-# POULATION
-# +++++++++++
-# %%
-POPULATION = pd.read_csv("raw/lsoa_population_2019.csv", usecols=[4, 7, 8], encoding="ISO-8859-1")
-
-# %% Rename columns
-population.rename(columns={'Unnamed: 4': 'LSOA11NM',
-                           'Unnamed: 7': 'pop_over_65',
-                           'All ages .1': 'pop_total'}, inplace=True)
-population.dropna(subset=['LSOA11NM'], inplace=True)
-population.reset_index(drop=True, inplace=True)
-
-# %% 
-population_tidy = lsoa.merge(population, on='LSOA11NM', how="inner")
+# %% Now read out over 65 to csv seperately. 
+POPULATION_TIDY.to_csv(
+    "cleaned/lsoa_over_65_count.csv",
+    columns=["LSOA11CD", "LSOA11NM", "over_65_count"],
+    index=False,
+)
 
 # +++++++++++++
 # POP DENSITY
@@ -64,7 +89,7 @@ population_tidy = lsoa.merge(population, on='LSOA11NM', how="inner")
 # %%
 # Read from Excel file, sheet index 3
 POPDENSITY = pd.read_excel(
-    "raw/mid2018_popdensity_engandwales.xlsx", sheet_name=3, usecols="A,B,E", skiprows=4
+    "raw/lsoa_pop_density_2018-19.xlsx", sheet_name=3, usecols="A,B,E", skiprows=4
 )
 
 
@@ -74,3 +99,7 @@ POPDENSITY = pd.read_excel(
 
 # %%
 IMD = pd.read_csv("raw/2019IMD_deciles.csv", usecols=[1, 2], encoding="ISO-8859-1")
+
+
+
+
