@@ -46,7 +46,17 @@ WELSH_CLEAN.to_csv(
 # POULATION
 # +++++++++++
 # %%
-POPULATION = pd.read_csv("raw/2019_pop.csv", usecols=[4, 7, 8], encoding="ISO-8859-1")
+POPULATION = pd.read_csv("raw/lsoa_population_2019.csv", usecols=[4, 7, 8], encoding="ISO-8859-1")
+
+# %% Rename columns
+population.rename(columns={'Unnamed: 4': 'LSOA11NM',
+                           'Unnamed: 7': 'pop_over_65',
+                           'All ages .1': 'pop_total'}, inplace=True)
+population.dropna(subset=['LSOA11NM'], inplace=True)
+population.reset_index(drop=True, inplace=True)
+
+# %% 
+population_tidy = lsoa.merge(population, on='LSOA11NM', how="inner")
 
 # +++++++++++++
 # POP DENSITY
