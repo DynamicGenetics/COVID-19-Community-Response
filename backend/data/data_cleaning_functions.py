@@ -12,11 +12,17 @@ def read_keys():
     # Keep only Welsh codes.
     LSOA = clean_keys(LSOA, res='LSOA', key_col='LSOA11CD')
 
+    if LSOA.shape[0] != 1909:
+        raise Exception("An error has occured. The full 1909 rows were not produced in merge.")
+
     LA = gpd.read_file(
     "static/geoboundaries/Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson"
     )
     # Keep only Welsh codes.
     LA = clean_keys(LA, res='LA', key_col='lad19cd')
+
+    if LA.shape[0] != 22:
+        raise Exception("An error has occured. The full 22 rows were not produced in merge.")
 
     return LSOA, LA
 
@@ -52,7 +58,7 @@ def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True)
     else:
         #Assumes this means key is a name
         df_new = df.dropna().copy()
-        df_new.reset_index(inplace=True)
+        df_new.reset_index(drop=True, inplace=True)
 
 
     # If the column-name doesn't match the standard keyname, change it to that
@@ -105,7 +111,8 @@ def clean_bracketed_data(df: pd.DataFrame, cols: list):
         name_counts = col + '_count'
         name_percent = col + '_pct'
         # Apply the extract_data function to each line, and the data to two new columns
-        df[[name_counts, name_percent]] = df[col].apply(lambda x: extract_data(x))
+        df[name_counts] = df[col].apply(lambda x: extract_data(x)[0])
+        df[name_percent] = df[col].apply(lambda x: extract_data(x)[1])
         df.drop(columns=col, inplace=True)
 
     return df
@@ -133,10 +140,10 @@ def standardise_keys(df: pd.DataFrame, res: str, keep_cols: list=[], key_is_code
     """
 
     # Load in the geography data being used as 'ground truth' for the codes and names
-    LA, LSOA = read_keys()
+    LSOA, LA = read_keys()
     
     # If keep_cols was left empty then assume all columns are being kept
-    if keep_cols == []:
+    if not keep_cols:
         keep_cols = list(df.columns)
     
     # Create the area codes and names depending on resolution and what keys are available in the
