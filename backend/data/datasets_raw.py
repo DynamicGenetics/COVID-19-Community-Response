@@ -14,13 +14,13 @@ WELSH_LSOA = pd.read_csv("raw/lsoa_welsh_language_2011.csv", usecols=[2, 3])
 # Read Population data (includes age based data)
 POPULATION_LSOA = pd.read_excel("raw/lsoa_population_2018-19.xlsx",
                              sheet_name="Mid-2018 Persons", #Sheet 4
-                             usecols="A, C, D", #Reads columns - Area Codes, LSOA, All Ages, 65:90+
+                             usecols="A, D", #Reads columns - Area Codes, All Ages
                              skiprows=4 # Data starts on row 5
                              )
 
 OVER_65_LSOA = pd.read_excel("raw/lsoa_population_2018-19.xlsx",
                              sheet_name="Mid-2018 Persons", #Sheet 4
-                             usecols="A, C, BR:CQ", #Reads columns - Area Codes, LSOA, All Ages, 65:90+
+                             usecols="A, BR:CQ", #Reads columns - Area Codes, 65:90+
                              skiprows=4 # Data starts on row 5
                              )
 # Read in IMD data 
@@ -64,4 +64,11 @@ INTERNET_USE_LA = pd.read_excel(
     nrows=22 #Only parse 22 necessary rows
 )
 
-# ETHNICITY = 
+ETHNICITY_LA = pd.read_excel(
+    "raw/la_lhb_ethnicity.xlsx",
+    sheet_name="By Local Authority",
+    usecols="B:X").T
+ETHNICITY_LA.reset_index(inplace=True)
+ETHNICITY_LA.rename(columns=ETHNICITY_LA.iloc[0], inplace=True)
+ETHNICITY_LA.drop(ETHNICITY_LA.index[0], inplace=True)
+ETHNICITY_LA.drop(ETHNICITY_LA.columns[1], axis=1, inplace=True)
