@@ -63,3 +63,5 @@ INTERNET_USE_LA = pd.read_excel(
     skiprows=34, # Data starts on row 5
     nrows=22 #Only parse 22 necessary rows
 )
+
+# ETHNICITY = 

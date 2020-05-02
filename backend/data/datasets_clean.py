@@ -3,16 +3,16 @@ import pandas as pd
 import geopandas as gpd
 
 # Import functions from local module 
-from data_cleaning_functions import clean_codes, standardise_keys, clean_bracketed_data, write_cleaned_data
+from data_cleaning_functions import clean_data
 
-# Import the data constants from raw.py
-import raw
+# Import the data constants from local module
+import datasets_raw as raw
 
 #++++++++++++++++++++++++++
 # What does this script do?
 #+++++++++++++++++++++++++++
 # The requirements for the cleaning functions are saved to a dict for each dataset
-# and then the for loop at the end applies these to each dataframe. 
+# and the constant definitions calls these to be applied to the raw constants. 
 
 # The cleaning is done this way to reduce reptitive steps, whilst also allowing for some
 # of the messiness in the data, which means every file cannot be processed exactly
@@ -25,22 +25,22 @@ import raw
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # example_dict = {
-#         "data": DATANAME,
-#         "res": 'LSOA OR LA',
+#         "data": raw.DATANAME,
+#         "res": 'LSOA' OR 'LA',
 #         "key_col": , #name of col which is the key,
 #         "key_is_code": , #bool of whether the key is a code, if not it is a name 
-#         "bracketed_data_cols": ,  #list of cols where there data in the format (DATA (PERCENT))?
-#         "rename_dict": , #dictionary of columns that need renaming
-#         "keep_cols": , #list of columns to write out to CSV. If empty, assumes all.
-#         "outname": . #core of file when being written to csv (resolution appended later)
-# }
+#         "csv_name": name of csv (resolution not needed)
+#optional "bracketed_data_cols": ,  #list of cols where there data in the format (DATA (PERCENT))
+#optional "rename_dict": , #dictionary of columns that need renaming
+#          }
 
 lsoa_welsh_dict = {
         "data": raw.WELSH_LSOA,
         "res": 'LSOA',
-        "code_col": 'Unnamed: 2',
+        "key_col": 'Unnamed: 2',
+        "key_is_code": True,
         "rename_dict": {"Percentage able to speak Welsh ": "welsh_speakers_percent"},
-        "keep_cols": []
+        "outname": 'welsh_speakers_percent'
         }
         
 lsoa_population_dict = {
@@ -74,7 +74,7 @@ lsoa_popdensity_dict = {
         }
 
 la_vulnerable_dict = {
-        "data": raw.VULNERABLE,
+        "data": raw.VULNERABLE_LA,
         "res": "LA",
         "code_col": "index",
         "key_is_code": False,
@@ -85,7 +85,7 @@ la_vulnerable_dict = {
         }
 
 la_cohesion_dict = {
-        "data": raw.COMM_COHESION,
+        "data": raw.COMM_COHESION_LA,
         "res": "LA",
         "code_col": "index",
         "key_is_code": False,
@@ -121,30 +121,17 @@ la_internet_use_dict = {
         }
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Loop through the datasets, apply functions and save out
+# Apply functions to each dataset, and create new constant
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+WELSH_LSOA = clean_data(**lsoa_welsh_dict)
 
-
-lsoa_datasets = [lsoa_welsh_dict, lsoa_population_dict, lsoa_popdensity_dict, lsoa_imd_dict]
-la_datasets=[]
-
-for dataset in datasets:
-    data = dataset.get("data")
-    # Filter the LSOAS, remove whitespace, reset index
-    data = clean_codes(data, key_col=dataset.get('key_col'))
-    # Rename the columns as needed
-    data.rename(columns=dataset.get('rename_dict'), inplace=True)
-    # Merge against the LSOA dataset for consistent Codes and Names
-    data_cleaned = tidy_LSOAs(data, keep_cols=dataset.get('keep_cols'))
-    # Write out to /cleaned
-    write_cleaned_data(data_cleaned)
+POPULATION_LSOA = clean_data(**lsoa_population_dict)
 
 
 
 
 
 
-ETHNICITY = 
 
 
 
