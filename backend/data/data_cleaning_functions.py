@@ -3,19 +3,20 @@ import pandas as pd
 import geopandas as gpd
 import re
 import warnings
+import os.path
 
 def read_keys():
     LSOA = gpd.read_file(
     "static/geoboundaries/Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson"
     )
     # Keep only Welsh codes.
-    LSOA = clean_codes(LSOA, res='LSOA', key_col='LSOA11CD')
+    LSOA = clean_keys(LSOA, res='LSOA', key_col='LSOA11CD')
 
     LA = gpd.read_file(
     "static/geoboundaries/Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson"
     )
     # Keep only Welsh codes.
-    LA = clean_codes(LA, res='LA', key_col='lad19cd')
+    LA = clean_keys(LA, res='LA', key_col='lad19cd')
 
     return LSOA, LA
 
@@ -66,8 +67,6 @@ def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True)
         # Do a final check that we still have the expected shape. Return warning if not.
         if df_new.shape[0] != 22:
             warnings.warn("An error has occured. There are not the expected 22 rows.")
-
-
     elif res == 'LSOA':
         if key_is_code:
             if key_col != "LSOA11CD":
@@ -163,7 +162,62 @@ def standardise_keys(df: pd.DataFrame, res: str, keep_cols: list=[], key_is_code
     return df_tidy
 
 
-def write_cleaned_data(df: pd.DataFrame, res: str, outname: str):
+def write_cleaned_data(df: pd.DataFrame, res: str, csv_name: str):
+    """Writes a df to csv in the cleaned folder, using naming convention of
+    resolution_name.csv. If name already exists it will not write to path.
 
-    csv_name = 'cleaned/' + res + '_' + outname + '.csv'
-    df.to_csv(csv_name, index=False)
+    Arguments:
+        df {pd.DataFrame} -- df to write
+        res {str} -- resolution of the df data ('LA' or 'LSOA')
+        csv_name {str} -- name of the data to include in path.
+    """
+    # create the desired path
+    csv_path = 'cleaned/' + res + '_' + csv_name + '.csv'
+    
+    # if a file already exists on this path, alert user
+    if os.path.isfile(csv_path):
+        print("This file already exists.")
+    else:
+        df.to_csv(csv_path, index=False)
+    
+
+def clean_data(**kwargs):
+    """ Based on kwargs provided, runs through the cleaning functions. 
+    
+    INPUT: {
+        "data": raw.DATANAME,
+        "res": 'LSOA' OR 'LA',
+        "key_col": name of col which is the key,
+        "key_is_code": bool of whether the key is a code, if not it is a name 
+        "csv_name": name of csv (resolution not needed)
+        (opt) "bracketed_data_cols": list of cols where there data in the format (DATA (PERCENT))
+        (opt) "rename_dict": , #dictionary of columns that need renaming 
+        }
+    
+    OUPUT: pd.DataFrame
+    """
+    # Filter the keycodes/names, remove whitespace, reset index
+    df = clean_keys(df= kwargs.get("data"),
+                res=kwargs.get("res"),
+                key_col=kwargs.get("key_col"),
+                key_is_code=kwargs.get("key_is_code"))    
+    
+    # Rename the columns as needed
+    if kwargs.get("rename_dict"):        
+        df.rename(columns=kwargs.get("rename_dict"), inplace=True)
+
+    # If argument has been passed for bracketed_data_cols, then apply the function. 
+    if kwargs.get("bracketed_data_cols"):
+        df = clean_bracketed_data(df=df,
+                                cols=kwargs.get("bracketed_data_cols"))
+
+    # Merge against the LSOA dataset for consistent Codes and Names
+    df_clean = standardise_keys(df=df,
+                                res=kwargs.get("res"),
+                                keep_cols=kwargs.get("keep_cols"),
+                                key_is_code=kwargs.get("key_is_code"))
+    # Write out to /cleaned
+    write_cleaned_data(df_clean,
+                        res=kwargs.get("res"),
+                        csv_name=kwargs.get("csv_name"))
+    return df_clean
