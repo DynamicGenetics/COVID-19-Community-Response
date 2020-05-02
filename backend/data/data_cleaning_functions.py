@@ -1,10 +1,26 @@
 #import packages
 import pandas as pd
+import geopandas as gpd
 import re
 import warnings
 
+def read_keys():
+    LSOA = gpd.read_file(
+    "static/geoboundaries/Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson"
+    )
+    # Keep only Welsh codes.
+    LSOA = clean_codes(LSOA, res='LSOA', key_col='LSOA11CD')
 
-def clean_codes(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True):
+    LA = gpd.read_file(
+    "static/geoboundaries/Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson"
+    )
+    # Keep only Welsh codes.
+    LA = clean_codes(LA, res='LA', key_col='lad19cd')
+
+    return LSOA, LA
+
+
+def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True):
     """Ensures df key column (i.e column used for joining) is correctly formatted 
     for joins in the next steps. Accepts key as a code or name, at LA or LSOA level. 
     Will rename key column if it is not the standard name. 
@@ -19,7 +35,7 @@ def clean_codes(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True
                                 a name. (default: {True})
 
     Returns:
-        df {pd.DataFrame} -- Returns dataframe with correct number of rows for that resolution.
+        df {pd.DataFrame} -- Returns dataframe with required rows for that resolution.
     """
     # Make sure res is defined correctly 
     if type(res) != str:
@@ -67,11 +83,6 @@ def clean_codes(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True
     return df_new
 
 
-def rename_cols(df: pd.DataFrame, rename: dict):
-    """ Rename columns give in rename dictionary argument """
-    df.rename(columns=rename, inplace=True)
-
-
 def clean_bracketed_data(df: pd.DataFrame, cols: list):
     """For a df with columns in the format 'NUMBER (PERCENTAGE)' this function extracts the 
     data into two new columns and deletes the original column. 
@@ -101,40 +112,58 @@ def clean_bracketed_data(df: pd.DataFrame, cols: list):
     return df
 
 
+def standardise_keys(df: pd.DataFrame, res: str, keep_cols: list=[], key_is_code: bool=True):
+    """Given dataframe and chosen cols, will use LA or LSOA geopandas dataframes to create
+    standardised columns for area codes and names
 
-def tidy_LSOAs(df: pd.DataFrame, keep_cols: list=[], res: str):
-    """ Given dataframe and chosen cols, will merge against LSOA on the
-    and return a dataframe with LSOA11CD, LSOA11NM and 
-    cols.Requires LSOA11CD column in df. """
+    Arguments:
+        df {pd.DataFrame} -- df with a key column.
+        res {str} -- 'LA' or 'LSOA'
+
+    Keyword Arguments:
+        keep_cols {list} -- If only keeping some columns, pass a list of col names (default: {[]})
+        key_is_code {bool} -- Assumes the key column a code. If false, key column is 
+                                a name.  (default: {True})
+
+    Raises:
+        Exception: Exception raised if wrong number of rows written out.
+        ValueError: Raised if res is not 'LA' or 'LSOA' 
+
+    Returns:
+        dataframe -- returns df with standardised key codes and names. 
+    """
+
+    # Load in the geography data being used as 'ground truth' for the codes and names
+    LA, LSOA = read_keys()
     
-    # If the argument was left empty then assume all columns are being kept
+    # If keep_cols was left empty then assume all columns are being kept
     if keep_cols == []:
         keep_cols = list(df.columns)
     
-
-    df_tidy = LSOA[['LSOA11CD', 'LSOA11NM']].merge(df[keep_cols], on="LSOA11CD", how="inner")
-
-    # Check the df has the expected number of rows after merging.
-    if df_tidy.shape[0] != 1909:
-        raise Exception("An error has occured. The full 1909 rows were not produced in merge.")
-
+    # Create the area codes and names depending on resolution and what keys are available in the
+    # original data frame. 
+    if res == 'LSOA':
+        df_tidy = LSOA[['LSOA11CD', 'LSOA11NM']].merge(df[keep_cols], on='LSOA11CD', how="inner")
+        # Check the df has the expected number of rows after merging
+        if df_tidy.shape[0] != 1909:
+            raise Exception("An error has occured. The full 1909 rows were not produced in merge.")
+    elif res == 'LA':
+        if key_is_code:
+            key = 'lad19cd'
+        else:
+            key = 'lad19nm'
+        #Change the key column depending on the argument
+        df_tidy = LA[['lad19cd', 'lad19nm']].merge(df[keep_cols], on=key, how="inner")
+        # Check the df has the expected number of rows after merging
+        if df_tidy.shape[0] != 22:
+            raise Exception("An error has occured. The full 22 rows were not produced in merge.")
+    else:
+        raise ValueError("Res provided does not match 'LSOA' or 'LA")
+    
     return df_tidy
 
 
-def write_cleaned_data(df: pd.DataFrame, res: str):
+def write_cleaned_data(df: pd.DataFrame, res: str, outname: str):
 
-    """ For each variable column in a dataframe saves out to the cleaned folder as the 
-    name of the column, to csv. """
-
-    #Get the name of data column/s by removing the known column names
-    varbs = list(df.columns)
-    varbs.remove('LSOA11CD')
-    varbs.remove('LSOA11NM')
-
-    # For each col of the df save to seperate csv in 'cleaned' folder
-    # Usually there is only one, but will allow for more.
-    for varb in varbs:
-        csv_name = 'cleaned/lsoa_' + varb + '.csv'
-        df.to_csv(csv_name,
-                columns=['LSOA11CD', 'LSOA11NM', varb],
-                index=False)
+    csv_name = 'cleaned/' + res + '_' + outname + '.csv'
+    df.to_csv(csv_name, index=False)
