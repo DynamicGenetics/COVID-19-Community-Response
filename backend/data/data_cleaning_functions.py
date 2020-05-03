@@ -1,33 +1,38 @@
-#import packages
+# import packages
+import numpy as np
 import pandas as pd
 import geopandas as gpd
 import re
-import warnings
 import os.path
+
 
 def read_keys():
     LSOA = gpd.read_file(
-    "static/geoboundaries/Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson"
+        "static/geoboundaries/Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson"
     )
     # Keep only Welsh codes.
-    LSOA = clean_keys(LSOA, res='LSOA', key_col='LSOA11CD')
+    LSOA = clean_keys(LSOA, res="LSOA", key_col="LSOA11CD")
 
     if LSOA.shape[0] != 1909:
-        raise Exception("An error has occured. The full 1909 rows were not produced in merge.")
+        raise Exception(
+            "An error has occured. The full 1909 rows were not produced in merge."
+        )
 
     LA = gpd.read_file(
-    "static/geoboundaries/Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson"
+        "static/geoboundaries/Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson"
     )
     # Keep only Welsh codes.
-    LA = clean_keys(LA, res='LA', key_col='lad19cd')
+    LA = clean_keys(LA, res="LA", key_col="lad19cd")
 
     if LA.shape[0] != 22:
-        raise Exception("An error has occured. The full 22 rows were not produced in merge.")
+        raise Exception(
+            "An error has occured. The full 22 rows were not produced in merge."
+        )
 
     return LSOA, LA
 
 
-def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True):
+def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool = True):
     """Ensures df key column (i.e column used for joining) is correctly formatted 
     for joins in the next steps. Accepts key as a code or name, at LA or LSOA level. 
     Will rename key column if it is not the standard name. 
@@ -44,7 +49,7 @@ def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True)
     Returns:
         df {pd.DataFrame} -- Returns dataframe with required rows for that resolution.
     """
-    # Make sure res is defined correctly 
+    # Make sure res is defined correctly
     if type(res) != str:
         raise TypeError("Arg 'res' should be 'LA' or 'LSOA' as string")
 
@@ -53,27 +58,27 @@ def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True)
         # This will drop non Welsh LSOAs, and drop NAs.
         df_new = df[df[key_col].str.contains("W", na=False)].copy()
         df_new.reset_index(drop=True, inplace=True)
-        #Strip surrounding whitespace if there is any.
-        df_new[key_col] = df_new[key_col].apply(lambda x: x.strip())
     else:
-        #Assumes this means key is a name
-        df_new = df.dropna().copy()
+        # Assumes this means key is a name
+        df_new = df.dropna(subset=[key_col]).copy()
         df_new.reset_index(drop=True, inplace=True)
 
+    # Strip surrounding whitespace if there is any.
+    df_new[key_col] = df_new[key_col].apply(lambda x: x.strip())
 
     # If the column-name doesn't match the standard keyname, change it to that
-    if res == 'LA':
+    if res == "LA":
         if key_is_code:
-            if key_col != 'lad19cd':
+            if key_col != "lad19cd":
                 df_new.rename(columns={key_col: "lad19cd"}, inplace=True)
         else:
-            if key_col != 'lad19nm':
+            if key_col != "lad19nm":
                 df_new.rename(columns={key_col: "lad19nm"}, inplace=True)
-        
-        # Do a final check that we still have the expected shape. Return warning if not.
-        if df_new.shape[0] != 22:
-            warnings.warn("An error has occured. There are not the expected 22 rows.")
-    elif res == 'LSOA':
+
+        # Do a final check that we still have the expected shape. Raise Exception if not.
+        if df_new.shape[0] < 22:
+            raise Exception("An error has occured. There are not the expected 22 rows.")
+    elif res == "LSOA":
         if key_is_code:
             if key_col != "LSOA11CD":
                 df_new.rename(columns={key_col: "LSOA11CD"}, inplace=True)
@@ -81,9 +86,11 @@ def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool=True)
             if key_col != "LSOA11NM":
                 df_new.rename(columns={key_col: "LSOA11NM"}, inplace=True)
 
-        # Do a final check that we still have the expected shape. Return warning if not.
-        if df_new.shape[0] != 1909:
-            warnings.warn("An error has occured. There are not the expected 1909 rows.")
+        # Do a final check that we still have the expected shape. Raise Exception if not.
+        if df_new.shape[0] < 1909:
+            raise Exception(
+                "An error has occured. There are not the expected 1909 rows."
+            )
 
     return df_new
 
@@ -102,14 +109,14 @@ def clean_bracketed_data(df: pd.DataFrame, cols: list):
 
     # Define the regex pattern and find capture groups
     def extract_data(string):
-        pattern = r'\d+.?\d+'
+        pattern = r"\d+.?\d+"
         data = re.findall(pattern, string)
         return data
 
     for col in cols:
         # Derive the names for the new columns from exitsing names
-        name_counts = col + '_count'
-        name_percent = col + '_pct'
+        name_counts = col + "_count"
+        name_percent = col + "_pct"
         # Apply the extract_data function to each line, and the data to two new columns
         df[name_counts] = df[col].apply(lambda x: extract_data(x)[0])
         df[name_percent] = df[col].apply(lambda x: extract_data(x)[1])
@@ -118,7 +125,9 @@ def clean_bracketed_data(df: pd.DataFrame, cols: list):
     return df
 
 
-def standardise_keys(df: pd.DataFrame, res: str, keep_cols: list=[], key_is_code: bool=True):
+def standardise_keys(
+    df: pd.DataFrame, res: str, keep_cols: list = [], key_is_code: bool = True
+):
     """Given dataframe and chosen cols, will use LA or LSOA geopandas dataframes to create
     standardised columns for area codes and names
 
@@ -141,31 +150,37 @@ def standardise_keys(df: pd.DataFrame, res: str, keep_cols: list=[], key_is_code
 
     # Load in the geography data being used as 'ground truth' for the codes and names
     LSOA, LA = read_keys()
-    
+
     # If keep_cols was left empty then assume all columns are being kept
     if not keep_cols:
         keep_cols = list(df.columns)
-    
+
     # Create the area codes and names depending on resolution and what keys are available in the
-    # original data frame. 
-    if res == 'LSOA':
-        df_tidy = LSOA[['LSOA11CD', 'LSOA11NM']].merge(df[keep_cols], on='LSOA11CD', how="inner")
+    # original data frame.
+    if res == "LSOA":
+        df_tidy = LSOA[["LSOA11CD", "LSOA11NM"]].merge(
+            df[keep_cols], on="LSOA11CD", how="inner"
+        )
         # Check the df has the expected number of rows after merging
         if df_tidy.shape[0] != 1909:
-            raise Exception("An error has occured. The full 1909 rows were not produced in merge.")
-    elif res == 'LA':
+            raise Exception(
+                "An error has occured. The full 1909 rows were not produced in merge."
+            )
+    elif res == "LA":
         if key_is_code:
-            key = 'lad19cd'
+            key = "lad19cd"
         else:
-            key = 'lad19nm'
-        #Change the key column depending on the argument
-        df_tidy = LA[['lad19cd', 'lad19nm']].merge(df[keep_cols], on=key, how="inner")
+            key = "lad19nm"
+        # Change the key column depending on the argument
+        df_tidy = LA[["lad19cd", "lad19nm"]].merge(df[keep_cols], on=key, how="inner")
         # Check the df has the expected number of rows after merging
         if df_tidy.shape[0] != 22:
-            raise Exception("An error has occured. The full 22 rows were not produced in merge.")
+            raise Exception(
+                "An error has occured. The full 22 rows were not produced in merge."
+            )
     else:
         raise ValueError("Res provided does not match 'LSOA' or 'LA")
-    
+
     return df_tidy
 
 
@@ -179,14 +194,15 @@ def write_cleaned_data(df: pd.DataFrame, res: str, csv_name: str):
         csv_name {str} -- name of the data to include in path.
     """
     # create the desired path
-    csv_path = 'cleaned/' + res + '_' + csv_name + '.csv'
-    
+    csv_path = "cleaned/" + res + "_" + csv_name + ".csv"
+
     # if a file already exists on this path, alert user
     if os.path.isfile(csv_path):
-        print("This file already exists.")
+        print("This file already exists. Please delete if new copy needed.")
     else:
         df.to_csv(csv_path, index=False)
-    
+        print("File written to " + csv_path)
+
 
 def clean_data(**kwargs):
     """ Based on kwargs provided, runs through the cleaning functions. 
@@ -204,27 +220,30 @@ def clean_data(**kwargs):
     OUPUT: pd.DataFrame
     """
     # Filter the keycodes/names, remove whitespace, reset index
-    df = clean_keys(df= kwargs.get("data"),
-                res=kwargs.get("res"),
-                key_col=kwargs.get("key_col"),
-                key_is_code=kwargs.get("key_is_code"))    
-    
+    df = clean_keys(
+        df=kwargs.get("data"),
+        res=kwargs.get("res"),
+        key_col=kwargs.get("key_col"),
+        key_is_code=kwargs.get("key_is_code"),
+    )
+
     # Rename the columns as needed
-    if kwargs.get("rename_dict"):        
+    if kwargs.get("rename_dict"):
         df.rename(columns=kwargs.get("rename_dict"), inplace=True)
 
-    # If argument has been passed for bracketed_data_cols, then apply the function. 
-    if kwargs.get("bracketed_data_cols"):
-        df = clean_bracketed_data(df=df,
-                                cols=kwargs.get("bracketed_data_cols"))
-
     # Merge against the LSOA dataset for consistent Codes and Names
-    df_clean = standardise_keys(df=df,
-                                res=kwargs.get("res"),
-                                keep_cols=kwargs.get("keep_cols"),
-                                key_is_code=kwargs.get("key_is_code"))
+    df_clean = standardise_keys(
+        df=df,
+        res=kwargs.get("res"),
+        keep_cols=kwargs.get("keep_cols"),
+        key_is_code=kwargs.get("key_is_code"),
+    )
+
+    # If argument has been passed for bracketed_data_cols, then apply the function.
+    # Make sure to do this after tidying
+    if kwargs.get("bracketed_data_cols"):
+        df_clean = clean_bracketed_data(df=df_clean, cols=kwargs.get("bracketed_data_cols"))
+
     # Write out to /cleaned
-    write_cleaned_data(df_clean,
-                        res=kwargs.get("res"),
-                        csv_name=kwargs.get("csv_name"))
+    write_cleaned_data(df_clean, res=kwargs.get("res"), csv_name=kwargs.get("csv_name"))
     return df_clean
