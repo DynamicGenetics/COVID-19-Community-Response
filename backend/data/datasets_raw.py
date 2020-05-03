@@ -7,8 +7,6 @@ import pandas as pd
 # Some files in this folder contain mutiple data columns so these are seperated out
 # to different dataframe constants for clarity.
 
-# It also adds some variables together to create summary varbs
-
 # ++++++++++++++++++++++++++++++++++
 # Read data into acceptable format
 # ++++++++++++++++++++++++++++++++++
