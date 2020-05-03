@@ -7,6 +7,8 @@ import os.path
 
 
 def read_keys():
+    """ Reads in and returns the LSOA and LA geopandas dataframes as LSOA, LA. """
+
     LSOA = gpd.read_file(
         "static/geoboundaries/Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson"
     )
@@ -33,9 +35,9 @@ def read_keys():
 
 
 def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool = True):
-    """Ensures df key column (i.e column used for joining) is correctly formatted 
-    for joins in the next steps. Accepts key as a code or name, at LA or LSOA level. 
-    Will rename key column if it is not the standard name. 
+    """Ensures df key column (i.e column used for joining) is correctly formatted
+    for joins in the next steps. Accepts key as a code or name, at LA or LSOA level.
+    Will rename key column if it is not the standard name.
 
     Arguments:
         df {pd.DataFrame} -- Dataframe to be cleaned
@@ -43,14 +45,14 @@ def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool = Tru
         key_col {str} -- Name of column containing the code or name
 
     Keyword Arguments:
-        key_is_code {bool} -- Assumes the key column a code. If false, key column is 
+        key_is_code {bool} -- Assumes the key column a code. If false, key column is
                                 a name. (default: {True})
 
     Returns:
         df {pd.DataFrame} -- Returns dataframe with required rows for that resolution.
     """
     # Make sure res is defined correctly
-    if type(res) != str:
+    if not isinstance(res, str):
         raise TypeError("Arg 'res' should be 'LA' or 'LSOA' as string")
 
     # For instances where the key column is a code (preferred)
@@ -75,7 +77,8 @@ def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool = Tru
             if key_col != "lad19nm":
                 df_new.rename(columns={key_col: "lad19nm"}, inplace=True)
 
-        # Do a final check that we still have the expected shape. Raise Exception if not.
+        # Do a final check that we still have the expected shape. Raise Exception
+        # if not.
         if df_new.shape[0] < 22:
             raise Exception("An error has occured. There are not the expected 22 rows.")
     elif res == "LSOA":
@@ -86,7 +89,8 @@ def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool = Tru
             if key_col != "LSOA11NM":
                 df_new.rename(columns={key_col: "LSOA11NM"}, inplace=True)
 
-        # Do a final check that we still have the expected shape. Raise Exception if not.
+        # Do a final check that we still have the expected shape. Raise Exception
+        # if not.
         if df_new.shape[0] < 1909:
             raise Exception(
                 "An error has occured. There are not the expected 1909 rows."
@@ -96,15 +100,15 @@ def clean_keys(df: pd.DataFrame, res: str, key_col: str, key_is_code: bool = Tru
 
 
 def clean_bracketed_data(df: pd.DataFrame, cols: list):
-    """For a df with columns in the format 'NUMBER (PERCENTAGE)' this function extracts the 
-    data into two new columns and deletes the original column. 
+    """For a df with columns in the format 'NUMBER (PERCENTAGE)' this function extracts the
+    data into two new columns and deletes the original column.
 
     Arguments:
         df {pd.DataFrame} -- DataFrame containing 'cols'
         cols {list} -- list of cols where data needs extracting
 
     Returns:
-        df {pd.DataFrame} -- DataFrame with each col replaced by two new cols. 
+        df {pd.DataFrame} -- DataFrame with each col replaced by two new cols.
     """
 
     # Define the regex pattern and find capture groups
@@ -137,15 +141,15 @@ def standardise_keys(
 
     Keyword Arguments:
         keep_cols {list} -- If only keeping some columns, pass a list of col names (default: {[]})
-        key_is_code {bool} -- Assumes the key column a code. If false, key column is 
+        key_is_code {bool} -- Assumes the key column a code. If false, key column is
                                 a name.  (default: {True})
 
     Raises:
         Exception: Exception raised if wrong number of rows written out.
-        ValueError: Raised if res is not 'LA' or 'LSOA' 
+        ValueError: Raised if res is not 'LA' or 'LSOA'
 
     Returns:
-        dataframe -- returns df with standardised key codes and names. 
+        dataframe -- returns df with standardised key codes and names.
     """
 
     # Load in the geography data being used as 'ground truth' for the codes and names
@@ -205,18 +209,18 @@ def write_cleaned_data(df: pd.DataFrame, res: str, csv_name: str):
 
 
 def clean_data(**kwargs):
-    """ Based on kwargs provided, runs through the cleaning functions. 
-    
+    """ Based on kwargs provided, runs through the cleaning functions.
+
     INPUT: {
         "data": raw.DATANAME,
         "res": 'LSOA' OR 'LA',
         "key_col": name of col which is the key,
-        "key_is_code": bool of whether the key is a code, if not it is a name 
+        "key_is_code": bool of whether the key is a code, if not it is a name
         "csv_name": name of csv (resolution not needed)
         (opt) "bracketed_data_cols": list of cols where there data in the format (DATA (PERCENT))
-        (opt) "rename_dict": , #dictionary of columns that need renaming 
+        (opt) "rename_dict": , #dictionary of columns that need renaming
         }
-    
+
     OUPUT: pd.DataFrame
     """
     # Filter the keycodes/names, remove whitespace, reset index
@@ -242,7 +246,9 @@ def clean_data(**kwargs):
     # If argument has been passed for bracketed_data_cols, then apply the function.
     # Make sure to do this after tidying
     if kwargs.get("bracketed_data_cols"):
-        df_clean = clean_bracketed_data(df=df_clean, cols=kwargs.get("bracketed_data_cols"))
+        df_clean = clean_bracketed_data(
+            df=df_clean, cols=kwargs.get("bracketed_data_cols")
+        )
 
     # Write out to /cleaned
     write_cleaned_data(df_clean, res=kwargs.get("res"), csv_name=kwargs.get("csv_name"))
