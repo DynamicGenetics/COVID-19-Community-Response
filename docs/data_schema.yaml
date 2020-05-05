@@ -27,8 +27,7 @@ components:
           $ref: '#/components/schemas/LAs'
         LSOAs:
           $ref: '#/components/schemas/LSOAs'
-        group_points:
-          $ref: '#/components/schemas/groups'
+
 
     Variable:
       type: object
@@ -73,11 +72,11 @@ components:
           type: number
         use_internet_daily_percent:
           type: number
-        wimd_20pct_percent:
+        wimd:
           type: number
         belong_percent:
           type: number
-        use_welsh_percent:
+        welsh_percent:
           type: number
         covid_per100k:
           type: number
@@ -99,9 +98,9 @@ components:
           type: string
         LSOA11NM:
           type: string
-        welsh_speakers_percent:
+        welsh_percent:
           type: number
-        wimd_2019:
+        wimd:
           type: number
         population_count:
           type: number
@@ -114,6 +113,13 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/LSOA'
+    
+    GroupData:
+      description: Schema for Community Response point data on the dashboard.
+      type: object
+      properties:
+        groups:
+          $ref: '#/components/schemas/groups'
 
     group:
       type: object
@@ -138,3 +144,5 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/group'
+
+    
