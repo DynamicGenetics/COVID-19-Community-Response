@@ -8,8 +8,8 @@
 }
 
 #plot-area {
-  height: 400px;
-  width: 400px;
+  height: 390px;
+  width: 390px;
   z-index: 7;
   position: absolute;
   top: 12px;
@@ -19,12 +19,11 @@
 #sidebar {
   z-index: 6;
   width: 400px;
-  height: 400px;
+  height: 100vh;
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 0px;
+  right: 0px;
   background: #fff;
-  z-index: 2;
 }
 
 /* Data points */

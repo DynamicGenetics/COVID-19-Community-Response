@@ -38,47 +38,66 @@
       const svg = d3.select("#plot-area");
 
       // Load data for x and y and wait for both
-      const x_promise = d3.csv("./data/covidCases_phw.csv", function(d, i) {return {lad18nm: d.lad18nm, areaID: d.areaID, x: +d.value};});
-      const y_promise = d3.csv("./data/censusData_comm.csv", function(d, i) {return {lad18nm: d.lad18nm, areaID: d.areaID, y: +d.value};});
+      // const x_promise = d3.csv("./data/covidCases_phw.csv", function(d, i) {return {lad18nm: d.lad18nm, areaID: d.areaID, x: +d.value};});
+      // const y_promise = d3.csv("./data/censusData_comm.csv", function(d, i) {return {lad18nm: d.lad18nm, areaID: d.areaID, y: +d.value};});
+
+      // Load json data structure
+      const data_promise = d3.json("./data/dummy.json");
 
       // Map boundaries data
       const promiseLA = d3.json("./data/boundaries_LAs.geojson");
 
-      Promise.all([x_promise, y_promise, promiseLA]).then( data => {
+      // Promise.all([x_promise, y_promise, promiseLA]).then( data => {
+      Promise.all([data_promise, promiseLA]).then( data => {
 
-        let x_data, y_data, boundaries;
-        [x_data, y_data, boundaries] = data;
+        // let x_data, y_data, boundaries;
+        // [x_data, y_data, boundaries] = data;
 
-        // Merge x and y into the same data frame
-        data = [];
+        let boundaries;
+        [data, boundaries] = data;
 
-        if(x_data.length === y_data.length){
-          for (let i = 0; i < x_data.length; i++) {
-            let found = y_data.find(element => {return element.areaID === x_data[i].areaID});
-            data[i] = Object.assign(x_data[i], found);
-          }
-        } else {
-          console.log("Location arrays are inconsistent lengths.")
-        };
+        // // Merge x and y into the same data frame
+        // data = [];
+        //
+        // if(x_data.length === y_data.length){
+        //   for (let i = 0; i < x_data.length; i++) {
+        //     let found = y_data.find(element => {return element.areaID === x_data[i].areaID});
+        //     data[i] = Object.assign(x_data[i], found);
+        //   }
+        // } else {
+        //   console.log("Location arrays are inconsistent lengths.")
+        // };
 
         console.log(data);
 
+        let supports = data.variables.filter(d => d.class === "support");
+        let needs = data.variables.filter(d => d.class === "challenge");
+
+        console.log(supports);
+        console.log(needs);
+
+        let x_var = needs[3].name;
+        let y_var = supports[0].name;
+
+        data = data.LAs;
+        let LSOAs = data.LSOAs;
+
         // Set the x and y scales
         let x = d3.scaleLinear()
-          .domain(d3.extent(data, d => d.x)).nice()
+          .domain(d3.extent(data, d => d[x_var])).nice()
           .range([margin.left, width - margin.right]);
 
         let y = d3.scaleLinear()
-          .domain(d3.extent(data, d => d.y)).nice()
+          .domain(d3.extent(data, d => d[y_var])).nice()
           .range([height - margin.bottom, margin.top]);
 
         // Mean of x and y
-        let mean_x = d3.mean(data, d => d.x);
-        let mean_y = d3.mean(data, d => d.y);
+        let mean_x = d3.mean(data, d => d[x_var]);
+        let mean_y = d3.mean(data, d => d[y_var]);
 
         // Standard deviation of x and y
-        let sd_x = d3.deviation(data, d => d.x);
-        let sd_y = d3.deviation(data, d => d.y);
+        let sd_x = d3.deviation(data, d => d[x_var]);
+        let sd_y = d3.deviation(data, d => d[y_var]);
 
         console.log(mean_x);
         console.log(sd_x);
@@ -87,16 +106,18 @@
           return (d - mean)/sd;
         }
 
-        console.log(d3.deviation(data, d => z_score(d.x, mean_x, sd_x)));
+        console.log(d3.deviation(data, d => z_score(d[x_var], mean_x, sd_x)));
 
         // Colour scale
         let colour_scale_values = data.map(
           d => {
-            let zx = z_score(d.x, mean_x, sd_x);
-            let zy = z_score(d.y, mean_y, sd_y);
+            let zx = z_score(d[x_var], mean_x, sd_x);
+            let zy = z_score(d[y_var], mean_y, sd_y);
             return zx - zy;
           }
         );
+
+        console.log(colour_scale_values);
 
         function getColourScale(values){
 
@@ -117,10 +138,12 @@
 
         let risk_colour = getColourScale(colour_scale_values);
 
+        console.log(risk_colour);
+
         // Linear regression
         let linearRegression = d3.regressionLinear()
-          .x(d => d.x)
-          .y(d => d.y);
+          .x(d => d[x_var])
+          .y(d => d[y_var]);
 
         let regression_summary = linearRegression(data);
 
@@ -219,12 +242,14 @@
 
         // Assign colours
         data.forEach(d => d.colour = risk_colour(
-          (z_score(d.x, mean_x, sd_x) - z_score(d.y, mean_y, sd_y))
+          (z_score(d[x_var], mean_x, sd_x) - z_score(d[y_var], mean_y, sd_y))
         ));
+
+        console.log(data);
 
         boundaries.features.forEach(d => {
           let matching_data = data.find(
-            element => {return element.areaID === d.properties.lad18cd}
+            element => {return element.lad19cd === d.properties.lad18cd}
           );
           d.properties.colour = matching_data.colour;
         });
@@ -240,9 +265,9 @@
         function handleMouseOver(d, i){
           d3.select(this).transition().duration(50).attr("r", 12).attr("stroke-width", 2);
           linkedArea = map.querySourceFeatures("boundaries_LAs",{
-            filter: ["==",["get","lad18cd"], d.areaID]
+            filter: ["==",["get","lad18cd"], d.lad19cd]
           })[0].id;
-          console.log(d.areaID);
+          console.log(d.lad19cd);
           console.log(linkedArea);
           map.setFeatureState(
             {source: "boundaries_LAs", id: linkedArea},
@@ -266,10 +291,10 @@
         .selectAll("circle")
           .data(data)
           .join("circle")
-          .attr("id", d => d.areaID)
+          .attr("id", d => d.lad19cd)
           .attr("class", "datapoints")
-          .attr("cx", d => x(d.x))
-          .attr("cy", d => y(d.y))
+          .attr("cx", d => x(d[x_var]))
+          .attr("cy", d => y(d[y_var]))
           .attr("r", 7)
           .attr("fill", d => d.colour)
           .on("mouseover", handleMouseOver)
