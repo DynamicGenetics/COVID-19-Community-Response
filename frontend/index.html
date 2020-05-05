@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/scatterplot.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="./js/mapbox-access-token.js"></script>
+    <title>Scatterplot</title>
+  </head>
+  <body>
+    <div id="content">
+      <div id="map"></div>
+      <div id="sidebar">
+        <svg id="plot-area">
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://unpkg.com/d3-regression@1.3.4/dist/d3-regression.min.js"></script>
+    <script src="./js/sctr.js"></script>
+    <script>
+
+      // Set up plotting area
+      const width=380;
+      const height=380;
+      const margin = ({top: 30, right: 20, bottom: 40, left: 40});
+      const svg = d3.select("#plot-area");
+
+      // Load data for x and y and wait for both
+      const x_promise = d3.csv("./data/covidCases_phw.csv", function(d, i) {return {lad18nm: d.lad18nm, areaID: d.areaID, x: +d.value};});
+      const y_promise = d3.csv("./data/censusData_comm.csv", function(d, i) {return {lad18nm: d.lad18nm, areaID: d.areaID, y: +d.value};});
+
+      // Map boundaries data
+      const promiseLA = d3.json("./data/boundaries_LAs.geojson");
+
+      Promise.all([x_promise, y_promise, promiseLA]).then( data => {
+
+        let x_data, y_data, boundaries;
+        [x_data, y_data, boundaries] = data;
+
+        // Merge x and y into the same data frame
+        data = [];
+
+        if(x_data.length === y_data.length){
+          for (let i = 0; i < x_data.length; i++) {
+            let found = y_data.find(element => {return element.areaID === x_data[i].areaID});
+            data[i] = Object.assign(x_data[i], found);
+          }
+        } else {
+          console.log("Location arrays are inconsistent lengths.")
+        };
+
+        console.log(data);
+
+        // Set the x and y scales
+        let x = d3.scaleLinear()
+          .domain(d3.extent(data, d => d.x)).nice()
+          .range([margin.left, width - margin.right]);
+
+        let y = d3.scaleLinear()
+          .domain(d3.extent(data, d => d.y)).nice()
+          .range([height - margin.bottom, margin.top]);
+
+        // Mean of x and y
+        let mean_x = d3.mean(data, d => d.x);
+        let mean_y = d3.mean(data, d => d.y);
+
+        // Standard deviation of x and y
+        let sd_x = d3.deviation(data, d => d.x);
+        let sd_y = d3.deviation(data, d => d.y);
+
+        console.log(mean_x);
+        console.log(sd_x);
+
+        function z_score(d, mean, sd){
+          return (d - mean)/sd;
+        }
+
+        console.log(d3.deviation(data, d => z_score(d.x, mean_x, sd_x)));
+
+        // Colour scale
+        let colour_scale_values = data.map(
+          d => {
+            let zx = z_score(d.x, mean_x, sd_x);
+            let zy = z_score(d.y, mean_y, sd_y);
+            return zx - zy;
+          }
+        );
+
+        function getColourScale(values){
+
+          let xcs = d3.extent(values);
+
+          // ColorBrewer palette, interpolation in LAB for perceptual constancy
+          let colourScale = d3.scaleLinear()
+            .domain([xcs[0],
+              d3.mean(values),
+              xcs[1]])
+            .range(["#4575b4","#ffffbf","#d73027"])
+            // .range(["#2166ac","#f7f7f7","#b2182b"])
+            // .interpolate(d3.interpolateHcl);
+            .interpolate(d3.interpolateLab);
+
+          return colourScale;
+        }
+
+        let risk_colour = getColourScale(colour_scale_values);
+
+        // Linear regression
+        let linearRegression = d3.regressionLinear()
+          .x(d => d.x)
+          .y(d => d.y);
+
+        let regression_summary = linearRegression(data);
+
+        // Axis functions
+        xAxis = g => g
+          .attr("transform", `translate(0,${height - margin.bottom})`)
+          .call(d3.axisBottom(x).ticks(width / 80))
+          .call(g => g.select(".domain").remove())
+          .call(g => g.append("text")
+            .attr("x", width)
+            .attr("y", margin.bottom - 4)
+            .attr("fill", "#000")
+            .attr("text-anchor", "end")
+            .text("Community risk →"))
+
+        yAxis = g => g
+          .attr("transform", `translate(${margin.left},0)`)
+          .call(d3.axisLeft(y))
+          .call(g => g.select(".domain").remove())
+          .call(g => g.append("text")
+            .attr("x", -margin.left)
+            .attr("y", 10)
+            .attr("fill", "#000")
+            .attr("text-anchor", "start")
+            .text("↑ Community support"))
+
+        // Grid function
+        grid = g => g
+          .attr("stroke", "currentColor")
+          .attr("stroke-opacity", 0.1)
+          .call(g => g.append("g")
+            .selectAll("line")
+            .data(x.ticks())
+            .join("line")
+              .attr("x1", d => 0.5 + x(d))
+              .attr("x2", d => 0.5 + x(d))
+              .attr("y1", margin.top)
+              .attr("y2", height - margin.bottom))
+          .call(g => g.append("g")
+            .selectAll("line")
+            .data(y.ticks())
+            .join("line")
+              .attr("y1", d => 0.5 + y(d))
+              .attr("y2", d => 0.5 + y(d))
+              .attr("x1", margin.left)
+              .attr("x2", width - margin.right));
+
+        // Mean of x
+        const mean_x_base = height - margin.bottom - margin.top;
+        const mean_x_place = x(mean_x);
+        mark_mean_x = g => g
+  				.attr("transform", `translate(${mean_x_place},${margin.top})`)
+  				.append("path").attr("d",`M 0 0 L 0 ${mean_x_base}`)
+  				.attr("stroke","#333")
+  				.attr("shape-rendering", "crispEdges");
+
+        // Mean of y
+        const mean_y_base = width - margin.left - margin.right;
+        const mean_y_place = y(mean_y);
+        mark_mean_y = g => g
+  				.attr("transform", `translate(${margin.left},${mean_y_place})`)
+  				.append("path").attr("d",`M 0 0 L ${mean_y_base} 0`)
+  				.attr("stroke","#333")
+  				.attr("shape-rendering", "crispEdges");
+
+        // Regression line
+        const line = d3.line().x(d => x(d[0])).y(d => y(d[1]));
+        const regression_line = line(regression_summary);
+        draw_regression_line = g => g
+          .append("path").attr("d",regression_line)
+          .attr("stroke","#aaa")
+          .attr("shape-rendering", "geometricPrecision");
+
+        // Plot axes
+        svg.append("g")
+          .call(xAxis);
+
+        svg.append("g")
+          .call(yAxis);
+
+        // Plot grid
+        svg.append("g")
+          .call(grid);
+
+        // Plot mean of x
+        svg.append("g")
+          .call(mark_mean_x);
+
+        // Plot mean of y
+        svg.append("g")
+          .call(mark_mean_y);
+
+        // Plot regression line
+        svg.append("g")
+          .call(draw_regression_line);
+
+        // Assign colours
+        data.forEach(d => d.colour = risk_colour(
+          (z_score(d.x, mean_x, sd_x) - z_score(d.y, mean_y, sd_y))
+        ));
+
+        boundaries.features.forEach(d => {
+          let matching_data = data.find(
+            element => {return element.areaID === d.properties.lad18cd}
+          );
+          d.properties.colour = matching_data.colour;
+        });
+
+        console.log(boundaries);
+
+        console.log(data);
+
+        // Remember the latest linked map area
+        let linkedArea = null;
+
+        // Mouse event handlers for graph
+        function handleMouseOver(d, i){
+          d3.select(this).transition().duration(50).attr("r", 12).attr("stroke-width", 2);
+          linkedArea = map.querySourceFeatures("boundaries_LAs",{
+            filter: ["==",["get","lad18cd"], d.areaID]
+          })[0].id;
+          console.log(d.areaID);
+          console.log(linkedArea);
+          map.setFeatureState(
+            {source: "boundaries_LAs", id: linkedArea},
+            {hover: true}
+          );
+        }
+
+        function handleMouseOut(d, i){
+          d3.select(this).transition().duration(50).attr("r", 7).attr("stroke-width", 1.5);
+          map.setFeatureState(
+            {source: "boundaries_LAs", id: linkedArea},
+            {hover: false}
+          );
+          linkedArea = null;
+        }
+
+        // Graph data points
+        svg.append("g")
+          .attr("stroke", "#505050")
+          .attr("stroke-width", 1.5)
+        .selectAll("circle")
+          .data(data)
+          .join("circle")
+          .attr("id", d => d.areaID)
+          .attr("class", "datapoints")
+          .attr("cx", d => x(d.x))
+          .attr("cy", d => y(d.y))
+          .attr("r", 7)
+          .attr("fill", d => d.colour)
+          .on("mouseover", handleMouseOver)
+          .on("mouseout", handleMouseOut);
+
+        // Map
+        let map = new mapboxgl.Map({
+          container: 'map',
+          style: "mapbox://styles/oliverdavis/ck9q4pu7o5j4a1ipdqsxrusj2",
+          center: [-3.766409, 52.33022],
+          zoom: 7
+        });
+
+        // Remember the latest hovered map area
+        let hoveredArea = null;
+
+        map.on('load', function () {
+
+          map.addSource("boundaries_LAs", {
+            "type": "geojson",
+            "data": boundaries,
+            "generateId": true
+          });
+          map.addLayer({
+            "id": "local_authorities",
+            "type": "fill",
+            "source": "boundaries_LAs",
+            "layout": {},
+            "paint": {
+              'fill-color': ["get","colour"],
+              'fill-opacity': ['interpolate', ["exponential", 3], ['zoom'], 7, 0.6, 11, 0.2]
+            }
+          }, "settlement-minor-label");
+
+          map.addLayer({
+            "id": "lA_borders",
+            "type": "line",
+            "source": "boundaries_LAs",
+            "layout": {},
+            "paint": {
+              "line-color": "#505050",
+              "line-width": [
+                "case",
+                ["boolean", ["feature-state", "hover"], false],
+                2,
+                0.5
+              ]
+            }
+          }, "settlement-minor-label");
+
+          // Hillshade layer (optional)
+          // map.addSource('dem', {'type': 'raster-dem','url': 'mapbox://mapbox.terrain-rgb'});
+          // map.addLayer({
+          //   'id': 'hillshading',
+          //   'source': 'dem',
+          //   'type': 'hillshade'
+          //   // insert below waterway-river-canal-shadow;
+          //   // where hillshading sits in the Mapbox Outdoors style
+          // }, 'waterway-shadow');
+
+          map.on('mouseover', "local_authorities", function(e) {
+      		// Change the cursor style as a UI indicator.
+      			map.getCanvas().style.cursor = 'pointer';
+      		});
+
+          map.on("mousemove", "local_authorities", function(e) {
+            if (e.features.length > 0) {
+              if (hoveredArea !== undefined) {
+                map.setFeatureState(
+                  {source: "boundaries_LAs", id: hoveredArea},
+                  {hover: false}
+                );
+                if(e.features[0].id != hoveredArea){
+                  d3.selectAll("circle.datapoints")
+                    .transition().duration(50)
+                    .attr("r", "7").attr("stroke-width", 1.5);
+                }
+              }
+              hoveredArea = e.features[0].id;
+              map.setFeatureState(
+                {source: "boundaries_LAs", id: hoveredArea},
+                {hover: true}
+              );
+              d3.select("circle#" + e.features[0].properties.lad18cd)
+                .transition().duration(50)
+                .attr("r", "12").attr("stroke-width", 2);
+            }
+          });
+
+          map.on('mouseleave', "local_authorities", function(e) {
+      			map.getCanvas().style.cursor = '';
+            if(hoveredArea !== undefined) {
+              map.setFeatureState(
+                {source: "boundaries_LAs", id: hoveredArea},
+                {hover: false}
+              );
+              d3.selectAll("circle.datapoints")
+                .transition().duration(50)
+                .attr("r", "7").attr("stroke-width", 1.5);
+            }
+            hoveredArea = null;
+      		});
+
+        });
+      });
+
+    </script>
+  </body>
+</html>
