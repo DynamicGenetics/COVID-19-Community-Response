@@ -2,7 +2,14 @@ import csv
 import json
 
 
-def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path):
+def assimilate(data, geo, out_path):
+
+    data_path = data["path"]
+    data_idName = data["ID_name"]
+    geo_path = geo["path"]
+    geo_idName = geo["ID_name"]
+    data_type = data["type"]
+
     data_toAssimilate = {}
 
     # If input is csv
@@ -36,9 +43,9 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
                 # For row in CSV insert columns as properties in geoJSON
                 for boundary in boundaries["features"]:
                     properties = boundary["properties"]
-                    
+
                     boundary["properties"] = data_toAssimilate[properties[geo_idName]]
-                    
+
                 data_assimilated = boundaries
 
     # If input is dictionary / json
@@ -60,10 +67,10 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
     elif data_type == "points":
         point_features = []
 
-        #Read in csv as list of dictionaries so each row is a dictionary with {headers : values}
+        # Read in csv as list of dictionaries so each row is a dictionary with {headers : values}
         with open(data_path, newline="", encoding="utf8") as f:
             reader = csv.DictReader(f)
-            
+
             try:
                 for row in reader:
                     properties = []
@@ -73,22 +80,31 @@ def assimilate(data_type, data_path, data_idName, geo_path, geo_idName, out_path
                             properties.append((key, float(row[key].replace(",", "",))))
                         except:
                             properties.append((key, row[key]))
-                    
-                    #For each point (row in csv), detect and extract all headers (dictionary keys), store values, and add to list of dictionaries
+
+                    # For each point (row in csv), detect and extract all headers (dictionary keys), store values, and add to list of dictionaries
                     properties = {key: value for key, value in properties}
 
-                    #Form geojson format for points, dump properties as dictionaries into properties
-                    point_features.append({
-                        "type": "Feature",
-                        "geometry": {"type": "Point", "coordinates": [float(row['Lng']), float(row['Lat'])]},
-                        "properties": properties,
-                    })
+                    # Form geojson format for points, dump properties as dictionaries into properties
+                    point_features.append(
+                        {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": [float(row["Lng"]), float(row["Lat"])],
+                            },
+                            "properties": properties,
+                        }
+                    )
             except:
                 print("WARNING (Assimilator): Unable to assimilate row: ", row)
-            
-            print("Message (Assimilator): Found {} points for {} ".format(len(point_features),data_path))
-            
-            #Output list of features (with properties) in geojson format; convert to list for json serialisation by using sorted()
+
+            print(
+                "Message (Assimilator): Found {} points for {} ".format(
+                    len(point_features), data_path
+                )
+            )
+
+            # Output list of features (with properties) in geojson format; convert to list for json serialisation by using sorted()
             data_assimilated = {"type": "FeatureCollection", "features": point_features}
 
     # Save

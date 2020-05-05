@@ -1,7 +1,7 @@
 import json
 from statistics import stdev
 
-'''
+"""
 Intended script purpose:
 1. Iterate over each data source in data sources,
 2. Build a dictionary of metadata for each datafield in each data source,
@@ -9,14 +9,14 @@ Intended script purpose:
 
 Formatting is intended to be usable directly by the maps.js 
 (i.e., objective JS dictionary of dataField metadata)
-'''
+"""
 
 # Specify data fields to ignore (e.g., ONS shape descriptor values)
 geoLabelsToIgnore = ["objectid", "bng_e", "bng_n"]
 
 # Generate a map layer for each data layer in each data source
-def generateLayer(dataSources, filename_output):
-    
+def generate_layer_JS(dataSources, filename_output):
+
     # Initialise output list, exceptions and layers lists for methods to populate
     output = []
     exceptions = []
@@ -28,13 +28,12 @@ def generateLayer(dataSources, filename_output):
         finishedLayers = []
         o = 0
 
-
         # Build dictionary entries for the metadata for each datafield in data sources
         for src in dataSources:
-            
+
             # Skip if data source is disabled ('enabled' == False)
             if src["enabled"]:
-                
+
                 # Process for point geometry (doesn't require data stops):
                 if src["geometry"] == "Points":
                     discoverPointDataField(src)
@@ -42,7 +41,6 @@ def generateLayer(dataSources, filename_output):
                 # Process for other geometries (e.g., polygon requires data stops):
                 elif src["geometry"] == "Polygons":
                     discoverPolygonDataField(src)
-
 
         # Use dictionaries to produce layers formatted in objective JS
         for key_category in layers:
@@ -54,7 +52,7 @@ def generateLayer(dataSources, filename_output):
 
                 # Get properties of layers under category
                 layer = layerCategory[key_layer]
-                
+
                 # Now process point data
                 if layer["geometry"] == "Polygons":
                     dataField = producePolygonLayer(layerCategory, layer)
@@ -64,7 +62,7 @@ def generateLayer(dataSources, filename_output):
                 elif layer["geometry"] == "Points":
                     dataField = producePointsLayer(layerCategory, layer)
                     finishedLayers.append(dataField)
-                    
+
             # Increment layer count
             o += 1
 
@@ -77,14 +75,14 @@ def generateLayer(dataSources, filename_output):
         )
 
     def discoverPointDataField(src):
-        
-        # Detect data fields in data sources 
+
+        # Detect data fields in data sources
         for dataField in src["layers"].keys():
             layer = src["layers"][dataField]
 
             # Skip disabled data fields (in dataSources)
             if not layer["disabled"]:
-                
+
                 # Get category of data field from dataSources metadata
                 category = layer["categoryInfo"]["name"]
 
@@ -105,7 +103,6 @@ def generateLayer(dataSources, filename_output):
                     "categoryInfo": layer["categoryInfo"],
                     "enabledByDefault": layer["enabledByDefault"],
                 }
-
 
     def discoverPolygonDataField(src):
 
@@ -143,15 +140,13 @@ def generateLayer(dataSources, filename_output):
                                     "geometry": src["geometry"],
                                     "dataValues": [dataValue],
                                     "ID_name": src["ID_name"],
-                                    "enabledByDefault": layer[
-                                        "enabledByDefault"
-                                    ],
+                                    "enabledByDefault": layer["enabledByDefault"],
                                     "categoryInfo": layer["categoryInfo"],
                                 }
                             else:
-                                layers[category][dataField][
-                                    "dataValues"
-                                ].append(dataValue)
+                                layers[category][dataField]["dataValues"].append(
+                                    dataValue
+                                )
 
                             # print("Added layer: ", layer)
 
@@ -161,7 +156,6 @@ def generateLayer(dataSources, filename_output):
                     else:
                         exceptions.append(dataField)
                         # print("Warning (generateLayer): datafield found in dataSource not specified in dataSources")
-
 
     def producePolygonLayer(layerCategory, layer):
 
@@ -176,13 +170,13 @@ def generateLayer(dataSources, filename_output):
         geometry = layer["geometry"]
         ID_name = layer["ID_name"]
         enabledByDefault = layer["enabledByDefault"]
-                
+
         dataValues = layer["dataValues"]
         stops = []
 
         # Get range of each property dataField in geoJSON (if numeric)
         if isinstance(dataValues[0], int) or isinstance(dataValues[0], float):
-            
+
             # Assign opacity by length of categories
             opacity = 1 / len(layerCategory)
 
@@ -215,22 +209,18 @@ def generateLayer(dataSources, filename_output):
                     "*source*": dataField,
                     "*type*": "fill",
                     "*paint*": {
-                        "fill-color": {
-                            "*property*": dataField,
-                            "*stops*": stops,
-                        },
+                        "fill-color": {"*property*": dataField, "*stops*": stops,},
                         "fill-opacity": opacity,
                     },
-                    "*filter*": ["==", "$type", 'Polygon'],
+                    "*filter*": ["==", "$type", "Polygon"],
                 },
             }
         )
 
-        return(dataField)
+        return dataField
 
-        
     def producePointsLayer(layerCategory, layer):
-    
+
         # Get metadata for each field from metadata dictionary entry
         dataField = layer["dataField"]
         origin = layer["origin"]
@@ -240,7 +230,6 @@ def generateLayer(dataSources, filename_output):
         reverseColors = layer["reverseColors"]
         ID_name = layer["ID_name"]
         enabledByDefault = layer["enabledByDefault"]
-
 
         output.append(
             {
@@ -266,7 +255,7 @@ def generateLayer(dataSources, filename_output):
             }
         )
 
-        return(dataField)
-    
+        return dataField
+
     # Run main function when called
     main()

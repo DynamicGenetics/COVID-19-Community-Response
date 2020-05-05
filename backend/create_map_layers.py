@@ -1,9 +1,9 @@
 # Import data sources information
-from data.dataSources import *
+from data.dataSources import DATAGROUPS, DATASOURCES, BOUNDARYFILES
 
 # Import  functions to call
-from assimilator import assimilate
-from generateLayer import generateLayer
+from JSON_output.geojson_assimilator import assimilate
+from JSON_output.generate_layer_JS import generate_layer_JS
 
 # Initialise counts to count successful and unsuccessful operations
 count_data = 0
@@ -14,7 +14,7 @@ count_dataSuccess = 0
 skipped_data = []
 
 
-'''
+"""
 Intended purpose of this script: 
 1. Feed data source metadata into assimilate()
 2. Generate geojson files from raw files 
@@ -25,9 +25,9 @@ else If input is geojson then point features are formatted into geojson
 
 generateLayer() function:
 Generates an objetice JS formatted entry in the layer.js from each geoJSON
-'''
+"""
 
-# Use source information to access filenames and metadata to produce geojsons 
+# Use source information to access filenames and metadata to produce geojsons
 for data in DATASOURCES:
 
     # Proceed with data unless marked as 'disabled'
@@ -36,16 +36,12 @@ for data in DATASOURCES:
         # If data marked as 'geojson' then skip, or else recompile as geojson
         if data["type"] == "geojson":
             continue
-            
+
         # Run Assimilate() for each data source
         else:
-            geo = BOUNDARYFILES[data["res"]]
             assimilate(
-                data["type"],
-                data["path"],
-                data["ID_name"],
-                geo["path"],
-                geo["ID_name"],
+                data,
+                BOUNDARYFILES[data["res"]],
                 "dashboard/data/{}.geojson".format(data["name"]),
             )
 
@@ -62,17 +58,17 @@ for data in DATASOURCES:
     # Skip data sources marked as 'disabled'
     else:
         skipped_data.append(data["name"])
-    
-    # Increment count for total number of data sources 
+
+    # Increment count for total number of data sources
     count_data += 1
 
 
 # Generate map layers for each data layer
-layers = generateLayer(DATASOURCES, "dashboard/layers.js")
+layers = generate_layer_JS(DATASOURCES, "dashboard/layers.js")
 print(layers)
 
 print(
     "ASSIMILATED {} / {} COMPATIABLE DATA SOURCES ({} disabled: {})".format(
-        count_dataSuccess, count_data, count_data-count_dataEnabled, skipped_data
+        count_dataSuccess, count_data, count_data - count_dataEnabled, skipped_data
     )
 )
