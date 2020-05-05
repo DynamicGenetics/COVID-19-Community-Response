@@ -1,0 +1,230 @@
+/* colors */
+:root {
+	--primary-color: #f8f8ff;
+	--highlight-color: #180c3b;
+	--emphasis-color: #17b1a4;
+}
+div[class*='col']{
+    background-color: var(--primary-color);
+}
+.bg-col-primary{
+    background-color: var(--primary-color) !important;
+}
+.bg-col-highlight{
+    background-color: var(--highlight-color);
+}
+.border-col-highlight{
+    border-color: var(--highlight-color);
+}
+a{
+    color: var(--emphasis-color);
+}
+a:hover{
+    color: var(--highlight-color);
+    text-decoration: none;
+}
+
+
+/* Font */
+p, h1, h2, h3, h4, h5, footer, nav{
+    font-family: 'Roboto', sans-serif;
+}
+.muteLink{
+    color: #666;
+}
+.alignLeft{
+    text-align: left;
+}
+.alignRight{
+    text-align: right;
+}
+.alignCenter{
+    text-align: center;
+}
+.fa-nav{
+    font-size: 200%;
+    color: var(--highlight-color);
+}
+.fa-blue{
+    color: var(--emphasis-color);
+}
+
+/* Navbar */
+.nav-right{
+    padding: 1px !important;
+    margin: 10px !important;
+}
+.icons-down-nav{
+    width: 50px;
+}
+
+/* General spacing and layout */
+.spacer-50{
+    margin: 50px;
+}
+.spacer-100{
+    margin:2rem;
+}
+.container-50{
+    width: 40%;
+}
+.mainContent{
+    min-height: 30rem;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+} 
+.centered{
+    display: flex;
+    justify-content: center;
+}
+.padded-10{
+    padding: 10px;
+}
+.padded-30{
+    padding: 30px;
+}
+
+/* Splash */
+.icons-down-splash{
+    color: var(--primary-color);
+    position: absolute; 
+    bottom: 0;
+    right: 45%;
+    padding: 20px;
+    font-size: 4em;
+}
+.img-scrolly-splash{
+    padding: 100px;
+    width: 100%;
+    height: 90vh;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+.img-scrolly-splash-logo{
+    background-image: url(img/virus2.jpg);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#img-splash{
+    width: 100%;
+    height: auto;
+}
+#title-splash{
+    color: var(--primary-color);
+    position: absolute; 
+    bottom: 0;
+    right: 0;
+    font-family: 'Raleway', sans-serif;
+    padding: 20px;
+}
+#logo-splash-project{
+    max-height: 200px;
+    max-width: 200px;
+}
+#logo-splash-lab{
+    max-height: 300px;
+    max-width: 300px;
+    position: absolute;
+    bottom: 0;
+}
+
+/* Images */
+.bg-img-virus{
+    background-image: url(img/virus2.jpg);
+}
+.bg-img-community{
+    background-image: url(img/community4.jpg);
+}
+.bg-img-map{
+    background-image: url(img/covidMap.jpg);
+}
+.bg-img-network{
+    background-image: url(img/network1.jpg);
+}
+.img-scrolly{
+    padding: 100px;
+    width: 100%;
+    height: 200px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#img-dashboard{
+    height: 25rem;
+    width: auto;
+}
+#logo-github{
+    margin: 10px;
+    filter: brightness(150%);
+}
+.logos-about{
+    width: auto;
+    height: 60px;
+    margin: 10px;
+}
+
+/* Footer */
+.footer{
+    padding: 20px;
+}
+.logo-footer-lg{
+    max-width:100%;
+    max-height:200px;
+}
+.logo-footer-sm{
+    max-width:100px;
+    max-height:100px;
+    padding: 10px;
+}
+.ft-small-logos{
+    padding: 50px;
+}
+.footer-links{
+    position: relative;
+    top: 50px;
+}
+
+/* Guide */
+#btn-go{
+    width: 50%;
+    padding: 20px;
+}
+#nav-tabContent{
+    height: 15rem;
+}
+.tab-pane{
+   width: 700px !important;
+}
+.btn-continue{
+    position: absolute;
+    bottom:0;
+    right:0;
+}
+.btn-continue-i{
+    font-size: 5rem;
+    position: relative;
+    top: 2.5rem;
+    color: var(--emphasis-color)
+}
+.btn-continue-bg{
+    padding: 1rem;
+    max-width: 1rem;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    top: 5.5rem;
+    margin: auto;
+}
+.btn-continue-example{
+    color: var(--emphasis-color)
+}

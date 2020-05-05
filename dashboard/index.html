@@ -1,84 +1,301 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+
+<html lang="en">
 
 <head>
-    <meta charset="utf-8"/>
-    <title>COVID-19 Community Support Map</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
-    
-    <!--  JAVASCRIPT  -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    
-    <!--  CSS  -->
-    <link type="text/css"
-          href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css"
-          rel="stylesheet"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link type="text/css" href="style.css" rel="stylesheet"/>
-    <link type="text/css" href="normalize.css" rel="stylesheet"/>
-    
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <!-- Custom stylesheet -->
+  <link rel="stylesheet" href="homeStyle.css">
+
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- Font awesome (icons) -->
+  <link rel="stylesheet" href="css/all.css">
+
+  <title>COVID-19 Community Response</title>
+
 </head>
 
 <body>
-    <div class="sidebar">
-        <h2>COVID Community Support</h2>
-        <p class="dense">
-            This map shows currently known sources of
-            community support in Wales, alongside community risk factors and
-            risk factors for COVID-19. For a full explanation of the methodology
-            and data sources please see the
-            <a href="https://github.com/DynamicGenetics/Covid-Communities-Map/wiki">
-                wiki page</a>.
-        </p>
-        <h2 class=" spacey">Layers</h2>
-        <nav id="menu">
-            <div id="accordion"></div>
-        </nav>
-        <!--<small>For layers marked with an * darker colors indicate lower values so that multiple layers within the same category can be
-            overlayed to show the combined vulnerability in this category</small>-->
-        <footer>
-            <!--<small style="color: black">For inverted layers marked with * darker = less</small>-->
-            <p>
-                © <a href="http://dynamicgenetics.org" title="Dynamic Genetics Lab"
-                        target="_blank"> Dynamic Genetics</a> 2020
+
+  <!-- Main body container -->
+  <div class="container-fluid">
+
+
+    <!-- Splash screen -->
+    <div class="row">
+      <div class="img-scrolly-splash bg-img-virus">
+        <img src="img/temp-placeholder-logo.png" class="rounded float-right" alt="Project Logo" id="logo-splash-project">
+        <h1 id="title-splash"><big>COVID-19 Community Response</big></h1>
+        <a href="#subhead" class="text-center icons-down-splash" id="icons-down-splash"><div><i class="fas fa-angle-down"></i> <i class="fas fa-chevron-down"></i> <i class="fas fa-angle-down"></i></div></a>
+        <img src="img/logo-dynamicgenetics-white-filled1.png" class="rounded float-left img-scrolly-splash-logo" alt="Dynamic Genetics Logo" id="logo-splash-lab">
+      </div>
+    </div><!-- / row -->
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+      <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+          <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+              </li>
+          </ul>
+      </div>
+      <div class="mx-auto order-0">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+      </div>
+      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item alignCenter">
+              <a class="nav-link" href="https://dynamicgenetics.github.io/Covid-Communities-Map/visualisation/">
+                <i class="fas fa-globe-americas fa-nav"></i><br>Map
+              </a>
+            </li>
+            <li class="nav-item alignCenter">
+              <a class="nav-link" href="user-guide.html"><i class="fas fa-book-open fa-nav"></i><br>User guide</a>
+            </li>
+            <li class="nav-item alignCenter">
+              <a class="nav-link" href="#about"><i class="fas fa-info-circle fa-nav"></i><br>About</a>                
+            </li>
+            <li class="nav-item alignCenter">
+              <a class="nav-link" href="#team"><i class="fas fa-users-cog fa-nav"></i><br>The team</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link dropdown-toggle alignCenter" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-flask fa-nav fa-blue"></i><br>Data
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">
+                  <i class="fab fa-wikipedia-w"></i><span class="text-muted">   About</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="https://github.com/DynamicGenetics/Covid-Communities-Map/">
+                  <i class="fab fa-github"></i><span class="text-muted">   Source</span>
+                </a>
+              </div>
+            </li>
+          </ul>
+      </div>
+    </nav>  
+
+
+    <!-- First content block -->
+    <div class="row" id="subhead">
+      <div class="col-sm-2"></div><!-- Spacing col -->
+
+      <!-- Left content -->
+      <div class="col-sm mainContent">
+        <div class="content-container">
+          <h1>Community response map for COVID-19</h1>
+          <br>
+          <h4 id="subheading">Identify the most vulnerable communities in Wales</h4>
+          <br>
+          <a href="#howTo" class="btn btn-lg btn-primary my-2 my-sm-0 bg-col-highlight border-col-highlight"">Get started</a>
+        </div>
+      </div>
+      
+      <!-- Right content -->
+      <div class="col-sm mainContent">
+        <img src="img/dashboard1.png" id="img-dashboard">
+      </div>
+
+      <div class="col-sm-2"></div><!-- Spacing col -->
+    </div><!-- / row -->
+
+
+    <!-- Scrolly image 3 -->
+    <div class="row" id="about">
+      <div class="img-scrolly bg-img-community"></div>
+    </div><!-- / row -->
+    
+
+    <!-- Third content block -->
+    <div class="row">
+      <div class="col-sm-2"></div><!-- Spacing col -->
+
+        <!-- Left content -->
+        <div class="col-sm mainContent">
+          <div class="content-container">
+            <h1>Identifying vulnerability</h1><br>
+            <p> 
+
+              This dashboard is an opportunity to explore data from government, 
+              community and social media sources to better understand the distribution 
+              of community support and community-level vulnerabilities in Wales during 
+              the COVID-19 pandemic. You can choose the variables you want to compare, 
+              to answer the questions that you are interested in. 
+
             </p>
-        </footer>
-    </div>
+          </div>
+        </div>
 
-    <div id="map"></div>
+        <!-- Right content -->
+        <div class="col-sm mainContent">
+          <img src="img/dashboard4.png" id="img-dashboard">
+        </div>
 
-    <div class="map-overlay" id="overlay_pd">
-        <div id='pd' class='pd'>Hover over an area for statistics</div>
-    </div>
+      <div class="col-sm-2"></div><!-- Spacing col -->
+    </div><!-- / row -->
 
+
+    <!-- Fourth content block -->
+    <div class="row">
+      <div class="col-sm-2"></div><!-- Spacing col -->
+
+        <!-- Left content -->
+        <div class="col-sm mainContent">
+          <img src="img/dashboard2.png" id="img-dashboard">
+        </div>
+
+        <!-- Right content -->
+        <div class="col-sm mainContent">
+          <div class="content-container">
+            <h1>Community support</h1><br>
+            <p> 
+              
+              We want to understand which areas have more vulnerability to COVID-19 and 
+              less community support. These areas may need more help from extra volunteers 
+              or community support groups.  
+
+              Since the pandemic started communities have been mobilising to help each other; 
+              from shopping for elderly neighbours, to offering to sew face masks. Different 
+              places might have more supportive communities, and features of communities that
+              might mean COVID cases are more likely. Understanding which communities might have 
+              lower levels of community support, and more vulnerabilities, can help government 
+              agencies and third sector organisations consider which areas might need some extra help. 
+
+            </p>
+          </div>
+        </div>
+
+      <div class="col-sm-2"></div><!-- Spacing col -->
+    </div><!-- / row -->
+
+
+    <!-- Scrolly image 5 -->
+    <div class="row">
+      <div class="img-scrolly bg-img-community"></div>
+    </div><!-- / row -->
+    
+
+  </div>  
+ </div>
+
+
+  <!-- Optional bootstrap JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 
-<script type="text/javascript" src="borgLayers.js"></script>
-<script type="text/javascript" src="map.js"></script>
-<script>
-      $(document).ready(function () {
+<footer class="footer bg-col-primary">
+
+  <!-- Team information -->
+  <div class="row">
+    
+    <!-- Left content-->
+    <div class="col-sm-3" id="team">
+      
+      <div class="centered">
+        <a href="https://phw.nhs.wales/" title="Public Health Wales">
+          <img src="img/logo-phw.png" class="logo-footer-lg"></a>
+      </div>
+
+      <div class="spacer-50"></div>
+
+      <div class="centered">
+        <a href="https://dynamicgenetics.org/" title="Dynamic Genetics Lab">
+          <img src="img/logo-dynamicgenetics.png" class="logo-footer-lg"></a>
+      </div>
+
+      <div class="ft-small-logos">
+        <a href="http://www.bristol.ac.uk/integrative-epidemiology/" 
+        title="Medical Research Council: Integrative Epidemiology Unit">
+          <img src="img/logo-ieu_sq.png" class="logo-footer-sm"></a>
+        <a href="https://esrc.ukri.org/" title="Economic and Social Research Council">
+          <img src="img/logo-esrc.png" class="logo-footer-sm"></a>
+        <a href="https://www.swdtp.ac.uk/" title="South West Doctoral Training Partnership">
+          <img src="img/logo-swdtp.png" class="logo-footer-sm"></a>
+        <a href="https://www.bristol.ac.uk/" title="University of Bristol">
+          <img src="img/logo-uob_sq.jpg" class="logo-footer-sm"></a>
+      </div>
+
+      </div>
+
+    <!-- Middle content -->
+    <div class="col-sm-5 mainContent">
+
+      <div class="content-container">
+        <h1>Project team</h1>
+        <p> 
+
+          This project is a collaboration between the 
+          <a href="https://phw.nhs.wales/services-and-teams/knowledge-directorate/research-and-evaluation/">
+            Public Health Wales Research & Evaluation Division
+          </a> 
+          and the 
+          <a href="https://dynamicgenetics.org/">
+            University of Bristol’s Dynamic Genetics lab
+          </a>.  
+
+          <br>
+          <br>
+          <strong>University of Bristol: </strong>
           
-          // Set OnChange Handlers on Checkbox - after document is ready.
-          // this is to allow JQuery to properly trigger the change
-          // effect on checkboxes.
-          $("input[type='checkbox']").change(function(evt) {
-              checkboxChange(evt);
-          });
-          // Set JQuery UI Accordion
-          $("#accordion")
-              .accordion({
-                  header: "> div > h3",
-                  collapsible: true,
-                  heightStyle: "content",
-                  beforeActivate : function(event, ui) {
-                    if (ui.newHeader){
-                        $("input[type='checkbox']").prop('checked', false).change();
-                    }
-                  },
-              });
-      });
-  </script>
+          <br>
+          Dr Oliver Davis <span class="text-muted">- Associate Professor of Statistical Genetics, and Turing Fellow </span><br>
+          Dr Valerio Maggio <span class="text-muted">- Senior Research Associate in Data Science and AI </span><br>
+          Dr Alastair Tanner <span class="text-muted">- Research Software Engineer </span><br>
+          Christopher Moreno-Stokoe <span class="text-muted">– Doctoral Researcher (Genetic Epidemiology and HCI)</span><br>
+          Nina Di Cara <span class="text-muted">– Doctoral Researcher (Mental Health Science)</span><br>
+          Benjamin Woolf <span class="text-muted">– Doctoral Researcher (Psychiatric and Genetic Epidemiology)</span><br>
+          Jessica Armitage <span class="text-muted">– Doctoral Researcher (Behavioural Genetics)</span><br>
+          
+          <br>
+          <br>
+          <strong>Public Health Wales: </strong>
+          
+          <br>
+          Dr Alisha Davies <span class="text-muted">– Head of the Research & Evaluation Division</span><br>
+          Dr Jiao Song <span class="text-muted">– Public Health Research Statistician</span><br>
+          Elysha Rhys-Sambrook <span class="text-muted">– Project Support Officer</span><br>
+          Lucia Homolova <span class="text-muted">– Public Health Research Assistant</span><br>
+
+        </p>
+      </div>
+    </div>
+
+    <!-- Right content -->
+    <div class="col-sm-4 mainContent">
+      <img src="img/team.png" id="img-dashboard">
+    </div>
+    
+  </div>
+
+  <!-- Page footer text -->
+  <div class="container-fluid" id="footer">
+      <div class="row text-muted">
+        <div class="col-sm centered alignRight footer-links">
+          <p>
+            Images courtesy of 
+            <a href="http://www.unsplash.com" class="muteLink"> Unsplash </a> 
+            and 
+            <a href="http://www.freepik.com" class="muteLink"> Freepik </a>
+          </p>
+        </div>
+  </div>
+
+</footer>
+
 </html>
