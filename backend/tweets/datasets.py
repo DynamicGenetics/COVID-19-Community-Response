@@ -25,6 +25,7 @@ class Dataset:
     name: str  # dataset unique name
     data_format: str  # format of the data (e.g. CSV, GeoJSON)
     filename: str  # name of the datafile
+    _data = None
 
     @property
     def source_path(self):
@@ -48,11 +49,13 @@ class Dataset:
 
     @property
     def data(self):
-        if self.data_format == "csv":
-            return pd.read_csv(self.source_path)
-        if self.data_format == "geojson":
-            return gpd.read_file(self.source_path)
-        raise NotImplementedError(f'Data Format for "{self.name}" not yet suported')
+        if self._data is None:
+            if self.data_format == "csv":
+                self._data = pd.read_csv(self.source_path)
+            if self.data_format == "geojson":
+                self._data = gpd.read_file(self.source_path)
+            raise NotImplementedError(f'Data Format for "{self.name}" not yet suported')
+        return self._data
 
 
 # This dictionary maps (local) datasets - identified by unique code-names -

@@ -2,8 +2,10 @@
 import numpy as np
 import pandas as pd
 import geopandas as gpd
+from warnings import warn
 import re
 import os.path
+from data import CleaningReqs
 
 
 def read_keys():
@@ -12,24 +14,17 @@ def read_keys():
     LSOA = gpd.read_file(
         "static/geoboundaries/Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson"
     )
-    # Keep only Welsh codes.
-    LSOA = clean_keys(LSOA, res="LSOA", key_col="LSOA11CD")
-
-    if LSOA.shape[0] != 1909:
-        raise Exception(
-            "An error has occured. The full 1909 rows were not produced in merge."
-        )
 
     LA = gpd.read_file(
         "static/geoboundaries/Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson"
     )
     # Keep only Welsh codes.
-    LA = clean_keys(LA, res="LA", key_col="lad19cd")
-
-    if LA.shape[0] != 22:
-        raise Exception(
-            "An error has occured. The full 22 rows were not produced in merge."
-        )
+    try:
+        LSOA = clean_keys(LSOA, res="LSOA", key_col="LSOA11CD")
+        LA = clean_keys(LA, res="LA", key_col="lad19cd")
+    except Exception as e:
+        # clean_keys will raise an exception if the right number of rows are not merged.
+        raise e
 
     return LSOA, LA
 
@@ -197,59 +192,42 @@ def write_cleaned_data(df: pd.DataFrame, res: str, csv_name: str):
         res {str} -- resolution of the df data ('LA' or 'LSOA')
         csv_name {str} -- name of the data to include in path.
     """
-    # create the desired path
-    csv_path = "cleaned/" + res + "_" + csv_name + ".csv"
 
-    # if a file already exists on this path, alert user
-    if os.path.isfile(csv_path):
-        print("This file already exists. Please delete if new copy needed.")
+    # create the desired path
+    csv_filename = res + "_" + csv_name + ".csv"
+    csv_path = os.path.join("cleaned", csv_filename)
+
+    if os.path.exists(csv_path):
+        warn("File already exists.")
     else:
-        df.to_csv(csv_path, index=False)
+        df.to_csv(csv_path)
         print("File written to " + csv_path)
 
 
-def clean_data(**kwargs):
-    """ Based on kwargs provided, runs through the cleaning functions.
-
-    INPUT: {
-        "data": raw.DATANAME,
-        "res": 'LSOA' OR 'LA',
-        "key_col": name of col which is the key,
-        "key_is_code": bool of whether the key is a code, if not it is a name
-        "csv_name": name of csv (resolution not needed)
-        (opt) "bracketed_data_cols": list of cols where there data in the format (DATA (PERCENT))
-        (opt) "rename_dict": , #dictionary of columns that need renaming
-        }
-
-    OUPUT: pd.DataFrame
+def clean_data(reqs: CleaningReqs):
+    """Accepts an instance of CleaningReqs dataclass, applies cleaning functions and writes to csv if
+    file does not already exist. Returns cleaned pd.DataFrame.
     """
     # Filter the keycodes/names, remove whitespace, reset index
     df = clean_keys(
-        df=kwargs.get("data"),
-        res=kwargs.get("res"),
-        key_col=kwargs.get("key_col"),
-        key_is_code=kwargs.get("key_is_code"),
+        df=reqs.data, res=reqs.res, key_col=reqs.key_col, key_is_code=reqs.key_is_code,
     )
 
     # Rename the columns as needed
-    if kwargs.get("rename_dict"):
-        df.rename(columns=kwargs.get("rename_dict"), inplace=True)
+    if reqs.rename_dict:
+        df.rename(columns=reqs.rename_dict, inplace=True)
 
     # Merge against the LSOA dataset for consistent Codes and Names
     df_clean = standardise_keys(
-        df=df,
-        res=kwargs.get("res"),
-        keep_cols=kwargs.get("keep_cols"),
-        key_is_code=kwargs.get("key_is_code"),
+        df=df, res=reqs.res, keep_cols=reqs.keep_cols, key_is_code=reqs.key_is_code,
     )
 
     # If argument has been passed for bracketed_data_cols, then apply the function.
     # Make sure to do this after tidying
-    if kwargs.get("bracketed_data_cols"):
-        df_clean = clean_bracketed_data(
-            df=df_clean, cols=kwargs.get("bracketed_data_cols")
-        )
+    if reqs.bracketed_data_cols:
+        df_clean = clean_bracketed_data(df=df_clean, cols=reqs.bracketed_data_cols)
 
     # Write out to /cleaned
-    write_cleaned_data(df_clean, res=kwargs.get("res"), csv_name=kwargs.get("csv_name"))
+    write_cleaned_data(df_clean, res=reqs.res, csv_name=reqs.csv_name)
+
     return df_clean
