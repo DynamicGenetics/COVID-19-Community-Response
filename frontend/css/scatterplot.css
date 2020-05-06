@@ -10,20 +10,37 @@
 #plot-area {
   height: 390px;
   width: 390px;
-  z-index: 7;
+  z-index: 6;
   position: absolute;
   top: 12px;
   left: 10px;
 }
 
 #sidebar {
-  z-index: 6;
+  z-index: 5;
   width: 400px;
   height: 100vh;
   position: absolute;
   top: 0px;
   right: 0px;
   background: #fff;
+}
+
+#open_close {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  height: 40px;
+  width: 40px;
+  z-index: 7;
+}
+
+#open_close circle {
+	cursor: pointer;
+}
+
+.cross_lines {
+	pointer-events: none;
 }
 
 /* Data points */

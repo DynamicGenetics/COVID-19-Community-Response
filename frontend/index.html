@@ -31,6 +31,33 @@
     <script src="./js/sctr.js"></script>
     <script>
 
+      // Opener / closer for sidebar
+      const sidebar = d3.select("div#sidebar");
+      const open_close = sidebar.append("svg").attr("id","open_close");
+      open_close.append("circle").attr("id", "opener").attr("cx", 20).attr("cy", 20).attr("r", 20).attr("fill", "#fff").attr("opacity", 0.5);
+      let open = true;
+      const cross_lines = open_close.append("g").attr("class", "cross_lines");
+      cross_lines.append("path").attr("d", "M 20 10 V 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
+      cross_lines.append("path").attr("d", "M 10 20 H 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
+      // cross_lines.attr("transform", "rotate(-45, 20, 20)");
+      open_close.style("transform", "rotate(-45deg)");
+
+      d3.select("#opener").on("click", e => {
+        if(open){
+          // console.log("closing");
+          sidebar.transition().duration(750).style("right", "-400px");
+          // cross_lines.transition().duration(750).attr("transform", "rotate(0, 20, 20)");
+          open_close.transition().duration(750).style("transform", "rotate(90deg)");
+          open = false;
+        } else {
+          // console.log("opening");
+          sidebar.transition().duration(750).style("right", "0px");
+          // cross_lines.transition().duration(750).attr("transform", "rotate(-45, 20, 20)");
+          open_close.transition().duration(750).style("transform", "rotate(-45deg)");
+          open = true;
+        }
+      });
+
       // Set up plotting area
       const width=380;
       const height=380;
@@ -128,7 +155,8 @@
             .domain([xcs[0],
               d3.mean(values),
               xcs[1]])
-            .range(["#4575b4","#ffffbf","#d73027"])
+            // .range(["#4575b4","#ffffbf","#d73027"])
+            .range(["#001d95","#f0f0f0","#c32b38"])
             // .range(["#2166ac","#f7f7f7","#b2182b"])
             // .interpolate(d3.interpolateHcl);
             .interpolate(d3.interpolateLab);
