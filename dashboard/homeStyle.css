@@ -254,6 +254,24 @@ p{
     padding: 4rem;
     max-width: 4rem;
 }
+.btn-continue-bg3{
+    /*padding: 2.4rem;*/
+    max-width: 2.4rem;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*position: relative;
+    top: 7.45rem;*/
+    margin: auto;
+    border-radius: 50%;
+    z-index: 1;
+    position: relative;
+    top: 10.5rem;
+    left: 5em;
+    padding: 4rem;
+    max-width: 4rem;
+}
 .i-guide-arrow{
     font-size: 5rem;
     position: relative;
