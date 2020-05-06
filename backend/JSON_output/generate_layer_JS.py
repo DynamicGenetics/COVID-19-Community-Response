@@ -1,6 +1,3 @@
-import json
-from statistics import stdev
-
 """
 Intended script purpose:
 1. Iterate over each data source in data sources,
@@ -10,6 +7,9 @@ Intended script purpose:
 Formatting is intended to be usable directly by the maps.js 
 (i.e., objective JS dictionary of dataField metadata)
 """
+
+import json
+from statistics import stdev
 
 # Specify data fields to ignore (e.g., ONS shape descriptor values)
 geoLabelsToIgnore = ["objectid", "bng_e", "bng_n"]

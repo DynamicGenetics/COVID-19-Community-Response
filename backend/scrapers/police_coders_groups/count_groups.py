@@ -5,7 +5,7 @@ from shapely.geometry import shape, Point
 import pandas as pd
 
 
-def countGroups():
+def count_groups():
 
     summary = []
 

@@ -1,3 +1,16 @@
+"""
+Intended purpose of this script: 
+1. Feed data source metadata into assimilate()
+2. Generate geojson files from raw files 
+
+Assimilate () function:
+If input is csv then rows are inserted as properties into geojson boundary file
+else If input is geojson then point features are formatted into geojson
+
+generateLayer() function:
+Generates an objetice JS formatted entry in the layer.js from each geoJSON
+"""
+
 # Import data sources information
 from data.dataSources import DATAGROUPS, DATASOURCES, BOUNDARYFILES
 
@@ -12,20 +25,6 @@ count_dataSuccess = 0
 
 # Initialise list of data sources marked as disabled
 skipped_data = []
-
-
-"""
-Intended purpose of this script: 
-1. Feed data source metadata into assimilate()
-2. Generate geojson files from raw files 
-
-Assimilate () function:
-If input is csv then rows are inserted as properties into geojson boundary file
-else If input is geojson then point features are formatted into geojson
-
-generateLayer() function:
-Generates an objetice JS formatted entry in the layer.js from each geoJSON
-"""
 
 # Use source information to access filenames and metadata to produce geojsons
 for data in DATASOURCES:
