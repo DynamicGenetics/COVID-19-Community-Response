@@ -11,6 +11,14 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet' />
     <script src="./js/mapbox-access-token.js"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://unpkg.com/d3-regression@1.3.4/dist/d3-regression.min.js"></script>
+    <script src="./js/cc.js"></script>
     <title>Scatterplot</title>
   </head>
   <body>
@@ -21,42 +29,14 @@
       </div>
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://unpkg.com/d3-regression@1.3.4/dist/d3-regression.min.js"></script>
-    <script src="./js/sctr.js"></script>
     <script>
 
-      // Opener / closer for sidebar
-      const sidebar = d3.select("div#sidebar");
-      const open_close = sidebar.append("svg").attr("id","open_close");
-      open_close.append("circle").attr("id", "opener").attr("cx", 20).attr("cy", 20).attr("r", 20).attr("fill", "#fff").attr("opacity", 0.5);
-      let open = true;
-      const cross_lines = open_close.append("g").attr("class", "cross_lines");
-      cross_lines.append("path").attr("d", "M 20 10 V 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
-      cross_lines.append("path").attr("d", "M 10 20 H 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
-      // cross_lines.attr("transform", "rotate(-45, 20, 20)");
-      open_close.style("transform", "rotate(-45deg)");
+      // Set up sidebar
+      const sidebarWidth = 400;
 
-      d3.select("#opener").on("click", e => {
-        if(open){
-          // console.log("closing");
-          sidebar.transition().duration(750).style("right", "-400px");
-          // cross_lines.transition().duration(750).attr("transform", "rotate(0, 20, 20)");
-          open_close.transition().duration(750).style("transform", "rotate(90deg)");
-          open = false;
-        } else {
-          // console.log("opening");
-          sidebar.transition().duration(750).style("right", "0px");
-          // cross_lines.transition().duration(750).attr("transform", "rotate(-45, 20, 20)");
-          open_close.transition().duration(750).style("transform", "rotate(-45deg)");
-          open = true;
-        }
-      });
+      // Opener / closer for sidebar
+      const addToggle = cc.getToggleAdder();
+      addToggle("div#sidebar", sidebarWidth);
 
       // Automatically close sidebar on smaller screens
       const mq = window.matchMedia("(max-width: 813px)");
@@ -154,25 +134,7 @@
 
         console.log(colour_scale_values);
 
-        function getColourScale(values){
-
-          let xcs = d3.extent(values);
-
-          // ColorBrewer palette, interpolation in LAB for perceptual constancy
-          let colourScale = d3.scaleLinear()
-            .domain([xcs[0],
-              d3.mean(values),
-              xcs[1]])
-            // .range(["#4575b4","#ffffbf","#d73027"])
-            .range(["#001d95","#f0f0f0","#c32b38"])
-            // .range(["#2166ac","#f7f7f7","#b2182b"])
-            // .interpolate(d3.interpolateHcl);
-            .interpolate(d3.interpolateLab);
-
-          return colourScale;
-        }
-
-        let risk_colour = getColourScale(colour_scale_values);
+        let risk_colour = cc.getColourScale(colour_scale_values);
 
         console.log(risk_colour);
 

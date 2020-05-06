@@ -35,14 +35,6 @@
   z-index: 7;
 }
 
-#open_close circle {
-	cursor: pointer;
-}
-
-.cross_lines {
-	pointer-events: none;
-}
-
 /* Data points */
 circle.hovered {
   /* r: 10px; */
