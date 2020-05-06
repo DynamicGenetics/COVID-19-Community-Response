@@ -35,7 +35,7 @@
       <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
           <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="navbar-brand mx-auto" href="index.html">COVID-19 Community Response</a>
+                <a class="navbar-brand mx-auto" href="index.html"><h3  id="title-nav">COVID-19 Community Response</h3></a>
               </li>
           </ul>
       </div>
@@ -47,7 +47,7 @@
       <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item alignCenter">
-              <a class="nav-link" href="https://dynamicgenetics.github.io/Covid-Communities-Map/visualisation/">
+              <a class="nav-link" href="dashboard.html">
                 <i class="fas fa-globe-americas fa-nav"></i><br>Map
               </a>
             </li>
@@ -101,23 +101,24 @@
             <br><br>
             Press the 
             <a href="#2">
-              <i class="fas fa-arrow-alt-circle-down btn-continue-example"></i>
-            </a> icon or scroll down to get started
+              <i class="fas fa-sort-down col-emphasis"></i>
+              <i class="fas fa-arrow-alt-circle-down col-emphasis"></i>
+            </a> icons or scroll down to get started
           </h4>
           <br>
         </div>
 
         <!-- continue btn -->
         <div class="btn-continue">
-          <div class="btn-continue-bg bg-img-virus"></div>
-          <a href="#block2"><i class="fas fa-arrow-alt-circle-down btn-continue-i"></i></a>
+          <div class="btn-continue-bg2 bg-img-virus"></div>
+          <a href="#block2"><i class="fas fa-sort-down i-guide-carat col-primary col-hov-highlight"></i></a>
         </div>
-        
+
       </div>
       
       <!-- Right content -->
       <div class="col-sm mainContent">
-        <img src="img/dashboard3.png" id="img-dashboard">
+        <img src="img/db3.png" class="img-dashboard">
       </div>
 
       <div class="col-sm-2"></div><!-- Spacing col -->
@@ -137,32 +138,26 @@
         <!-- Left content -->
         <div class="col-sm mainContent">
           <div class="content-container">
-            <h1>Layers</h1><br>
+            <h1>About</h1><br>
             <p> 
-
-              <br><h5>There are two categories of layers:</h5>
-                <p>
-                  <ul>
-                    <li><strong>Risk factors:</strong> Factors which indicate that a community may be at elevated risk during the COVID-19 pandemic</li><br>
-                    <li><strong>Community resources:</strong> Factors which indicate that a community may have better resources for coping during COVID-19 pandemic</li>
-                  </ul>
-                  
-                </p>
-
+              This dashboard is an opportunity to explore data from government, community and social media sources to better understand the distribution of community 
+              support and community-level vulnerabilities in Wales during the COVID-19 pandemic. You can choose the variables you want to compare, to answer the 
+              questions that you are interested in.
+              <br>
             </p>
           </div>
 
           <!-- continue btn -->
           <div class="btn-continue">
-            <div class="btn-continue-bg bg-img-network"></div>
-            <a href="#block3"><i class="fas fa-arrow-alt-circle-down btn-continue-i"></i></a>
+            <div class="btn-continue-bg bg-img-map"></div>
+            <a href="#block3"><i class="fas fa-arrow-alt-circle-down i-guide-arrow col-emphasis col-hov-highlight"></i></a>
           </div>
 
         </div>
 
         <!-- Right content -->
         <div class="col-sm mainContent">
-          <img src="img/dashboard4.png" id="img-dashboard">
+          <img src="img/db4.png" class="img-dashboard">
         </div>
 
       <div class="col-sm-2"></div><!-- Spacing col -->
@@ -171,22 +166,22 @@
 
     <!-- Scrolly image -->
     <div class="row" id="block3">
-      <div class="img-scrolly bg-img-network"></div>
+      <div class="img-scrolly bg-img-map"></div>
     </div><!-- / row -->
     
 
-    <!-- Third content block -->
+    <!-- Content block -->
     <div class="row">
       <div class="col-sm-2"></div><!-- Spacing col -->
 
         <!-- Left content -->
         <div class="col-sm mainContent">
-          <img src="img/dashboard2.png" id="img-dashboard">
+          <img src="img/db5.png" class="img-dashboard">
 
           <!-- continue btn -->
           <div class="btn-continue">
-            <div class="btn-continue-bg bg-img-network"></div>
-            <a href="#block4"><i class="fas fa-arrow-alt-circle-down btn-continue-i"></i></a>
+            <div class="btn-continue-bg bg-img-map"></div>
+            <a href="#block4"><i class="fas fa-arrow-alt-circle-down i-guide-arrow col-primary col-hov-highlight"></i></a>
           </div>
 
         </div>
@@ -195,25 +190,21 @@
         <div class="col-sm mainContent">
           <div class="content-container">
             <h1>Our data</h1><br>
-            <p> 
+            <p>
 
-              <h5>Open data access</h5>
-                <br>
-                <p>
+              We have combined NHS and census data with online sources such as Twitter and Police Rewired.
+              Most of the data used for the map is publicly available (open data) and you can view or access our data 
+              <a href="https://github.com/DynamicGenetics/Covid-Communities-Map">
+                here
+              </a>(
+              <a href="https://github.com/DynamicGenetics/Covid-Communities-Map/wiki">
+                Wiki guide
+              </a>).
+              Some data is not publicly available but we always report our sources and the results from this data can still be viewed in the dashboard.
 
-                  We have combined NHS and census data with online sources such as Twitter and Police Rewired.
-                  Most of the data used for the map is publicly available (open data) and you can view or access our data 
-                  <a href="https://github.com/DynamicGenetics/Covid-Communities-Map">
-                    here
-                  </a>(
-                  <a href="https://github.com/DynamicGenetics/Covid-Communities-Map/wiki">
-                    Wiki guide
-                  </a>).
-                  Some data is not publicly available but we always report our sources and the results from this data can still be viewed in the dashboard.
-
-              </p>
-            </div>
+          </p>
           </div>
+        </div>
 
       <div class="col-sm-2"></div><!-- Spacing col -->
     </div><!-- / row -->
@@ -221,46 +212,87 @@
 
     <!-- Scrolly image -->
     <div class="row" id="block4">
-      <div class="img-scrolly bg-img-network"></div>
+      <div class="img-scrolly bg-img-map"></div>
     </div><!-- / row -->
 
 
-    <!-- Third content block -->
+    <!-- Content block -->
     <div class="row">
       <div class="col-sm-2"></div><!-- Spacing col -->
 
         <!-- Left content -->
         <div class="col-sm mainContent">
           <div class="content-container">
-            <h1>You're ready</h1><br>
-            <h5>Success</h5><br>
-            <p>
-              You're now ready to use our dashboard
-            </p>
-            <a href="dashboard.html" class="btn btn-lg btn-primary my-2 my-sm-0" id="btn-go">
-              Go to the dashboard
-            </a>
+            <h1>Data layers</h1><br>
+            <p>There are two types of data layers:</p>
+              <ul>
+                <li><p><strong>Risk factors:</strong> Factors which indicate that a community may be at elevated risk during the COVID-19 pandemic</p></li>
+                <li><p><strong>Community resources:</strong> Factors which indicate that a community may have better resources for coping during COVID-19 pandemic</p></li>
+              </ul>
+            <br>
           </div>
 
           <!-- continue btn -->
           <div class="btn-continue">
-            <div class="btn-continue-bg bg-img-network"></div>
-            <a href="#2"><i class="fas fa-arrow-alt-circle-down btn-continue-i"></i></a>
+            <div class="btn-continue-bg2 bg-img-map"></div>
+            <a href="#block5"><i class="fas fa-angle-double-down i-guide-chev col-primary col-hov-highlight"></i></a>
           </div>
 
         </div>
 
         <!-- Right content -->
         <div class="col-sm mainContent">
-          <img src="img/dashboard1.png" id="img-dashboard">
+          <img src="img/db9.png" class="img-dashboard">
         </div>
 
       <div class="col-sm-2"></div><!-- Spacing col -->
     </div><!-- / row -->
 
+
+    <!-- Scrolly image -->
+    <div class="row" id="block5">
+      <div class="img-scrolly bg-img-map"></div>
+    </div><!-- / row -->
+
+    
+    <!-- Content block -->
+    <div class="row">
+      <div class="col-sm-2"></div><!-- Spacing col -->
+
+        <!-- Left content -->
+        <div class="col-sm mainContent">
+          <div class="content-container">
+            <h1>Automatic analysis</h1><br>
+            <p>
+              As you select layers, analyses will be made to determine which areas are most at risk in terms of the selected factors. Selecting <strong>two</strong> 
+              layers will initiate a bivaraite analysis to identify vulnerable areas in terms of both factors.
+              <br>
+            </p>
+          </div>
+
+          <!-- continue btn -->
+          <div class="btn-continue">
+            <div class="btn-continue-bg bg-col-primary raised"></div>
+            <a href="dashboard.html"><i class="fas fa-check-circle i-guide-arrow col-emphasis col-hov-highlight"></i></a>
+          </div>
+
+        </div>
+
+        <!-- Right content -->
+        <div class="col-sm mainContent">
+          <img src="img/db6.png" class="img-dashboard">
+          <a href="dashboard.html" class="btn btn-lg btn-primary bg-col-highlight border-col-highlight" id="btn-go" style="position: absolute; bottom:0;">
+            Go to the dashboard
+          </a>
+        </div>
+
+      <div class="col-sm-2"></div><!-- Spacing col -->
+    </div><!-- / row -->
+
+
     <!-- Scrolly image -->
     <div class="row">
-      <div class="img-scrolly bg-img-network"></div>
+      <div class="img-scrolly bg-img-map"></div>
     </div><!-- / row -->
     
 

@@ -1,7 +1,7 @@
 /* colors */
 :root {
 	--primary-color: #f8f8ff;
-	--highlight-color: #180c3b;
+	--highlight-color: #19132a;
 	--emphasis-color: #17b1a4;
 }
 div[class*='col']{
@@ -16,6 +16,15 @@ div[class*='col']{
 .border-col-highlight{
     border-color: var(--highlight-color);
 }
+.col-primary{
+    color: var(--primary-color);
+}
+.col-highlight{
+    color: var(--highlight-color);
+}
+.col-emphasis{
+    color: var(--emphasis-color);
+}
 a{
     color: var(--emphasis-color);
 }
@@ -24,10 +33,12 @@ a:hover{
     text-decoration: none;
 }
 
-
 /* Font */
 p, h1, h2, h3, h4, h5, footer, nav{
     font-family: 'Roboto', sans-serif;
+}
+p{
+    font-size: 1.3rem;
 }
 .muteLink{
     color: #666;
@@ -47,6 +58,9 @@ p, h1, h2, h3, h4, h5, footer, nav{
 }
 .fa-blue{
     color: var(--emphasis-color);
+}
+#title-nav{
+    font-family: 'Raleway', sans-serif;
 }
 
 /* Navbar */
@@ -143,7 +157,7 @@ p, h1, h2, h3, h4, h5, footer, nav{
     background-image: url(img/community4.jpg);
 }
 .bg-img-map{
-    background-image: url(img/covidMap.jpg);
+    background-image: url(img/map1.jpg);
 }
 .bg-img-network{
     background-image: url(img/network1.jpg);
@@ -157,9 +171,9 @@ p, h1, h2, h3, h4, h5, footer, nav{
     background-repeat: no-repeat;
     background-size: cover;
 }
-#img-dashboard{
-    height: 25rem;
-    width: auto;
+.img-dashboard{
+    max-height: 25rem;
+    max-width: auto;
 }
 #logo-github{
     margin: 10px;
@@ -196,6 +210,7 @@ p, h1, h2, h3, h4, h5, footer, nav{
 #btn-go{
     width: 50%;
     padding: 20px;
+    margin: 10px;
 }
 #nav-tabContent{
     height: 15rem;
@@ -208,23 +223,61 @@ p, h1, h2, h3, h4, h5, footer, nav{
     bottom:0;
     right:0;
 }
-.btn-continue-i{
-    font-size: 5rem;
-    position: relative;
-    top: 2.5rem;
-    color: var(--emphasis-color)
-}
 .btn-continue-bg{
-    padding: 1rem;
-    max-width: 1rem;
+    padding: 2.4rem;
+    max-width: 2.4rem;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
-    top: 5.5rem;
+    top: 7.45rem;
     margin: auto;
+    border-radius: 50%;
+    z-index: 1;
 }
-.btn-continue-example{
-    color: var(--emphasis-color)
+.btn-continue-bg2{
+    /*padding: 2.4rem;*/
+    max-width: 2.4rem;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*position: relative;
+    top: 7.45rem;*/
+    margin: auto;
+    border-radius: 50%;
+    z-index: 1;
+    position: relative;
+    top: 11.5rem;
+    left: 5em;
+    padding: 4rem;
+    max-width: 4rem;
+}
+.i-guide-arrow{
+    font-size: 5rem;
+    position: relative;
+    top: 2.5rem;
+    z-index: 1;
+}
+.i-guide-carat{
+    font-size: 7rem;
+    position: relative;
+    top: 2.7rem;
+    left: 0.95em;
+    z-index: 1;
+}
+.i-guide-chev{
+    font-size: 6rem;
+    position: relative;
+    top: 4rem;
+    left: 1.2em;
+    z-index: 1;
+}
+.raised{
+    position: relative;
+    top: 7rem;
+}
+i.col-hov-highlight:hover{
+    color: var(--highlight-color) !important;
 }
