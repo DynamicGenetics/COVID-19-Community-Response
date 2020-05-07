@@ -1,5 +1,5 @@
 """
-Intended purpose of this script: 
+Intended purpose of this script:
 1. Get updated data using googleScrape () & phwScraper()
 2. Save scraping data archived by date (csv)
 3. Overwrite most recent data (csv)
@@ -22,11 +22,11 @@ from scrapers.phw_covid_statement.phw_scraper import phw_scrape, area_code, clea
 
 
 # run Police Coders community group scraper
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # Define file output paths
-    fn_groups_raw = "backend/data/raw/groups_raw.csv"
-    fn_groups_cleaned = "backend/data/cleaned/groups.csv"
+    fn_groups_raw = "backend/data/live/raw/groups_raw.csv"
+    fn_groups_cleaned = "backend/live/data/cleaned/groups.csv"
 
     # Get latest community group data
     groups = police_coders_scrape(fn_groups_raw)
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     # Get welsh border as polygon Shape object
     welsh_border_polygon = get_welsh_boundary(
-        "backend/data/geoboundaries/boundaries_Wales.geojson"
+        "backend/data/static/geoboundaries/boundaries_Wales.geojson"
     )
 
     # Search if group coordinates are located within welsh border Shape object
@@ -49,14 +49,14 @@ if __name__ == '__main__':
 
 
 # run PHW Covid Case scraper
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # Get latest covid case data from PHW
-    phw_scrape("backend/data/raw/phwCovidStatement.xlsx")
+    phw_scrape("backend/data/live/raw/phwCovidStatement.xlsx")
 
     covid = clean_data(
-        "backend/data/raw/phwCovidStatement.xlsx",
-        "backend/data/cleaned/phwCovidStatement.csv",
+        "backend/data/live/raw/phwCovidStatement.xlsx",
+        "backend/data/live/cleaned/phwCovidStatement.csv",
     )
     print(
         "Message (phwScraper): Scraped covid data (latest data found: {})".format(covid)
