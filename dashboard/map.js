@@ -1,4 +1,4 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoibmluYWRpY2FyYSIsImEiOiJjazNsb3V3Ym0wNTdqM2JvaGRhdjFlN21vIn0.Q4kTCqSpKI00NAJzezecZg';
+mapboxgl.accessToken = 'pk.eyJ1IjoiY21vcmVub3N0b2tvZSIsImEiOiJjazg5MGZ4OHYwMXA5M25wazBtZXA2dGxwIn0.-6W7ECy-ha5nIUXZ-1o8mg';
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10', // style: 'mapbox://styles/cmorenostokoe/ck8isca7j0zsk1iqx4k4khk4u'
@@ -160,7 +160,7 @@ map.on('mousemove', function (e) {
         layers: visibleLayers
     });
 
-    console.log(layers)
+    //console.log(layers)
 
     if (features.length > 0) {
         let areaName, name, nickName, areaValue;
