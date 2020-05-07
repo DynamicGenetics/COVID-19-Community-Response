@@ -69,7 +69,7 @@ DATASOURCES = [
         "type": "csv",
         "res": "LA",
         "enabled": True,
-        "path": "data/transformed/censusData_bias.csv",
+        "path": "backend/data/cleaned/censusData_bias.csv",
         "ID_name": "areaID",
         "layers": {
             "language": {
@@ -87,7 +87,7 @@ DATASOURCES = [
         "type": "csv",
         "res": "LA",
         "enabled": True,
-        "path": "data/transformed/censusData_comm.csv",
+        "path": "backend/data/cleaned/censusData_comm.csv",
         "ID_name": "areaID",
         "layers": {
             "communityCohesion": {
@@ -113,7 +113,7 @@ DATASOURCES = [
         "type": "csv",
         "res": "LA",
         "enabled": True,
-        "path": "data/transformed/censusData_covidVuln.csv",
+        "path": "backend/data/cleaned/censusData_covidVuln.csv",
         "ID_name": "areaID",
         "layers": {
             "vulnerable_pct": {
@@ -152,11 +152,11 @@ DATASOURCES = [
         "type": "csv",
         "res": "LA",
         "enabled": True,
-        "path": "data/transformed/covidCases_phw.csv",
+        "path": "backend/data/cleaned/phwCovidStatement.csv",
         "ID_name": "areaID",
         "layers": {
-            "covid_per100k": {
-                "nickName": "COVID cases (per 100k)",
+            "Cumulative incidence per 100,000 population": {
+                "nickName": "COVID incidence per 100k",
                 "categoryInfo": DATAGROUPS["covid"],
                 "disabled": False,
                 "reverseColors": False,
@@ -167,10 +167,10 @@ DATASOURCES = [
     },
     {
         "name": "groups",
-        "type": "geojson",
+        "type": "points",
         "res": "LSOA",
         "enabled": True,
-        "path": "../dashboard/data/groups.geojson",
+        "path": "backend/data/cleaned/groups.csv",
         "ID_name": None,
         "layers": {
             "groups": {
@@ -184,17 +184,17 @@ DATASOURCES = [
         "geometry": "Points",
     },
     {
-        "name": "groupCount",
-        "type": "geojson",
+        "name": "groupCount",  # Pipeline broken, disabled until fixed
+        "type": "csv",
         "res": "LSOA",
-        "enabled": True,
-        "path": "../dashboard/data/groupCount.geojson",
+        "enabled": False,
+        "path": "backend/data/transformed/groupCount.csv",
         "ID_name": "areaID",
         "layers": {
             "groupCount": {
                 "nickName": "Community support group count",
                 "categoryInfo": DATAGROUPS["community"],
-                "disabled": False,
+                "disabled": True,
                 "reverseColors": False,
                 "enabledByDefault": True,
             },
@@ -220,7 +220,7 @@ DATASOURCES = [
         "type": "geojson",
         "res": "LA",
         "enabled": True,
-        "path": "../dashboard/data/twitter_count.geojson",
+        "path": "dashboard/data/twitter_count.geojson",
         "ID_name": None,
         "layers": {
             "tweets_per_pop": {
@@ -238,7 +238,7 @@ DATASOURCES = [
         "type": "csv",
         "res": "LSOA",
         "enabled": True,
-        "path": "data/transformed/demos_LSOA.csv",
+        "path": "backend/data/cleaned/demos_LSOA.csv",
         "ID_name": "areaID",
         "layers": {
             "WIMD_rank": {
@@ -258,27 +258,52 @@ DATASOURCES = [
         },
         "geometry": "Polygons",
     },
+    {
+        "name": "internetUse",
+        "type": "csv",
+        "res": "LA",
+        "enabled": True,
+        "path": "backend/data/cleaned/internetUse.csv",
+        "ID_name": "areaID",
+        "layers": {
+            "internetUse_none_%": {
+                "nickName": "No internet use",
+                "categoryInfo": DATAGROUPS["demographics"],
+                "disabled": False,
+                "reverseColors": False,
+                "enabledByDefault": False,
+            },
+            "internetUse_severalTimesDaily_%": {
+                "nickName": "Frequent daily internet use",
+                "categoryInfo": DATAGROUPS["demographics"],
+                "disabled": False,
+                "reverseColors": False,
+                "enabledByDefault": False,
+            },
+        },
+        "geometry": "Polygons",
+    },
 ]
 
 # Boundary files to assimilate data into (as 'properties')
 BOUNDARYFILES = {
     "LA": {
-        "path": "data/static/geoboundaries/boundaries_LAs.geojson",
+        "path": "backend/data/geoboundaries/boundaries_LA.geojson",
         "ID_name": "lad18cd",
         "area_name": "lad18nm",
     },
     "LSOA": {
-        "path": "data/static/geoboundaries/boundaries_LSOAs.geojson",
+        "path": "backend/data/geoboundaries/boundaries_LSOA.geojson",
         "ID_name": "LSOA11CD",
         "area_name": "LSOA11NM",
     },
     "LHB": {
-        "path": "data/static/geoboundaries/boundaries_LHBs.geojson",
+        "path": "backend/data/geoboundaries/boundaries_LHB.geojson",
         "ID_name": "lhb19cd",
         "area_name": "lhb19nm",
     },
     "wales": {
-        "path": "data/static/geoboundaries/boundaries_Wales.geojson",
+        "path": "backend/data/geoboundaries/boundaries_Wales.geojson",
         "ID_name": "ctry19cd",
         "area_name": "ctry19nm",
     },
@@ -286,13 +311,16 @@ BOUNDARYFILES = {
 
 # Filenames for GoogleScrape
 FILENAMES = {
-    "boundaries_wales": "data/static/geoboundaries/boundaries_wales.geoJSON",
-    "boundaries_LA": "data/static/geoboundaries/boundaries_LSOAs.geoJSON",
-    "csv": "data/transformed/groups.csv",
-    "demographics_legacy": "data/transformed/demos_LSOA.csv",
-    "output_groups": "../dashboard/data/groups.geojson",
-    "output_groupCount": "../dashboard/data/groupCount.geojson",
-    "output_URLs": "scrapers/police_coders_groups/URLs.json",
-    "output_groupCopyForReview": "scrapers/police_coders_groups/QC/groupsForReview.csv",
-    "credentials": "scrapers/police_coders_groups/credentials.json",
+    "boundaries_wales": BOUNDARYFILES["wales"][
+        "path"
+    ],  # "boundaries_wales": "data/geography/boundaries_wales.geoJSON",
+    "boundaries_LA": BOUNDARYFILES["LA"]["path"],
+    "boundaries_LSOA": BOUNDARYFILES["LSOA"]["path"],
+    "csv": "backend/data/transformed/groupCount.csv",
+    "demographics_legacy": "backend/data/demographics/demos_LSOA.csv",
+    "output_groups": "backend/data/groups.geojson",
+    "output_groupCount": "backend/data/groupCount.geojson",
+    "output_URLs": "backend/data/community_measures/URLs.json",
+    "output_groupCopyForReview": "backend/data/community_measures/QC/groupsForReview.csv",
+    "credentials": "backend/data/community_measures/credentials.json",
 }

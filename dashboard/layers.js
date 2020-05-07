@@ -56,7 +56,7 @@ var layers=[
             "ID_name": "areaID"
         },
         name: "Welsh language use",
-        ref: "../data/bias_language.geojson",
+        ref: "data/bias_language.geojson",
         shownByDefault: false,
         "category": "Factors affecting data quality",
         "colorsReversed": false,
@@ -112,14 +112,14 @@ var layers=[
                         ]
                     ]
                 },
-                "fill-opacity": 0.25
+                "fill-opacity": 0.3333333333333333
             },
             source: "communityCohesion",
             type: "fill",
             "ID_name": "areaID"
         },
         name: "Community cohesion",
-        ref: "../data/community_cohesion_deprivation.geojson",
+        ref: "data/community_cohesion_deprivation.geojson",
         shownByDefault: false,
         "category": "Community support",
         "colorsReversed": false,
@@ -149,70 +149,7 @@ var layers=[
             "ID_name": null
         },
         name: "Community support groups",
-        ref: "../data/groups.geojson",
-        shownByDefault: true,
-        "category": "Community support",
-        "colorsReversed": false,
-        "displayOrder": 0
-    },
-    {
-        layerSpec: {
-            filter: [
-                "==",
-                "$type",
-                "Polygon"
-            ],
-            id: "groupCount",
-            paint: {
-                "fill-color": {
-                    property: "groupCount",
-                    stops: [
-                        [
-                            0.0,
-                            "#ffffe5"
-                        ],
-                        [
-                            0.3923357763560534,
-                            "#f7fcb9"
-                        ],
-                        [
-                            0.7846715527121068,
-                            "#d9f0a3"
-                        ],
-                        [
-                            1.1770073290681602,
-                            "#addd8e"
-                        ],
-                        [
-                            1.5693431054242135,
-                            "#78c679"
-                        ],
-                        [
-                            1.9616788817802668,
-                            "#41ab5d"
-                        ],
-                        [
-                            2.3540146581363204,
-                            "#238443"
-                        ],
-                        [
-                            2.7463504344923737,
-                            "#006837"
-                        ],
-                        [
-                            3.138686210848427,
-                            "#004529"
-                        ]
-                    ]
-                },
-                "fill-opacity": 0.25
-            },
-            source: "groupCount",
-            type: "fill",
-            "ID_name": "areaID"
-        },
-        name: "Community support group count",
-        ref: "../data/groupCount.geojson",
+        ref: "data/groups.geojson",
         shownByDefault: true,
         "category": "Community support",
         "colorsReversed": false,
@@ -268,14 +205,14 @@ var layers=[
                         ]
                     ]
                 },
-                "fill-opacity": 0.25
+                "fill-opacity": 0.3333333333333333
             },
             source: "tweets_per_pop",
             type: "fill",
             "ID_name": null
         },
         name: "Support related tweets",
-        ref: "../data/twitter_count.geojson",
+        ref: "data/twitter_count.geojson",
         shownByDefault: true,
         "category": "Community support",
         "colorsReversed": false,
@@ -331,14 +268,14 @@ var layers=[
                         ]
                     ]
                 },
-                "fill-opacity": 0.3333333333333333
+                "fill-opacity": 0.5
             },
             source: "vulnerable_pct",
             type: "fill",
             "ID_name": "areaID"
         },
         name: "COVID vulnerable (comorbidity %)",
-        ref: "../data/covid_vulnerable.geojson",
+        ref: "data/covid_vulnerable.geojson",
         shownByDefault: false,
         "category": "COVID vulnerability",
         "colorsReversed": false,
@@ -394,77 +331,14 @@ var layers=[
                         ]
                     ]
                 },
-                "fill-opacity": 0.3333333333333333
+                "fill-opacity": 0.5
             },
             source: "pop_elderly",
             type: "fill",
             "ID_name": "areaID"
         },
         name: "Elderly population (% over 65)",
-        ref: "../data/covid_vulnerable.geojson",
-        shownByDefault: false,
-        "category": "COVID vulnerability",
-        "colorsReversed": false,
-        "displayOrder": 1
-    },
-    {
-        layerSpec: {
-            filter: [
-                "==",
-                "$type",
-                "Polygon"
-            ],
-            id: "covid_per100k",
-            paint: {
-                "fill-color": {
-                    property: "covid_per100k",
-                    stops: [
-                        [
-                            42.5,
-                            "#fff7ec"
-                        ],
-                        [
-                            141.0290683809469,
-                            "#fee8c8"
-                        ],
-                        [
-                            239.55813676189385,
-                            "#fdd49e"
-                        ],
-                        [
-                            338.0872051428408,
-                            "#fdbb84"
-                        ],
-                        [
-                            436.6162735237877,
-                            "#fc8d59"
-                        ],
-                        [
-                            535.1453419047346,
-                            "#ef6548"
-                        ],
-                        [
-                            633.6744102856816,
-                            "#d7301f"
-                        ],
-                        [
-                            732.2034786666285,
-                            "#b30000"
-                        ],
-                        [
-                            830.7325470475754,
-                            "#7f0000"
-                        ]
-                    ]
-                },
-                "fill-opacity": 0.3333333333333333
-            },
-            source: "covid_per100k",
-            type: "fill",
-            "ID_name": "areaID"
-        },
-        name: "COVID cases (per 100k)",
-        ref: "../data/covid_cases.geojson",
+        ref: "data/covid_vulnerable.geojson",
         shownByDefault: false,
         "category": "COVID vulnerability",
         "colorsReversed": false,
@@ -520,14 +394,14 @@ var layers=[
                         ]
                     ]
                 },
-                "fill-opacity": 0.5
+                "fill-opacity": 0.25
             },
             source: "pop_density",
             type: "fill",
             "ID_name": "areaID"
         },
         name: "Population density",
-        ref: "../data/covid_vulnerable.geojson",
+        ref: "data/covid_vulnerable.geojson",
         shownByDefault: false,
         "category": "Demographics",
         "colorsReversed": false,
@@ -550,47 +424,173 @@ var layers=[
                             "#fff7f3"
                         ],
                         [
-                            552.8433537308575,
+                            552.2251506114962,
                             "#fde0dd"
                         ],
                         [
-                            1104.686707461715,
+                            1103.4503012229925,
                             "#fcc5c0"
                         ],
                         [
-                            1656.5300611925727,
+                            1654.6754518344887,
                             "#fa9fb5"
                         ],
                         [
-                            2208.37341492343,
+                            2205.900602445985,
                             "#f768a1"
                         ],
                         [
-                            2760.2167686542875,
+                            2757.1257530574812,
                             "#dd3497"
                         ],
                         [
-                            3312.0601223851454,
+                            3308.3509036689775,
                             "#ae017e"
                         ],
                         [
-                            3863.903476116003,
+                            3859.5760542804737,
                             "#7a0177"
                         ],
                         [
-                            4415.74682984686,
+                            4410.80120489197,
                             "#49006a"
                         ]
                     ]
                 },
-                "fill-opacity": 0.5
+                "fill-opacity": 0.25
             },
             source: "WIMD_rank",
             type: "fill",
             "ID_name": "areaID"
         },
         name: "Multiple deprivation",
-        ref: "../data/demos_LSOA.geojson",
+        ref: "data/demos_LSOA.geojson",
+        shownByDefault: false,
+        "category": "Demographics",
+        "colorsReversed": false,
+        "displayOrder": 2
+    },
+    {
+        layerSpec: {
+            filter: [
+                "==",
+                "$type",
+                "Polygon"
+            ],
+            id: "internetUse_none_%",
+            paint: {
+                "fill-color": {
+                    property: "internetUse_none_%",
+                    stops: [
+                        [
+                            6.0,
+                            "#fff7f3"
+                        ],
+                        [
+                            8.919185677829525,
+                            "#fde0dd"
+                        ],
+                        [
+                            11.83837135565905,
+                            "#fcc5c0"
+                        ],
+                        [
+                            14.757557033488574,
+                            "#fa9fb5"
+                        ],
+                        [
+                            17.6767427113181,
+                            "#f768a1"
+                        ],
+                        [
+                            20.595928389147623,
+                            "#dd3497"
+                        ],
+                        [
+                            23.515114066977148,
+                            "#ae017e"
+                        ],
+                        [
+                            26.434299744806673,
+                            "#7a0177"
+                        ],
+                        [
+                            29.353485422636197,
+                            "#49006a"
+                        ]
+                    ]
+                },
+                "fill-opacity": 0.25
+            },
+            source: "internetUse_none_%",
+            type: "fill",
+            "ID_name": "areaID"
+        },
+        name: "No internet use",
+        ref: "data/internetUse.geojson",
+        shownByDefault: false,
+        "category": "Demographics",
+        "colorsReversed": false,
+        "displayOrder": 2
+    },
+    {
+        layerSpec: {
+            filter: [
+                "==",
+                "$type",
+                "Polygon"
+            ],
+            id: "internetUse_severalTimesDaily_%",
+            paint: {
+                "fill-color": {
+                    property: "internetUse_severalTimesDaily_%",
+                    stops: [
+                        [
+                            54.0,
+                            "#fff7f3"
+                        ],
+                        [
+                            61.11075035159937,
+                            "#fde0dd"
+                        ],
+                        [
+                            68.22150070319874,
+                            "#fcc5c0"
+                        ],
+                        [
+                            75.3322510547981,
+                            "#fa9fb5"
+                        ],
+                        [
+                            82.44300140639749,
+                            "#f768a1"
+                        ],
+                        [
+                            89.55375175799685,
+                            "#dd3497"
+                        ],
+                        [
+                            96.66450210959621,
+                            "#ae017e"
+                        ],
+                        [
+                            103.77525246119558,
+                            "#7a0177"
+                        ],
+                        [
+                            110.88600281279496,
+                            "#49006a"
+                        ]
+                    ]
+                },
+                "fill-opacity": 0.25
+            },
+            source: "internetUse_severalTimesDaily_%",
+            type: "fill",
+            "ID_name": "areaID"
+        },
+        name: "Frequent daily internet use",
+        ref: "data/internetUse.geojson",
         shownByDefault: false,
         "category": "Demographics",
         "colorsReversed": false,
