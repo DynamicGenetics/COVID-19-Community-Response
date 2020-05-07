@@ -69,7 +69,7 @@ DATASOURCES = [
         "type": "csv",
         "res": "LA",
         "enabled": True,
-        "path": "backend/data/cleaned/censusData_bias.csv",
+        "path": "backend/data/static/cleaned/censusData_bias.csv",
         "ID_name": "areaID",
         "layers": {
             "language": {

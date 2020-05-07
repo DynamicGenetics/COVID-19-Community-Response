@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     # Define file output paths
     fn_groups_raw = "backend/data/live/raw/groups_raw.csv"
-    fn_groups_cleaned = "backend/live/data/cleaned/groups.csv"
+    fn_groups_cleaned = "backend/data/live/cleaned/groups.csv"
 
     # Get latest community group data
     groups = police_coders_scrape(fn_groups_raw)
