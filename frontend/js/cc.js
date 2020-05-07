@@ -18,7 +18,8 @@ const cc = (function(d3){
         xcs[1]])
       // .range(["#4575b4","#ffffbf","#d73027"])
       // .range(["#001d95","#f0f0f0","#c32b38"])
-      .range(["#3781ff","#ffffbf","#c32b38"])
+      // .range(["#3781ff","#ffffbf","#c32b38"])
+      .range(["#3781ff","#f0f0f0","#c32b38"])
       // .range(["#2166ac","#f7f7f7","#b2182b"])
       // .interpolate(d3.interpolateHcl);
       .interpolate(d3.interpolateLab);
@@ -26,7 +27,7 @@ const cc = (function(d3){
   }
 
   // Return closure function to make sidebar toggle button
-  // Button has id opener for styling
+  // Button svg has id open_close for styling
   function getToggleAdder(){
     let open = true;
     function addToggle(sidebarSelector, sidebarWidth){
