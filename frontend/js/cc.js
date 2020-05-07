@@ -54,10 +54,198 @@ const cc = (function(d3){
     return addToggle;
   }
 
-  // Add the scatter plot
-  function drawScatterplot(targetArea, x, y){
-
+  // Calculate z score
+  function z_score(d, mean, sd){
+    return (d - mean)/sd;
   }
+
+  // Add the scatter plot
+  function drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries){
+    const svg = d3.select(plotAreaId);
+
+    // Set the x and y scales
+    let x = d3.scaleLinear()
+      .domain(d3.extent(data, d => d[x_var])).nice()
+      .range([margin.left, width - margin.right]);
+
+    let y = d3.scaleLinear()
+      .domain(d3.extent(data, d => d[y_var])).nice()
+      .range([height - margin.bottom, margin.top]);
+
+    // Mean of x and y
+    let mean_x = d3.mean(data, d => d[x_var]);
+    let mean_y = d3.mean(data, d => d[y_var]);
+
+    // Standard deviation of x and y
+    let sd_x = d3.deviation(data, d => d[x_var]);
+    let sd_y = d3.deviation(data, d => d[y_var]);
+
+    // Colour scale
+    let colour_scale_values = data.map(
+      d => {
+        let zx = cc.z_score(d[x_var], mean_x, sd_x);
+        let zy = cc.z_score(d[y_var], mean_y, sd_y);
+        return zx - zy;
+      }
+    );
+
+    let risk_colour = cc.getColourScale(colour_scale_values);
+
+    // Linear regression
+    let linearRegression = d3.regressionLinear()
+      .x(d => d[x_var])
+      .y(d => d[y_var]);
+
+    let regression_summary = linearRegression(data);
+
+    // Axis functions
+    xAxis = g => g
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).ticks(width / 80))
+      .call(g => g.select(".domain").remove())
+      .call(g => g.append("text")
+        .attr("x", width)
+        .attr("y", margin.bottom - 4)
+        .attr("fill", "#000")
+        .attr("text-anchor", "end")
+        .text("Community need →"))
+
+    yAxis = g => g
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y))
+      .call(g => g.select(".domain").remove())
+      .call(g => g.append("text")
+        .attr("x", -margin.left)
+        .attr("y", 10)
+        .attr("fill", "#000")
+        .attr("text-anchor", "start")
+        .text("↑ Community support"))
+
+    // Grid function
+    grid = g => g
+      .attr("stroke", "currentColor")
+      .attr("stroke-opacity", 0.1)
+      .call(g => g.append("g")
+        .selectAll("line")
+        .data(x.ticks())
+        .join("line")
+          .attr("x1", d => 0.5 + x(d))
+          .attr("x2", d => 0.5 + x(d))
+          .attr("y1", margin.top)
+          .attr("y2", height - margin.bottom))
+      .call(g => g.append("g")
+        .selectAll("line")
+        .data(y.ticks())
+        .join("line")
+          .attr("y1", d => 0.5 + y(d))
+          .attr("y2", d => 0.5 + y(d))
+          .attr("x1", margin.left)
+          .attr("x2", width - margin.right));
+
+    // Mean of x
+    const mean_x_base = height - margin.bottom - margin.top;
+    const mean_x_place = x(mean_x);
+    mark_mean_x = g => g
+      .attr("transform", `translate(${mean_x_place},${margin.top})`)
+      .append("path").attr("d",`M 0 0 L 0 ${mean_x_base}`)
+      .attr("stroke","#333")
+      .attr("shape-rendering", "crispEdges");
+
+    // Mean of y
+    const mean_y_base = width - margin.left - margin.right;
+    const mean_y_place = y(mean_y);
+    mark_mean_y = g => g
+      .attr("transform", `translate(${margin.left},${mean_y_place})`)
+      .append("path").attr("d",`M 0 0 L ${mean_y_base} 0`)
+      .attr("stroke","#333")
+      .attr("shape-rendering", "crispEdges");
+
+    // Regression line
+    const line = d3.line().x(d => x(d[0])).y(d => y(d[1]));
+    const regression_line = line(regression_summary);
+    draw_regression_line = g => g
+      .append("path").attr("d",regression_line)
+      .attr("stroke","#aaa")
+      .attr("shape-rendering", "geometricPrecision");
+
+    // Plot axes
+    svg.append("g")
+      .call(xAxis);
+
+    svg.append("g")
+      .call(yAxis);
+
+    // Plot grid
+    svg.append("g")
+      .call(grid);
+
+    // Plot mean of x
+    svg.append("g")
+      .call(mark_mean_x);
+
+    // Plot mean of y
+    svg.append("g")
+      .call(mark_mean_y);
+
+    // Plot regression line
+    svg.append("g")
+      .call(draw_regression_line);
+
+    // Assign colours
+    data.forEach(d => d.colour = risk_colour(
+      (cc.z_score(d[x_var], mean_x, sd_x) - cc.z_score(d[y_var], mean_y, sd_y))
+    ));
+
+    boundaries.features.forEach(d => {
+      let matching_data = data.find(
+        element => {return element.lad19cd === d.properties.lad18cd}
+      );
+      d.properties.colour = matching_data.colour;
+    });
+
+    // Remember the latest linked map area
+    let linkedArea = null;
+
+    // Mouse event handlers for graph
+    function handleMouseOver(d, i){
+      d3.select(this).transition().duration(50).attr("r", 12).attr("stroke-width", 2);
+      linkedArea = map.querySourceFeatures("boundaries_LAs",{
+        filter: ["==",["get","lad18cd"], d.lad19cd]
+      })[0].id;
+      console.log(d.lad19cd);
+      console.log(linkedArea);
+      map.setFeatureState(
+        {source: "boundaries_LAs", id: linkedArea},
+        {hover: true}
+      );
+    }
+
+    function handleMouseOut(d, i){
+      d3.select(this).transition().duration(50).attr("r", 7).attr("stroke-width", 1.5);
+      map.setFeatureState(
+        {source: "boundaries_LAs", id: linkedArea},
+        {hover: false}
+      );
+      linkedArea = null;
+    }
+
+    // Graph data points
+    svg.append("g")
+      .attr("stroke", "#505050")
+      .attr("stroke-width", 1.5)
+    .selectAll("circle")
+      .data(data)
+      .join("circle")
+      .attr("id", d => d.lad19cd)
+      .attr("class", "datapoints")
+      .attr("cx", d => x(d[x_var]))
+      .attr("cy", d => y(d[y_var]))
+      .attr("r", 7)
+      .attr("fill", d => d.colour)
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut);
+
+  } // End draw scatterplot
 
   // Add the beeswarm plot
   function drawBeeswarm(targetArea, x, y){
@@ -68,6 +256,7 @@ const cc = (function(d3){
     drawScatterplot: drawScatterplot,
     drawBeeswarm: drawBeeswarm,
     getColourScale: getColourScale,
-    getToggleAdder: getToggleAdder
+    getToggleAdder: getToggleAdder,
+    z_score: z_score
   };
 })(d3);
