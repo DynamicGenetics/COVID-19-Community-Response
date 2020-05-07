@@ -1,4 +1,5 @@
 import schedule
+import time
 
 
 # Some schedule scripts for dynamic genetics groups projects
@@ -21,8 +22,10 @@ def schedule_runner(run_frequency_in_days, thing_you_want_to_schedule):
 
     # run task at 6amUTC (night for most of Europe and US: less rate limiting)
     schedule.every(run_frequency_in_days).days.at("06:00").do(thing_you_want_to_schedule)
-    schedule.run_pending()
     
+    while True:
+        schedule.run_pending()
+        time.sleep(1) # no rest for the wicked
 
 def main_scheduler(run_frequency_in_days):
 
