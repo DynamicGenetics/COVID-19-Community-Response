@@ -27,6 +27,7 @@ def schedule_runner(run_frequency_in_days, thing_you_want_to_schedule):
         schedule.run_pending()
         time.sleep(1) # no rest for the wicked
 
+        
 def main_scheduler(run_frequency_in_days):
 
     if __name__ == '__main__':
