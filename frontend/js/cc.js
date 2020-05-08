@@ -248,8 +248,149 @@ const cc = (function(d3){
   } // End draw scatterplot
 
   // Add the beeswarm plot
-  function drawBeeswarm(targetArea, x, y){
+  function drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries){
+    const svg = d3.select(plotAreaId);
 
+    // Set the x scale
+    let x = d3.scaleLinear()
+      .domain(d3.extent(data, d => d[x_var])).nice()
+      .range([margin.left, width - margin.right]);
+
+    // Mean of x
+    let mean_x = d3.mean(data, d => d[x_var]);
+
+    // Standard deviation of x
+    let sd_x = d3.deviation(data, d => d[x_var]);
+
+    // Colour scale
+    let colour_scale_values = data.map(
+      d => {
+        let zx = cc.z_score(d[x_var], mean_x, sd_x);
+        return zx;
+      }
+    );
+
+    let risk_colour = cc.getColourScale(colour_scale_values);
+
+    // Axis function
+    xAxis = g => g
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).ticks(width / 80))
+      .call(g => g.select(".domain").remove())
+      .call(g => g.append("text")
+        .attr("x", width)
+        .attr("y", margin.bottom - 4)
+        .attr("fill", "#000")
+        .attr("text-anchor", "end")
+        .text("Selected variable →"))
+
+    // Grid function
+    grid = g => g
+      .attr("stroke", "currentColor")
+      .attr("stroke-opacity", 0.1)
+      .call(g => g.append("g")
+        .selectAll("line")
+        .data(x.ticks())
+        .join("line")
+          .attr("x1", d => 0.5 + x(d))
+          .attr("x2", d => 0.5 + x(d))
+          .attr("y1", margin.top)
+          .attr("y2", height - margin.bottom));
+      // .call(g => g.append("g")
+      //   .append("line")
+      //     .attr("y1", height - margin.bottom)
+      //     .attr("y2", height - margin.bottom)
+      //     .attr("x1", margin.left)
+      //     .attr("x2", width - margin.right))
+      // .call(g => g.append("g")
+      //   .append("line")
+      //     .attr("y1", margin.top)
+      //     .attr("y2", margin.top)
+      //     .attr("x1", margin.left)
+      //     .attr("x2", width - margin.right));
+
+    // Mean of x
+    const mean_x_base = height - margin.bottom - margin.top;
+    const mean_x_place = x(mean_x);
+    mark_mean_x = g => g
+      .attr("transform", `translate(${mean_x_place},${margin.top})`)
+      .append("path").attr("d",`M 0 0 L 0 ${mean_x_base}`)
+      .attr("stroke","#333")
+      .attr("shape-rendering", "crispEdges");
+
+    // Plot axis
+    svg.append("g")
+      .call(xAxis);
+
+    // Plot grid
+    svg.append("g")
+      .call(grid);
+
+    // Plot mean of x
+    svg.append("g")
+      .call(mark_mean_x);
+
+    // Assign colours
+    data.forEach(d => d.colour = risk_colour(
+      cc.z_score(d[x_var], mean_x, sd_x)
+    ));
+
+    boundaries.features.forEach(d => {
+      let matching_data = data.find(
+        element => {return element.lad19cd === d.properties.lad18cd}
+      );
+      d.properties.colour = matching_data.colour;
+    });
+
+    // Remember the latest linked map area
+    let linkedArea = null;
+
+    // Mouse event handlers for graph
+    function handleMouseOver(d, i){
+      d3.select(this).transition().duration(50).attr("r", 12).attr("stroke-width", 2);
+      linkedArea = map.querySourceFeatures("boundaries_LAs",{
+        filter: ["==",["get","lad18cd"], d.lad19cd]
+      })[0].id;
+      console.log(d.lad19cd);
+      console.log(linkedArea);
+      map.setFeatureState(
+        {source: "boundaries_LAs", id: linkedArea},
+        {hover: true}
+      );
+    }
+
+    function handleMouseOut(d, i){
+      d3.select(this).transition().duration(50).attr("r", 7).attr("stroke-width", 1.5);
+      map.setFeatureState(
+        {source: "boundaries_LAs", id: linkedArea},
+        {hover: false}
+      );
+      linkedArea = null;
+    }
+
+    const simulation = d3.forceSimulation(data)
+      .force("x", d3.forceX(function(d) { return x(d[x_var]); }).strength(5))
+      .force("y", d3.forceY(height / 2))
+      .force("collide", d3.forceCollide(10))
+      .stop();
+
+    for (var i = 0; i < 120; ++i) simulation.tick();
+
+    // Graph data points
+    svg.append("g")
+      .attr("stroke", "#505050")
+      .attr("stroke-width", 1.5)
+    .selectAll("circle")
+      .data(data)
+      .join("circle")
+      .attr("id", d => d.lad19cd)
+      .attr("class", "datapoints")
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
+      .attr("r", 7)
+      .attr("fill", d => d.colour)
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut);
   }
 
   return {

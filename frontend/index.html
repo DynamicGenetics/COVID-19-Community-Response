@@ -105,7 +105,10 @@
         });
 
         // Draw scatter plot
-        cc.drawScatterplot("#plot-area", x_var, y_var, data, height, width, margin, map, boundaries);
+        // cc.drawScatterplot("#plot-area", x_var, y_var, data, height, width, margin, map, boundaries);
+
+        // Draw beeswarm plot
+        cc.drawBeeswarm("#plot-area", x_var, data, height, width, margin, map, boundaries);
 
         // Remember the latest hovered map area
         let hoveredArea = null;
