@@ -61,40 +61,27 @@
       // Map boundaries data
       const promiseLA = d3.json("./data/boundaries_LAs.geojson");
 
-      // Promise.all([x_promise, y_promise, promiseLA]).then( data => {
       Promise.all([data_promise, promiseLA]).then( data => {
-
-        // let x_data, y_data, boundaries;
-        // [x_data, y_data, boundaries] = data;
 
         let boundaries;
         [data, boundaries] = data;
 
-        // // Merge x and y into the same data frame
-        // data = [];
-        //
-        // if(x_data.length === y_data.length){
-        //   for (let i = 0; i < x_data.length; i++) {
-        //     let found = y_data.find(element => {return element.areaID === x_data[i].areaID});
-        //     data[i] = Object.assign(x_data[i], found);
-        //   }
-        // } else {
-        //   console.log("Location arrays are inconsistent lengths.")
-        // };
-
         console.log(data);
 
-        let supports = data.variables.filter(d => d.class === "support");
-        let needs = data.variables.filter(d => d.class === "challenge");
+        const supports = data.variables.filter(d => d.class === "support");
+        const needs = data.variables.filter(d => d.class === "challenge");
+
+        let chosen_supports = [supports[0].name];
+        let chosen_needs = [needs[0].name];
+        // let chosen_needs = needs.map(d => d.name);
+        // let chosen_needs = [];
+        // let chosen_supports = [];
 
         console.log(supports);
         console.log(needs);
 
         data = data.LAs;
         let LSOAs = data.LSOAs;
-
-        let x_var = needs[3].name;
-        let y_var = supports[0].name;
 
         // Set up map
         let map = new mapboxgl.Map({
@@ -108,7 +95,10 @@
         // cc.drawScatterplot("#plot-area", x_var, y_var, data, height, width, margin, map, boundaries);
 
         // Draw beeswarm plot
-        cc.drawBeeswarm("#plot-area", x_var, data, height, width, margin, map, boundaries);
+        // cc.drawBeeswarm("#plot-area", x_var, data, height, width, margin, map, boundaries);
+
+        // Calculate variables and redraw plot, recolour map
+        cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, boundaries);
 
         // Remember the latest hovered map area
         let hoveredArea = null;

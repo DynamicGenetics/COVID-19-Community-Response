@@ -59,6 +59,33 @@ const cc = (function(d3){
     return (d - mean)/sd;
   }
 
+  // Calculate sum of z scores for composite measures
+  function sumOfZ(vars, data, output_name){
+    let means = {};
+    let sds = {};
+    vars.forEach(element => {
+      means[element] = d3.mean(data, d => d[element]);
+      sds[element] = d3.deviation(data, d => d[element]);
+    });
+    console.log(means);
+    console.log(sds);
+    data.forEach(element => {
+      element.z_scores = [];
+      vars.forEach((item, idx) => {
+        element.z_scores[idx] = cc.z_score(element[item], means[item], sds[item]);
+      });
+      element.sum_of_z = element.z_scores.reduce((acc, cur) => {return (acc + cur);});
+    });
+    let mean_z = d3.mean(data, d => d.sum_of_z);
+    let sd_z = d3.deviation(data, d => d.sum_of_z);
+    data.forEach(element => {
+      element[output_name] = cc.z_score(element.sum_of_z, mean_z, sd_z);
+      delete element.sum_of_z;
+      delete element.z_scores;
+    });
+    return data;
+  }
+
   // Add the scatter plot
   function drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries){
     const svg = d3.select(plotAreaId);
@@ -391,13 +418,49 @@ const cc = (function(d3){
       .attr("fill", d => d.colour)
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
+  } // end drawBeeswarm
+
+  // Calculate variables and redraw plot, recolour map
+  function redraw(plotAreaId, chosen_supports, chosen_needs, data, height, width, margin, map, boundaries){
+    let x_var, y_var, supports_var = null, needs_var = null;
+    if(chosen_supports.length === 1){
+      supports_var = chosen_supports[0];
+    } else if(chosen_supports.length > 1){
+      data = cc.sumOfZ(chosen_supports, data, "supports_composite");
+      supports_var = "supports_composite";
+    }
+    if(chosen_needs.length === 1){
+      needs_var = chosen_needs[0];
+    } else if(chosen_needs.length > 1){
+      data = cc.sumOfZ(chosen_needs, data, "needs_composite");
+      needs_var = "needs_composite";
+    }
+    if(needs_var !== null){
+      x_var = needs_var;
+      if(supports_var !== null){
+        y_var = supports_var;
+        // scatterplot
+        cc.drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries);
+      } else {
+        // beeswarm
+        cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries);
+      }
+    } else if(supports_var !== null){
+      x_var = supports_var;
+      // beeswarm
+      cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries);
+    } else {
+      console.log("No variables selected");
+    }
   }
 
   return {
     drawScatterplot: drawScatterplot,
     drawBeeswarm: drawBeeswarm,
+    redraw: redraw,
     getColourScale: getColourScale,
     getToggleAdder: getToggleAdder,
-    z_score: z_score
+    z_score: z_score,
+    sumOfZ: sumOfZ
   };
 })(d3);
