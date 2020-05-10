@@ -88,7 +88,7 @@ const cc = (function(d3){
 
   // Add the scatter plot
   function drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries){
-    const svg = d3.select(plotAreaId);
+    const svg = d3.select(plotAreaId).append("g").attr("id", "plot");
 
     // Set the x and y scales
     let x = d3.scaleLinear()
@@ -229,6 +229,7 @@ const cc = (function(d3){
       );
       d.properties.colour = matching_data.colour;
     });
+    map.getSource('boundaries_LAs').setData(boundaries);
 
     // Remember the latest linked map area
     let linkedArea = null;
@@ -239,8 +240,6 @@ const cc = (function(d3){
       linkedArea = map.querySourceFeatures("boundaries_LAs",{
         filter: ["==",["get","lad18cd"], d.lad19cd]
       })[0].id;
-      console.log(d.lad19cd);
-      console.log(linkedArea);
       map.setFeatureState(
         {source: "boundaries_LAs", id: linkedArea},
         {hover: true}
@@ -276,7 +275,7 @@ const cc = (function(d3){
 
   // Add the beeswarm plot
   function drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries){
-    const svg = d3.select(plotAreaId);
+    const svg = d3.select(plotAreaId).append("g").attr("id", "plot");
 
     // Set the x scale
     let x = d3.scaleLinear()
@@ -368,6 +367,7 @@ const cc = (function(d3){
       );
       d.properties.colour = matching_data.colour;
     });
+    map.getSource('boundaries_LAs').setData(boundaries);
 
     // Remember the latest linked map area
     let linkedArea = null;
@@ -378,8 +378,6 @@ const cc = (function(d3){
       linkedArea = map.querySourceFeatures("boundaries_LAs",{
         filter: ["==",["get","lad18cd"], d.lad19cd]
       })[0].id;
-      console.log(d.lad19cd);
-      console.log(linkedArea);
       map.setFeatureState(
         {source: "boundaries_LAs", id: linkedArea},
         {hover: true}
@@ -422,6 +420,7 @@ const cc = (function(d3){
 
   // Calculate variables and redraw plot, recolour map
   function redraw(plotAreaId, chosen_supports, chosen_needs, data, height, width, margin, map, boundaries){
+    d3.select("#plot").remove();
     let x_var, y_var, supports_var = null, needs_var = null;
     if(chosen_supports.length === 1){
       supports_var = chosen_supports[0];
@@ -451,6 +450,10 @@ const cc = (function(d3){
       cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries);
     } else {
       console.log("No variables selected");
+      boundaries.features.forEach(d => {
+        d.properties.colour = "#ffffff";
+      });
+      map.getSource('boundaries_LAs').setData(boundaries);
     }
   }
 
