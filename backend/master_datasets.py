@@ -57,9 +57,9 @@ def generate_la_master():
     la_master = merge_LA_files(LA_STATIC_DATASETS, LA_LIVE_DATASETS)
 
     # Apply some final pruning and collation of variables
-    la_master = create_daily_internet_col(la_master)
+    # la_master = create_daily_internet_col(la_master)
     la_master = create_welsh_col(la_master)
-    la_master = create_summary_ethnicity_cols(la_master)
+    # la_master = create_summary_ethnicity_cols(la_master)
     la_master = create_wimd_col(la_master)
     drop_vulnerable_count(la_master)
 
