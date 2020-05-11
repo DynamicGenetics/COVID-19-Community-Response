@@ -6,27 +6,32 @@ import geopandas as gpd
 import re
 import os
 from dataclasses import dataclass
-
+from dataclasses import field
 # Import the raw data constants
 import data
 import source_datasets as s
 
+from enum import Enum
+
+
+class DataResolution(Enum):
+    LA = 'LA'
+    LSOA = 'LSOA'
+
 
 @dataclass
-class StandardiseData:
+class StandardisedDataset:
     """Class for mapping the changes needed to standardise each dataset"""
 
-    LA = "LA"
-
     data: pd.DataFrame
-    res: str  # Resolution at 'LSOA' or 'LA'
+    res: DataResolution  # Resolution at 'LSOA' or 'LA'
     key_col: str  # Name of the column that has a unique key
     key_is_code: bool  # Is the key column a LA or LSOA code?
     csv_name: str  # Name for the output CSV
     keep_cols: list = None  # List of columns specifically wanted to keep
     bracketed_data_cols: list = None  # List of columns where data is in the format (DATA (PERCENT))
     rename: dict = None  # Dictionary of columns that need renaming Cleaningself('old_name' : 'new_name' }
-    std_data_: pd.DataFrame = None
+    std_data_: pd.DataFrame = field(init=False, default=None)
 
     def standardise(self):
         """ Based on arguments provided, applies the correct functions to standardise the data.
@@ -61,25 +66,44 @@ class StandardiseData:
     def standardised_data(self):
         return self.std_data_
 
+    @property
+    def is_standardised(self):
+        return self.std_data_ is not None
+
     def csv_path(self):
         return os.path.join(
             "cleaned", "{res}_{name}.csv".format(res=self.res, name=self.csv_name)
         )
 
+    def _merge_key(self):
+
+        if self.res == DataResolution.LA:
+            return "lad19cd"
+        elif self.res == DataResolution.LSOA:
+            return "LSOA11CD"
+        else:
+            raise TypeError('Unsupported Resolution')
+
     def __add__(self, other):
 
-        if not isinstance(other, StandardiseData):
+        if not isinstance(other, StandardisedDataset):
             raise TypeError(
                 "unsupported operand type(s) for +: {} and {}",
                 self.__class__,
                 type(other),
             )
 
-        if self.res == self.LA:
-            merge_key = "lad19cd"
-        else:
-            merge_key = "LSOA11CD"
-        self.data = pd.merge(self.std_data_, other.std_data_, on=merge_key)
+        if not self.is_standardised or not other.is_standardised:
+            raise TypeError('Unsupported operand: both dataset needs to be '
+                            'standardised before merging!')
+
+        if self.res != other.res:
+            raise TypeError('Unsupported operand: both dataset needs to be '
+                            'at the same resolution!')
+
+        merge_key = self._merge_key()
+        self.std_data_ = pd.merge(self.std_data_, other.standardised_data,
+                                  on=merge_key, left_index=True, right_index=True)
         return self
 
     def read_keys(self):
@@ -105,7 +129,7 @@ class StandardiseData:
 
         try:
             LSOA = self.clean_keys(LSOA, res="LSOA", key_col="LSOA11CD")
-            LA = self.clean_keys(LA, res="LA", key_col="lad19cd")
+            LA = self.clean_keys(LA, res=DataResolution.LA, key_col="lad19cd")
         except Exception as e:
             # clean_keys will raise an exception if the right number of rows are not merged.
             raise e
@@ -290,13 +314,15 @@ class StandardiseData:
             res {str} -- resolution of the df data ('LA' or 'LSOA')
             csv_name {str} -- name of the data to include in path.
         """
+        if not self.is_standardised:
+            raise ValueError('Dataset requires to be standardised first')
 
         # if a file already exists on this path, alert user
         # WARNING warning.warn
         if os.path.isfile(self.csv_path()):
             print("This file already exists. Please delete if new copy needed.")
         else:
-            self.data.to_csv(self.csv_path(), index=False)
+            self.std_data_.to_csv(self.csv_path(), index=False)
             print("File written to " + self.csv_path())
 
 
@@ -304,18 +330,18 @@ class StandardiseData:
 # Define each instance of the dataclass
 # ++++++++++++++++++++++++++++++++++++++
 
-LSOA_WELSH = StandardiseData(
+LSOA_WELSH = StandardisedDataset(
     data=s.SOURCE_WELSH_LSOA,
-    res="LSOA",
+    res=DataResolution.LSOA,
     key_col="Unnamed: 2",
     key_is_code=True,
     csv_name="welsh_speakers_percent",
     rename={"Percentage able to speak Welsh ": "welsh_speakers_percent"},
 )
 
-LA_WELSH = StandardiseData(
+LA_WELSH = StandardisedDataset(
     data=s.SOURCE_WELSH_LA,
-    res="LA",
+    res=DataResolution.LA,
     key_col="Unnamed: 1",
     key_is_code=False,
     csv_name="welsh_speakers_percent",
@@ -326,61 +352,61 @@ LA_WELSH = StandardiseData(
     },
 )
 
-LSOA_POPULATION = StandardiseData(
+LSOA_POPULATION = StandardisedDataset(
     data=s.SOURCE_POPDENSITY_LSOA,
-    res="LSOA",
+    res=DataResolution.LSOA,
     key_col="Area Codes",
     key_is_code=True,
     csv_name="population_count",
     rename={"All Ages": "population_count"},
 )
 
-LA_POPULATION = StandardiseData(
+LA_POPULATION = StandardisedDataset(
     data=s.SOURCE_POPULATION_LA,
-    res="LA",
+    res=DataResolution.LA,
     key_col="Unnamed: 3",
     key_is_code=False,
     csv_name="population_count",
     rename={"All ages .1": "population_count"},
 )
 
-LSOA_OVER_65 = StandardiseData(
+LSOA_OVER_65 = StandardisedDataset(
     data=s.SOURCE_OVER_65_LSOA,
-    res="LSOA",
+    res=DataResolution.LSOA,
     key_col="Area Codes",
     key_is_code=True,
     csv_name="over_65_count",
 )
 
-LA_OVER_65 = StandardiseData(
+LA_OVER_65 = StandardisedDataset(
     data=s.SOURCE_OVER_65_LA,
-    res="LA",
+    res=DataResolution.LA,
     key_col="Unnamed: 3",
     key_is_code=False,
     csv_name="over_65_count",
     rename={"Unnamed: 14": "over_65_count"},
 )
 
-LSOA_IMD = StandardiseData(
+LSOA_IMD = StandardisedDataset(
     data=s.SOURCE_IMD_LSOA,
-    res="LSOA",
+    res=DataResolution.LSOA,
     key_col="lsoa11cd",
     key_is_code=True,
     csv_name="wimd_2019",
     keep_cols=["LSOA11CD", "wimd_2019"],
 )
 
-LA_IMD = StandardiseData(
+LA_IMD = StandardisedDataset(
     data=s.SOURCE_IMD_LA,
-    res="LA",
+    res=DataResolution.LSOA,
     key_col="Unnamed: 0",
     key_is_code=False,
     csv_name="wimd_2019",
 )
 
-LSOA_POPDENSITY = StandardiseData(
+LSOA_POPDENSITY = StandardisedDataset(
     data=s.SOURCE_POPDENSITY_LSOA,
-    res="LSOA",
+    res=DataResolution.LSOA,
     key_col="Code",
     key_is_code=True,
     rename={"People per Sq Km": "pop_density_persqkm"},
@@ -388,18 +414,18 @@ LSOA_POPDENSITY = StandardiseData(
     csv_name="pop_density_persqkm",
 )
 
-LA_POPDENSITY = StandardiseData(
+LA_POPDENSITY = StandardisedDataset(
     data=s.SOURCE_POPDENSITY_LA,
-    res="LA",
+    res=DataResolution.LA,
     key_col="Unnamed: 1",
     key_is_code=False,
     rename={"Mid-year 2018 ": "pop_density_persqkm"},
     csv_name="pop_density_persqkm",
 )
 
-LA_VULNERABLE = StandardiseData(
+LA_VULNERABLE = StandardisedDataset(
     data=s.SOURCE_VULNERABLE_LA,
-    res="LA",
+    res=DataResolution.LA,
     key_col="index",
     key_is_code=False,
     rename={38: "vulnerable"},
@@ -407,9 +433,9 @@ LA_VULNERABLE = StandardiseData(
     csv_name="vulnerable_count_percent",
 )
 
-LA_COHESION = StandardiseData(
+LA_COHESION = StandardisedDataset(
     data=s.SOURCE_COMM_COHESION_LA,
-    res="LA",
+    res=DataResolution.LA,
     key_col="index",
     key_is_code=False,
     rename={20: "belong_strongagree", 21: "belong_agree"},
@@ -417,18 +443,18 @@ LA_COHESION = StandardiseData(
     csv_name="comm_cohesion_count_percent",
 )
 
-LA_INTERNET_ACCESS = StandardiseData(
+LA_INTERNET_ACCESS = StandardisedDataset(
     data=s.SOURCE_INTERNET_ACCESS_LA,
-    res="LA",
+    res=DataResolution.LA,
     key_col="Unnamed: 0",
     key_is_code=False,
     rename={"Yes (%)": "has_internet_percent"},
     csv_name="has_internet_percent",
 )
 
-LA_INTERNET_USE = StandardiseData(
+LA_INTERNET_USE = StandardisedDataset(
     data=s.SOURCE_INTERNET_USE_LA,
-    res="LA",
+    res=DataResolution.LA,
     key_col="Unnamed: 0",
     key_is_code=False,
     rename={
@@ -438,9 +464,9 @@ LA_INTERNET_USE = StandardiseData(
     csv_name="use_internet_percent",
 )
 
-LA_ETHNICITY = StandardiseData(
+LA_ETHNICITY = StandardisedDataset(
     data=s.SOURCE_ETHNICITY_LA,
-    res="LA",
+    res=DataResolution.LA,
     key_col="Unnamed: 1",
     key_is_code=False,
     csv_name="ethnicities_percent",
