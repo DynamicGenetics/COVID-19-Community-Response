@@ -15,7 +15,8 @@ import source_datasets as s
 @dataclass
 class StandardiseData:
     """Class for mapping the changes needed to standardise each dataset"""
-    LA = 'LA'
+
+    LA = "LA"
 
     data: pd.DataFrame
     res: str  # Resolution at 'LSOA' or 'LA'
@@ -34,9 +35,12 @@ class StandardiseData:
         # Validate step TBD
 
         # Filter the keycodes/names, remove whitespace, reset index
-        self.std_data_ = self.clean_keys(df=self.data, res=self.res,
-                                         key_col=self.key_col,
-                                         key_is_code=self.key_is_code)
+        self.std_data_ = self.clean_keys(
+            df=self.data,
+            res=self.res,
+            key_col=self.key_col,
+            key_is_code=self.key_is_code,
+        )
 
         # Rename the columns as needed
         if self.rename:
@@ -57,16 +61,24 @@ class StandardiseData:
     def standardised_data(self):
         return self.std_data_
 
+    def csv_path(self):
+        return os.path.join(
+            "cleaned", "{res}_{name}.csv".format(res=self.res, name=self.csv_name)
+        )
+
     def __add__(self, other):
 
         if not isinstance(other, StandardiseData):
-            raise TypeError('unsupported operand type(s) for +: {} and {}',
-                            self.__class__, type(other))
+            raise TypeError(
+                "unsupported operand type(s) for +: {} and {}",
+                self.__class__,
+                type(other),
+            )
 
         if self.res == self.LA:
-            merge_key = 'lad19cd'
+            merge_key = "lad19cd"
         else:
-            merge_key = 'LSOA11CD'
+            merge_key = "LSOA11CD"
         self.data = pd.merge(self.std_data_, other.std_data_, on=merge_key)
         return self
 
@@ -78,12 +90,18 @@ class StandardiseData:
 
         data_folder = data.GEO_DATA_FOLDER
         # Read data
-        LSOA = gpd.read_file(os.path.join(data_folder,
-                                          "Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson")
-                             )
-        LA = gpd.read_file(os.path.join(data_folder,
-                                        "Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson")
-                           )
+        LSOA = gpd.read_file(
+            os.path.join(
+                data_folder,
+                "Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson",
+            )
+        )
+        LA = gpd.read_file(
+            os.path.join(
+                data_folder,
+                "Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson",
+            )
+        )
 
         try:
             LSOA = self.clean_keys(LSOA, res="LSOA", key_col="LSOA11CD")
@@ -143,7 +161,8 @@ class StandardiseData:
             # if not.
             if df_new.shape[0] < 22:
                 raise Exception(
-                    "An error has occured. There are not the expected 22 rows.")
+                    "An error has occured. There are not the expected 22 rows."
+                )
         elif res == "LSOA":
             if key_is_code:
                 if key_col != "LSOA11CD":
@@ -217,8 +236,9 @@ class StandardiseData:
             else:
                 key = "lad19nm"
             # Change the key column depending on the argument
-            df_tidy = LA[["lad19cd", "lad19nm"]].merge(df[keep_cols], on=key,
-                                                       how="inner")
+            df_tidy = LA[["lad19cd", "lad19nm"]].merge(
+                df[keep_cols], on=key, how="inner"
+            )
             # Check the df has the expected number of rows after merging
             if df_tidy.shape[0] != 22:
                 raise Exception(
@@ -270,18 +290,14 @@ class StandardiseData:
             res {str} -- resolution of the df data ('LA' or 'LSOA')
             csv_name {str} -- name of the data to include in path.
         """
-        # create the desired path
-        csv_path = os.path.join("cleaned",
-                                '{res}_{name}.csv'.format(res=self.res,
-                                                          name=self.csv_name))
 
         # if a file already exists on this path, alert user
         # WARNING warning.warn
-        if os.path.isfile(csv_path):
+        if os.path.isfile(self.csv_path()):
             print("This file already exists. Please delete if new copy needed.")
         else:
-            self.data.to_csv(csv_path, index=False)
-            print("File written to " + csv_path)
+            self.data.to_csv(self.csv_path(), index=False)
+            print("File written to " + self.csv_path())
 
 
 # ++++++++++++++++++++++++++++++++++++++
@@ -430,13 +446,13 @@ LA_ETHNICITY = StandardiseData(
     csv_name="ethnicities_percent",
 )
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     lsoa_w = LSOA_WELSH
     print(lsoa_w.data.head())
     input()
-    print('STD DAta Is None: ', lsoa_w.standardised_data is None)
+    print("STD DAta Is None: ", lsoa_w.standardised_data is None)
     lsoa_w.standardise()
-    print('Done')
+    print("Done")
     input()
     print(lsoa_w.standardised_data.head())
 
