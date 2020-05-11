@@ -9,7 +9,7 @@ from dataclasses import dataclass
 
 # Import the raw data constants
 import data
-from . import source_datasets as s
+import source_datasets as s
 
 
 @dataclass
