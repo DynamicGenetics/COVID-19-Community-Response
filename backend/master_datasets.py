@@ -85,7 +85,6 @@ def generate_lsoa_master():
 LA_MASTER = generate_la_master()
 LSOA_MASTER = generate_lsoa_master()
 
-
 # ++++++++++++++++
 # Merge functions
 # ++++++++++++++++
@@ -105,7 +104,7 @@ def merge_LSOA_files(lsoa_static_datasets):
     )
 
     static_data.rename(
-        index={"lad19cd": "area_code", "lad19nm": "area_name"}, inplace=True
+        index={"LSOA11CD": "area_code", "LSOA11NM": "area_name"}, inplace=True
     )
 
     # Check that this has worked
