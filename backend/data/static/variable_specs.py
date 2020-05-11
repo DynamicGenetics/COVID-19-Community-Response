@@ -8,7 +8,7 @@ from typing import Sequence
 @dataclass
 class Variable:
 
-    data: pd.Series  # Should call variable from variables.py?
+    data : pd.Series  # Should call variable from variables.py?
     name: str  # Variable name in dataset
     label: str  # Human readable label
     data_class: str  # Is the data 'support' or 'challenge'
