@@ -19,7 +19,9 @@ const cc = (function(d3){
       // .range(["#4575b4","#ffffbf","#d73027"])
       // .range(["#001d95","#f0f0f0","#c32b38"])
       // .range(["#3781ff","#ffffbf","#c32b38"])
-      .range(["#3781ff","#f0f0f0","#c32b38"])
+      // .range(["#3781ff","#f0f0f0","#c32b38"])
+      // .range(["#225fb3","#f0f0f0","#dd1661"])
+      .range(["#225fb3","#ffffef","#dd1661"])
       // .range(["#2166ac","#f7f7f7","#b2182b"])
       // .interpolate(d3.interpolateHcl);
       .interpolate(d3.interpolateLab);
@@ -129,24 +131,36 @@ const cc = (function(d3){
     xAxis = g => g
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x).ticks(width / 80))
+      .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      .style("font-size", "12px")
       .call(g => g.select(".domain").remove())
       .call(g => g.append("text")
-        .attr("x", width)
-        .attr("y", margin.bottom - 4)
+        .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+        .style("font-size", "14px")
+        .attr("x", width-2)
+        .attr("y", margin.bottom)
         .attr("fill", "#000")
         .attr("text-anchor", "end")
-        .text("Community need →"))
+        .text("Community need →")
+        .attr("fill", "#dd1661")
+      )
 
     yAxis = g => g
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(y))
+      .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      .style("font-size", "12px")
       .call(g => g.select(".domain").remove())
       .call(g => g.append("text")
+        .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+        .style("font-size", "14px")
         .attr("x", -margin.left)
         .attr("y", 10)
         .attr("fill", "#000")
         .attr("text-anchor", "start")
-        .text("↑ Community support"))
+        .text("↑ Community support")
+        .attr("fill", "#225fb3")
+      )
 
     // Grid function
     grid = g => g
@@ -302,13 +316,17 @@ const cc = (function(d3){
     xAxis = g => g
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x).ticks(width / 80))
+      .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      .style("font-size", "12px")
       .call(g => g.select(".domain").remove())
       .call(g => g.append("text")
-        .attr("x", width)
-        .attr("y", margin.bottom - 4)
+      .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      .style("font-size", "14px")
+        .attr("x", width - 2)
+        .attr("y", margin.bottom)
         .attr("fill", "#000")
         .attr("text-anchor", "end")
-        .text("Selected variable →"))
+        .text("Selected measure →"))
 
     // Grid function
     grid = g => g

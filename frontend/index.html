@@ -25,26 +25,48 @@
   </head>
   <body>
     <div id="content">
+      <div id="logo_area"><a href="./index.html"><img id="logo" src="./images/Community_Response_200px.png" alt="COVID-19 Community Response"></a></div>
       <div id="map"></div>
       <div id="sidebar">
-        <!-- <h3>COVID-19 Community Response</h3> -->
+        <h3 class="ui dividing header">
+          <div class="content">
+            COVID-19 Community Response
+            <div class="sub header">Citizen-led support in Wales</div>
+          </div>
+        </h3>
         <svg id="plot-area"></svg>
         <div id="support_area">
-          <div class="ui multiple fluid selection dropdown" id="multi-select_support">
+          <!-- <h3 class="ui header">Support</h3> -->
+          <h4 class="ui horizontal support divider header">
+            <i class="arrow circle up icon"></i>
+            <div class="content">
+              Support
+            </div>
+          </h4>
+          <div class="ui multiple selection dropdown" id="multi-select_support">
           <!-- This will receive comma separated value like OH,TX,WY !-->
             <input name="support" type="hidden" value="">
             <div class="text"></div>
             <i class="dropdown icon"></i>
+            <!-- <div class="default text">Select indicators of support...</div> -->
             <div id="support_menu" class="menu">
             </div>
           </div>
         </div>
         <div id="needs_area">
-          <div class="ui multiple fluid selection dropdown" id="multi-select_needs">
+          <!-- <h3 class="ui header">Need</h3> -->
+          <h4 class="ui horizontal needs divider header">
+              <i class="arrow circle right icon"></i>
+              <div class="content">
+                Need
+              </div>
+          </h4>
+          <div class="ui multiple selection dropdown" id="multi-select_needs">
           <!-- This will receive comma separated value like OH,TX,WY !-->
             <input name="need" type="hidden" value="">
             <div class="text"></div>
             <i class="dropdown icon"></i>
+            <!-- <div class="default text">Select indicators of need...</div> -->
             <div id="needs_menu" class="menu">
             </div>
           </div>
@@ -123,8 +145,13 @@
         let map = new mapboxgl.Map({
           container: 'map',
           style: "mapbox://styles/oliverdavis/ck9q4pu7o5j4a1ipdqsxrusj2",
+          // style: "mapbox://styles/mapbox/light-v9",
           center: [-3.766409, 52.33022],
-          zoom: 7
+          zoom: 7,
+          bounds: [
+            [-5.437896, 51.349480],
+            [-2.487949, 53.460506]
+          ]
         });
 
         // Draw scatter plot
@@ -153,7 +180,7 @@
             "layout": {},
             "paint": {
               'fill-color': ["get","colour"],
-              'fill-opacity': ['interpolate', ["exponential", 3], ['zoom'], 7, 0.6, 11, 0.2]
+              'fill-opacity': ['interpolate', ["exponential", 2], ['zoom'], 7, 0.8, 11, 0.2]
             }
           }, "settlement-minor-label");
 
