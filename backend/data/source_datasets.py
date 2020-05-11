@@ -19,6 +19,11 @@ from data import SOURCE_DATA_FOLDER
 # Base folder for all Source Files
 p = partial(os.path.join, SOURCE_DATA_FOLDER)
 
+class SourceDataset:
+    """Implement the Source Dataset"""
+
+    def __init__(self, source_filepath, **read_fn_params):
+
 SOURCE_WELSH_LSOA = pd.read_csv(p("lsoa_welsh_language_2011.csv"), usecols=[2, 3])
 
 SOURCE_WELSH_LA = pd.read_csv(p("la_welsh_frequency_2018-19.csv"), usecols=[1, 2, 3, 4])
