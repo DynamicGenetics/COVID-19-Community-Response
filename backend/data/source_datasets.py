@@ -3,6 +3,7 @@
 import pandas as pd
 import os
 from functools import partial
+
 # ++++++++++++++++++++++++++
 # What does this script do?
 # +++++++++++++++++++++++++++
@@ -20,9 +21,7 @@ p = partial(os.path.join, SOURCE_DATA_FOLDER)
 
 SOURCE_WELSH_LSOA = pd.read_csv(p("lsoa_welsh_language_2011.csv"), usecols=[2, 3])
 
-SOURCE_WELSH_LA = pd.read_csv(
-    p("la_welsh_frequency_2018-19.csv"), usecols=[1, 2, 3, 4]
-)
+SOURCE_WELSH_LA = pd.read_csv(p("la_welsh_frequency_2018-19.csv"), usecols=[1, 2, 3, 4])
 
 
 # Read Population data (includes age based data)
@@ -57,7 +56,8 @@ SOURCE_POPDENSITY_LSOA = pd.read_excel(
 SOURCE_POPDENSITY_LA = pd.read_csv(p("la_pop_density_2018.csv"), usecols=[1, 11])
 
 # Read in Vulnerable and Community Cohesion Data
-vulnerable_and_cohesion = pd.read_excel(p("la_vulnerableProxy_and_cohesion.xlsx"),
+vulnerable_and_cohesion = pd.read_excel(
+    p("la_vulnerableProxy_and_cohesion.xlsx"),
     sheet_name="By local authority",
     usecols="B:X",  # Sheet 4
 )
@@ -71,7 +71,9 @@ SOURCE_COMM_COHESION_LA = vulnerable_and_cohesion.iloc[:, [0, 2, 3]].copy()
 
 
 SOURCE_INTERNET_ACCESS_LA = pd.read_excel(
-    p("National Survey results - internet use and freqency of access by local authority.xlsx"),
+    p(
+        "National Survey results - internet use and freqency of access by local authority.xlsx"
+    ),
     usecols="A,B",
     skiprows=4,  # Data starts on row 5
     nrows=22,  # Only parse 22 rows as there is more data underneath
@@ -79,7 +81,9 @@ SOURCE_INTERNET_ACCESS_LA = pd.read_excel(
 
 # NB Here we aren't reading in the last column, because it is half empty.
 SOURCE_INTERNET_USE_LA = pd.read_excel(
-    p("National Survey results - internet use and freqency of access by local authority.xlsx"),
+    p(
+        "National Survey results - internet use and freqency of access by local authority.xlsx"
+    ),
     usecols="A,B,C",
     skiprows=34,  # Data starts on row 5
     nrows=22,  # Only parse 22 necessary rows
