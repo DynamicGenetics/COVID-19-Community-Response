@@ -8,7 +8,7 @@ import os
 from dataclasses import dataclass
 
 # Import the raw data constants
-import source_datasets as s
+from . import source_datasets as s
 
 
 @dataclass
@@ -73,13 +73,16 @@ class StandardiseData:
         """ Reads in and returns the LSOA and LA geopandas dataframes as LSOA, LA. """
 
         # TBD: Standardise for GeoPandas DataFrame
+        # MAKE THIS A CLASS ATTRIBUTE
+
+        data_folder = s.GEO_DATA_FOLDER
         # Read data
-        LSOA = gpd.read_file(
-            "geoboundaries/Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson"
-        )
-        LA = gpd.read_file(
-            "geoboundaries/Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson"
-        )
+        LSOA = gpd.read_file(os.path.join(data_folder,
+                                          "Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson")
+                             )
+        LA = gpd.read_file(os.path.join(data_folder,
+                                        "Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson")
+                           )
 
         try:
             LSOA = self.clean_keys(LSOA, res="LSOA", key_col="LSOA11CD")
@@ -426,7 +429,6 @@ LA_ETHNICITY = StandardiseData(
     csv_name="ethnicities_percent",
 )
 
-
 if __name__ == '__main__':
     lsoa_w = LSOA_WELSH
     print(lsoa_w.data.head())
@@ -436,7 +438,6 @@ if __name__ == '__main__':
     print('Done')
     input()
     print(lsoa_w.standardised_data.head())
-
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Apply functions to each dataset, and create new constant
