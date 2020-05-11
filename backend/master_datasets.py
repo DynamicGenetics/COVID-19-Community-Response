@@ -12,14 +12,11 @@ import data.standardise_datasets as s
 # Changeable constants
 # +++++++++++++++++++++
 
-STATIC_CLEANED_FOLDER = os.path.join(
-    os.path.abspath(os.path.dirname("__file__")), "data", "static", "cleaned"
-)
 LIVE_CLEANED_FOLDER = os.path.join(
-    os.path.abspath(os.path.dirname("__file__")), "data", "live", "cleaned"
+    os.path.abspath(os.path.dirname(__file__)), "data", "live", "cleaned"
 )
 LIVE_TRANSFORMED_FOLDER = os.path.join(
-    os.path.abspath(os.path.dirname("__file__")), "data", "live", "transformed"
+    os.path.abspath(os.path.dirname(__file__)), "data", "live", "transformed"
 )
 
 # list of files from standardised_datasets
@@ -93,7 +90,7 @@ LSOA_MASTER = generate_lsoa_master()
 def merge_LSOA_files(lsoa_static_datasets):
     # Call .standardise() on each dataset
     static_datasets = map(lambda d: d.standardise(), lsoa_static_datasets)
-    static_datasets = map(lambda d: d.standardised_data(), static_datasets)
+    static_datasets = map(lambda d: d.standardised_data, static_datasets)
     static_datasets = map(
         lambda d: d.set_index(["LSOA11CD", "LSOA11NM"]), static_datasets
     )
@@ -110,7 +107,7 @@ def merge_LSOA_files(lsoa_static_datasets):
     # Check that this has worked
     if static_data.shape[0] != 1909:
         raise Exception(
-            "An error has occured. There are not the expected 22 rows in the LA dataset."
+            "An error has occured. There are not the expected 1909 rows in the LA dataset."
         )
 
     return static_data
@@ -120,7 +117,7 @@ def merge_LA_files(la_static_datasets, la_live_datasets):
 
     # Call .standardise() on each dataset
     static_datasets = map(lambda d: d.standardise(), la_static_datasets)
-    static_datasets = map(lambda d: d.standardised_data(), static_datasets)
+    static_datasets = map(lambda d: d.standardised_data, static_datasets)
     static_datasets = map(
         lambda d: d.set_index(["lad19cd", "lad19nm"]), static_datasets
     )
