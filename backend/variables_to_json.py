@@ -8,6 +8,11 @@ import json
 # Local imports
 from master_datasets import LA_MASTER, LSOA_MASTER
 
+##### Local Files for Debugging/Testing
+# LA_MASTER = pd.read_csv('backend/data/static/cleaned/master_static_LA.csv', index_col=['lad19cd', 'lad19nm'])
+# LA_MASTER.rename(columns={'wimd_20pct_percent':'wimd_2019'}, inplace=True)
+# LSOA_MASTER = pd.read_csv('backend/data/static/cleaned/master_static_LSOA.csv',index_col=['LSOA11CD', 'LSOA11NM'])
+
 
 @dataclass
 class Variable:
@@ -110,7 +115,7 @@ class Variables:
 
         # Reset index the dataframe first, becasue we want the index values in json
         data = data.reset_index()
-        return data.to_json(orient="records")
+        return data.to_dict(orient="records")
 
 
 @dataclass
@@ -127,8 +132,8 @@ class DataDashboard:
         }
 
     def write(self):
-        JSON_OUT = os.path.join("..", "frontend", "data", "data.json")
-        with open(JSON_OUT, "w") as outfile:
+        # JSON_OUT = os.path.join("..", "frontend", "data", "data.json")
+        with open("data.json", "w") as outfile:
             json.dump(self.to_json(), outfile)
 
 
@@ -145,7 +150,7 @@ LA_POPDENSITY = Variable(
 )
 
 LSOA_POPDENSITY = Variable(
-    name=LSOA_MASTER["pop_density_persqkm"],
+    data=LSOA_MASTER["pop_density_persqkm"],
     label="Population Density",
     data_class="challenge",
     invert=False,
@@ -187,7 +192,7 @@ LSOA_WIMD = Variable(
 )
 
 HAS_INTERNET = Variable(
-    data=LA_MASTER["has_internet_pct"],
+    data=LA_MASTER["has_internet_percent"],
     label="Population Without Internet Access",
     data_class="challenge",
     la_and_lsoa=False,
@@ -258,12 +263,18 @@ LA_VARBS = Variables(
         HAS_INTERNET,
         VULNERABLE,
         BELONGING,
-        COVID_CASES,
+        # COVID_CASES,
+        # SHEILDING,
+        # GROUPS,
+        # TWEETS
     )
 )
-# When ready need to add: SHEILDING, GROUPS, TWEETS
 
 LSOA_VARBS = Variables((LSOA_POPDENSITY, LSOA_OVER_65, LSOA_WIMD))
 
 # Finally, create the data with the json function!
 DATA = DataDashboard(la_data=LA_VARBS, lsoa_data=LSOA_VARBS)
+
+
+if __name__ == "__main__":
+    DATA.write()
