@@ -8,6 +8,7 @@ import os
 from dataclasses import dataclass
 
 # Import the raw data constants
+import data
 from . import source_datasets as s
 
 
@@ -75,7 +76,7 @@ class StandardiseData:
         # TBD: Standardise for GeoPandas DataFrame
         # MAKE THIS A CLASS ATTRIBUTE
 
-        data_folder = s.GEO_DATA_FOLDER
+        data_folder = data.GEO_DATA_FOLDER
         # Read data
         LSOA = gpd.read_file(os.path.join(data_folder,
                                           "Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson")

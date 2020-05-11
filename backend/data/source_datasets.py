@@ -13,10 +13,7 @@ from functools import partial
 # ++++++++++++++++++++++++++++++++++
 # Read data into acceptable format
 # ++++++++++++++++++++++++++++++++++
-
-BASE_FOLDER = os.path.abspath(os.path.dirname('__file__'))
-SOURCE_DATA_FOLDER = os.path.join(BASE_FOLDER, 'static', 'source')
-GEO_DATA_FOLDER = os.path.join(BASE_FOLDER, 'static', 'geoboundaries')
+from data import SOURCE_DATA_FOLDER
 
 # Base folder for all Source Files
 p = partial(os.path.join, SOURCE_DATA_FOLDER)
