@@ -58,7 +58,7 @@ class StandardiseData:
 # ++++++++++++++++++++++++++++++++++++++
 
 LSOA_WELSH = StandardiseData(
-    data=s.RAW_WELSH_LSOA,
+    data=s.SOURCE_WELSH_LSOA,
     res="LSOA",
     key_col="Unnamed: 2",
     key_is_code=True,
@@ -67,7 +67,7 @@ LSOA_WELSH = StandardiseData(
 )
 
 LA_WELSH = StandardiseData(
-    data=s.RAW_WELSH_LA,
+    data=s.SOURCE_WELSH_LA,
     res="LA",
     key_col="Unnamed: 1",
     key_is_code=False,
@@ -80,7 +80,7 @@ LA_WELSH = StandardiseData(
 )
 
 LSOA_POPULATION = StandardiseData(
-    data=s.RAW_POPDENSITY_LSOA,
+    data=s.SOURCE_POPDENSITY_LSOA,
     res="LSOA",
     key_col="Area Codes",
     key_is_code=True,
@@ -89,7 +89,7 @@ LSOA_POPULATION = StandardiseData(
 )
 
 LA_POPULATION = StandardiseData(
-    data=s.RAW_POPULATION_LA,
+    data=s.SOURCE_POPULATION_LA,
     res="LA",
     key_col="Unnamed: 3",
     key_is_code=False,
@@ -98,7 +98,7 @@ LA_POPULATION = StandardiseData(
 )
 
 LSOA_OVER_65 = StandardiseData(
-    data=s.RAW_OVER_65_LSOA,
+    data=s.SOURCE_OVER_65_LSOA,
     res="LSOA",
     key_col="Area Codes",
     key_is_code=True,
@@ -106,7 +106,7 @@ LSOA_OVER_65 = StandardiseData(
 )
 
 LA_OVER_65 = StandardiseData(
-    data=s.RAW_OVER_65_LA,
+    data=s.SOURCE_OVER_65_LA,
     res="LA",
     key_col="Unnamed: 3",
     key_is_code=False,
@@ -115,7 +115,7 @@ LA_OVER_65 = StandardiseData(
 )
 
 LSOA_IMD = StandardiseData(
-    data=s.RAW_IMD_LSOA,
+    data=s.SOURCE_IMD_LSOA,
     res="LSOA",
     key_col="lsoa11cd",
     key_is_code=True,
@@ -124,7 +124,7 @@ LSOA_IMD = StandardiseData(
 )
 
 LA_IMD = StandardiseData(
-    data=s.RAW_IMD_LA,
+    data=s.SOURCE_IMD_LA,
     res="LA",
     key_col="Unnamed: 0",
     key_is_code=False,
@@ -132,7 +132,7 @@ LA_IMD = StandardiseData(
 )
 
 LSOA_POPDENSITY = StandardiseData(
-    data=s.RAW_POPDENSITY_LSOA,
+    data=s.SOURCE_POPDENSITY_LSOA,
     res="LSOA",
     key_col="Code",
     key_is_code=True,
@@ -142,7 +142,7 @@ LSOA_POPDENSITY = StandardiseData(
 )
 
 LA_POPDENSITY = StandardiseData(
-    data=s.RAW_POPDENSITY_LA,
+    data=s.SOURCE_POPDENSITY_LA,
     res="LA",
     key_col="Unnamed: 1",
     key_is_code=False,
@@ -151,7 +151,7 @@ LA_POPDENSITY = StandardiseData(
 )
 
 LA_VULNERABLE = StandardiseData(
-    data=s.RAW_VULNERABLE_LA,
+    data=s.SOURCE_VULNERABLE_LA,
     res="LA",
     key_col="index",
     key_is_code=False,
@@ -161,7 +161,7 @@ LA_VULNERABLE = StandardiseData(
 )
 
 LA_COHESION = StandardiseData(
-    data=s.RAW_COMM_COHESION_LA,
+    data=s.SOURCE_COMM_COHESION_LA,
     res="LA",
     key_col="index",
     key_is_code=False,
@@ -171,7 +171,7 @@ LA_COHESION = StandardiseData(
 )
 
 LA_INTERNET_ACCESS = StandardiseData(
-    data=s.RAW_INTERNET_ACCESS_LA,
+    data=s.SOURCE_INTERNET_ACCESS_LA,
     res="LA",
     key_col="Unnamed: 0",
     key_is_code=False,
@@ -180,7 +180,7 @@ LA_INTERNET_ACCESS = StandardiseData(
 )
 
 LA_INTERNET_USE = StandardiseData(
-    data=s.RAW_INTERNET_USE_LA,
+    data=s.SOURCE_INTERNET_USE_LA,
     res="LA",
     key_col="Unnamed: 0",
     key_is_code=False,
@@ -192,7 +192,7 @@ LA_INTERNET_USE = StandardiseData(
 )
 
 LA_ETHNICITY = StandardiseData(
-    data=s.RAW_ETHNICITY_LA,
+    data=s.SOURCE_ETHNICITY_LA,
     res="LA",
     key_col="Unnamed: 1",
     key_is_code=False,
