@@ -8,15 +8,15 @@ from typing import Sequence
 @dataclass
 class Variable:
 
-    data: pd.DataFrame  # Should call variable from variables.py?
+    data: pd.Series  # Should call variable from variables.py?
     name: str  # Variable name in dataset
     label: str  # Human readable label
     data_class: str  # Is the data 'support' or 'challenge'
     la: bool  # Is this an LA level variable?
-    # Is this data available at LSOA level too? (Only needed for LA level varbs)
-    lsoa_available: bool = None
     invert: bool  # Does the direction of the data need to be inverted before mapping?
     data_type: str  # Is the data a percentage, a count or a rank?
+    # Is this data available at LSOA level too? (Only needed for LA level varbs)
+    lsoa_available: bool = False
 
     # @property
     # def is_valid(self):
