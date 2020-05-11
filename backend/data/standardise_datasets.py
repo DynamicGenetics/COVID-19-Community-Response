@@ -7,6 +7,7 @@ import re
 import os
 from dataclasses import dataclass
 from dataclasses import field
+
 # Import the raw data constants
 import data
 import source_datasets as s
@@ -15,8 +16,8 @@ from enum import Enum
 
 
 class DataResolution(Enum):
-    LA = 'LA'
-    LSOA = 'LSOA'
+    LA = "LA"
+    LSOA = "LSOA"
 
 
 @dataclass
@@ -82,7 +83,7 @@ class StandardisedDataset:
         elif self.res == DataResolution.LSOA:
             return "LSOA11CD"
         else:
-            raise TypeError('Unsupported Resolution')
+            raise TypeError("Unsupported Resolution")
 
     def __add__(self, other):
 
@@ -94,16 +95,25 @@ class StandardisedDataset:
             )
 
         if not self.is_standardised or not other.is_standardised:
-            raise TypeError('Unsupported operand: both dataset needs to be '
-                            'standardised before merging!')
+            raise TypeError(
+                "Unsupported operand: both dataset needs to be "
+                "standardised before merging!"
+            )
 
         if self.res != other.res:
-            raise TypeError('Unsupported operand: both dataset needs to be '
-                            'at the same resolution!')
+            raise TypeError(
+                "Unsupported operand: both dataset needs to be "
+                "at the same resolution!"
+            )
 
         merge_key = self._merge_key()
-        self.std_data_ = pd.merge(self.std_data_, other.standardised_data,
-                                  on=merge_key, left_index=True, right_index=True)
+        self.std_data_ = pd.merge(
+            self.std_data_,
+            other.standardised_data,
+            on=merge_key,
+            left_index=True,
+            right_index=True,
+        )
         return self
 
     def read_keys(self):
@@ -315,7 +325,7 @@ class StandardisedDataset:
             csv_name {str} -- name of the data to include in path.
         """
         if not self.is_standardised:
-            raise ValueError('Dataset requires to be standardised first')
+            raise ValueError("Dataset requires to be standardised first")
 
         # if a file already exists on this path, alert user
         # WARNING warning.warn
