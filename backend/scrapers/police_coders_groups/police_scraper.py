@@ -1,7 +1,7 @@
-'''
+"""
 police_coders_scrape () function:
 Uses google sheets API to get Police Coders group list, saves as CSV
-'''
+"""
 
 import pickle
 import os.path
@@ -29,9 +29,7 @@ def police_coders_scrape(filename, root_path):
         # created automatically when the authorization flow completes for the first
         # time.
         if os.path.exists("{}token.pickle".format(root_path)):
-            with open(
-                "{}token.pickle".format(root_path), "rb"
-            ) as token:
+            with open("{}token.pickle".format(root_path), "rb") as token:
                 creds = pickle.load(token)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
@@ -43,9 +41,7 @@ def police_coders_scrape(filename, root_path):
                 )
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
-            with open(
-                "{}token.pickle".format(root_path), "wb"
-            ) as token:
+            with open("{}token.pickle".format(root_path), "wb") as token:
                 pickle.dump(creds, token)
 
         service = build("sheets", "v4", credentials=creds)

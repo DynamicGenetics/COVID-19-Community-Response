@@ -36,7 +36,7 @@ if __name__ == "__main__":
     # Define file output paths
     fn_groups_raw = "backend/data/live/raw/groups_raw.csv"
     fn_groups_cleaned = "backend/data/live/cleaned/groups.csv"
-    root_path = 'backend/scrapers/police_coders_groups/'
+    root_path = "backend/scrapers/police_coders_groups/"
 
     # Get latest community group data
     groups = police_coders_scrape(fn_groups_raw, root_path)
@@ -56,22 +56,30 @@ if __name__ == "__main__":
     # Count the number of groups per area to produce the groupCount layer
 
     # Get boundary shapes and names for la and lsoa levels
-    boundary_info_LA = get_boundaries_LA('backend/data/static/geoboundaries/boundaries_LA.geojson')
-    boundary_info_LSOA = get_boundaries_LSOA('backend/data/static/geoboundaries/boundaries_LSOA.geojson')
+    boundary_info_LA = get_boundaries_LA(
+        "backend/data/static/geoboundaries/boundaries_LA.geojson"
+    )
+    boundary_info_LSOA = get_boundaries_LSOA(
+        "backend/data/static/geoboundaries/boundaries_LSOA.geojson"
+    )
 
     # Make seperate counts of groups per la and lsoa
-    count_LA = count_groups('backend/data/live/cleaned/groups.csv', boundary_info_LA, 'lad18cd')
-    count_LSOA = count_groups('backend/data/live/cleaned/groups.csv', boundary_info_LSOA, 'LSOA11CD')
+    count_LA = count_groups(
+        "backend/data/live/cleaned/groups.csv", boundary_info_LA, "lad18cd"
+    )
+    count_LSOA = count_groups(
+        "backend/data/live/cleaned/groups.csv", boundary_info_LSOA, "LSOA11CD"
+    )
 
     print(
         "Message (groupCount): Performed count of groups per area, {} groups localised to LAs and {} to LSOAs".format(
-            count_LA['groupCount'].sum(), 
-            count_LSOA['groupCount'].sum())
+            count_LA["groupCount"].sum(), count_LSOA["groupCount"].sum()
+        )
     )
 
     # Save counts of groups by areas to seperate csvs
-    count_LA.to_csv('backend/data/live/cleaned/groupCount_LA.csv', index=False)
-    count_LSOA.to_csv('backend/data/live/cleaned/groupCount_LSOA.csv', index=False)
+    count_LA.to_csv("backend/data/live/cleaned/groupCount_LA.csv", index=False)
+    count_LSOA.to_csv("backend/data/live/cleaned/groupCount_LSOA.csv", index=False)
 
 
 # run PHW Covid Case scraper
