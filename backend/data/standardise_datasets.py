@@ -9,8 +9,12 @@ from dataclasses import dataclass
 from dataclasses import field
 
 # Import the raw data constants
-import data
-import source_datasets as s
+try:
+    import datasets
+except ImportError:
+    # backward compatibility
+    import data as datasets
+import data.source_datasets as s
 
 from enum import Enum
 
@@ -21,8 +25,12 @@ class DataResolution(Enum):
 
 
 @dataclass
-class StandardisedDataset:
-    """Class for mapping the changes needed to standardise each dataset"""
+class Dataset:
+    """
+
+    ----------
+
+    """
 
     data: pd.DataFrame
     res: DataResolution  # Resolution at 'LSOA' or 'LA'
@@ -35,7 +43,13 @@ class StandardisedDataset:
     std_data_: pd.DataFrame = field(init=False, default=None)
 
     def standardise(self):
-        """ Based on arguments provided, applies the correct functions to standardise the data.
+        """
+
+        Returns
+        -------
+
+        """
+        """ Based on arguments provided, applies the correct functions to standardise the datasets.
         """
 
         # Validate step TBD
@@ -58,6 +72,9 @@ class StandardisedDataset:
         # If argument has been passed for bracketed_data_cols, then apply the function.
         if self.bracketed_data_cols:
             self.std_data_ = self.clean_bracketed_data()
+
+        # Lastly, fill NA values with 0
+        self.std_data_.fillna(0, inplace=True)
 
         # Write out to /cleaned
         # write_cleaned_data(df, res=self.res, csv_name=self.csv_name)
@@ -87,7 +104,7 @@ class StandardisedDataset:
 
     def __add__(self, other):
 
-        if not isinstance(other, StandardisedDataset):
+        if not isinstance(other, Dataset):
             raise TypeError(
                 "unsupported operand type(s) for +: {} and {}",
                 self.__class__,
@@ -122,7 +139,7 @@ class StandardisedDataset:
         # TBD: Standardise for GeoPandas DataFrame
         # MAKE THIS A CLASS ATTRIBUTE
 
-        data_folder = data.GEO_DATA_FOLDER
+        data_folder = datasets.GEO_DATA_FOLDER
         # Read data
         LSOA = gpd.read_file(
             os.path.join(
@@ -138,7 +155,7 @@ class StandardisedDataset:
         )
 
         try:
-            LSOA = self.clean_keys(LSOA, res="LSOA", key_col="LSOA11CD")
+            LSOA = self.clean_keys(LSOA, res=DataResolution.LSOA, key_col="LSOA11CD")
             LA = self.clean_keys(LA, res=DataResolution.LA, key_col="lad19cd")
         except Exception as e:
             # clean_keys will raise an exception if the right number of rows are not merged.
@@ -166,24 +183,23 @@ class StandardisedDataset:
         """
 
         # Make sure res is defined correctly
-        if not isinstance(res, str):
-            raise TypeError("Arg 'res' should be 'LA' or 'LSOA' as string")
+        # if not isinstance(res, str):
+        #     raise TypeError("Arg 'res' should be 'LA' or 'LSOA' as string")
 
         # For instances where the key column is a code (preferred)
         if key_is_code:
             # This will drop non Welsh LSOAs, and drop NAs.
             df_new = df[df[key_col].str.contains("W", na=False)].copy()
-            df_new.reset_index(drop=True, inplace=True)
         else:
             # Assumes this means key is a name
-            df_new = df.dropna(subset=[key_col]).copy()
-            df_new.reset_index(drop=True, inplace=True)
+            df_new = df.dropna(subset=[key_col])
+        df_new.reset_index(drop=True, inplace=True)
 
         # Strip surrounding whitespace if there is any.
         df_new[key_col] = df_new[key_col].apply(lambda x: x.strip())
 
         # If the column-name doesn't match the standard keyname, change it to that
-        if res == "LA":
+        if res == DataResolution.LA:
             if key_is_code:
                 if key_col != "lad19cd":
                     df_new.rename(columns={key_col: "lad19cd"}, inplace=True)
@@ -195,9 +211,9 @@ class StandardisedDataset:
             # if not.
             if df_new.shape[0] < 22:
                 raise Exception(
-                    "An error has occured. There are not the expected 22 rows."
+                    "An error has occurred. There are not the expected 22 rows."
                 )
-        elif res == "LSOA":
+        elif res == DataResolution.LSOA:
             if key_is_code:
                 if key_col != "LSOA11CD":
                     df_new.rename(columns={key_col: "LSOA11CD"}, inplace=True)
@@ -255,7 +271,7 @@ class StandardisedDataset:
 
         # Create the area codes and names depending on resolution and what keys are available in the
         # original data frame.
-        if res == "LSOA":
+        if res == DataResolution.LSOA:
             df_tidy = LSOA[["LSOA11CD", "LSOA11NM"]].merge(
                 df[keep_cols], on="LSOA11CD", how="inner"
             )
@@ -264,7 +280,7 @@ class StandardisedDataset:
                 raise Exception(
                     "An error has occured. The full 1909 rows were not produced in merge."
                 )
-        elif res == "LA":
+        elif res == DataResolution.LA:
             if key_is_code:
                 key = "lad19cd"
             else:
@@ -340,7 +356,7 @@ class StandardisedDataset:
 # Define each instance of the dataclass
 # ++++++++++++++++++++++++++++++++++++++
 
-LSOA_WELSH = StandardisedDataset(
+LSOA_WELSH = Dataset(
     data=s.SOURCE_WELSH_LSOA,
     res=DataResolution.LSOA,
     key_col="Unnamed: 2",
@@ -349,7 +365,7 @@ LSOA_WELSH = StandardisedDataset(
     rename={"Percentage able to speak Welsh ": "welsh_speakers_percent"},
 )
 
-LA_WELSH = StandardisedDataset(
+LA_WELSH = Dataset(
     data=s.SOURCE_WELSH_LA,
     res=DataResolution.LA,
     key_col="Unnamed: 1",
@@ -362,8 +378,8 @@ LA_WELSH = StandardisedDataset(
     },
 )
 
-LSOA_POPULATION = StandardisedDataset(
-    data=s.SOURCE_POPDENSITY_LSOA,
+LSOA_POPULATION = Dataset(
+    data=s.SOURCE_POPULATION_LSOA,
     res=DataResolution.LSOA,
     key_col="Area Codes",
     key_is_code=True,
@@ -371,7 +387,7 @@ LSOA_POPULATION = StandardisedDataset(
     rename={"All Ages": "population_count"},
 )
 
-LA_POPULATION = StandardisedDataset(
+LA_POPULATION = Dataset(
     data=s.SOURCE_POPULATION_LA,
     res=DataResolution.LA,
     key_col="Unnamed: 3",
@@ -380,7 +396,7 @@ LA_POPULATION = StandardisedDataset(
     rename={"All ages .1": "population_count"},
 )
 
-LSOA_OVER_65 = StandardisedDataset(
+LSOA_OVER_65 = Dataset(
     data=s.SOURCE_OVER_65_LSOA,
     res=DataResolution.LSOA,
     key_col="Area Codes",
@@ -388,7 +404,7 @@ LSOA_OVER_65 = StandardisedDataset(
     csv_name="over_65_count",
 )
 
-LA_OVER_65 = StandardisedDataset(
+LA_OVER_65 = Dataset(
     data=s.SOURCE_OVER_65_LA,
     res=DataResolution.LA,
     key_col="Unnamed: 3",
@@ -397,7 +413,7 @@ LA_OVER_65 = StandardisedDataset(
     rename={"Unnamed: 14": "over_65_count"},
 )
 
-LSOA_IMD = StandardisedDataset(
+LSOA_IMD = Dataset(
     data=s.SOURCE_IMD_LSOA,
     res=DataResolution.LSOA,
     key_col="lsoa11cd",
@@ -406,15 +422,15 @@ LSOA_IMD = StandardisedDataset(
     keep_cols=["LSOA11CD", "wimd_2019"],
 )
 
-LA_IMD = StandardisedDataset(
+LA_IMD = Dataset(
     data=s.SOURCE_IMD_LA,
-    res=DataResolution.LSOA,
+    res=DataResolution.LA,
     key_col="Unnamed: 0",
     key_is_code=False,
     csv_name="wimd_2019",
 )
 
-LSOA_POPDENSITY = StandardisedDataset(
+LSOA_POPDENSITY = Dataset(
     data=s.SOURCE_POPDENSITY_LSOA,
     res=DataResolution.LSOA,
     key_col="Code",
@@ -424,7 +440,7 @@ LSOA_POPDENSITY = StandardisedDataset(
     csv_name="pop_density_persqkm",
 )
 
-LA_POPDENSITY = StandardisedDataset(
+LA_POPDENSITY = Dataset(
     data=s.SOURCE_POPDENSITY_LA,
     res=DataResolution.LA,
     key_col="Unnamed: 1",
@@ -433,7 +449,7 @@ LA_POPDENSITY = StandardisedDataset(
     csv_name="pop_density_persqkm",
 )
 
-LA_VULNERABLE = StandardisedDataset(
+LA_VULNERABLE = Dataset(
     data=s.SOURCE_VULNERABLE_LA,
     res=DataResolution.LA,
     key_col="index",
@@ -443,7 +459,7 @@ LA_VULNERABLE = StandardisedDataset(
     csv_name="vulnerable_count_percent",
 )
 
-LA_COHESION = StandardisedDataset(
+LA_COHESION = Dataset(
     data=s.SOURCE_COMM_COHESION_LA,
     res=DataResolution.LA,
     key_col="index",
@@ -453,7 +469,7 @@ LA_COHESION = StandardisedDataset(
     csv_name="comm_cohesion_count_percent",
 )
 
-LA_INTERNET_ACCESS = StandardisedDataset(
+LA_INTERNET_ACCESS = Dataset(
     data=s.SOURCE_INTERNET_ACCESS_LA,
     res=DataResolution.LA,
     key_col="Unnamed: 0",
@@ -462,35 +478,49 @@ LA_INTERNET_ACCESS = StandardisedDataset(
     csv_name="has_internet_percent",
 )
 
-LA_INTERNET_USE = StandardisedDataset(
-    data=s.SOURCE_INTERNET_USE_LA,
-    res=DataResolution.LA,
-    key_col="Unnamed: 0",
-    key_is_code=False,
-    rename={
-        "Several times a day (%)": "use_several_daily_percent",
-        "Daily (%) ": "use_daily_percent",
-    },
-    csv_name="use_internet_percent",
-)
+# LA_INTERNET_USE = Dataset(
+#     data=s.SOURCE_INTERNET_USE_LA,
+#     res=DataResolution.LA,
+#     key_col="Unnamed: 0",
+#     key_is_code=False,
+#     rename={
+#         "Several times a day (%)": "use_several_daily_percent",
+#         "Daily (%) ": "use_daily_percent",
+#     },
+#     csv_name="use_internet_percent",
+# )
 
-LA_ETHNICITY = StandardisedDataset(
-    data=s.SOURCE_ETHNICITY_LA,
-    res=DataResolution.LA,
-    key_col="Unnamed: 1",
-    key_is_code=False,
-    csv_name="ethnicities_percent",
-)
+# LA_ETHNICITY = Dataset(
+#     data=s.SOURCE_ETHNICITY_LA,
+#     res=DataResolution.LA,
+#     key_col="Unnamed: 1",
+#     key_is_code=False,
+#     csv_name="ethnicities_percent",
+# )
 
-if __name__ == "__main__":
-    lsoa_w = LSOA_WELSH
-    print(lsoa_w.data.head())
-    input()
-    print("STD DAta Is None: ", lsoa_w.standardised_data is None)
-    lsoa_w.standardise()
-    print("Done")
-    input()
-    print(lsoa_w.standardised_data.head())
+# if __name__ == "__main__":
+#     LA_STATIC_DATASETS = [
+#     LA_WELSH,
+#     LA_POPULATION,
+#     LA_OVER_65,
+#     LA_IMD,
+#     LA_VULNERABLE,
+#     LA_COHESION,
+#     LA_INTERNET_ACCESS,
+#     ]
+
+#     LSOA_STATIC_DATASETS = [
+#     LSOA_WELSH,
+#     LSOA_POPULATION,
+#     LSOA_OVER_65,
+#     LSOA_POPDENSITY,
+#     ]
+
+#     la_static_datasets = map(lambda d: d.standardise(), LA_STATIC_DATASETS)
+#     la_static_datasets = map(lambda d: d.standardised_data, la_static_datasets)
+
+#     lsoa_static_datasets = map(lambda d: d.standardise(), LSOA_STATIC_DATASETS)
+#     lsoa_static_datasets = map(lambda d: d.standardised_data, lsoa_static_datasets)
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Apply functions to each dataset, and create new constant
