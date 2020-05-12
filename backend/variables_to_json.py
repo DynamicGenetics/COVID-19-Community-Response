@@ -9,9 +9,9 @@ import json
 from master_datasets import LA_MASTER, LSOA_MASTER
 
 ##### Local Files for Debugging/Testing
-# LA_MASTER = pd.read_csv('backend/data/static/cleaned/master_static_LA.csv', index_col=['lad19cd', 'lad19nm'])
+# LA_MASTER = pd.read_csv('la_master.csv', index_col=['area_code'])
 # LA_MASTER.rename(columns={'wimd_20pct_percent':'wimd_2019'}, inplace=True)
-# LSOA_MASTER = pd.read_csv('backend/data/static/cleaned/master_static_LSOA.csv',index_col=['LSOA11CD', 'LSOA11NM'])
+# LSOA_MASTER = pd.read_csv('lsoa_master.csv',index_col=['area_code', 'area_name'])
 
 
 @dataclass
@@ -43,11 +43,19 @@ class Variable:
         self.data_transformed_ = self.transform_per100k()
         if self.invert:
             self.data_transformed_ = self.invert_data()
+
+        # Rename without the _ string section defining data type
+        self.data_transformed_.name = self.new_name()
         return self
 
     @property
     def transformed_data(self):
         return self.data_transformed_
+
+    def new_name(self):
+        name_to_change = self.data.name
+        new_name = "_".join(name_to_change.split("_")[:-1])
+        return new_name
 
     def transform_per100k(self):
         """Based on variable type, perform transformation"""
@@ -84,7 +92,7 @@ class Variable:
 
     def meta_to_json(self):
         return {
-            "name": self.data.name,
+            "name": self.new_name(),
             "label": self.label,
             "class": self.data_class,
             "lsoa": self.la_and_lsoa,
@@ -112,9 +120,9 @@ class Variables:
         vars = map(lambda v: v.transformed_data, vars)
 
         data = pd.concat(vars, axis=1)
-
         # Reset index the dataframe first, becasue we want the index values in json
         data = data.reset_index()
+
         return data.to_dict(orient="records")
 
 
@@ -132,8 +140,14 @@ class DataDashboard:
         }
 
     def write(self):
-        # JSON_OUT = os.path.join("..", "frontend", "data", "data.json")
-        with open("data.json", "w") as outfile:
+        JSON_OUT = os.path.join(
+            os.path.abspath(os.path.dirname(__file__)),
+            "..",
+            "frontend",
+            "data",
+            "data.json",
+        )
+        with open(JSON_OUT, "w") as outfile:
             json.dump(self.to_json(), outfile)
 
 
@@ -142,7 +156,7 @@ LSOA_POPULATION = LSOA_MASTER["population_count"]
 
 LA_POPDENSITY = Variable(
     data=LA_MASTER["pop_density_persqkm"],
-    label="Population Density",
+    label="Population Density (people per sq km)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -151,7 +165,7 @@ LA_POPDENSITY = Variable(
 
 LSOA_POPDENSITY = Variable(
     data=LSOA_MASTER["pop_density_persqkm"],
-    label="Population Density",
+    label="Population Density (people per sq km)",
     data_class="challenge",
     invert=False,
     data_type="density",
@@ -159,7 +173,7 @@ LSOA_POPDENSITY = Variable(
 
 LA_OVER_65 = Variable(
     data=LA_MASTER["over_65_count"],
-    label="Population Over Age 65",
+    label="Over Age 65 (per 100,000 people)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -168,7 +182,7 @@ LA_OVER_65 = Variable(
 
 LSOA_OVER_65 = Variable(
     data=LSOA_MASTER["over_65_count"],
-    label="Population Over Age 65",
+    label="Over Age 65 (per 100,000 people)",
     data_class="challenge",
     invert=False,
     data_type="count",
@@ -176,7 +190,7 @@ LSOA_OVER_65 = Variable(
 
 LA_WIMD = Variable(
     data=LA_MASTER["wimd_2019"],
-    label="Deprivation (WIMD)",
+    label="20% Most Deprived (per 100,000 people)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -185,7 +199,7 @@ LA_WIMD = Variable(
 
 LSOA_WIMD = Variable(
     data=LSOA_MASTER["wimd_2019"],
-    label="Deprivation (WIMD)",
+    label="Index of Multiple Deprivation (Rank)",
     data_class="challenge",
     invert=True,
     data_type="rank",
@@ -193,7 +207,7 @@ LSOA_WIMD = Variable(
 
 HAS_INTERNET = Variable(
     data=LA_MASTER["has_internet_percent"],
-    label="Population Without Internet Access",
+    label="No Internet Access (per 100,000 people)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=True,  # originally percent WITH internet but we need inverse for map
@@ -202,7 +216,7 @@ HAS_INTERNET = Variable(
 
 VULNERABLE = Variable(
     data=LA_MASTER["vulnerable_pct"],
-    label="At Risk Population",
+    label="At Risk Population (per 100,000 people)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -211,7 +225,7 @@ VULNERABLE = Variable(
 
 BELONGING = Variable(
     data=LA_MASTER["belong_percent"],
-    label="Community Cohesion",
+    label="Community Cohesion (per 100,000 people)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -219,40 +233,40 @@ BELONGING = Variable(
 )
 
 COVID_CASES = Variable(
-    data=LA_MASTER["covid_per100k"],
-    label="COVID-19 Known Cases",
+    data=LA_MASTER["covidIncidence_100k"],
+    label="COVID-19 Known Cases (per 100,000 people)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
     data_type="per100k",
 )
 
-GROUPS = Variable(
-    data=LA_MASTER["groups_count"],
-    label="Community Support Groups",
-    data_class="support",
-    la_and_lsoa=False,
-    invert=False,
-    data_type="count",
-)
+# GROUPS = Variable(
+#     data=LA_MASTER["groups_count"],
+#     label="Community Support Groups",
+#     data_class="support",
+#     la_and_lsoa=False,
+#     invert=False,
+#     data_type="count",
+# )
 
-SHIELDING = Variable(
-    data=LA_MASTER["shielded_count"],
-    label="Sheilding Population",
-    data_class="challenge",
-    la_and_lsoa=False,
-    invert=False,
-    data_type="count",
-)
+# SHIELDING = Variable(
+#     data=LA_MASTER["shielded_count"],
+#     label="Sheilding Population",
+#     data_class="challenge",
+#     la_and_lsoa=False,
+#     invert=False,
+#     data_type="count",
+# )
 
-TWEETS = Variable(
-    data=LA_MASTER["tweets_count"],
-    label="Tweets About Community Support",
-    data_class="support",
-    la_and_lsoa=False,
-    invert=False,
-    data_type="count",
-)
+# TWEETS = Variable(
+#     data=LA_MASTER["tweets_count"],
+#     label="Tweets About Community Support",
+#     data_class="support",
+#     la_and_lsoa=False,
+#     invert=False,
+#     data_type="count",
+# )
 
 
 LA_VARBS = Variables(
@@ -263,7 +277,7 @@ LA_VARBS = Variables(
         HAS_INTERNET,
         VULNERABLE,
         BELONGING,
-        # COVID_CASES,
+        COVID_CASES,
         # SHEILDING,
         # GROUPS,
         # TWEETS
