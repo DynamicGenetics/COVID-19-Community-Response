@@ -21,7 +21,9 @@ p = partial(os.path.join, SOURCE_DATA_FOLDER)
 
 SOURCE_WELSH_LSOA = pd.read_csv(p("lsoa_welsh_language_2011.csv"), usecols=[2, 3])
 
-SOURCE_WELSH_LA = pd.read_csv(p("la_welsh_frequency_2018-19.csv"), usecols=[1, 2, 3, 4])
+SOURCE_WELSH_LA = pd.read_csv(
+    p("la_welsh_frequency_2018-19.csv"), usecols=[1, 2, 3, 4], na_values="*"
+)
 
 
 # Read Population data (includes age based data)
@@ -30,6 +32,7 @@ SOURCE_POPULATION_LSOA = pd.read_excel(
     sheet_name="Mid-2018 Persons",  # Sheet 4
     usecols="A, D",  # Reads columns - Area Codes, All Ages
     skiprows=4,  # Data starts on row 5
+    na_filter=False,  # Speed up read in of data, we know there are no NA values here
 )
 
 SOURCE_OVER_65_LSOA = pd.read_excel(
@@ -37,6 +40,7 @@ SOURCE_OVER_65_LSOA = pd.read_excel(
     sheet_name="Mid-2018 Persons",  # Sheet 4
     usecols="A, BR:CQ",  # Reads columns - Area Codes, 65:90+
     skiprows=4,  # Data starts on row 5
+    na_filter=False,  # Speed up read in of data, we know there are no NA values here
 )
 
 SOURCE_POPULATION_LA = pd.read_csv(p("la_population_age_2019.csv"), usecols=[3, 15])
@@ -79,21 +83,21 @@ SOURCE_INTERNET_ACCESS_LA = pd.read_excel(
     nrows=22,  # Only parse 22 rows as there is more data underneath
 )
 
-# NB Here we aren't reading in the last column, because it is half empty.
-SOURCE_INTERNET_USE_LA = pd.read_excel(
-    p(
-        "National Survey results - internet use and freqency of access by local authority.xlsx"
-    ),
-    usecols="A,B,C",
-    skiprows=34,  # Data starts on row 5
-    nrows=22,  # Only parse 22 necessary rows
-)
+# # NB Here we aren't reading in the last column, because it is half empty.
+# SOURCE_INTERNET_USE_LA = pd.read_excel(
+#     p(
+#         "National Survey results - internet use and freqency of access by local authority.xlsx"
+#     ),
+#     usecols="A,B,C",
+#     skiprows=34,  # Data starts on row 5
+#     nrows=22,  # Only parse 22 necessary rows
+# )
 
 # This data is formatted the wrong way in the spreadsheet so needs extra work
-SOURCE_ETHNICITY_LA = pd.read_excel(
-    p("la_lhb_ethnicity.xlsx"), sheet_name="By Local Authority", usecols="B:X"
-).T
-SOURCE_ETHNICITY_LA.reset_index(inplace=True)
-SOURCE_ETHNICITY_LA.rename(columns=SOURCE_ETHNICITY_LA.iloc[0], inplace=True)
-SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.index[0], inplace=True)
-SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.columns[1], axis=1, inplace=True)
+# SOURCE_ETHNICITY_LA = pd.read_excel(
+#     p("la_lhb_ethnicity.xlsx"), sheet_name="By Local Authority", usecols="B:X"
+# ).T
+# SOURCE_ETHNICITY_LA.reset_index(inplace=True)
+# SOURCE_ETHNICITY_LA.rename(columns=SOURCE_ETHNICITY_LA.iloc[0], inplace=True)
+# SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.index[0], inplace=True)
+# SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.columns[1], axis=1, inplace=True)
