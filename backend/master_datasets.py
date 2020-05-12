@@ -6,20 +6,17 @@ from functools import reduce
 from warnings import warn
 
 # Local imports
-import data.standardise_datasets as s
+import datasets.standardise_datasets as s
 
 # +++++++++++++++++++++
 # Changeable constants
 # +++++++++++++++++++++
 
-STATIC_CLEANED_FOLDER = os.path.join(
-    os.path.abspath(os.path.dirname("__file__")), "data", "static", "cleaned"
-)
 LIVE_CLEANED_FOLDER = os.path.join(
-    os.path.abspath(os.path.dirname("__file__")), "data", "live", "cleaned"
+    os.path.abspath(os.path.dirname(__file__)), "data", "live", "cleaned"
 )
 LIVE_TRANSFORMED_FOLDER = os.path.join(
-    os.path.abspath(os.path.dirname("__file__")), "data", "live", "transformed"
+    os.path.abspath(os.path.dirname(__file__)), "data", "live", "transformed"
 )
 
 # list of files from standardised_datasets
@@ -28,12 +25,14 @@ LSOA_STATIC_DATASETS = [
     s.LSOA_POPULATION,
     s.LSOA_OVER_65,
     s.LSOA_POPDENSITY,
+    s.LSOA_IMD,
 ]
 
 LA_STATIC_DATASETS = [
     s.LA_WELSH,
     s.LA_POPULATION,
     s.LA_OVER_65,
+    s.LA_POPDENSITY,
     s.LA_IMD,
     s.LA_VULNERABLE,
     s.LA_COHESION,
@@ -41,49 +40,12 @@ LA_STATIC_DATASETS = [
 ]
 
 LA_LIVE_DATASETS = [
-    os.path.join(LIVE_CLEANED_FOLDER, "phwCovidStatement.csv"),
+    pd.read_csv(
+        os.path.join(LIVE_CLEANED_FOLDER, "phwCovidStatement.csv"),
+        index_col=["areaID", "la_name"],
+    ),
     # os.path.join(LIVE_TRANSFORMED_FOLDER, 'groupCount.csv')
 ]
-
-# +++++++++++++++++++++++++++++++
-# Funcs to generate master files
-# +++++++++++++++++++++++++++++++
-
-
-def generate_la_master():
-    """Apply series of functions to create valid la master file"""
-
-    # Marge dataframe of all LA files in /cleaned
-    la_master = merge_LA_files(LA_STATIC_DATASETS, LA_LIVE_DATASETS)
-
-    # Apply some final pruning and collation of variables
-    # la_master = create_daily_internet_col(la_master)
-    la_master = create_welsh_col(la_master)
-    # la_master = create_summary_ethnicity_cols(la_master)
-    la_master = create_wimd_col(la_master)
-    drop_vulnerable_count(la_master)
-
-    return la_master
-
-
-def generate_lsoa_master():
-    """Apply series of functions to create valid lsoa master file"""
-
-    # Marge dataframe of all LSOA files in /cleaned
-    lsoa_master = merge_LSOA_files(LSOA_STATIC_DATASETS)
-
-    # Apply some final pruning and collation of variables
-    lsoa_master = create_over_65_col(lsoa_master)
-
-    return lsoa_master
-
-
-# ++++++++++++++++++++
-# Create master files
-# ++++++++++++++++++++
-
-LA_MASTER = generate_la_master()
-LSOA_MASTER = generate_lsoa_master()
 
 # ++++++++++++++++
 # Merge functions
@@ -93,7 +55,7 @@ LSOA_MASTER = generate_lsoa_master()
 def merge_LSOA_files(lsoa_static_datasets):
     # Call .standardise() on each dataset
     static_datasets = map(lambda d: d.standardise(), lsoa_static_datasets)
-    static_datasets = map(lambda d: d.standardised_data(), static_datasets)
+    static_datasets = map(lambda d: d.standardised_data, static_datasets)
     static_datasets = map(
         lambda d: d.set_index(["LSOA11CD", "LSOA11NM"]), static_datasets
     )
@@ -103,14 +65,15 @@ def merge_LSOA_files(lsoa_static_datasets):
         static_datasets,
     )
 
-    static_data.rename(
+    # Rename columns to keep with convention
+    static_data.rename_axis(
         index={"LSOA11CD": "area_code", "LSOA11NM": "area_name"}, inplace=True
     )
 
     # Check that this has worked
     if static_data.shape[0] != 1909:
         raise Exception(
-            "An error has occured. There are not the expected 22 rows in the LA dataset."
+            "An error has occured. There are not the expected 1909 rows in the LA dataset."
         )
 
     return static_data
@@ -120,46 +83,45 @@ def merge_LA_files(la_static_datasets, la_live_datasets):
 
     # Call .standardise() on each dataset
     static_datasets = map(lambda d: d.standardise(), la_static_datasets)
-    static_datasets = map(lambda d: d.standardised_data(), static_datasets)
+    static_datasets = map(lambda d: d.standardised_data, static_datasets)
     static_datasets = map(
         lambda d: d.set_index(["lad19cd", "lad19nm"]), static_datasets
     )
 
-    # Read the live datasets to a dictionary, then make a list of the dataframes
-    d = {}
-    for filepath in la_live_datasets:
-        d[os.path.basename(filepath)]: pd.read_csv(
-            filepath, index_col=["areaID", "la_name"]
-        )
-    live_datasets = list(d.values())
-
-    # Merge both sets of dataframes on their indexes
+    # Merge on index
     static_data = reduce(
         lambda left, right: pd.merge(left, right, left_index=True, right_index=True),
         static_datasets,
     )
 
+    # Rename columns to keep with convention
+    static_data.rename_axis(
+        index={"lad19cd": "area_code", "lad19nm": "area_name"}, inplace=True
+    )
+
     # Only merge the live datasets if necessary, if only one, set it as live_data
-    if len(live_datasets) > 1:
+    if len(la_live_datasets) > 1:
         live_data = reduce(
             lambda left, right: pd.merge(
                 left, right, left_index=True, right_index=True
             ),
-            live_datasets,
+            la_live_datasets,
         )
+    elif len(la_live_datasets) == 1:
+        live_data = la_live_datasets[0]
+    elif len(la_live_datasets) == 0:
+        print("No live data found")
+
+    # If live datasets exist then rename columns and merge with static
+    if len(la_live_datasets) > 0:
+        live_data.rename_axis(
+            index={"areaID": "area_code", "la_name": "area_name"}, inplace=True
+        )
+        # Merge the two dataframes to create the master dataset for LA
+        data = pd.merge(static_data, live_data, on=["area_code", "area_name"])
     else:
-        live_data = live_datasets[0]
-
-    # Make the index names consistent with frontend requirements
-    static_data.rename(
-        index={"lad19cd": "area_code", "lad19nm": "area_name"}, inplace=True
-    )
-    live_data.rename(
-        index={"areaID": "area_code", "la_name": "area_name"}, inplace=True
-    )
-
-    # Lastly, merge the two dataframes to create the master dataset for LA
-    data = pd.merge(static_data, live_data, on=["area_code"])
+        # Otherwise, the data is just the static data
+        data = static_data
 
     # Check that this has worked
     if data.shape[0] != 22:
@@ -186,6 +148,7 @@ def create_over_65_col(lsoa_master: pd.DataFrame):
     lsoa_master["over_65_count"] = (
         lsoa_master[age_cols].sum(axis=1) + lsoa_master["90+"]
     )
+    # Set dtype to int
     lsoa_master.drop(columns=age_cols, inplace=True)
     lsoa_master.drop(columns="90+", inplace=True)
     return lsoa_master
@@ -267,3 +230,52 @@ def create_belonging_col(la_master: pd.DataFrame):
     la_master.drop(columns=belonging_cols, inplace=True)
 
     return la_master
+
+
+# +++++++++++++++++++++++++++++++
+# Funcs to generate master files
+# +++++++++++++++++++++++++++++++
+
+
+def generate_la_master():
+    """Apply series of functions to create valid la master file"""
+
+    # Marge dataframe of all LA files in /cleaned
+    la_master = merge_LA_files(LA_STATIC_DATASETS, LA_LIVE_DATASETS)
+
+    # Coerce all types to float - some are objects
+    la_master = la_master.astype("float64")
+
+    # Apply some final pruning and collation of variables
+    # la_master = create_daily_internet_col(la_master)
+    la_master = create_welsh_col(la_master)
+    # la_master = create_summary_ethnicity_cols(la_master)
+    la_master = create_wimd_col(la_master)
+    drop_vulnerable_count(la_master)
+    la_master = create_belonging_col(la_master)
+
+    # Write out the master CV
+    la_master.to_csv("la_master.csv", index=True)
+
+    return la_master
+
+
+def generate_lsoa_master():
+    """Apply series of functions to create valid lsoa master file"""
+
+    # Merge dataframe of all LSOA files in /cleaned
+    lsoa_master = merge_LSOA_files(LSOA_STATIC_DATASETS)
+
+    lsoa_master = lsoa_master.astype("float64")
+
+    # Apply some final pruning and collation of variables
+    lsoa_master = create_over_65_col(lsoa_master)
+
+    # Write out master to have a copy
+    lsoa_master.to_csv("lsoa_master.csv", index=True)
+
+    return lsoa_master
+
+
+LSOA_MASTER = generate_lsoa_master()
+LA_MASTER = generate_la_master()
