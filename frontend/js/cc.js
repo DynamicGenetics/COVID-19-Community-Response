@@ -89,7 +89,8 @@ const cc = (function(d3){
   }
 
   // Add the scatter plot
-  function drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries){
+  function drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries, boundaries_source){
+
     const svg = d3.select(plotAreaId).append("g").attr("id", "plot");
 
     // Set the x and y scales
@@ -239,31 +240,31 @@ const cc = (function(d3){
 
     boundaries.features.forEach(d => {
       let matching_data = data.find(
-        element => {return element.lad19cd === d.properties.lad18cd}
+        element => {return element.areaID === d.properties[element.mapID]}
       );
       d.properties.colour = matching_data.colour;
     });
-    map.getSource('boundaries_LAs').setData(boundaries);
+    map.getSource(boundaries_source).setData(boundaries);
 
     // Remember the latest linked map area
     let linkedArea = null;
 
     // Mouse event handlers for graph
     function handleMouseOver(d, i){
-      d3.select(this).transition().duration(50).attr("r", 12).attr("stroke-width", 2);
-      linkedArea = map.querySourceFeatures("boundaries_LAs",{
-        filter: ["==",["get","lad18cd"], d.lad19cd]
+      d3.select(this).transition().duration(50).attr("r", "12").attr("stroke-width", 2);
+      linkedArea = map.querySourceFeatures(boundaries_source,{
+        filter: ["==",["get", d.mapID], d.areaID]
       })[0].id;
       map.setFeatureState(
-        {source: "boundaries_LAs", id: linkedArea},
+        {source: boundaries_source, id: linkedArea},
         {hover: true}
       );
     }
 
     function handleMouseOut(d, i){
-      d3.select(this).transition().duration(50).attr("r", 7).attr("stroke-width", 1.5);
+      d3.select(this).transition().duration(50).attr("r", d => d.circleSize).attr("stroke-width", 1.5);
       map.setFeatureState(
-        {source: "boundaries_LAs", id: linkedArea},
+        {source: boundaries_source, id: linkedArea},
         {hover: false}
       );
       linkedArea = null;
@@ -276,11 +277,11 @@ const cc = (function(d3){
     .selectAll("circle")
       .data(data)
       .join("circle")
-      .attr("id", d => d.lad19cd)
+      .attr("id", d => d.areaID)
       .attr("class", "datapoints")
       .attr("cx", d => x(d[x_var]))
       .attr("cy", d => y(d[y_var]))
-      .attr("r", 7)
+      .attr("r", d => d.circleSize)
       .attr("fill", d => d.colour)
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
@@ -288,7 +289,8 @@ const cc = (function(d3){
   } // End draw scatterplot
 
   // Add the beeswarm plot
-  function drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries){
+  function drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source){
+
     const svg = d3.select(plotAreaId).append("g").attr("id", "plot");
 
     // Set the x scale
@@ -381,31 +383,31 @@ const cc = (function(d3){
 
     boundaries.features.forEach(d => {
       let matching_data = data.find(
-        element => {return element.lad19cd === d.properties.lad18cd}
+        element => {return element.areaID === d.properties[element.mapID]}
       );
       d.properties.colour = matching_data.colour;
     });
-    map.getSource('boundaries_LAs').setData(boundaries);
+    map.getSource(boundaries_source).setData(boundaries);
 
     // Remember the latest linked map area
     let linkedArea = null;
 
     // Mouse event handlers for graph
     function handleMouseOver(d, i){
-      d3.select(this).transition().duration(50).attr("r", 12).attr("stroke-width", 2);
-      linkedArea = map.querySourceFeatures("boundaries_LAs",{
-        filter: ["==",["get","lad18cd"], d.lad19cd]
+      d3.select(this).transition().duration(50).attr("r", "12").attr("stroke-width", 2);
+      linkedArea = map.querySourceFeatures(boundaries_source,{
+        filter: ["==",["get", d.mapID], d.areaID]
       })[0].id;
       map.setFeatureState(
-        {source: "boundaries_LAs", id: linkedArea},
+        {source: boundaries_source, id: linkedArea},
         {hover: true}
       );
     }
 
     function handleMouseOut(d, i){
-      d3.select(this).transition().duration(50).attr("r", 7).attr("stroke-width", 1.5);
+      d3.select(this).transition().duration(50).attr("r", d => d.circleSize).attr("stroke-width", 1.5);
       map.setFeatureState(
-        {source: "boundaries_LAs", id: linkedArea},
+        {source: boundaries_source, id: linkedArea},
         {hover: false}
       );
       linkedArea = null;
@@ -414,7 +416,7 @@ const cc = (function(d3){
     const simulation = d3.forceSimulation(data)
       .force("x", d3.forceX(function(d) { return x(d[x_var]); }).strength(5))
       .force("y", d3.forceY(height / 2))
-      .force("collide", d3.forceCollide(10))
+      .force("collide", d3.forceCollide(data[0].circleSize * 1.5))
       .stop();
 
     for (var i = 0; i < 120; ++i) simulation.tick();
@@ -426,19 +428,63 @@ const cc = (function(d3){
     .selectAll("circle")
       .data(data)
       .join("circle")
-      .attr("id", d => d.lad19cd)
+      .attr("id", d => d.areaID)
       .attr("class", "datapoints")
       .attr("cx", d => d.x)
       .attr("cy", d => d.y)
-      .attr("r", 7)
+      .attr("r", d => d.circleSize)
       .attr("fill", d => d.colour)
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
   } // end drawBeeswarm
 
   // Calculate variables and redraw plot, recolour map
-  function redraw(plotAreaId, chosen_supports, chosen_needs, data, height, width, margin, map, boundaries){
+  function redraw(plotAreaId, chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs){
     d3.select("#plot").remove();
+
+
+
+    let boundaries, boundaries_source;
+
+    let chosen_vars = chosen_supports.concat(chosen_needs);
+
+    let chosen_objs = data.variables.filter(d => {
+      return chosen_vars.includes(d.name);
+    });
+
+    if(chosen_objs.every(d => {
+      return (d.lsoa === true);
+    })){
+      data = data.LSOAs;
+      boundaries = LSOAs;
+      boundaries_source = "boundaries_LSOAs";
+      data.forEach(d => {
+        d.areaID = d.LSOA11CD;
+        d.areaName = d.LSOA11NM;
+        d.circleSize = 3;
+        d.mapID = "LSOA11CD";
+      });
+      map.setLayoutProperty("LA_borders", 'visibility', 'none');
+      map.setLayoutProperty("local_authorities", 'visibility', 'none');
+  		map.setLayoutProperty("LSOA_borders", 'visibility', 'visible');
+      map.setLayoutProperty("lower_super_output_areas", 'visibility', 'visible');
+      console.log(data);
+    } else {
+      data = data.LAs;
+      boundaries = LAs;
+      boundaries_source = "boundaries_LAs";
+      data.forEach(d => {
+        d.areaID = d.lad19cd;
+        d.areaName = d.lad19nm;
+        d.circleSize = 6;
+        d.mapID = "lad18cd";
+      });
+      map.setLayoutProperty("LA_borders", 'visibility', 'visible');
+      map.setLayoutProperty("local_authorities", 'visibility', 'visible');
+      map.setLayoutProperty("LSOA_borders", 'visibility', 'none');
+      map.setLayoutProperty("lower_super_output_areas", 'visibility', 'none');
+    }
+
     let x_var, y_var, supports_var = null, needs_var = null;
     if(chosen_supports.length === 1){
       supports_var = chosen_supports[0];
@@ -457,21 +503,21 @@ const cc = (function(d3){
       if(supports_var !== null){
         y_var = supports_var;
         // scatterplot
-        cc.drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries);
+        cc.drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries, boundaries_source);
       } else {
         // beeswarm
-        cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries);
+        cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source);
       }
     } else if(supports_var !== null){
       x_var = supports_var;
       // beeswarm
-      cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries);
+      cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source);
     } else {
       console.log("No variables selected");
       boundaries.features.forEach(d => {
         d.properties.colour = "#ffffff";
       });
-      map.getSource('boundaries_LAs').setData(boundaries);
+      map.getSource(boundaries_source).setData(boundaries);
     }
   }
 

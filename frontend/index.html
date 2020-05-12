@@ -99,15 +99,16 @@
       // const y_promise = d3.csv("./data/censusData_comm.csv", function(d, i) {return {lad18nm: d.lad18nm, areaID: d.areaID, y: +d.value};});
 
       // Load json data structure
-      const data_promise = d3.json("./data/dummy.json");
+      const data_promise = d3.json("./data/data_old.json");
 
       // Map boundaries data
-      const promiseLA = d3.json("./data/boundaries_LAs.geojson");
+      const promiseLA = d3.json("./data/boundaries_LA.geojson");
+      const promiseLSOA = d3.json("./data/boundaries_LSOA.geojson");
 
-      Promise.all([data_promise, promiseLA]).then( data => {
+      Promise.all([data_promise, promiseLA, promiseLSOA]).then( data => {
 
-        let boundaries;
-        [data, boundaries] = data;
+        let LAs, LSOAs;
+        [data, LAs, LSOAs] = data;
 
         console.log(data);
 
@@ -138,8 +139,8 @@
         console.log(supports);
         console.log(needs);
 
-        data = data.LAs;
-        let LSOAs = data.LSOAs;
+        // data = data.LAs;
+        // let LSOAs = data.LSOAs;
 
         // Set up map
         let map = new mapboxgl.Map({
@@ -170,25 +171,28 @@
 
           map.addSource("boundaries_LAs", {
             "type": "geojson",
-            "data": boundaries,
+            "data": LAs,
             "generateId": true
           });
           map.addLayer({
             "id": "local_authorities",
             "type": "fill",
             "source": "boundaries_LAs",
-            "layout": {},
+            "layout": {
+    					"visibility": "none"
+    				},
             "paint": {
               'fill-color': ["get","colour"],
               'fill-opacity': ['interpolate', ["exponential", 2], ['zoom'], 7, 0.8, 11, 0.2]
             }
-          }, "settlement-minor-label");
-
+          }, "settlement-subdivision-label");
           map.addLayer({
-            "id": "lA_borders",
+            "id": "LA_borders",
             "type": "line",
             "source": "boundaries_LAs",
-            "layout": {},
+            "layout": {
+    					"visibility": "none"
+    				},
             "paint": {
               "line-color": "#505050",
               "line-width": [
@@ -198,9 +202,44 @@
                 0.5
               ]
             }
-          }, "settlement-minor-label");
+          }, "settlement-subdivision-label");
 
-          cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, boundaries);
+          map.addSource("boundaries_LSOAs", {
+            "type": "geojson",
+            "data": LSOAs,
+            "generateId": true
+          });
+          map.addLayer({
+            "id": "lower_super_output_areas",
+            "type": "fill",
+            "source": "boundaries_LSOAs",
+            "layout": {
+    					"visibility": "none"
+    				},
+            "paint": {
+              'fill-color': ["get","colour"],
+              'fill-opacity': ['interpolate', ["exponential", 6], ['zoom'], 7, 0.8, 11, 0.2]
+            }
+          }, "settlement-subdivision-label");
+          map.addLayer({
+            "id": "LSOA_borders",
+            "type": "line",
+            "source": "boundaries_LSOAs",
+            "layout": {
+    					"visibility": "none"
+    				},
+            "paint": {
+              "line-color": "#505050",
+              "line-width": [
+                "case",
+                ["boolean", ["feature-state", "hover"], false],
+                2,
+                0
+              ]
+            }
+          }, "settlement-subdivision-label");
+
+          cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs);
 
           // Hillshade layer (optional)
           // map.addSource('dem', {'type': 'raster-dem','url': 'mapbox://mapbox.terrain-rgb'});
@@ -212,6 +251,8 @@
           //   // where hillshading sits in the Mapbox Outdoors style
           // }, 'waterway-shadow');
 
+
+          // Local authority mouse events
           map.on('mouseover', "local_authorities", function(e) {
       		// Change the cursor style as a UI indicator.
       			map.getCanvas().style.cursor = 'pointer';
@@ -227,7 +268,7 @@
                 if(e.features[0].id != hoveredArea){
                   d3.selectAll("circle.datapoints")
                     .transition().duration(50)
-                    .attr("r", "7").attr("stroke-width", 1.5);
+                    .attr("r", "6").attr("stroke-width", 1.5);
                 }
               }
               hoveredArea = e.features[0].id;
@@ -250,10 +291,54 @@
               );
               d3.selectAll("circle.datapoints")
                 .transition().duration(50)
-                .attr("r", "7").attr("stroke-width", 1.5);
+                .attr("r", "6").attr("stroke-width", 1.5);
             }
             hoveredArea = null;
       		});
+
+          // LSOA events
+          map.on('mouseover', "lower_super_output_areas", function(e) {
+          // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+          });
+
+          map.on("mousemove", "lower_super_output_areas", function(e) {
+            if (e.features.length > 0) {
+              if (hoveredArea !== undefined) {
+                map.setFeatureState(
+                  {source: "boundaries_LSOAs", id: hoveredArea},
+                  {hover: false}
+                );
+                if(e.features[0].id != hoveredArea){
+                  d3.selectAll("circle.datapoints")
+                    .transition().duration(50)
+                    .attr("r", "3").attr("stroke-width", 1.5);
+                }
+              }
+              hoveredArea = e.features[0].id;
+              map.setFeatureState(
+                {source: "boundaries_LSOAs", id: hoveredArea},
+                {hover: true}
+              );
+              d3.select("circle#" + e.features[0].properties.LSOA11CD)
+                .transition().duration(50)
+                .attr("r", "12").attr("stroke-width", 2);
+            }
+          });
+
+          map.on('mouseleave', "lower_super_output_areas", function(e) {
+            map.getCanvas().style.cursor = '';
+            if(hoveredArea !== undefined) {
+              map.setFeatureState(
+                {source: "boundaries_LSOAs", id: hoveredArea},
+                {hover: false}
+              );
+              d3.selectAll("circle.datapoints")
+                .transition().duration(50)
+                .attr("r", "3").attr("stroke-width", 1.5);
+            }
+            hoveredArea = null;
+          });
 
         });
 
@@ -283,7 +368,7 @@
           if(chosen_needs[0] === ""){
             chosen_needs = [];
           }
-          cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, boundaries);
+          cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs);
         }
 
 
