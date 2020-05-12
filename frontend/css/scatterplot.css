@@ -18,6 +18,7 @@
 	left: 17px;
 	height: 80px;
 	z-index: 6;
+  filter: drop-shadow(0 0 20px #ffffff);
 }
 
 #logo_area {
@@ -27,7 +28,7 @@
 	height: 110px;
   width: 110px;
 	z-index: 5;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   border-bottom-right-radius: 20px;
 }
 
@@ -58,8 +59,8 @@
   top: 0px;
   right: 0px;
   background: #fff;
-  padding-bottom: 15px;
-  border-bottom-left-radius: 20px;
+  padding-bottom: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 #sidebar .header {
