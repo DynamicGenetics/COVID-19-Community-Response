@@ -46,6 +46,7 @@ class Variable:
 
         # Rename without the _ string section defining data type
         self.data_transformed_.name = self.new_name()
+
         return self
 
     @property
@@ -121,6 +122,7 @@ class Variables:
 
         data = pd.concat(vars, axis=1)
         # Reset index the dataframe first, becasue we want the index values in json
+        data = data.round(3)
         data = data.reset_index()
 
         return data.to_dict(orient="records")
