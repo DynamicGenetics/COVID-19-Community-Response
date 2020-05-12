@@ -13,7 +13,8 @@ from enum import Enum
 # Some files in this folder contain mutiple data columns so these are seperated out
 # to different dataframe constants for clarity.
 
-from datasets import SOURCE_DATA_FOLDER
+from datasets import SOURCE_DATA_FOLDER, UnsupportedDataResolution
+from datasets import DataResolution
 
 # Base folder for all Source Files
 p = partial(os.path.join, SOURCE_DATA_FOLDER)
@@ -24,6 +25,7 @@ class DataFormats(Enum):
     XLS = pd.read_excel
     JSON = pd.read_json
     GEOJSON = gpd.read_file
+    UNKNOWN = None
 
 
 FORMAT_EXTENSIONS = {
@@ -31,6 +33,7 @@ FORMAT_EXTENSIONS = {
     ".xls": DataFormats.XLS,
     ".xlsx": DataFormats.XLS,
     ".json": DataFormats.JSON,
+    ".geojson": DataFormats.GEOJSON,
 }
 
 
@@ -48,69 +51,177 @@ class SourceDataset:
         data files when it is required,
     (2) just once, so saving and re-using the reference to the data
         for future calls.
-    The format of the data to load will be automatically deferred from
+    The format of the data to load will be automatically inferred from the
+    file name. However, it is possible to specify which is the format
+    of the data file - so to force specific loading functions, regardless
+    of the used file extensions.
 
-    To allow for lazy deferred loading, extra operations
+    To allow for lazy deferred loading, extra options to pass to
+    the (pandas/geopandas) data loading functions are supported.
+
+    Examples
+    --------
+    >>> d = SourceDataset(filepath='path/to/datafile.csv')
+    >>> d.data_format
+    CSV
+    # This will load a dataset from a CSV file, passing `use_cols=[1, 2]` to
+    # underneath pd.read_csv loading function
+    >>> d = SourceDataset(filepath='path/to/datafile.csv', use_cols=[1, 2])
+    >>> print(d.data.head())
     """
 
-    UNKNOWN_FORMAT = "unknown"
+    def __init__(
+        self, filepath: str, data_format: DataFormats = None, **read_fn_params
+    ):
+        """
 
-    SUPPORTED_FORMATS = {
-        "csv": pd.read_csv,
-        "xlsx": pd.read_excel,
-        "json": pd.read_json,
-        "geojson": gpd.read_file,
-        UNKNOWN_FORMAT: lambda f: None,
-    }
-
-    def __init__(self, filepath: str, data_format: str, **read_fn_params):
+        Parameters
+        ----------
+        filepath: str
+            Path to the data file
+        data_format: DataFormats (default None)
+            Instance of DataFormats enumeration to force a specific
+            format and so loading function to use
+        read_fn_params:
+            Additional parameters to pass to the load function
+        """
         self._filepath = filepath
-        self._data_format = self._infer_format(filepath)
+        if data_format is None:
+            self._read_fn, self._extension = self._infer_format(filepath)
+        else:
+            self._read_fn = data_format
+            reverse_formats_map = {v: k for k, v in FORMAT_EXTENSIONS.items()}
+            self._extension = reverse_formats_map[data_format][1:]
+        self._read_fn_params = read_fn_params
         self._data = None  # Lazy loading
-        self._read_fn = self.SUPPORTED_FORMATS[self._data_format]
-        self._read_fn_params = (
-            read_fn_params if not self._data_format == self.UNKNOWN_FORMAT else {}
-        )
 
-    def _infer_format(self, filepath):
-        _, ext = os.path.splitext(filepath)
-        ext = ext[1:]  # get rid of "."
+    @staticmethod
+    def _infer_format(filepath):
+        _, ext = os.path.splitext(filepath)  # this includes '.'
         try:
-            fmt = ext
+            fmt = FORMAT_EXTENSIONS[ext]
         except KeyError:
-            fmt = self.UNKNOWN_FORMAT
-        return fmt
+            fmt = DataFormats.UNKNOWN
+        return fmt, ext[1:]  # get rid of '.' for extension
+
+    @property
+    def is_valid(self):
+        return os.path.exists(self._filepath)
 
     @property
     def data(self):
+        if not self.is_valid:
+            return None
         if self._data is None:
-            self._data = self._read_fn(self._filepath, **self._read_fn_params)
+            try:
+                data = self._read_fn(self._filepath, **self._read_fn_params)
+            except Exception as e:
+                self._data = None
+                raise e
+            else:
+                self._data = data
         return self._data
 
+    @property
+    def data_format(self):
+        return self._extension.upper()
 
-SOURCE_WELSH_LSOA = SourceDataset(
-    filepath=p("lsoa_welsh_language_2011.csv"), usecols=[2, 3]
-)
 
-# SOURCE_WELSH_LA = pd.read_csv(p("la_welsh_frequency_2018-19.csv"), usecols=[1, 2, 3, 4])
-#
-# # Read Population data (includes age based data)
-# SOURCE_POPULATION_LSOA = pd.read_excel(
-#     p("lsoa_population_2018-19.xlsx"),
-#     sheet_name="Mid-2018 Persons",  # Sheet 4
-#     usecols="A, D",  # Reads columns - Area Codes, All Ages
-#     skiprows=4,  # Data starts on row 5
-# )
-#
-# SOURCE_OVER_65_LSOA = pd.read_excel(
-#     p("lsoa_population_2018-19.xlsx"),
-#     sheet_name="Mid-2018 Persons",  # Sheet 4
-#     usecols="A, BR:CQ",  # Reads columns - Area Codes, 65:90+
-#     skiprows=4,  # Data starts on row 5
-# )
-#
-# SOURCE_POPULATION_LA = pd.read_csv(p("la_population_age_2019.csv"), usecols=[3, 15])
-# SOURCE_OVER_65_LA = pd.read_csv(p("la_population_age_2019.csv"), usecols=[3, 14])
+# ------------------------------
+# Load Static Datasets functions
+# ------------------------------
+
+
+# Utils
+def _validate_resolution(resolution: DataResolution, dataset_name: str = ""):
+    """
+    Raises
+    ------
+    ValueError: If provided data resolution is None
+    UnsupportedDataResolution: Runtime Error if the resolution specified is
+        not LA or LSOA (currently the only two supported data resolutions)
+    """
+    if resolution is None:
+        raise ValueError("Please specify a resolution of interest for data")
+    if resolution not in (DataResolution.LSOA, DataResolution.LA):
+        raise UnsupportedDataResolution(dataset_name=dataset_name)
+
+
+def load_language_data(resolution: DataResolution) -> SourceDataset:
+    """
+    Welsh Language Data
+
+    Parameters
+    ----------
+    resolution: DataResolution
+        Resolution of interest for the dataset.
+        Supported resolutions are now LA and LSOA
+
+    Returns
+    -------
+        SourceDataset: Instance of SourceDataset for Welsh Language Data.
+
+    Raises
+    ------
+    ValueError: If the resolution specified is None
+    UnsupportedData: if the resolution specified is
+        not LA or LSOA (currently the only two supported data resolutions)
+    """
+    try:
+        _validate_resolution(resolution, dataset_name="Welsh Language")
+    except Exception as e:
+        raise e
+    else:
+        if resolution == DataResolution.LSOA:
+            sd = SourceDataset(
+                filepath=p("lsoa_welsh_language_2011.csv"), usecols=[2, 3]
+            )
+        else:
+            sd = SourceDataset(
+                filepath=p("la_welsh_frequency_2018-19.csv"), usecols=[1, 2, 3, 4]
+            )
+        return sd
+
+
+def load_population_data(
+    resolution: DataResolution, over_65: bool = False
+) -> SourceDataset:
+    """
+    Welsh Population Data
+
+    Parameters
+    ----------
+    resolution: DataResolution
+        Resolution of interest for the dataset.
+        Supported resolutions are now LA and LSOA
+
+    over_65: bool (default False)
+        Whether to select only "over_65" population
+
+    Returns
+    -------
+        SourceDataset: Instance of SourceDataset for Welsh Population data.
+    """
+    try:
+        _validate_resolution(resolution, dataset_name="Welsh Population")
+    except Exception as e:
+        raise e
+    else:
+        if resolution == DataResolution.LSOA:
+            if over_65:
+                data_filename = "lsoa_population_2018_19_over_65.csv"
+            else:
+                data_filename = "lsoa_population_2018_19.csv"
+            sd = SourceDataset(p(data_filename))
+        else:
+            if over_65:
+                columns = [3, 14]
+            else:
+                columns = [3, 15]
+            sd = SourceDataset(p("la_population_age_2019.csv"), usecols=columns)
+        return sd
+
+
 #
 # # Read in IMD data
 # SOURCE_IMD_LSOA = pd.read_csv(p("lsoa_IMD_2019.csv"))
@@ -137,7 +248,7 @@ SOURCE_WELSH_LSOA = SourceDataset(
 # # Seperate this dataframe out so it only contains one variable per dataframe
 # SOURCE_VULNERABLE_LA = vulnerable_and_cohesion.iloc[:, [0, 4]].copy()
 # SOURCE_COMM_COHESION_LA = vulnerable_and_cohesion.iloc[:, [0, 2, 3]].copy()
-#
+# #
 # SOURCE_INTERNET_ACCESS_LA = pd.read_excel(
 #     p(
 #         "National Survey results - internet use and freqency of access by local authority.xlsx"
@@ -165,9 +276,3 @@ SOURCE_WELSH_LSOA = SourceDataset(
 # SOURCE_ETHNICITY_LA.rename(columns=SOURCE_ETHNICITY_LA.iloc[0], inplace=True)
 # SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.index[0], inplace=True)
 # SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.columns[1], axis=1, inplace=True)
-
-if __name__ == "__main__":
-    s = SOURCE_WELSH_LSOA
-    print(s.data.head())
-    df = pd.read_csv(p("lsoa_welsh_language_2011.csv"), usecols=[2, 3])
-    print(pd.DataFrame.equals(s.data, df))
