@@ -6,17 +6,10 @@ import os
 from functools import partial
 from enum import Enum
 
-# ++++++++++++++++++++++++++
-# What does this script do?
-# +++++++++++++++++++++++++++
-# It reads in each file from the source/folder in turn.
-# Some files in this folder contain mutiple data columns so these are seperated out
-# to different dataframe constants for clarity.
-
 from datasets import SOURCE_DATA_FOLDER, UnsupportedDataResolution
 from datasets import DataResolution
 
-# Base folder for all Source Files
+# Shortcut to join Base Data folder with data file names
 p = partial(os.path.join, SOURCE_DATA_FOLDER)
 
 
