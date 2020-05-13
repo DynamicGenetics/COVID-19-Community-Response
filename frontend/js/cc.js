@@ -131,7 +131,7 @@ const cc = (function(d3){
     // Axis functions
     xAxis = g => g
       .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(width / 80))
+      .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".0s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
       .call(g => g.select(".domain").remove())
@@ -148,7 +148,7 @@ const cc = (function(d3){
 
     yAxis = g => g
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y))
+      .call(d3.axisLeft(y).tickFormat(d3.format(".0s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
       .call(g => g.select(".domain").remove())
@@ -317,7 +317,7 @@ const cc = (function(d3){
     // Axis function
     xAxis = g => g
       .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(width / 80))
+      .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".0s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
       .call(g => g.select(".domain").remove())
@@ -462,8 +462,10 @@ const cc = (function(d3){
       boundaries = LSOAs;
       boundaries_source = "boundaries_LSOAs";
       data.forEach(d => {
-        d.areaID = d.LSOA11CD;
-        d.areaName = d.LSOA11NM;
+        // d.areaID = d.LSOA11CD;
+        // d.areaName = d.LSOA11NM;
+        d.areaID = d.area_code;
+        d.areaName = d.area_name;
         d.circleSize = 3;
         d.mapID = "LSOA11CD";
       });
@@ -477,8 +479,10 @@ const cc = (function(d3){
       boundaries = LAs;
       boundaries_source = "boundaries_LAs";
       data.forEach(d => {
-        d.areaID = d.lad19cd;
-        d.areaName = d.lad19nm;
+        // d.areaID = d.lad19cd;
+        // d.areaName = d.lad19nm;
+        d.areaID = d.area_code;
+        d.areaName = d.area_name;
         d.circleSize = 6;
         d.mapID = "lad18cd";
       });
