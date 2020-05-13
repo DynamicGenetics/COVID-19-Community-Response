@@ -453,7 +453,10 @@ const cc = (function(d3){
     });
 
     if(chosen_objs.every(d => {
-      return (d.lsoa === true);
+      // return (d.lsoa === true);
+
+      // Temporarily disable LSOA level
+      return false;
     })){
       data = data.LSOAs;
       boundaries = LSOAs;
