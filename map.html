@@ -363,12 +363,12 @@
 
           // Create a popup, but don't add it to the map yet.
         	let popup = new mapboxgl.Popup({
-        		closeButton: false,
-        		closeOnClick: false,
+        		// closeButton: false,
+        		// closeOnClick: false,
             maxWidth: "none"
         	});
 
-          map.on("mouseover", "community_groups", function(e) {
+          map.on("click", "community_groups", function(e) {
           // Change the cursor style as a UI indicator.
             //map.getCanvas().style.cursor = 'pointer';
 
@@ -398,9 +398,9 @@
 
           });
 
-          map.on("mouseout", "community_groups", function(e) {
-            popup.remove();
-          });
+          // map.on("mouseout", "community_groups", function(e) {
+          //   popup.remove();
+          // });
 
         });
 
