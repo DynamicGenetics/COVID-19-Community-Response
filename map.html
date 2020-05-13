@@ -249,13 +249,14 @@
     				"id": "community_groups",
     				"type": "circle",
     				"source": "groups_source",
-            "minzoom": 9,
+            "minzoom": 8,
     				"layout": {
     					"visibility": "visible"
     				},
     				"paint": {
     					'circle-radius': ['interpolate', ["exponential", 1.75], ['zoom'], 9, 3, 14, 20],
-    					"circle-color": "#747b7b"
+    					// "circle-color": "#747b7b"
+              "circle-color": "#505050"
     				}
     			}, "settlement-subdivision-label");
 
