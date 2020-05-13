@@ -11,6 +11,7 @@ data/tweets_dataset.csv
 
 # Development Mapbox access token
 frontend/js/mapbox-access-token.js
+frontend/map/js/mapbox-access-token.js
 
 # venv
 venv/

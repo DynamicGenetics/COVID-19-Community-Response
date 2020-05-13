@@ -2,6 +2,7 @@
 :root {
   --support: #225fb3;
   --needs: #dd1661;
+  --color-primary: #f8f8ff; /* Primary color for landing page consistency */
 }
 
 .ui.support.header {
@@ -18,7 +19,7 @@
 	left: 17px;
 	height: 80px;
 	z-index: 6;
-  filter: drop-shadow(0 0 20px #ffffff);
+  filter: drop-shadow(0 0 20px var(--color-primary));
 }
 
 #logo_area {
@@ -28,7 +29,6 @@
 	height: 110px;
   width: 110px;
 	z-index: 5;
-  /* background-color: #ffffff; */
   border-bottom-right-radius: 20px;
 }
 
@@ -37,7 +37,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	height: 100vh;
-	background-color: #FFFFFF;
+	background-color: var(--color-primary);
 }
 
 #plot-area {
@@ -58,7 +58,7 @@
   position: absolute;
   top: 0px;
   right: 0px;
-  background: #fff;
+  background: var(--color-primary);
   padding-bottom: 5px;
   border-bottom-left-radius: 5px;
 }
@@ -68,7 +68,6 @@
   margin-left: 12px;
   margin-right: 12px;
   margin-bottom: 12px;
-  /* background-color: #cccccc; */
 }
 
 /* #sidebar h3.header {

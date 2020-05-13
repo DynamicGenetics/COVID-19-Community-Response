@@ -10,13 +10,13 @@
 
   <!-- Style -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/homeStyle.css">
-  <link rel="stylesheet" href="css/backgrounds.css">
+  <link rel="stylesheet" href="frontend/landing-page/css/homeStyle.css">
+  <link rel="stylesheet" href="frontend/landing-page/css/backgrounds.css">
   
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/all.css">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="frontend/landing-page/css/all.css">
 
   <!-- Page title -->
   <title>COVID-19 Community Response</title>
@@ -29,11 +29,11 @@
   <div class="container-fluid">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
+    <nav class="navbar navbar-expand-md navbar-light bg-light font-head">
       <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
           <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="navbar-brand mx-auto" href="index.html"><h3 class="font-head">COVID-19 Community Response</h3></a>
+                <a class="navbar-brand mx-auto" href="index.html"><h3 class="font-head-light">COVID-19 Community Response</h3></a>
               </li>
           </ul>
       </div>
@@ -45,7 +45,7 @@
       <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item alignCenter">
-              <a class="nav-link" href="dashboard.html">
+              <a class="nav-link" href="map.html">
                 <i class="fas fa-globe-americas fa-nav"></i><br>Map
               </a>
             </li>
@@ -74,7 +74,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Data</h5>
+              <h5 class="modal-title font-head" id="exampleModalLongTitle">Data</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -120,7 +120,7 @@
       <!-- Left content -->
       <div class="col-sm mainContent">
         <div class="content-container">
-          <h1>User guide</h1>
+          <h1 class="font-head-light">User guide</h1>
           <br>
           <h4 id="subheading">This is a short guide to the dashboard and how to use it 
             to identify vulnerable communities in Wales
@@ -129,7 +129,7 @@
             <br><br>
             Press the  
             <a href="#block2">
-              <img src="img/ico-arrow.png" class="ico-small">
+              <img src="frontend/landing-page/img/ico-arrow.png" class="ico-small">
             </a> icon or scroll down to get started
           </h4>
           <br>
@@ -138,7 +138,7 @@
       
       <!-- Right content -->
       <div class="col-sm mainContent">
-        <img src="img/db3.png" class="img-dashboard">
+        <img src="frontend/landing-page/img/db3.png" class="img-dashboard">
       </div>
 
       <div class="col-sm-2"></div><!-- Spacing col -->
@@ -167,7 +167,7 @@
         <!-- Left content -->
         <div class="col-sm mainContent">
           <div class="content-container">
-            <h1>About</h1><br>
+            <h1 class="font-head">About</h1><br>
             <p> 
               This dashboard is an opportunity to explore data from government, community and social media sources to better understand the distribution of community 
               support and community-level vulnerabilities in Wales during the COVID-19 pandemic. You can choose the variables you want to compare to answer the 
@@ -179,7 +179,7 @@
 
         <!-- Right content -->
         <div class="col-sm mainContent">
-          <img src="img/db4.png" class="img-dashboard">
+          <img src="frontend/landing-page/img/db4.png" class="img-dashboard">
         </div>
 
       <div class="col-sm-2"></div><!-- Spacing col -->
@@ -206,13 +206,13 @@
 
         <!-- Left content -->
         <div class="col-sm mainContent">
-          <img src="img/db5.png" class="img-dashboard">
+          <img src="frontend/landing-page/img/db5.png" class="img-dashboard">
         </div>
 
         <!-- Right content -->
         <div class="col-sm mainContent">
           <div class="content-container">
-            <h1>Our data</h1><br>
+            <h1 class="font-head">Our data</h1><br>
             <p>
 
               We have combined NHS and census data with online sources such as Twitter and Police Rewired.
@@ -255,7 +255,7 @@
         <!-- Left content -->
         <div class="col-sm mainContent">
           <div class="content-container">
-            <h1>Data layers</h1><br>
+            <h1 class="font-head">Data layers</h1><br>
             <p>There are two types of data layers:</p>
               <ul>
                 <li><p><strong>Risk factors:</strong> Factors which indicate that a community may be at elevated risk during the COVID-19 pandemic</p></li>
@@ -268,7 +268,7 @@
 
         <!-- Right content -->
         <div class="col-sm mainContent">
-          <img src="img/db9.png" class="img-dashboard">
+          <img src="frontend/landing-page/img/db9.png" class="img-dashboard">
         </div>
 
       <div class="col-sm-2"></div><!-- Spacing col -->
@@ -296,10 +296,10 @@
         <!-- Left content -->
         <div class="col-sm mainContent">
           <div class="content-container">
-            <h1>Automatic analysis</h1><br>
+            <h1 class="font-head">Automatic analysis</h1><br>
             <p>
               As you select layers, analyses will be made to determine which areas are most at risk in terms of the selected factors. Selecting <strong>two</strong> 
-              layers will initiate a bivaraite analysis to identify vulnerable areas in terms of both factors.
+              layers will initiate a bivariate analysis to identify vulnerable areas in terms of both factors.
               <br>
             </p>
           </div>
@@ -307,8 +307,8 @@
 
         <!-- Right content -->
         <div class="col-sm mainContent">
-          <img src="img/db6.png" class="img-dashboard">
-          <a href="dashboard.html" class="btn btn-lg btn-info bg-col-highlight border-col-highlight" id="btn-go" style="position: absolute; bottom:0;">
+          <img src="frontend/landing-page/img/db6.png" class="img-dashboard">
+          <a href="map.html" class="btn btn-lg btn-info bg-col-highlight border-col-highlight" id="btn-go" style="position: absolute; bottom:0;">
             Go to the dashboard
           </a>
         </div>
@@ -320,7 +320,7 @@
     <div class="row">
       <div class="btn-continue">
         <div class="btn-continue-bg bg-col-emphasis"></div>
-        <a href="dashboard.html"><i class="fas fa-check i-guide-check col-primary col-hov-highlight"></i></a>
+        <a href="map.html"><i class="fas fa-check i-guide-check col-primary col-hov-highlight"></i></a>
       </div>
     </div>
 
