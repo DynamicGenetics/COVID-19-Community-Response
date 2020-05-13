@@ -1,0 +1,13 @@
+.bg-img-virus{
+    background-image: url(../img/virus2.jpg);
+}
+.bg-img-virus-lowRes{
+    background-image: url(../img/virus2_lowRes.jpg);
+}
+.bg-img-map{
+    background-image: url(../img/map1_lowRes.jpg);
+}
+.bg-img-aerial{
+    background-image: linear-gradient(to bottom, #f5f6fc00,#f5f6fc00, #000000e1),
+    url(../img/aerial1_lowRes.jpg);
+}
