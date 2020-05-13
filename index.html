@@ -10,13 +10,13 @@
 
   <!-- Style -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/homeStyle.css">
-  <link rel="stylesheet" href="css/backgrounds.css">
+  <link rel="stylesheet" href="frontend/landing-page/css/homeStyle.css">
+  <link rel="stylesheet" href="frontend/landing-page/css/backgrounds.css">
   
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/all.css">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="frontend/landing-page/css/all.css">
 
   <!-- Page title -->
   <title>COVID-19 Community Response</title>
@@ -32,7 +32,7 @@
     <!-- Splash screen -->
     <div class="row">
       <div class="img-scrolly-splash bg-img-aerial" id="splash">
-        <img src="img/logo-main.png" class="rounded float-right" alt="Project Logo" id="logo-splash-project">
+        <img src="frontend/landing-page/img/logo-main.png" class="rounded" alt="Project Logo" id="logo-splash-project">
         <h1 id="title-splash">Wales Community Response<br>
         <hr style="margin-top: 0.4rem; margin-bottom: 0.4rem; border: 0; border-top: 1px solid rgba(255, 255, 255, 0.5);">
         Ymated Cymunedol Cymru
@@ -43,7 +43,7 @@
 
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
+    <nav class="navbar navbar-expand-md navbar-light bg-light font-head">
       <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
           <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
@@ -58,7 +58,7 @@
       <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item alignCenter">
-              <a class="nav-link" href="dashboard.html">
+              <a class="nav-link" href="map.html">
                 <i class="fas fa-globe-americas fa-nav"></i><br>Map
               </a>
             </li>
@@ -87,7 +87,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Data</h5>
+              <h5 class="modal-title font-head" id="exampleModalLongTitle">Data</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -128,7 +128,7 @@
       <!-- Left content -->
       <div class="col-sm mainContent">
         <div class="content-container">
-          <h1>Community response map for COVID-19</h1>
+          <h1 class="font-head-light">Community response map for COVID-19</h1>
           <br>
           <h4 id="subheading">Using open data and digital footprint analysis to identify the most vulnerable communities in Wales</h4>
           <br>
@@ -138,7 +138,7 @@
       
       <!-- Right content -->
       <div class="col-sm mainContent">
-        <img src="img/db1_flip.png" class="img-dashboard">
+        <img src="frontend/landing-page/img/db1_flip.png" class="img-dashboard">
       </div>
 
       <div class="col-sm-2"></div><!-- Spacing col -->
@@ -158,7 +158,7 @@
         <!-- Left content -->
         <div class="col-sm mainContent">
           <div class="content-container">
-            <h1>Identifying vulnerability</h1><br>
+            <h1 class="font-head">Identifying vulnerability</h1><br>
             <p> 
 
               This map is an opportunity to explore data from government,  
@@ -174,7 +174,7 @@
 
         <!-- Right content -->
         <div class="col-sm mainContent">
-          <img src="img/db7.png" class="img-dashboard">
+          <img src="frontend/landing-page/img/db7.png" class="img-dashboard">
         </div>
 
       <div class="col-sm-2"></div><!-- Spacing col -->
@@ -187,13 +187,13 @@
 
         <!-- Left content -->
         <div class="col-sm mainContent">
-          <img src="img/db11.png" class="img-dashboard">
+          <img src="frontend/landing-page/img/db11.png" class="img-dashboard">
         </div>
 
         <!-- Right content -->
         <div class="col-sm mainContent">
           <div class="content-container">
-            <h1>Community support</h1><br>
+            <h1 class="font-head">Community support</h1><br>
             <p>  
 
               Since the pandemic started communities have been mobilising to help each other;  
@@ -236,33 +236,33 @@
 
       <div class="ft-small-logos centered">
         <a href="https://dynamicgenetics.org/" title="Dynamic Genetics Lab">
-          <img src="img/logo-dynamicgenetics1.png" class="logo-footer-lg"></a>
+          <img src="frontend/landing-page/img/logo-dynamicgenetics1.png" class="logo-footer-lg"></a>
       </div>
 
       <div class="ft-small-logos centered">
         <a href="https://phw.nhs.wales/" title="Public Health Wales">
-          <img src="img/logo-phw.png" class="logo-footer-lg"></a>
+          <img src="frontend/landing-page/img/logo-phw.png" class="logo-footer-lg"></a>
       </div>
 
       <div class="ft-small-logos centered">
         <a href="https://www.bristol.ac.uk/" title="University of Bristol">
-          <img src="img/logo-uob1.png" class="logo-footer-sm"></a><br>
+          <img src="frontend/landing-page/img/logo-uob1.png" class="logo-footer-sm"></a><br>
       </div>
       
       <div class="ft-small-logos centered">
         <a href="http://www.bristol.ac.uk/integrative-epidemiology/" 
         title="Medical Research Council: Integrative Epidemiology Unit">
-          <img src="img/logo-ieu.png" class="logo-footer-sm"></a><br>
+          <img src="frontend/landing-page/img/logo-ieu.png" class="logo-footer-sm"></a><br>
       </div>
 
       <div class="ft-small-logos centered">
         <a href="https://esrc.ukri.org/" title="Economic and Social Research Council">
-          <img src="img/logo-esrc.png" class="logo-footer-sm"></a><br>
+          <img src="frontend/landing-page/img/logo-esrc.png" class="logo-footer-sm"></a><br>
       </div>
 
       <div class="ft-small-logos centered">
         <a href="https://www.turing.ac.uk/" title="Alan Turing Institute">
-          <img src="img/logo-turing.png" class="logo-footer-sm"></a>
+          <img src="frontend/landing-page/img/logo-turing.png" class="logo-footer-sm"></a>
       </div>
 
     </div> <!-- /col-3-sm-->
@@ -271,7 +271,7 @@
     <div class="col-sm-5 mainContent">
 
       <div class="content-container">
-        <h1>Project team</h1>
+        <h1 class="font-head-light">Project team</h1>
         <p> 
 
           This project is a collaboration between the 
@@ -284,7 +284,7 @@
 
           <br>
           <br>
-          <strong>University of Bristol: </strong>
+          <h4 class="font-head">University of Bristol: </h4>
           
           <br>
           Dr Oliver Davis <span class="text-muted">– Associate Professor and Turing Fellow </span><br>
@@ -297,7 +297,7 @@
           
           <br>
           <br>
-          <strong>Public Health Wales: </strong>
+          <h4 class="font-head">Public Health Wales: </h4>
           
           <br>
           Dr Alisha Davies <span class="text-muted">– Head of the Research & Evaluation Division</span><br>
@@ -311,7 +311,7 @@
 
     <!-- Right content -->
     <div class="col-sm-4 mainContent">
-      <img src="img/db8.png" class="img-dashboard">
+      <img src="frontend/landing-page/img/db8.png" class="img-dashboard">
     </div>
     
   </div>

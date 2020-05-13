@@ -41,6 +41,9 @@ a:hover{
 .col-hov-emphasis:hover{
     color: var(--emphasis-color);
 }
+.active{
+    color: var(--emphasis-color) !important;
+}
 
 /* Font */
 p, h1, h2, h3, h4, h5, footer, nav{
@@ -48,6 +51,18 @@ p, h1, h2, h3, h4, h5, footer, nav{
 }
 p{
     font-size: 1.3rem;
+}
+.font-head{
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+}
+.font-head-light{
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+}
+.font-head-bold{
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
 }
 .muteLink{
     color: #666;
@@ -148,11 +163,16 @@ p{
     bottom: 0;
     left: 0;
     font-family: 'Raleway', sans-serif;
+    font-weight: 300;
     padding: 20px;
 }
 #logo-splash-project{
     max-height: 200px;
     max-width: 200px;
+    position: absolute;
+    bottom: 12rem;
+    left: 11rem;
+    filter: drop-shadow(0 0 20px var(--primary-color))
 }
 #logo-splash-lab{
     max-height: 300px;
