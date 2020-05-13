@@ -172,7 +172,7 @@ p{
     position: absolute;
     bottom: 12rem;
     left: 11rem;
-    filter: drop-shadow(0 0 20px var(--primary-color))
+    filter: drop-shadow(0 0 10px var(--primary-color))
 }
 #logo-splash-lab{
     max-height: 300px;
