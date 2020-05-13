@@ -374,13 +374,13 @@
             let coordinates = e.features[0].geometry.coordinates.slice();
 
             // Get group information
-            let groupSource = e.features[0].properties.Source;
-            let groupURL = e.features[0].properties.URL;
-            let groupLoc = e.features[0].properties.Location;
             let groupTitle = e.features[0].properties.Title;
+            let groupSource = e.features[0].properties.Source;
+            let groupURL = "<a href=\"" + e.features[0].properties.URL + "\" target=\"_blank\">" + e.features[0].properties.URL + "</a>"
+            let groupLoc = e.features[0].properties.Location;
 
             // Combine group information into one description
-            let description = "<h4>Group Information</h4> <p><strong>Source: </strong>" + groupSource + "<br><strong>URL: </strong>" + groupURL + "<br><strong>Location:  </strong>" + groupLoc + "<br><strong>Title:  </strong>" + groupTitle + "</p>"
+            let description = "<h4>Group Information</h4> <p><strong>Title:  </strong>" + groupTitle  + "<br><strong>Source: </strong>" + groupSource + "<br><strong>URL: </strong>" + groupURL + "<br><strong>Location:  </strong>" + groupLoc + "</p>"
 
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
