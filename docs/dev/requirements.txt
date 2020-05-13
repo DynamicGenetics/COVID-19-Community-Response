@@ -30,3 +30,6 @@ pre-commit
 # scrapers (police code scrapers)
 google-api-python-client
 google_auth_oauthlib
+# Testing
+pytest
+coverage
