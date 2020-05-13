@@ -105,10 +105,13 @@
       const promiseLA = d3.json("./data/boundaries_LA.geojson");
       const promiseLSOA = d3.json("./data/boundaries_LSOA.geojson");
 
-      Promise.all([data_promise, promiseLA, promiseLSOA]).then( data => {
+      // Load groups data
+      const promiseGroups = d3.json("./data/groups.geojson");
 
-        let LAs, LSOAs;
-        [data, LAs, LSOAs] = data;
+      Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data => {
+
+        let LAs, LSOAs, groups;
+        [data, LAs, LSOAs, groups] = data;
 
         console.log(data);
 
@@ -238,6 +241,21 @@
               ]
             }
           }, "settlement-subdivision-label");
+
+          map.addSource("groups_source", {type: "geojson", data: groups});
+    			map.addLayer({
+    				"id": "community_groups",
+    				"type": "circle",
+    				"source": "groups_source",
+            "minzoom": 9,
+    				"layout": {
+    					"visibility": "visible"
+    				},
+    				"paint": {
+    					'circle-radius': ['interpolate', ["exponential", 1.75], ['zoom'], 9, 3, 14, 20],
+    					"circle-color": "#747b7b"
+    				}
+    			}, "settlement-subdivision-label");
 
           cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs);
 
