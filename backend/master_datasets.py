@@ -15,9 +15,6 @@ import data.standardise_datasets as s
 LIVE_CLEANED_FOLDER = os.path.join(
     os.path.abspath(os.path.dirname(__file__)), "data", "live", "cleaned"
 )
-LIVE_TRANSFORMED_FOLDER = os.path.join(
-    os.path.abspath(os.path.dirname(__file__)), "data", "live", "transformed"
-)
 
 # list of files from standardised_datasets
 LSOA_STATIC_DATASETS = [
@@ -29,6 +26,9 @@ LSOA_STATIC_DATASETS = [
 ]
 
 LA_STATIC_DATASETS = [
+    s.LA_COVID,
+    s.LA_SHIELDING,
+    s.LA_GROUP_COUNTS,
     s.LA_WELSH,
     s.LA_POPULATION,
     s.LA_OVER_65,
@@ -37,14 +37,6 @@ LA_STATIC_DATASETS = [
     s.LA_VULNERABLE,
     s.LA_COHESION,
     s.LA_INTERNET_ACCESS,
-]
-
-LA_LIVE_DATASETS = [
-    pd.read_csv(
-        os.path.join(LIVE_CLEANED_FOLDER, "phwCovidStatement.csv"),
-        index_col=["areaID", "la_name"],
-    ),
-    # os.path.join(LIVE_TRANSFORMED_FOLDER, 'groupCount.csv')
 ]
 
 # ++++++++++++++++
@@ -79,7 +71,7 @@ def merge_LSOA_files(lsoa_static_datasets):
     return static_data
 
 
-def merge_LA_files(la_static_datasets, la_live_datasets):
+def merge_LA_files(la_static_datasets):
 
     # Call .standardise() on each dataset
     static_datasets = map(lambda d: d.standardise(), la_static_datasets)
@@ -99,37 +91,13 @@ def merge_LA_files(la_static_datasets, la_live_datasets):
         index={"lad19cd": "area_code", "lad19nm": "area_name"}, inplace=True
     )
 
-    # Only merge the live datasets if necessary, if only one, set it as live_data
-    if len(la_live_datasets) > 1:
-        live_data = reduce(
-            lambda left, right: pd.merge(
-                left, right, left_index=True, right_index=True
-            ),
-            la_live_datasets,
-        )
-    elif len(la_live_datasets) == 1:
-        live_data = la_live_datasets[0]
-    elif len(la_live_datasets) == 0:
-        print("No live data found")
-
-    # If live datasets exist then rename columns and merge with static
-    if len(la_live_datasets) > 0:
-        live_data.rename_axis(
-            index={"areaID": "area_code", "la_name": "area_name"}, inplace=True
-        )
-        # Merge the two dataframes to create the master dataset for LA
-        data = pd.merge(static_data, live_data, on=["area_code", "area_name"])
-    else:
-        # Otherwise, the data is just the static data
-        data = static_data
-
     # Check that this has worked
-    if data.shape[0] != 22:
+    if static_data.shape[0] != 22:
         raise Exception(
             "An error has occured. There are not the expected 22 rows in the LA dataset."
         )
 
-    return data
+    return static_data
 
 
 # +++++++++++++++
@@ -241,7 +209,7 @@ def generate_la_master():
     """Apply series of functions to create valid la master file"""
 
     # Marge dataframe of all LA files in /cleaned
-    la_master = merge_LA_files(LA_STATIC_DATASETS, LA_LIVE_DATASETS)
+    la_master = merge_LA_files(LA_STATIC_DATASETS)
 
     # Coerce all types to float - some are objects
     la_master = la_master.astype("float64")

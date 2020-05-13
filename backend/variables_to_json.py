@@ -64,9 +64,9 @@ class Variable:
             return self.data_transformed_ * 1000
         elif self.data_type == "count":
             if self.res == "LA":
-                return (self.data_transformed_ / LA_POPULATION) * 100000
+                return (self.data_transformed_ / LA_POPULATION) * 1000
             elif self.res == "LSOA":
-                return (self.data_transformed_ / LSOA_POPULATION) * 100000
+                return (self.data_transformed_ / LSOA_POPULATION) * 1000
         elif self.data_type == "density":
             return self.data_transformed_
         elif self.data_type == "rank":
@@ -146,6 +146,7 @@ class DataDashboard:
             os.path.abspath(os.path.dirname(__file__)),
             "..",
             "frontend",
+            "map",
             "data",
             "data.json",
         )
@@ -243,23 +244,23 @@ COVID_CASES = Variable(
     data_type="per100k",
 )
 
-# GROUPS = Variable(
-#     data=LA_MASTER["groups_count"],
-#     label="Community Support Groups",
-#     data_class="support",
-#     la_and_lsoa=False,
-#     invert=False,
-#     data_type="count",
-# )
+GROUPS = Variable(
+    data=LA_MASTER["group_count"],
+    label="Community Support Groups",
+    data_class="support",
+    la_and_lsoa=False,
+    invert=False,
+    data_type="count",
+)
 
-# SHIELDING = Variable(
-#     data=LA_MASTER["shielded_count"],
-#     label="Sheilding Population",
-#     data_class="challenge",
-#     la_and_lsoa=False,
-#     invert=False,
-#     data_type="count",
-# )
+SHIELDING = Variable(
+    data=LA_MASTER["shielded_count"],
+    label="Sheilding Population",
+    data_class="challenge",
+    la_and_lsoa=False,
+    invert=False,
+    data_type="count",
+)
 
 # TWEETS = Variable(
 #     data=LA_MASTER["tweets_count"],
@@ -280,8 +281,8 @@ LA_VARBS = Variables(
         VULNERABLE,
         BELONGING,
         COVID_CASES,
-        # SHEILDING,
-        # GROUPS,
+        SHIELDING,
+        GROUPS,
         # TWEETS
     )
 )

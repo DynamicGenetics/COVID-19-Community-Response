@@ -356,6 +356,31 @@ class Dataset:
 # Define each instance of the dataclass
 # ++++++++++++++++++++++++++++++++++++++
 
+LA_COVID = Dataset(
+    data=s.SOURCE_COVID_COUNT_LA,
+    res=DataResolution.LA,
+    key_col="la_name",
+    key_is_code=False,
+    csv_name="LA_shielded_pop_count",
+    keep_cols=["lad19nm", "covidIncidence_100k"],
+)
+
+LA_SHIELDING = Dataset(
+    data=s.SOURCE_SHEILDING_LA,
+    res=DataResolution.LA,
+    key_col="la_name",
+    key_is_code=False,
+    csv_name="LA_shielded_pop_count",
+)
+
+LA_GROUP_COUNTS = Dataset(
+    data=s.SOURCE_GROUP_COUNTS_LA,
+    res=DataResolution.LA,
+    key_col="areaID",
+    key_is_code=True,
+    csv_name="LA_group_counts",
+)
+
 LSOA_WELSH = Dataset(
     data=s.SOURCE_WELSH_LSOA,
     res=DataResolution.LSOA,

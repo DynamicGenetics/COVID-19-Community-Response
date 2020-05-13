@@ -14,10 +14,17 @@ from functools import partial
 # ++++++++++++++++++++++++++++++++++
 # Read data into acceptable format
 # ++++++++++++++++++++++++++++++++++
-from data import SOURCE_DATA_FOLDER
+from data import SOURCE_DATA_FOLDER, LIVE_DATA_FOLDER
 
-# Base folder for all Source Files
+# Base folders for all Source Files
 p = partial(os.path.join, SOURCE_DATA_FOLDER)
+p_live = partial(os.path.join, LIVE_DATA_FOLDER)
+
+SOURCE_COVID_COUNT_LA = pd.read_csv(p_live("phwCovidStatement.csv"))
+
+SOURCE_GROUP_COUNTS_LA = pd.read_csv(p_live("groupCount_LA.csv"))
+
+SOURCE_SHEILDING_LA = pd.read_csv(p("shielded_pop_LA.csv"))
 
 SOURCE_WELSH_LSOA = pd.read_csv(p("lsoa_welsh_language_2011.csv"), usecols=[2, 3])
 
