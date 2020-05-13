@@ -371,7 +371,15 @@
             //map.getCanvas().style.cursor = 'pointer';
 
             let coordinates = e.features[0].geometry.coordinates.slice();
-            let description = e.features[0].properties.Title;
+
+            // Get group information
+            let groupSource = e.features[0].properties.Source;
+            let groupURL = e.features[0].properties.UTL;
+            let groupLoc = e.features[0].properties.Location;
+            let groupTitle = e.features[0].properties.Title;
+
+            // Combine group information into one description
+            let description = groupSource + "<br>" + groupURL + "<br>" + groupLoc + "<br>" + groupTitle
 
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
