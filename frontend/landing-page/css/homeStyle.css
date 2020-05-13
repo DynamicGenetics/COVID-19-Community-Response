@@ -80,7 +80,7 @@ p{
     font-size: 200%;
     color: var(--highlight-color);
 }
-.fa-blue{
+.fa-emphasis{
     color: var(--emphasis-color);
 }
 #title-nav{
