@@ -246,7 +246,7 @@ COVID_CASES = Variable(
 
 GROUPS = Variable(
     data=LA_MASTER["group_count"],
-    label="Community Support Groups",
+    label="Community Support Groups (per 100,000 people)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -255,7 +255,7 @@ GROUPS = Variable(
 
 SHIELDING = Variable(
     data=LA_MASTER["shielded_count"],
-    label="Sheilding Population",
+    label="Shielding Population (per 100,000 people)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
