@@ -45,7 +45,7 @@ def count_groups(input_path, boundary_info, areaID_name):
 
     # Rename columns to be consistent with other csvs
     df = df.reset_index()
-    df = df.rename(columns={"index": "areaID", 0: "groupCount"})
+    df = df.rename(columns={"index": "area_code", 0: "groupCount"})
 
     return df
 
