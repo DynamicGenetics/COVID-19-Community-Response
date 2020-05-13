@@ -105,10 +105,13 @@
       const promiseLA = d3.json("./data/boundaries_LA.geojson");
       const promiseLSOA = d3.json("./data/boundaries_LSOA.geojson");
 
-      Promise.all([data_promise, promiseLA, promiseLSOA]).then( data => {
+      // Load groups data
+      const promiseGroups = d3.json("./data/groups.geojson");
 
-        let LAs, LSOAs;
-        [data, LAs, LSOAs] = data;
+      Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data => {
+
+        let LAs, LSOAs, groups;
+        [data, LAs, LSOAs, groups] = data;
 
         console.log(data);
 
@@ -239,6 +242,21 @@
             }
           }, "settlement-subdivision-label");
 
+          map.addSource("groups_source", {type: "geojson", data: groups});
+    			map.addLayer({
+    				"id": "community_groups",
+    				"type": "circle",
+    				"source": "groups_source",
+            "minzoom": 9,
+    				"layout": {
+    					"visibility": "visible"
+    				},
+    				"paint": {
+    					'circle-radius': ['interpolate', ["exponential", 1.75], ['zoom'], 9, 3, 14, 20],
+    					"circle-color": "#747b7b"
+    				}
+    			}, "settlement-subdivision-label");
+
           cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs);
 
           // Hillshade layer (optional)
@@ -338,6 +356,38 @@
                 .attr("r", "3").attr("stroke-width", 1.5);
             }
             hoveredArea = null;
+          });
+
+          // Create a popup, but don't add it to the map yet.
+        	let popup = new mapboxgl.Popup({
+        		closeButton: false,
+        		closeOnClick: false
+        	});
+
+          map.on("mouseover", "community_groups", function(e) {
+          // Change the cursor style as a UI indicator.
+            //map.getCanvas().style.cursor = 'pointer';
+
+            let coordinates = e.features[0].geometry.coordinates.slice();
+            let description = e.features[0].properties.Title;
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(coordinates)
+              .setHTML(description)
+              .addTo(map);
+
+          });
+
+          map.on("mouseout", "community_groups", function(e) {
+            popup.remove();
           });
 
         });
