@@ -1,0 +1,148 @@
+openapi: 3.0.1
+info:
+  title: COVID-19 Community Response
+  version: "1.0.0"
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+    /:
+        get:
+            responses:
+                '200':
+                    description: 'Data to initialise the Map'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DashboardData'
+components:
+  schemas:  # Reusable Schemas
+    DashboardData:
+      description: Schema for data used on the COVID-19 Community Response dashboard.
+      type: object
+      properties:
+        variables:
+          $ref: '#/components/schemas/Variables'
+        LAs:
+          $ref: '#/components/schemas/LAs'
+        LSOAs:
+          $ref: '#/components/schemas/LSOAs'
+
+
+    Variable:
+      type: object
+      description: Information about each data variable
+      properties:
+        name:
+          type: string
+          description: variable id, same as column name from csv
+        label:
+          type: string
+          description: Human readable label
+        class:
+          type: string
+          enum: ['support', 'challenge']
+          description: The group that the data belongs to
+        lsoa:
+          type: boolean
+          description: Whether this data available at LSOA level, as well as LA.
+
+    Variables:
+      type: array
+      items:
+        $ref: '#/components/schemas/Variable'
+
+    LA:
+      type: object
+      description: Information about each Local Authority
+      properties:
+        lad19nm:
+          type: string
+        lad19cd:
+          type: string
+        population_count:
+          type: number
+        pop_density_persqkm:
+          type: number
+        has_internet_pct:
+          type: number
+        vulnerable_pct:
+          type: number
+        over_65_count:
+          type: number
+        use_internet_daily_percent:
+          type: number
+        wimd:
+          type: number
+        belong_percent:
+          type: number
+        welsh_percent:
+          type: number
+        covid_per100k:
+          type: number
+        groups_count:
+          type: number
+        shielded_percent:
+          type: number
+
+    LAs:
+      type: array
+      items:
+        $ref: '#/components/schemas/LA'
+
+    LSOA:
+      type: object
+      description: Information about each Local Authority
+      properties:
+        LSOA11CD:
+          type: string
+        LSOA11NM:
+          type: string
+        welsh_percent:
+          type: number
+        wimd:
+          type: number
+        population_count:
+          type: number
+        pop_density_persqkm:
+          type: number
+        over_65_count:
+          type: number
+
+    LSOAs:
+      type: array
+      items:
+        $ref: '#/components/schemas/LSOA'
+    
+    GroupData:
+      description: Schema for Community Response point data on the dashboard.
+      type: object
+      properties:
+        groups:
+          $ref: '#/components/schemas/groups'
+
+    group:
+      type: object
+      description: Information about each group point on the map
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the group.
+        name:
+          type: string
+          description: Name of the group
+        platform:
+          type: string
+          description: Which platform the group exists on
+          example: "Facebook"
+        lat:
+          type: number
+        long:
+          type: number
+
+    groups:
+      type: array
+      items:
+        $ref: '#/components/schemas/group'
+
+    
