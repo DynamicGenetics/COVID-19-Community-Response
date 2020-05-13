@@ -28,84 +28,87 @@
   <!-- Main body container -->
   <div class="container-fluid">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light font-head">
-      <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-          <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="navbar-brand mx-auto" href="index.html"><h3 class="font-head-light">COVID-19 Community Response</h3></a>
-              </li>
-          </ul>
-      </div>
-      <div class="mx-auto order-0">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-      </div>
-      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item alignCenter">
-              <a class="nav-link" href="map.html">
-                <i class="fas fa-globe-americas fa-nav"></i><br>Map
-              </a>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-md navbar-light bg-light font-head">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="navbar-brand mx-auto" href="index.html"><h3 class="font-head-light">Wales Community Response<br>Ymated Cymunedol Cymru</h3></a>
+          </li>
+      </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+            <li class="nav-item active">
+              <a class="navbar-brand mx-auto" href="index.html"><h3 class="font-head-light">COVID-19 Community Response</h3></a>
             </li>
-            <li class="nav-item alignCenter">
-              <a class="nav-link active" href="#"><i class="fas fa-book-open fa-nav"></i><br>User guide</a>
-            </li>
-            <li class="nav-item alignCenter">
-              <a class="nav-link" href="index.html#about"><i class="fas fa-info-circle fa-nav"></i><br>About</a>                
-            </li>
-            <li class="nav-item alignCenter">
-              <a class="nav-link" href="index.html#team"><i class="fas fa-users-cog fa-nav"></i><br>The team</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link dropdown-toggle alignCenter" href="#" id="navbarDropdown" role="button" data-toggle="modal" data-target="#dataModal" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-flask fa-nav fa-blue"></i><br>Data
-              </a>
-              
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              </div>
-            </li>
-          </ul>
-      </div>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item alignCenter">
+            <a class="nav-link" href="map.html">
+              <i class="fas fa-globe-americas fa-nav fa-emphasis col-hov-highlight"></i><br>Map
+            </a>
+          </li>
+          <li class="nav-item alignCenter">
+            <span class="nav-link active" href="#"><i class="fas fa-book-open fa-nav"></i><br>User guide</span>
+          </li>
+          <li class="nav-item alignCenter">
+            <a class="nav-link" href="index.html#about"><i class="fas fa-info-circle fa-nav col-hov-emphasis"></i><br>About</a>                
+          </li>
+          <li class="nav-item alignCenter">
+            <a class="nav-link" href="index.html#team"><i class="fas fa-users-cog fa-nav col-hov-emphasis"></i><br>The team</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link dropdown-toggle alignCenter" href="#" id="navbarDropdown" role="button" data-toggle="modal" data-target="#dataModal" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-flask fa-nav col-hov-emphasis"></i><br>Data
+            </a>
+            
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            </div>
+          </li>
+        </ul>
+    </div>
 
-      <!-- Modal -->
-      <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title font-head" id="exampleModalLongTitle">Data</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              
-              <a class="dropdown-item" href="https://github.com/DynamicGenetics/Covid-Communities-Map/wiki">
-                <i class="fab fa-wikipedia-w i-mid"></i>
-                Wiki Documentation
-                <span class="text-muted"> 
-                  <small><ul><li>Data sources</li><li>Data pipeline documentation</li><li>Analysis methods</li></ul></small>
-                </span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="https://github.com/DynamicGenetics/Covid-Communities-Map/">
-                <i class="fab fa-github i-mid"></i>
-                GitHub Repository
-                <span class="text-muted"> 
-                  <small><ul><li>Raw data</li><li>Transformed data</li><li>Data pipeline code</li><li>Map tool code</li></ul></small>
-                </span>
-              </a>
-    
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
-            </div>
-          </div>
+  <!-- Modal -->
+  <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-head" id="exampleModalLongTitle">Data catalogue</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+          <a class="dropdown-item" href="https://github.com/DynamicGenetics/Covid-Communities-Map/wiki">
+            <i class="fab fa-wikipedia-w i-mid"></i>
+            Wiki Documentation
+            <span class="text-muted"> 
+              <small><ul><li>Data sources</li><li>Data pipeline documentation</li><li>Analysis methods</li></ul></small>
+            </span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="https://github.com/DynamicGenetics/Covid-Communities-Map/">
+            <i class="fab fa-github i-mid"></i>
+            GitHub Repository
+            <span class="text-muted"> 
+              <small><ul><li>Raw data</li><li>Transformed data</li><li>Data pipeline code</li><li>Map tool code</li></ul></small>
+            </span>
+          </a>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
         </div>
       </div>
+    </div>
+  </div>
 
-    </nav>  
+</nav>  
 
     <!-- Scrolly image -->
     <div class="row" id="block1">
@@ -127,10 +130,11 @@
             <br><br>
             A full guide can be found in the <a href="https://github.com/DynamicGenetics/Covid-Communities-Map/wiki">Wiki</a> 
             <br><br>
-            Press the  
+            Scroll down or press the  
             <a href="#block2">
               <img src="frontend/landing-page/img/ico-arrow.png" class="ico-small">
-            </a> icon or scroll down to get started
+            </a> button to get started 
+            <img src="frontend/landing-page/img/arrow.png" style="max-height: 100px; max-width: 100px;" class="float-right">
           </h4>
           <br>
         </div>

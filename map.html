@@ -23,6 +23,7 @@
     <script src="./frontend/map/js/cc.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link href="./frontend/landing-page/css/homeStyle.css" rel='stylesheet' />
     <title>COVID-19 Community Response Map</title>
   </head>
   <body>
@@ -32,7 +33,7 @@
       <div id="sidebar">
         <h3 class="ui dividing header">
           <div class="content">
-            COVID-19 Community Response
+            <h3 class="font-head-light">Wales Community Response<br>Ymated Cymunedol Cymru</h3>
             <div class="sub header">Citizen-led support in Wales</div>
           </div>
         </h3>
@@ -254,7 +255,7 @@
     					"visibility": "visible"
     				},
     				"paint": {
-    					'circle-radius': ['interpolate', ["exponential", 1.75], ['zoom'], 9, 3, 14, 20],
+    					'circle-radius': ['interpolate', ["exponential", 1.75], ['zoom'], 9, 4, 14, 25],
     					// "circle-color": "#747b7b"
               "circle-color": "#505050"
     				}
@@ -363,24 +364,25 @@
 
           // Create a popup, but don't add it to the map yet.
         	let popup = new mapboxgl.Popup({
-        		closeButton: false,
-        		closeOnClick: false
+        		// closeButton: false,
+        		// closeOnClick: false,
+            maxWidth: "none"
         	});
 
-          map.on("mouseover", "community_groups", function(e) {
+          map.on("click", "community_groups", function(e) {
           // Change the cursor style as a UI indicator.
             //map.getCanvas().style.cursor = 'pointer';
 
             let coordinates = e.features[0].geometry.coordinates.slice();
 
             // Get group information
-            let groupSource = e.features[0].properties.Source;
-            let groupURL = e.features[0].properties.URL;
-            let groupLoc = e.features[0].properties.Location;
             let groupTitle = e.features[0].properties.Title;
+            let groupSource = e.features[0].properties.Source;
+            let groupURL = "<a href=\"" + e.features[0].properties.URL + "\" target=\"_blank\">" + e.features[0].properties.URL + "</a>"
+            let groupLoc = e.features[0].properties.Location;
 
             // Combine group information into one description
-            let description = "<h4>Group Information</h4> <p><strong>Source: </strong>" + groupSource + "<br><strong>URL: </strong>" + groupURL + "<br><strong>Location:  </strong>" + groupLoc + "<br><strong>Title:  </strong>" + groupTitle + "</p>"
+            let description = "<h4 style=\"margin-top:0px;\">Group Information</h4> <p><strong>Title:  </strong>" + groupTitle  + "<br><strong>Source: </strong>" + groupSource + "<br><strong>URL: </strong>" + groupURL + "<br><strong>Location:  </strong>" + groupLoc + "</p>"
 
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
@@ -397,9 +399,9 @@
 
           });
 
-          map.on("mouseout", "community_groups", function(e) {
-            popup.remove();
-          });
+          // map.on("mouseout", "community_groups", function(e) {
+          //   popup.remove();
+          // });
 
         });
 
