@@ -1,3 +1,8 @@
+"""
+phw_scrape() function:
+Downloads PHW dashboard data Excel file, saves as xlsx
+"""
+
 import requests
 import pandas as pd
 from datetime import datetime
@@ -6,7 +11,7 @@ from datetime import datetime
 def phw_scrape(output_path):
 
     # Download data download for phw covid cases statement
-    url = "http://www2.nphs.wales.nhs.uk:8080/CommunitySurveillanceDocs.nsf/61c1e930f9121fd080256f2a004937ed/77fdb9a33544aee88025855100300cab/$FILE/Rapid%20COVID-19%20surveillance%20data.xlsx"
+    url = "http://www2.nphs.wales.nhs.uk:8080/CommunitySurveillanceDocs.nsf/b4472ecab22fa0d580256f10003199e7/49b553ea08eff65780258566004e8895/$FILE/Rapid%20COVID-19%20surveillance%20data.xlsx"
     r = requests.get(url, allow_redirects=True)
 
     # Save in native xlsx format
@@ -38,6 +43,8 @@ def clean_data(input_path, output_path):
         ],
         axis=1,
     )
+
+    # Remove data for outside of wales and unknown areas
     cleaned = cleaned[cleaned["Local Authority"] != "Outside Wales"]
     cleaned = cleaned[cleaned["Local Authority"] != "Unknown"]
 
