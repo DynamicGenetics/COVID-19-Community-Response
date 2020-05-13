@@ -1,73 +1,15 @@
 import pytest
-import os
 import pandas as pd
 from pandas.testing import assert_frame_equal
 from datasets.static_datasets import SourceDataset
 from datasets import DataResolution, UnsupportedDataResolution
 
-from datasets.static_datasets import load_language_data, load_population_data
-
-
-# -----------------
-# (py)Test Fixtures
-# -----------------
-@pytest.fixture(scope="session")
-def data_folder():
-    from datasets import SOURCE_DATA_FOLDER
-
-    return SOURCE_DATA_FOLDER
-
-
-@pytest.fixture(scope="session")
-def sample_lsoa_csv_filepath(data_folder):
-    csv_filename = "lsoa_welsh_language_2011.csv"
-    return os.path.join(data_folder, csv_filename)
-
-
-# Data Fixture LA Level
-# -----------------------
-@pytest.fixture(scope="function")
-def welsh_language_la(data_folder):
-    csv_filename = "la_welsh_frequency_2018-19.csv"
-    data_filepath = os.path.join(data_folder, csv_filename)
-    return pd.read_csv(data_filepath, usecols=[1, 2, 3, 4])
-
-
-@pytest.fixture(scope="function")
-def welsh_population_la(data_folder):
-    csv_filename = "la_population_age_2019.csv"
-    data_fpath = os.path.join(data_folder, csv_filename)
-    return pd.read_csv(data_fpath, usecols=[3, 15])
-
-
-@pytest.fixture(scope="function")
-def welsh_population_la_over65(data_folder):
-    csv_filename = "la_population_age_2019.csv"
-    data_fpath = os.path.join(data_folder, csv_filename)
-    return pd.read_csv(data_fpath, usecols=[3, 14])
-
-
-# Data Fixture LSOA Level
-# -----------------------
-@pytest.fixture(scope="function")
-def welsh_language_lsoa(data_folder):
-    csv_filename = "lsoa_welsh_language_2011.csv"
-    data_filepath = os.path.join(data_folder, csv_filename)
-    return pd.read_csv(data_filepath, usecols=[2, 3])
-
-
-@pytest.fixture(scope="function")
-def welsh_population_lsoa(data_folder):
-    csv_filename = "lsoa_population_2018_19.csv"
-    data_fpath = os.path.join(data_folder, csv_filename)
-    return pd.read_csv(data_fpath)
-
-
-@pytest.fixture(scope="function")
-def welsh_population_lsoa_over65(data_folder):
-    csv_filename = "lsoa_population_2018_19_over_65.csv"
-    data_fpath = os.path.join(data_folder, csv_filename)
-    return pd.read_csv(data_fpath)
+from datasets.static_datasets import (
+    load_language_data,
+    load_population_data,
+    load_deprivation_data,
+    load_population_density_data,
+)
 
 
 # -----------------------------
@@ -185,8 +127,6 @@ def test_load_welsh_language_la(welsh_language_la):
 
 #  Population Data
 #  ---------------
-
-
 def test_load_population_data_wrong_resolution():
     load_data_test_failure(load_population_data, dataset_name="Welsh Population")
 
@@ -226,4 +166,54 @@ def test_load_population_lsoa_over65(welsh_population_lsoa_over65):
         format="CSV",
         resolution=DataResolution.LSOA,
         over_65=True,
+    )
+
+
+#  IMD Data
+#  --------
+def test_load_deprivation_data_wrong_resolution():
+    load_data_test_failure(load_deprivation_data, dataset_name="IMD")
+
+
+def test_load_deprivation_la(deprivation_la):
+    load_data_test(
+        load_fn=load_deprivation_data,
+        fixture=deprivation_la,
+        format="CSV",
+        resolution=DataResolution.LA,
+    )
+
+
+def test_load_deprivation_lsoa(deprivation_lsoa):
+    load_data_test(
+        load_fn=load_deprivation_data,
+        fixture=deprivation_lsoa,
+        format="CSV",
+        resolution=DataResolution.LSOA,
+    )
+
+
+#  Population Density Data
+#  -----------------------
+def test_load_population_density_data_wrong_resolution():
+    load_data_test_failure(
+        load_population_density_data, dataset_name="Population Density"
+    )
+
+
+def test_load_population_density_la(population_density_la):
+    load_data_test(
+        load_fn=load_population_density_data,
+        fixture=population_density_la,
+        format="CSV",
+        resolution=DataResolution.LA,
+    )
+
+
+def test_load_population_density_lsoa(population_density_lsoa):
+    load_data_test(
+        load_fn=load_population_density_data,
+        fixture=population_density_lsoa,
+        format="XLSX",
+        resolution=DataResolution.LSOA,
     )

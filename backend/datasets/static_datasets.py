@@ -215,18 +215,108 @@ def load_population_data(
         return sd
 
 
-#
-# # Read in IMD data
-# SOURCE_IMD_LSOA = pd.read_csv(p("lsoa_IMD_2019.csv"))
-#
-# SOURCE_IMD_LA = pd.read_csv(p("la_WIMD_2019.csv"))
-#
-# # Read in population density data
-# SOURCE_POPDENSITY_LSOA = pd.read_excel(
-#     p("lsoa_pop_density_2018-19.xlsx"), sheet_name=3, usecols="A,B,E", skiprows=4
-# )
-#
-# SOURCE_POPDENSITY_LA = pd.read_csv(p("la_pop_density_2018.csv"), usecols=[1, 11])
+def load_deprivation_data(resolution: DataResolution) -> SourceDataset:
+    """
+    Welsh IMD (Deprivation)
+
+    Parameters
+    ----------
+    resolution: DataResolution
+        Resolution of interest for the dataset.
+        Supported resolutions are now LA and LSOA
+
+    Returns
+    -------
+        SourceDataset: Instance of SourceDataset for Welsh IMD data.
+    """
+    try:
+        _validate_resolution(resolution, dataset_name="IMD")
+    except Exception as e:
+        raise e
+    else:
+        if resolution == DataResolution.LSOA:
+            sd = SourceDataset(p("lsoa_IMD_2019.csv"))
+        else:
+            sd = SourceDataset(p("la_WIMD_2019.csv"))
+        return sd
+
+
+def load_population_density_data(resolution: DataResolution) -> SourceDataset:
+    """
+    Welsh Population Density Data
+
+    Parameters
+    ----------
+    resolution: DataResolution
+        Resolution of interest for the dataset.
+        Supported resolutions are now LA and LSOA
+
+    Returns
+    -------
+        SourceDataset: Instance of SourceDataset for Welsh Population Density.
+    """
+    try:
+        _validate_resolution(resolution, dataset_name="Population Density")
+    except Exception as e:
+        raise e
+    else:
+        if resolution == DataResolution.LSOA:
+            sd = SourceDataset(
+                p("lsoa_pop_density_2018-19.xlsx"),
+                sheet_name=3,
+                usecols="A,B,E",
+                skiprows=4,
+            )
+        else:
+            sd = SourceDataset(p("la_pop_density_2018.csv"), usecols=[1, 11])
+        return sd
+
+
+def load_vulnerable_and_cohesion_data(resolution: DataResolution) -> SourceDataset:
+    """
+    Welsh Vulnerable and Cohesion
+
+    Parameters
+    ----------
+    resolution: DataResolution
+        Resolution of interest for the dataset.
+        Supported resolutions are now LA and LSOA
+
+    Returns
+    -------
+        SourceDataset: Instance of SourceDataset for Welsh Population Density.
+    """
+    try:
+        _validate_resolution(resolution, dataset_name="Vulnerable and Cohesion")
+    except Exception as e:
+        raise e
+    else:
+        # vulnerable_and_cohesion = pd.read_excel(
+        #     p("la_vulnerableProxy_and_cohesion.xlsx"),
+        #     sheet_name="By local authority",
+        #     usecols="B:X",  # Sheet 4
+        # )
+        # # Select only the columns of interest and transpose
+        # vulnerable_and_cohesion = vulnerable_and_cohesion.iloc[[1, 20, 21, 38]].T
+        # # Reset index so the LA name isn't the index
+        # vulnerable_and_cohesion.reset_index(inplace=True)
+        #
+        # # # Seperate this dataframe out so it only contains one variable per dataframe
+        # SOURCE_VULNERABLE_LA = vulnerable_and_cohesion.iloc[:, [0, 4]].copy()
+        # SOURCE_COMM_COHESION_LA = vulnerable_and_cohesion.iloc[:, [0, 2, 3]].copy()
+
+        if resolution == DataResolution.LSOA:
+            sd = SourceDataset(
+                p("lsoa_pop_density_2018-19.xlsx"),
+                sheet_name=3,
+                usecols="A,B,E",
+                skiprows=4,
+            )
+        else:
+            sd = SourceDataset(p("la_pop_density_2018.csv"), usecols=[1, 11])
+        return sd
+
+
 #
 # # Read in Vulnerable and Community Cohesion Data
 # vulnerable_and_cohesion = pd.read_excel(
