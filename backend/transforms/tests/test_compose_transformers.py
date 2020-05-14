@@ -1,5 +1,6 @@
+import pytest
 from transforms import Compose
-from transforms import Transpose, IndexLocSelector, ResetIndex
+from transforms import Transpose, IndexLocSelector, ResetIndex, DataFrameTransformError
 from pandas.testing import assert_frame_equal
 
 
@@ -24,3 +25,9 @@ def test_compose_transform_with_repeated_transformation(dataframe):
     assert_frame_equal(
         p(dataframe), dataframe.iloc[[1, 20, 21, 38]].T.reset_index().iloc[:, [0, 4]]
     )
+
+
+def test_compose_transform_raise_exception_during_pipeline(dataframe):
+    with pytest.raises(DataFrameTransformError):
+        p = Compose(transforms=[Transpose(), IndexLocSelector(idxloc=[101])])
+        p(dataframe)

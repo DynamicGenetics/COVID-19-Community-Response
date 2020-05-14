@@ -15,6 +15,10 @@ class Compose:
         self.transforms = transforms
 
     def __call__(self, df: DataFrame) -> DataFrame:
-        for t in self.transforms:
-            df = t(df)
-        return df
+        try:
+            for t in self.transforms:
+                df = t(df)
+        except Exception as e:
+            raise e
+        else:
+            return df
