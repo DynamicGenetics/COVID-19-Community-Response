@@ -20,12 +20,15 @@ from datasets.source_datasets import (
 # ----------------------
 
 # Load Dataset Testing utility function
-def load_data_test(load_fn, fixture, extension, data_resolution, **load_fn_params):
+def load_data_test(
+    load_fn, fixture, extension, data_resolution, dataset_name, **load_fn_params
+):
     sd = load_fn(**load_fn_params)
     assert sd is not None
     assert sd.data is not None
     assert sd.data_format == extension
     assert sd.resolution is data_resolution
+    assert sd.name == dataset_name
     assert_frame_equal(sd.data, fixture)
 
 
@@ -57,6 +60,7 @@ def test_load_welsh_language_lsoa(welsh_language_lsoa):
         fixture=welsh_language_lsoa,
         extension="CSV",
         data_resolution=DataResolution.LSOA,
+        dataset_name="welsh_language_LSOA",
         resolution=DataResolution.LSOA,
     )
 
@@ -67,6 +71,7 @@ def test_load_welsh_language_la(welsh_language_la):
         fixture=welsh_language_la,
         extension="CSV",
         data_resolution=DataResolution.LA,
+        dataset_name="welsh_language_LA",
         resolution=DataResolution.LA,
     )
 
@@ -83,6 +88,7 @@ def test_load_population_la(welsh_population_la):
         fixture=welsh_population_la,
         extension="CSV",
         data_resolution=DataResolution.LA,
+        dataset_name="welsh_population_LA",
         resolution=DataResolution.LA,
     )
 
@@ -93,6 +99,7 @@ def test_load_population_la_over65(welsh_population_la_over65):
         fixture=welsh_population_la_over65,
         extension="CSV",
         data_resolution=DataResolution.LA,
+        dataset_name="welsh_population_over65_LA",
         resolution=DataResolution.LA,
         over_65=True,
     )
@@ -104,6 +111,7 @@ def test_load_population_lsoa(welsh_population_lsoa):
         fixture=welsh_population_lsoa,
         extension="CSV",
         data_resolution=DataResolution.LSOA,
+        dataset_name="welsh_population_LSOA",
         resolution=DataResolution.LSOA,
     )
 
@@ -114,6 +122,7 @@ def test_load_population_lsoa_over65(welsh_population_lsoa_over65):
         fixture=welsh_population_lsoa_over65,
         extension="CSV",
         data_resolution=DataResolution.LSOA,
+        dataset_name="welsh_population_over65_LSOA",
         resolution=DataResolution.LSOA,
         over_65=True,
     )
@@ -131,6 +140,7 @@ def test_load_deprivation_la(deprivation_la):
         fixture=deprivation_la,
         extension="CSV",
         data_resolution=DataResolution.LA,
+        dataset_name="deprivation_data_LA",
         resolution=DataResolution.LA,
     )
 
@@ -141,6 +151,7 @@ def test_load_deprivation_lsoa(deprivation_lsoa):
         fixture=deprivation_lsoa,
         extension="CSV",
         data_resolution=DataResolution.LSOA,
+        dataset_name="deprivation_data_LSOA",
         resolution=DataResolution.LSOA,
     )
 
@@ -159,6 +170,7 @@ def test_load_population_density_la(population_density_la):
         fixture=population_density_la,
         extension="CSV",
         data_resolution=DataResolution.LA,
+        dataset_name="population_density_LA",
         resolution=DataResolution.LA,
     )
 
@@ -170,6 +182,7 @@ def test_load_population_density_lsoa(population_density_lsoa):
         extension="XLSX",
         resolution=DataResolution.LSOA,
         data_resolution=DataResolution.LSOA,
+        dataset_name="population_density_LSOA",
     )
 
 
@@ -181,6 +194,7 @@ def test_load_vulnerability_data(vulnerability_la):
         fixture=vulnerability_la,
         extension="XLSX",
         data_resolution=DataResolution.LA,
+        dataset_name="vulnerability_data_LA",
     )
 
 
@@ -192,6 +206,7 @@ def test_load_community_cohesion_data(community_cohesion_lsoa):
         fixture=community_cohesion_lsoa,
         extension="XLSX",
         data_resolution=DataResolution.LA,
+        dataset_name="community_cohesion_data_LA",
     )
 
 
@@ -203,6 +218,7 @@ def test_load_internet_access_data(internet_access_la):
         fixture=internet_access_la,
         extension="XLSX",
         data_resolution=DataResolution.LA,
+        dataset_name="internet_access_data_LA",
     )
 
 
@@ -212,6 +228,7 @@ def test_load_internet_use_data(internet_use_la):
         fixture=internet_use_la,
         extension="XLSX",
         data_resolution=DataResolution.LA,
+        dataset_name="internet_use_data_LA",
     )
 
 
@@ -223,4 +240,5 @@ def test_load_ethnicity_data(ethnicity_la):
         fixture=ethnicity_la,
         extension="XLSX",
         data_resolution=DataResolution.LA,
+        dataset_name="ethnicity_data_LA",
     )

@@ -60,16 +60,19 @@ def load_language_source_data(resolution: DataResolution) -> SourceDataset:
     except Exception as e:
         raise e
     else:
+        ds_name = "welsh_language"
         if resolution == DataResolution.LSOA:
             sd = SourceDataset(
                 filepath=p("lsoa_welsh_language_2011.csv"),
                 resolution=resolution,
+                name=ds_name,
                 usecols=[2, 3],
             )
         else:
             sd = SourceDataset(
                 filepath=p("la_welsh_frequency_2018-19.csv"),
                 resolution=resolution,
+                name=ds_name,
                 usecols=[1, 2, 3, 4],
             )
         return sd
@@ -104,19 +107,25 @@ def load_population_source_data(
     except Exception as e:
         raise e
     else:
+        ds_name = "welsh_population"
+        if over_65:
+            ds_name += "_over65"
         if resolution == DataResolution.LSOA:
             if over_65:
                 data_filename = "lsoa_population_2018_19_over_65.csv"
             else:
                 data_filename = "lsoa_population_2018_19.csv"
-            sd = SourceDataset(p(data_filename), resolution=resolution)
+            sd = SourceDataset(p(data_filename), resolution=resolution, name=ds_name)
         else:
             if over_65:
                 columns = [3, 14]
             else:
                 columns = [3, 15]
             sd = SourceDataset(
-                p("la_population_age_2019.csv"), resolution=resolution, usecols=columns
+                p("la_population_age_2019.csv"),
+                resolution=resolution,
+                name=ds_name,
+                usecols=columns,
             )
         return sd
 
@@ -143,10 +152,15 @@ def load_deprivation_source_data(resolution: DataResolution) -> SourceDataset:
     except Exception as e:
         raise e
     else:
+        ds_name = "deprivation_data"
         if resolution == DataResolution.LSOA:
-            sd = SourceDataset(p("lsoa_IMD_2019.csv"), resolution=resolution)
+            sd = SourceDataset(
+                p("lsoa_IMD_2019.csv"), name=ds_name, resolution=resolution
+            )
         else:
-            sd = SourceDataset(p("la_WIMD_2019.csv"), resolution=resolution)
+            sd = SourceDataset(
+                p("la_WIMD_2019.csv"), name=ds_name, resolution=resolution
+            )
         return sd
 
 
@@ -172,17 +186,22 @@ def load_population_density_source_data(resolution: DataResolution) -> SourceDat
     except Exception as e:
         raise e
     else:
+        ds_name = "population_density"
         if resolution == DataResolution.LSOA:
             sd = SourceDataset(
                 p("lsoa_pop_density_2018-19.xlsx"),
                 resolution=resolution,
+                name=ds_name,
                 sheet_name=3,
                 usecols="A,B,E",
                 skiprows=4,
             )
         else:
             sd = SourceDataset(
-                p("la_pop_density_2018.csv"), resolution=resolution, usecols=[1, 11]
+                p("la_pop_density_2018.csv"),
+                resolution=resolution,
+                name=ds_name,
+                usecols=[1, 11],
             )
         return sd
 
@@ -197,6 +216,7 @@ def load_vulnerability_source_data() -> SourceDataset:
     -------
         SourceDataset instance encapsulating Vulnerability Data
     """
+    ds_name = "vulnerability_data"
     transform = Compose(
         [
             IndexLocSelector(idxloc=[1, 20, 21, 38]),
@@ -207,6 +227,7 @@ def load_vulnerability_source_data() -> SourceDataset:
     )
     return SourceDataset(
         filepath=p("la_vulnerableProxy_and_cohesion.xlsx"),
+        name=ds_name,
         transform=transform,
         resolution=DataResolution.LA,
         sheet_name="By local authority",
@@ -224,6 +245,7 @@ def load_community_cohesion_source_data() -> SourceDataset:
     -------
         SourceDataset instance for the Community and Cohesion Data
     """
+    ds_name = "community_cohesion_data"
     transform = Compose(
         [
             IndexLocSelector(idxloc=[1, 20, 21, 38]),
@@ -234,6 +256,7 @@ def load_community_cohesion_source_data() -> SourceDataset:
     )
     return SourceDataset(
         filepath=p("la_vulnerableProxy_and_cohesion.xlsx"),
+        name=ds_name,
         transform=transform,
         resolution=DataResolution.LA,
         sheet_name="By local authority",
@@ -251,9 +274,11 @@ def load_internet_access_source_data() -> SourceDataset:
     -------
         SourceDataset instance for the Internet Access Data.
     """
+    ds_name = "internet_access_data"
     return SourceDataset(
         p("national_survey_internet_use_and_access_la.xlsx"),
         resolution=DataResolution.LA,
+        name=ds_name,
         usecols="A,B",
         skiprows=4,
         nrows=22,
@@ -271,9 +296,11 @@ def load_internet_use_source_data() -> SourceDataset:
         SourceDataset instance for the Internet Use Data.
     """
     # NB Here we aren't reading in the last column, because it is half empty.
+    ds_name = "internet_use_data"
     return SourceDataset(
         p("national_survey_internet_use_and_access_la.xlsx"),
         resolution=DataResolution.LA,
+        name=ds_name,
         usecols="A,B,C",
         skiprows=34,
         nrows=22,
@@ -289,6 +316,7 @@ def load_ethnicity_source_data() -> SourceDataset:
     -------
         SourceDataset instance proxy for Ethnicity Data
     """
+    ds_name = "ethnicity_data"
     # This data is formatted the wrong way in the spreadsheet so needs extra work
     transform = Compose(
         [
@@ -303,6 +331,7 @@ def load_ethnicity_source_data() -> SourceDataset:
     return SourceDataset(
         p("la_lhb_ethnicity.xlsx"),
         resolution=DataResolution.LA,
+        name=ds_name,
         transform=transform,
         sheet_name="By Local Authority",
         usecols="B:X",
