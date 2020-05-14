@@ -132,7 +132,7 @@ class Rename:
             self._mapper = None
         else:
             self._mapper_cal = None
-            self._mapper = {} if mapper is None else mapper
+            self._mapper = mapper
 
     def __call__(self, df: pd.DataFrame) -> pd.DataFrame:
         try:
@@ -204,8 +204,12 @@ class Drop:
             self._labels = None
         else:
             self._labels_call = None
-            self._labels = [] if labels is None else labels
-            if not isinstance(self._labels, list) and not isinstance(self._labels, str):
+            self._labels = labels
+            if (
+                self._labels is not None
+                and not isinstance(self._labels, list)
+                and not isinstance(self._labels, str)
+            ):
                 self._labels = list(self._labels)
 
     def __call__(self, df: pd.DataFrame) -> pd.DataFrame:
