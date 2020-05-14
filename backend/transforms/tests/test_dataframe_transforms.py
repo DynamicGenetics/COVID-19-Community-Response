@@ -194,6 +194,11 @@ def test_drop_transformation_labels_axis_0(df_drop_example):
     assert_frame_equal(r(df_drop_example), df_drop_example.drop(index=[0]))
 
 
+def test_drop_transformation_labels_on_index_if_axis_not_specified(df_drop_example):
+    r = Drop(labels=[0])
+    assert_frame_equal(r(df_drop_example), df_drop_example.drop(index=[0]))
+
+
 def test_drop_transformation_labels_axis_0_with_callable(df_drop_example):
     r = Drop(labels=lambda d: [0], axis=0)
     assert_frame_equal(r(df_drop_example), df_drop_example.drop(index=[0]))

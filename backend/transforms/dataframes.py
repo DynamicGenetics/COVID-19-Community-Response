@@ -174,7 +174,7 @@ class Drop:
         labels: Union[DropSelector, str, Sequence[T]] = None,
         axis: int = None,
     ):
-        self._axis = axis
+        self._axis = 0 if axis is None else axis
         if callable(index):
             self._index_call = index
             self._index = None
