@@ -3,15 +3,15 @@ from pandas.testing import assert_frame_equal
 from datasets.dataset import DataResolution, UnsupportedDataResolution
 
 from datasets.source_datasets import (
-    load_language_data,
-    load_population_data,
-    load_deprivation_data,
-    load_population_density_data,
-    load_community_cohesion_data,
-    load_vulnerability_data,
-    load_internet_access_data,
-    load_internet_use_data,
-    load_ethnicity_data,
+    load_language_source_data,
+    load_population_source_data,
+    load_deprivation_source_data,
+    load_population_density_source_data,
+    load_community_cohesion_source_data,
+    load_vulnerability_source_data,
+    load_internet_access_source_data,
+    load_internet_use_source_data,
+    load_ethnicity_source_data,
 )
 
 
@@ -48,12 +48,12 @@ def load_data_test_failure(load_fn, dataset_name=""):
 #  Welsh Language
 #  --------------
 def test_load_welsh_language_datasets_wrong_resolution():
-    load_data_test_failure(load_language_data, dataset_name="Welsh Language")
+    load_data_test_failure(load_language_source_data, dataset_name="Welsh Language")
 
 
 def test_load_welsh_language_lsoa(welsh_language_lsoa):
     load_data_test(
-        load_fn=load_language_data,
+        load_fn=load_language_source_data,
         fixture=welsh_language_lsoa,
         extension="CSV",
         data_resolution=DataResolution.LSOA,
@@ -63,7 +63,7 @@ def test_load_welsh_language_lsoa(welsh_language_lsoa):
 
 def test_load_welsh_language_la(welsh_language_la):
     load_data_test(
-        load_fn=load_language_data,
+        load_fn=load_language_source_data,
         fixture=welsh_language_la,
         extension="CSV",
         data_resolution=DataResolution.LA,
@@ -74,12 +74,12 @@ def test_load_welsh_language_la(welsh_language_la):
 #  Population Data
 #  ---------------
 def test_load_population_data_wrong_resolution():
-    load_data_test_failure(load_population_data, dataset_name="Welsh Population")
+    load_data_test_failure(load_population_source_data, dataset_name="Welsh Population")
 
 
 def test_load_population_la(welsh_population_la):
     load_data_test(
-        load_fn=load_population_data,
+        load_fn=load_population_source_data,
         fixture=welsh_population_la,
         extension="CSV",
         data_resolution=DataResolution.LA,
@@ -89,7 +89,7 @@ def test_load_population_la(welsh_population_la):
 
 def test_load_population_la_over65(welsh_population_la_over65):
     load_data_test(
-        load_fn=load_population_data,
+        load_fn=load_population_source_data,
         fixture=welsh_population_la_over65,
         extension="CSV",
         data_resolution=DataResolution.LA,
@@ -100,7 +100,7 @@ def test_load_population_la_over65(welsh_population_la_over65):
 
 def test_load_population_lsoa(welsh_population_lsoa):
     load_data_test(
-        load_fn=load_population_data,
+        load_fn=load_population_source_data,
         fixture=welsh_population_lsoa,
         extension="CSV",
         data_resolution=DataResolution.LSOA,
@@ -110,7 +110,7 @@ def test_load_population_lsoa(welsh_population_lsoa):
 
 def test_load_population_lsoa_over65(welsh_population_lsoa_over65):
     load_data_test(
-        load_fn=load_population_data,
+        load_fn=load_population_source_data,
         fixture=welsh_population_lsoa_over65,
         extension="CSV",
         data_resolution=DataResolution.LSOA,
@@ -122,12 +122,12 @@ def test_load_population_lsoa_over65(welsh_population_lsoa_over65):
 #  IMD Data
 #  --------
 def test_load_deprivation_data_wrong_resolution():
-    load_data_test_failure(load_deprivation_data, dataset_name="IMD")
+    load_data_test_failure(load_deprivation_source_data, dataset_name="IMD")
 
 
 def test_load_deprivation_la(deprivation_la):
     load_data_test(
-        load_fn=load_deprivation_data,
+        load_fn=load_deprivation_source_data,
         fixture=deprivation_la,
         extension="CSV",
         data_resolution=DataResolution.LA,
@@ -137,7 +137,7 @@ def test_load_deprivation_la(deprivation_la):
 
 def test_load_deprivation_lsoa(deprivation_lsoa):
     load_data_test(
-        load_fn=load_deprivation_data,
+        load_fn=load_deprivation_source_data,
         fixture=deprivation_lsoa,
         extension="CSV",
         data_resolution=DataResolution.LSOA,
@@ -149,13 +149,13 @@ def test_load_deprivation_lsoa(deprivation_lsoa):
 #  -----------------------
 def test_load_population_density_data_wrong_resolution():
     load_data_test_failure(
-        load_population_density_data, dataset_name="Population Density"
+        load_population_density_source_data, dataset_name="Population Density"
     )
 
 
 def test_load_population_density_la(population_density_la):
     load_data_test(
-        load_fn=load_population_density_data,
+        load_fn=load_population_density_source_data,
         fixture=population_density_la,
         extension="CSV",
         data_resolution=DataResolution.LA,
@@ -165,7 +165,7 @@ def test_load_population_density_la(population_density_la):
 
 def test_load_population_density_lsoa(population_density_lsoa):
     load_data_test(
-        load_fn=load_population_density_data,
+        load_fn=load_population_density_source_data,
         fixture=population_density_lsoa,
         extension="XLSX",
         resolution=DataResolution.LSOA,
@@ -177,7 +177,7 @@ def test_load_population_density_lsoa(population_density_lsoa):
 # -----------------------
 def test_load_vulnerability_data(vulnerability_la):
     load_data_test(
-        load_fn=load_vulnerability_data,
+        load_fn=load_vulnerability_source_data,
         fixture=vulnerability_la,
         extension="XLSX",
         data_resolution=DataResolution.LA,
@@ -188,7 +188,7 @@ def test_load_vulnerability_data(vulnerability_la):
 # -------------------------------
 def test_load_community_cohesion_data(community_cohesion_lsoa):
     load_data_test(
-        load_fn=load_community_cohesion_data,
+        load_fn=load_community_cohesion_source_data,
         fixture=community_cohesion_lsoa,
         extension="XLSX",
         data_resolution=DataResolution.LA,
@@ -199,7 +199,7 @@ def test_load_community_cohesion_data(community_cohesion_lsoa):
 # ---------------------------------
 def test_load_internet_access_data(internet_access_la):
     load_data_test(
-        load_fn=load_internet_access_data,
+        load_fn=load_internet_access_source_data,
         fixture=internet_access_la,
         extension="XLSX",
         data_resolution=DataResolution.LA,
@@ -208,7 +208,7 @@ def test_load_internet_access_data(internet_access_la):
 
 def test_load_internet_use_data(internet_use_la):
     load_data_test(
-        load_fn=load_internet_use_data,
+        load_fn=load_internet_use_source_data,
         fixture=internet_use_la,
         extension="XLSX",
         data_resolution=DataResolution.LA,
@@ -219,7 +219,7 @@ def test_load_internet_use_data(internet_use_la):
 #  ------------------------
 def test_load_ethnicity_data(ethnicity_la):
     load_data_test(
-        load_fn=load_ethnicity_data,
+        load_fn=load_ethnicity_source_data,
         fixture=ethnicity_la,
         extension="XLSX",
         data_resolution=DataResolution.LA,
