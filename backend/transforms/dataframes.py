@@ -119,14 +119,14 @@ class Rename:
             self._index = None
         else:
             self._index_cal = None
-            self._index = {} if index is None else index
+            self._index = index
 
         if callable(columns):
             self._col_call = columns
             self._columns = None
         else:
             self._col_call = None
-            self._columns = {} if columns is None else columns
+            self._columns = columns
         if callable(mapper):
             self._mapper_cal = mapper
             self._mapper = None
@@ -145,7 +145,7 @@ class Rename:
             if self._mapper_cal is not None:
                 self._mapper = self._mapper_cal(df)
 
-            if self._index or self._columns:
+            if self._index is not None or self._columns is not None:
                 df = df.rename(index=self._index, columns=self._columns, errors=errors)
             else:
                 df = df.rename(mapper=self._mapper, axis=self._axis, errors=errors)
@@ -180,17 +180,23 @@ class Drop:
             self._index = None
         else:
             self._index_call = None
-            self._index = [] if index is None else index
-            if not isinstance(self._index, list) and not isinstance(self._index, str):
+            self._index = index
+            if (
+                self._index is not None
+                and not isinstance(self._index, list)
+                and not isinstance(self._index, str)
+            ):
                 self._index = list(self._index)
         if callable(columns):
             self._columns_call = columns
             self._columns = None
         else:
             self._columns_call = None
-            self._columns = [] if columns is None else columns
-            if not isinstance(self._columns, list) and not isinstance(
-                self._columns, str
+            self._columns = columns
+            if (
+                self._columns is not None
+                and not isinstance(self._columns, list)
+                and not isinstance(self._columns, str)
             ):
                 self._columns = list(self._columns)
         if callable(labels):
