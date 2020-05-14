@@ -162,8 +162,20 @@ def test_drop_transformation_index_and_column(df_drop_example):
     )
 
 
+def test_drop_transformation_index_and_column_with_callables(df_drop_example):
+    r = Drop(index=lambda d: [0], columns=lambda d: d.columns[:2])
+    assert_frame_equal(
+        r(df_drop_example), df_drop_example.drop(index=[0], columns=["A", "B"])
+    )
+
+
 def test_drop_transformation_index_only(df_drop_example):
     r = Drop(index=[0])
+    assert_frame_equal(r(df_drop_example), df_drop_example.drop(index=[0]))
+
+
+def test_drop_transformation_index_only_with_callable(df_drop_example):
+    r = Drop(index=lambda d: [0])
     assert_frame_equal(r(df_drop_example), df_drop_example.drop(index=[0]))
 
 
@@ -172,14 +184,31 @@ def test_drop_transformation_column_only(df_drop_example):
     assert_frame_equal(r(df_drop_example), df_drop_example.drop(columns=["A", "B"]))
 
 
+def test_drop_transformation_column_only_with_callable(df_drop_example):
+    r = Drop(columns=lambda d: ["A", "B"])
+    assert_frame_equal(r(df_drop_example), df_drop_example.drop(columns=["A", "B"]))
+
+
 def test_drop_transformation_labels_axis_0(df_drop_example):
     r = Drop(labels=[0], axis=0)
+    assert_frame_equal(r(df_drop_example), df_drop_example.drop(index=[0]))
+
+
+def test_drop_transformation_labels_axis_0_with_callable(df_drop_example):
+    r = Drop(labels=lambda d: [0], axis=0)
     assert_frame_equal(r(df_drop_example), df_drop_example.drop(index=[0]))
 
 
 def test_drop_transformation_labels_axis_1(df_drop_example):
     r = Drop(labels=["A", "B"], axis=1)
     assert_frame_equal(r(df_drop_example), df_drop_example.drop(columns=["A", "B"]))
+
+
+def test_drop_transformation_labels_axis_1_with_callable(df_drop_example):
+    r = Drop(labels=lambda d: d.columns[:2], axis=1)
+    assert_frame_equal(
+        r(df_drop_example), df_drop_example.drop(columns=df_drop_example.columns[:2])
+    )
 
 
 def test_drop_transformation_labels_wrong_axis(df_drop_example):
@@ -200,7 +229,16 @@ def test_drop_transformation_labels_wrong_columns_drop(df_drop_example):
         r(df_drop_example)
 
 
-def test_drop_transformation_labels_tuple_type(df_drop_example):
+def test_drop_transformation_labels_with_failing_callable(df_drop_example):
     with pytest.raises(DataFrameTransformError):
-        r = Drop(labels=("A",), axis=0)
+        r = Drop(labels=lambda d: d.columns[0], axis=0)
         r(df_drop_example)
+
+
+def test_drop_transformation_labels_tuple_type(df_drop_example):
+    try:
+        r = Drop(labels=("A",), axis=1)
+        r(df_drop_example)
+        assert True
+    except (DataFrameTransformError, Exception):
+        assert False

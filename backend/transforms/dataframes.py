@@ -13,7 +13,7 @@ from pandas.core.indexing import IndexingError
 
 T = TypeVar("T", str, int)
 Selector = Callable[[pd.DataFrame], Union[pd.Series, Dict]]
-
+DropSelector = Callable[[pd.DataFrame], Union[pd.Series, List[T]]]
 
 __all__ = [
     "Transpose",
@@ -169,25 +169,50 @@ class Drop:
 
     def __init__(
         self,
-        index: Union[str, Sequence[T]] = None,
-        columns: Union[str, Sequence[T]] = None,
-        labels: Union[str, Sequence[T]] = None,
+        index: Union[DropSelector, str, Sequence[T]] = None,
+        columns: Union[DropSelector, str, Sequence[T]] = None,
+        labels: Union[DropSelector, str, Sequence[T]] = None,
         axis: int = None,
     ):
-        self._index = [] if index is None else index
-        self._columns = [] if columns is None else columns
         self._axis = axis
-        self._labels = [] if labels is None else labels
-        if not isinstance(self._index, list) and not isinstance(self._index, str):
-            self._index = list(self._index)
-        if not isinstance(self._columns, list) and not isinstance(self._columns, str):
-            self._columns = list(self._columns)
-        if not isinstance(self._labels, list) and not isinstance(self._labels, str):
-            self._labels = list(self._labels)
+        if callable(index):
+            self._index_call = index
+            self._index = None
+        else:
+            self._index_call = None
+            self._index = [] if index is None else index
+            if not isinstance(self._index, list) and not isinstance(self._index, str):
+                self._index = list(self._index)
+        if callable(columns):
+            self._columns_call = columns
+            self._columns = None
+        else:
+            self._columns_call = None
+            self._columns = [] if columns is None else columns
+            if not isinstance(self._columns, list) and not isinstance(
+                self._columns, str
+            ):
+                self._columns = list(self._columns)
+        if callable(labels):
+            self._labels_call = labels
+            self._labels = None
+        else:
+            self._labels_call = None
+            self._labels = [] if labels is None else labels
+            if not isinstance(self._labels, list) and not isinstance(self._labels, str):
+                self._labels = list(self._labels)
 
     def __call__(self, df: pd.DataFrame) -> pd.DataFrame:
         try:
             errors = "raise"
+            # Check callable first
+            if self._index_call is not None:
+                self._index = self._index_call(df)
+            if self._columns_call is not None:
+                self._columns = self._columns_call(df)
+            if self._labels_call is not None:
+                self._labels = self._labels_call(df)
+
             if self._index or self._columns:
                 df = df.drop(index=self._index, columns=self._columns, errors=errors)
             else:
