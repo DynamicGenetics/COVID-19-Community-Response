@@ -89,9 +89,14 @@ def ethnicity_la(data_folder):
     data_fpath = os.path.join(data_folder, fname)
     df = pd.read_excel(data_fpath, sheet_name="By Local Authority", usecols="B:X").T
     df.reset_index(inplace=True)
-    df.rename(columns=df.iloc[0], inplace=True)
-    df.drop(df.index[0], inplace=True)
     df.drop(df.columns[1], axis=1, inplace=True)
+    df.rename(columns={"index": 0}, inplace=True)
+    df.rename(
+        columns={i: c for i, c in enumerate(df.iloc[0].values)},
+        inplace=True,
+        errors="raise",
+    )
+    df.drop(df.index[0], inplace=True)
     return df
 
 

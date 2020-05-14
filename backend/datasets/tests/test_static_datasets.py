@@ -13,6 +13,7 @@ from datasets.static_datasets import (
     load_vulnerability_data,
     load_internet_access_data,
     load_internet_use_data,
+    load_ethnicity_data,
 )
 
 
@@ -296,6 +297,17 @@ def test_load_internet_use_data(internet_use_la):
     load_data_test(
         load_fn=load_internet_use_data,
         fixture=internet_use_la,
+        extension="XLSX",
+        data_resolution=DataResolution.LA,
+    )
+
+
+#  Ethnicity Data (LA only)
+#  ------------------------
+def test_load_ethnicity_data(ethnicity_la):
+    load_data_test(
+        load_fn=load_ethnicity_data,
+        fixture=ethnicity_la,
         extension="XLSX",
         data_resolution=DataResolution.LA,
     )

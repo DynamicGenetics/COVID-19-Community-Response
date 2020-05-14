@@ -7,6 +7,7 @@ from functools import partial
 from enum import Enum
 from typing import Callable
 from transforms import Transpose, IndexLocSelector, ResetIndex, Compose
+from transforms import Rename, Drop
 from datasets import SOURCE_DATA_FOLDER, UnsupportedDataResolution
 from datasets import DataResolution
 
@@ -374,23 +375,21 @@ def load_internet_use_data() -> SourceDataset:
 
 def load_ethnicity_data() -> SourceDataset:
     """Ethnicity Data (LA only)"""
-    # # This data is formatted the wrong way in the spreadsheet so needs extra work
-    # SOURCE_ETHNICITY_LA = pd.read_excel(
-    #     p("la_lhb_ethnicity.xlsx"), sheet_name="By Local Authority", usecols="B:X"
-    # ).T
-    # SOURCE_ETHNICITY_LA.reset_index(inplace=True)
-    # SOURCE_ETHNICITY_LA.rename(columns=SOURCE_ETHNICITY_LA.iloc[0], inplace=True)
-    # SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.index[0], inplace=True)
-    # SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.columns[1], axis=1, inplace=True)
-    pass
-
-
-#
-# # This data is formatted the wrong way in the spreadsheet so needs extra work
-# SOURCE_ETHNICITY_LA = pd.read_excel(
-#     p("la_lhb_ethnicity.xlsx"), sheet_name="By Local Authority", usecols="B:X"
-# ).T
-# SOURCE_ETHNICITY_LA.reset_index(inplace=True)
-# SOURCE_ETHNICITY_LA.rename(columns=SOURCE_ETHNICITY_LA.iloc[0], inplace=True)
-# SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.index[0], inplace=True)
-# SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.columns[1], axis=1, inplace=True)
+    # This data is formatted the wrong way in the spreadsheet so needs extra work
+    transform = Compose(
+        [
+            Transpose(),
+            ResetIndex(drop=False),
+            Drop(labels=lambda d: d.columns[1], axis=1),
+            Rename(columns={"index": 0}),
+            Rename(columns=lambda d: {i: c for i, c in enumerate(d.iloc[0].values)}),
+            Drop(labels=lambda d: d.index[0]),
+        ]
+    )
+    return SourceDataset(
+        p("la_lhb_ethnicity.xlsx"),
+        resolution=DataResolution.LA,
+        transform=transform,
+        sheet_name="By Local Authority",
+        usecols="B:X",
+    )
