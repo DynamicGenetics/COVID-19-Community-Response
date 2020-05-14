@@ -8,10 +8,11 @@ together to create a transformation pipeline.
 """
 
 import pandas as pd
-from typing import List, Sequence, Union, TypeVar
+from typing import List, Sequence, Union, TypeVar, Callable, Dict
 from pandas.core.indexing import IndexingError
 
 T = TypeVar("T", str, int)
+Selector = Callable[[pd.DataFrame], Union[pd.Series, Dict]]
 
 
 __all__ = [
@@ -105,15 +106,45 @@ class Rename:
     have a transformation that fails silently
     """
 
-    def __init__(self, index=None, columns=None, mapper=None, axis: int = None):
-        self._index = {} if index is None else index
-        self._columns = {} if columns is None else columns
+    def __init__(
+        self,
+        index: Union[Selector, Dict] = None,
+        columns: Union[Selector, Dict] = None,
+        mapper: Union[Selector, Dict] = None,
+        axis: int = None,
+    ):
         self._axis = axis  # No validation of index as pandas doesn't do
-        self._mapper = mapper
+        if callable(index):
+            self._index_cal = index
+            self._index = None
+        else:
+            self._index_cal = None
+            self._index = {} if index is None else index
+
+        if callable(columns):
+            self._col_call = columns
+            self._columns = None
+        else:
+            self._col_call = None
+            self._columns = {} if columns is None else columns
+        if callable(mapper):
+            self._mapper_cal = mapper
+            self._mapper = None
+        else:
+            self._mapper_cal = None
+            self._mapper = {} if mapper is None else mapper
 
     def __call__(self, df: pd.DataFrame) -> pd.DataFrame:
         try:
             errors = "raise"
+            # Check callable first
+            if self._index_cal is not None:
+                self._index = self._index_cal(df)
+            if self._col_call is not None:
+                self._columns = self._col_call(df)
+            if self._mapper_cal is not None:
+                self._mapper = self._mapper_cal(df)
+
             if self._index or self._columns:
                 df = df.rename(index=self._index, columns=self._columns, errors=errors)
             else:
