@@ -5,11 +5,15 @@ from transforms import Rename, Drop
 from transforms import DataFrameTransformError
 
 
+# Transpose
+# =========
 def test_transpose_transformation(dataframe):
     t = Transpose()
     assert_frame_equal(t(dataframe), dataframe.T)
 
 
+# IndexLocSelector
+# ================
 def test_iloc_selection_transformation(dataframe):
     t = IndexLocSelector(idxloc=[1, 20, 21, 38])
     assert_frame_equal(t(dataframe), dataframe.iloc[[1, 20, 21, 38]])
@@ -37,6 +41,8 @@ def test_iloc_selection_transformation_out_of_bounds(dataframe):
         t(dataframe)
 
 
+# Reset Index
+# ===========
 def test_reset_index_transformation(dataframe):
     with pytest.raises(AssertionError):
         ri = ResetIndex()
