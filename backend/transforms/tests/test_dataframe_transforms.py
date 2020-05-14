@@ -1,6 +1,7 @@
 import pytest
 from pandas.testing import assert_frame_equal
 from transforms import Transpose, IndexLocSelector, ResetIndex
+from transforms import Rename, Drop
 from transforms import DataFrameTransformError
 
 
@@ -40,3 +41,114 @@ def test_reset_index_transformation(dataframe):
     with pytest.raises(AssertionError):
         ri = ResetIndex()
         assert_frame_equal(ri(dataframe), dataframe)
+
+
+# Rename
+# ======
+def test_rename_transformation_index_and_column(df_rename_example):
+    r = Rename(index={0: "x", 1: "y", 2: "z"}, columns={"A": "a", "B": "c"})
+    assert_frame_equal(
+        r(df_rename_example),
+        df_rename_example.rename(
+            index={0: "x", 1: "y", 2: "z"}, columns={"A": "a", "B": "c"}
+        ),
+    )
+
+
+def test_rename_transformation_index_only(df_rename_example):
+    r = Rename(index={0: "x", 1: "y", 2: "z"})
+    assert_frame_equal(
+        r(df_rename_example), df_rename_example.rename(index={0: "x", 1: "y", 2: "z"})
+    )
+
+
+def test_rename_transformation_column_only(df_rename_example):
+    r = Rename(columns={"A": "a", "B": "c"})
+    assert_frame_equal(
+        r(df_rename_example), df_rename_example.rename(columns={"A": "a", "B": "c"})
+    )
+
+
+def test_rename_transformation_mapper_axis_0(df_rename_example):
+    r = Rename(mapper={0: "x", 1: "y", 2: "z"}, axis=0)
+    assert_frame_equal(
+        r(df_rename_example), df_rename_example.rename(index={0: "x", 1: "y", 2: "z"})
+    )
+
+
+def test_rename_transformation_mapper_axis_1(df_rename_example):
+    r = Rename(mapper={"A": "a", "B": "c"}, axis=1)
+    assert_frame_equal(
+        r(df_rename_example), df_rename_example.rename(columns={"A": "a", "B": "c"})
+    )
+
+
+def test_rename_transformation_mapper_wrong_axis(df_rename_example):
+    with pytest.raises(DataFrameTransformError):
+        r = Rename(mapper={"A": "a", "B": "c"}, axis=3)
+        r(df_rename_example)
+
+
+def test_rename_transformation_mapper_wrong_index_rename(df_rename_example):
+    with pytest.raises(DataFrameTransformError):
+        r = Rename(mapper={"3": "a", "B": "c"}, axis=0)
+        r(df_rename_example)
+
+
+def test_rename_transformation_mapper_wrong_column_rename(df_rename_example):
+    with pytest.raises(DataFrameTransformError):
+        r = Rename(mapper={"3": "a", "B": "c"}, axis=1)
+        r(df_rename_example)
+
+
+# Drop
+# ====
+def test_drop_transformation_index_and_column(df_drop_example):
+    r = Drop(index=[0], columns=["A", "B"])
+    assert_frame_equal(
+        r(df_drop_example), df_drop_example.drop(index=[0], columns=["A", "B"])
+    )
+
+
+def test_drop_transformation_index_only(df_drop_example):
+    r = Drop(index=[0])
+    assert_frame_equal(r(df_drop_example), df_drop_example.drop(index=[0]))
+
+
+def test_drop_transformation_column_only(df_drop_example):
+    r = Drop(columns=["A", "B"])
+    assert_frame_equal(r(df_drop_example), df_drop_example.drop(columns=["A", "B"]))
+
+
+def test_drop_transformation_labels_axis_0(df_drop_example):
+    r = Drop(labels=[0], axis=0)
+    assert_frame_equal(r(df_drop_example), df_drop_example.drop(index=[0]))
+
+
+def test_drop_transformation_labels_axis_1(df_drop_example):
+    r = Drop(labels=["A", "B"], axis=1)
+    assert_frame_equal(r(df_drop_example), df_drop_example.drop(columns=["A", "B"]))
+
+
+def test_drop_transformation_labels_wrong_axis(df_drop_example):
+    with pytest.raises(DataFrameTransformError):
+        r = Drop(labels=["A", "B"], axis=3)
+        r(df_drop_example)
+
+
+def test_drop_transformation_labels_wrong_index_drop(df_drop_example):
+    with pytest.raises(DataFrameTransformError):
+        r = Drop(labels=["A"], axis=0)
+        r(df_drop_example)
+
+
+def test_drop_transformation_labels_wrong_columns_drop(df_drop_example):
+    with pytest.raises(DataFrameTransformError):
+        r = Drop(labels=["A"], axis=0)
+        r(df_drop_example)
+
+
+def test_drop_transformation_labels_tuple_type(df_drop_example):
+    with pytest.raises(DataFrameTransformError):
+        r = Drop(labels=("A",), axis=0)
+        r(df_drop_example)
