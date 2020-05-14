@@ -2,7 +2,7 @@ import pytest
 from pandas.testing import assert_frame_equal
 from datasets.dataset import DataResolution, UnsupportedDataResolution
 
-from datasets.static_datasets import (
+from datasets.source_datasets import (
     load_language_data,
     load_population_data,
     load_deprivation_data,

@@ -1,4 +1,4 @@
-"""Handles reading of datasets from source folder"""
+"""Handles reading of datasets from static/source folder"""
 
 import os
 from functools import partial
