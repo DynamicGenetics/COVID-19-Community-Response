@@ -1,4 +1,4 @@
-"""Python Module to handle data loading"""
+"""Python Module to handle datasets loading"""
 
 # %% - Dataset and Data Map
 import os
@@ -8,7 +8,9 @@ from warnings import warn
 from dataclasses import dataclass
 
 
-DATA_FOLDER = os.path.join(os.path.abspath(os.path.dirname("__file__")), "..", "data")
+DATA_FOLDER = os.path.join(
+    os.path.abspath(os.path.dirname("__file__")), "..", "datasets"
+)
 
 
 @dataclass
@@ -120,7 +122,7 @@ def generate_la_keys(data_filename: str = "la_keys.geojson"):
     # Get rid of the (no longer needed) 'id_area' col - it's a duplicate of lad18cd
     la_key_df.drop("id_area", axis=1, inplace=True)
 
-    warn("Local Authorities Keys data generated!")
+    warn("Local Authorities Keys datasets generated!")
     la_key_df.to_file(os.path.join(DATA_FOLDER, data_filename), driver="GeoJSON")
 
 
