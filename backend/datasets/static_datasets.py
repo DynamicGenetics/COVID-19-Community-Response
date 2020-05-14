@@ -5,9 +5,12 @@ import geopandas as gpd
 import os
 from functools import partial
 from enum import Enum
-
+from typing import Callable
+from transforms import Transpose, IndexLocSelector, ResetIndex, Compose
 from datasets import SOURCE_DATA_FOLDER, UnsupportedDataResolution
 from datasets import DataResolution
+
+Transform = Callable[[pd.DataFrame], pd.DataFrame]
 
 # Shortcut to join Base Data folder with data file names
 p = partial(os.path.join, SOURCE_DATA_FOLDER)
@@ -44,6 +47,7 @@ class SourceDataset:
         data files when it is required,
     (2) just once, so saving and re-using the reference to the data
         for future calls.
+
     The format of the data to load will be automatically inferred from the
     file name. However, it is possible to specify which is the format
     of the data file - so to force specific loading functions, regardless
@@ -52,32 +56,50 @@ class SourceDataset:
     To allow for lazy deferred loading, extra options to pass to
     the (pandas/geopandas) data loading functions are supported.
 
+    Each SourceDataset is characterised by a resolution property,
+    specifying the level of details and geography allowed for
+    specific data.
+
+    Finally, it is also possible to inject custom pre-processing
+    transformation operations to be automatically applied before
+    the actual data is returned.
+
+    Parameters
+    ----------
+    filepath: str
+        Path to the data file
+    resolution: DataResolution
+        Resolution associated to the Dataset
+    data_format: DataFormats (default None)
+        Instance of DataFormats enumeration to force a specific
+        format and so loading function to use
+    transform: Transform (default None)
+        Callable instance to apply transformation to data
+    read_fn_params:
+        Additional parameters to pass to the load function
+
     Examples
     --------
-    >>> d = SourceDataset(filepath='path/to/datafile.csv')
+    >>> d = SourceDataset(filepath='path/to/datafile.csv', resolution=DataResolution.LA)
     >>> d.data_format
     CSV
+    >>> d.resolution
+    DataResolution.LA
     # This will load a dataset from a CSV file, passing `use_cols=[1, 2]` to
     # underneath pd.read_csv loading function
-    >>> d = SourceDataset(filepath='path/to/datafile.csv', use_cols=[1, 2])
+    >>> d = SourceDataset(filepath='path/to/datafile.csv',
+    ...                   resolution=DataResolution.LSOA, use_cols=[1, 2])
     >>> print(d.data.head())
     """
 
     def __init__(
-        self, filepath: str, data_format: DataFormats = None, **read_fn_params
+        self,
+        filepath: str,
+        resolution: DataResolution,
+        data_format: DataFormats = None,
+        transform: Transform = None,
+        **read_fn_params
     ):
-        """
-
-        Parameters
-        ----------
-        filepath: str
-            Path to the data file
-        data_format: DataFormats (default None)
-            Instance of DataFormats enumeration to force a specific
-            format and so loading function to use
-        read_fn_params:
-            Additional parameters to pass to the load function
-        """
         self._filepath = filepath
         if data_format is None:
             self._read_fn, self._extension = self._infer_format(filepath)
@@ -86,6 +108,8 @@ class SourceDataset:
             reverse_formats_map = {v: k for k, v in FORMAT_EXTENSIONS.items()}
             self._extension = reverse_formats_map[data_format][1:]
         self._read_fn_params = read_fn_params
+        self.transform = transform
+        self._resolution = resolution
         self._data = None  # Lazy loading
 
     @staticmethod
@@ -108,6 +132,8 @@ class SourceDataset:
         if self._data is None:
             try:
                 data = self._read_fn(self._filepath, **self._read_fn_params)
+                if self.transform:
+                    data = self.transform(data)
             except Exception as e:
                 self._data = None
                 raise e
@@ -118,6 +144,10 @@ class SourceDataset:
     @property
     def data_format(self):
         return self._extension.upper()
+
+    @property
+    def resolution(self):
+        return self._resolution
 
 
 # ------------------------------
@@ -167,11 +197,15 @@ def load_language_data(resolution: DataResolution) -> SourceDataset:
     else:
         if resolution == DataResolution.LSOA:
             sd = SourceDataset(
-                filepath=p("lsoa_welsh_language_2011.csv"), usecols=[2, 3]
+                filepath=p("lsoa_welsh_language_2011.csv"),
+                resolution=resolution,
+                usecols=[2, 3],
             )
         else:
             sd = SourceDataset(
-                filepath=p("la_welsh_frequency_2018-19.csv"), usecols=[1, 2, 3, 4]
+                filepath=p("la_welsh_frequency_2018-19.csv"),
+                resolution=resolution,
+                usecols=[1, 2, 3, 4],
             )
         return sd
 
@@ -205,13 +239,15 @@ def load_population_data(
                 data_filename = "lsoa_population_2018_19_over_65.csv"
             else:
                 data_filename = "lsoa_population_2018_19.csv"
-            sd = SourceDataset(p(data_filename))
+            sd = SourceDataset(p(data_filename), resolution=resolution)
         else:
             if over_65:
                 columns = [3, 14]
             else:
                 columns = [3, 15]
-            sd = SourceDataset(p("la_population_age_2019.csv"), usecols=columns)
+            sd = SourceDataset(
+                p("la_population_age_2019.csv"), resolution=resolution, usecols=columns
+            )
         return sd
 
 
@@ -235,9 +271,9 @@ def load_deprivation_data(resolution: DataResolution) -> SourceDataset:
         raise e
     else:
         if resolution == DataResolution.LSOA:
-            sd = SourceDataset(p("lsoa_IMD_2019.csv"))
+            sd = SourceDataset(p("lsoa_IMD_2019.csv"), resolution=resolution)
         else:
-            sd = SourceDataset(p("la_WIMD_2019.csv"))
+            sd = SourceDataset(p("la_WIMD_2019.csv"), resolution=resolution)
         return sd
 
 
@@ -263,93 +299,92 @@ def load_population_density_data(resolution: DataResolution) -> SourceDataset:
         if resolution == DataResolution.LSOA:
             sd = SourceDataset(
                 p("lsoa_pop_density_2018-19.xlsx"),
+                resolution=resolution,
                 sheet_name=3,
                 usecols="A,B,E",
                 skiprows=4,
             )
         else:
-            sd = SourceDataset(p("la_pop_density_2018.csv"), usecols=[1, 11])
-        return sd
-
-
-def load_vulnerable_and_cohesion_data(resolution: DataResolution) -> SourceDataset:
-    """
-    Welsh Vulnerable and Cohesion
-
-    Parameters
-    ----------
-    resolution: DataResolution
-        Resolution of interest for the dataset.
-        Supported resolutions are now LA and LSOA
-
-    Returns
-    -------
-        SourceDataset: Instance of SourceDataset for Welsh Population Density.
-    """
-    try:
-        _validate_resolution(resolution, dataset_name="Vulnerable and Cohesion")
-    except Exception as e:
-        raise e
-    else:
-        # vulnerable_and_cohesion = pd.read_excel(
-        #     p("la_vulnerableProxy_and_cohesion.xlsx"),
-        #     sheet_name="By local authority",
-        #     usecols="B:X",  # Sheet 4
-        # )
-        # # Select only the columns of interest and transpose
-        # vulnerable_and_cohesion = vulnerable_and_cohesion.iloc[[1, 20, 21, 38]].T
-        # # Reset index so the LA name isn't the index
-        # vulnerable_and_cohesion.reset_index(inplace=True)
-        #
-        # # # Seperate this dataframe out so it only contains one variable per dataframe
-        # SOURCE_VULNERABLE_LA = vulnerable_and_cohesion.iloc[:, [0, 4]].copy()
-        # SOURCE_COMM_COHESION_LA = vulnerable_and_cohesion.iloc[:, [0, 2, 3]].copy()
-
-        if resolution == DataResolution.LSOA:
             sd = SourceDataset(
-                p("lsoa_pop_density_2018-19.xlsx"),
-                sheet_name=3,
-                usecols="A,B,E",
-                skiprows=4,
+                p("la_pop_density_2018.csv"), resolution=resolution, usecols=[1, 11]
             )
-        else:
-            sd = SourceDataset(p("la_pop_density_2018.csv"), usecols=[1, 11])
         return sd
 
 
-#
-# # Read in Vulnerable and Community Cohesion Data
-# vulnerable_and_cohesion = pd.read_excel(
-#     p("la_vulnerableProxy_and_cohesion.xlsx"),
-#     sheet_name="By local authority",
-#     usecols="B:X",  # Sheet 4
-# )
-# # Select only the columns of interest and transpose
-# vulnerable_and_cohesion = vulnerable_and_cohesion.iloc[[1, 20, 21, 38]].T
-# # Reset index so the LA name isn't the index
-# vulnerable_and_cohesion.reset_index(inplace=True)
-# # Seperate this dataframe out so it only contains one variable per dataframe
-# SOURCE_VULNERABLE_LA = vulnerable_and_cohesion.iloc[:, [0, 4]].copy()
-# SOURCE_COMM_COHESION_LA = vulnerable_and_cohesion.iloc[:, [0, 2, 3]].copy()
-# #
-# SOURCE_INTERNET_ACCESS_LA = pd.read_excel(
-#     p(
-#         "National Survey results - internet use and freqency of access by local authority.xlsx"
-#     ),
-#     usecols="A,B",
-#     skiprows=4,  # Data starts on row 5
-#     nrows=22,  # Only parse 22 rows as there is more data underneath
-# )
-#
-# # NB Here we aren't reading in the last column, because it is half empty.
-# SOURCE_INTERNET_USE_LA = pd.read_excel(
-#     p(
-#         "National Survey results - internet use and freqency of access by local authority.xlsx"
-#     ),
-#     usecols="A,B,C",
-#     skiprows=34,  # Data starts on row 5
-#     nrows=22,  # Only parse 22 necessary rows
-# )
+def load_vulnerability_data() -> SourceDataset:
+    """Vulnerability data (LA only)"""
+    transform = Compose(
+        [
+            IndexLocSelector(idxloc=[1, 20, 21, 38]),
+            Transpose(),
+            ResetIndex(),
+            IndexLocSelector(cloc=[0, 4]),
+        ]
+    )
+    return SourceDataset(
+        filepath=p("la_vulnerableProxy_and_cohesion.xlsx"),
+        transform=transform,
+        resolution=DataResolution.LA,
+        sheet_name="By local authority",
+        usecols="B:X",
+    )
+
+
+def load_community_cohesion_data() -> SourceDataset:
+    """Community Cohesion Data (LA only)"""
+    transform = Compose(
+        [
+            IndexLocSelector(idxloc=[1, 20, 21, 38]),
+            Transpose(),
+            ResetIndex(),
+            IndexLocSelector(cloc=[0, 2, 3]),
+        ]
+    )
+    return SourceDataset(
+        filepath=p("la_vulnerableProxy_and_cohesion.xlsx"),
+        transform=transform,
+        resolution=DataResolution.LA,
+        sheet_name="By local authority",
+        usecols="B:X",
+    )
+
+
+def load_internet_access_data() -> SourceDataset:
+    """Internet Access (LA only)"""
+    return SourceDataset(
+        p("national_survey_internet_use_and_access_la.xlsx"),
+        resolution=DataResolution.LA,
+        usecols="A,B",
+        skiprows=4,
+        nrows=22,
+    )
+
+
+def load_internet_use_data() -> SourceDataset:
+    """Internet Access (LA only)"""
+    # NB Here we aren't reading in the last column, because it is half empty.
+    return SourceDataset(
+        p("national_survey_internet_use_and_access_la.xlsx"),
+        resolution=DataResolution.LA,
+        usecols="A,B,C",
+        skiprows=34,
+        nrows=22,
+    )
+
+
+def load_ethnicity_data() -> SourceDataset:
+    """Ethnicity Data (LA only)"""
+    # # This data is formatted the wrong way in the spreadsheet so needs extra work
+    # SOURCE_ETHNICITY_LA = pd.read_excel(
+    #     p("la_lhb_ethnicity.xlsx"), sheet_name="By Local Authority", usecols="B:X"
+    # ).T
+    # SOURCE_ETHNICITY_LA.reset_index(inplace=True)
+    # SOURCE_ETHNICITY_LA.rename(columns=SOURCE_ETHNICITY_LA.iloc[0], inplace=True)
+    # SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.index[0], inplace=True)
+    # SOURCE_ETHNICITY_LA.drop(SOURCE_ETHNICITY_LA.columns[1], axis=1, inplace=True)
+    pass
+
+
 #
 # # This data is formatted the wrong way in the spreadsheet so needs extra work
 # SOURCE_ETHNICITY_LA = pd.read_excel(
