@@ -12,12 +12,8 @@ from datasets import SOURCE_DATA_FOLDER
 p = partial(os.path.join, SOURCE_DATA_FOLDER)
 
 
-# ------------------------------
-# Load Static Datasets functions
-# ------------------------------
-
-
 # Utils
+# -----
 def _validate_resolution(resolution: DataResolution, dataset_name: str = ""):
     """
     Raises
@@ -32,6 +28,9 @@ def _validate_resolution(resolution: DataResolution, dataset_name: str = ""):
         raise UnsupportedDataResolution(dataset_name=dataset_name)
 
 
+# ------------------------------
+# Load Static Datasets functions
+# ------------------------------
 def load_language_data(resolution: DataResolution) -> SourceDataset:
     """
     Welsh Language Data
