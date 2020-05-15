@@ -231,3 +231,44 @@ class Drop:
             raise DataFrameTransformError(internal_error=e)
         else:
             return df
+
+
+class FilterOnColumnPrefix:
+    """
+    Transformer that select a subset filtered input
+    dataframe based on the prefix in the name of target
+    column. By default, NaN values are removed.
+    """
+
+    def __init__(self, column: str, name_contains: str, strip_na: bool = True):
+        self._column = column
+        self._colname_filter = name_contains
+        self._na = ~strip_na
+
+    def __call__(self, df: pd.DataFrame) -> pd.DataFrame:
+        try:
+            df = df[
+                df[self._column].str.contains(self._colname_filter, na=self._na)
+            ].copy()
+        except (ValueError, KeyError) as e:
+            raise DataFrameTransformError(internal_error=e)
+        else:
+            return df
+
+
+class DropNa:
+    """"""
+
+    def __init__(self, columns: Union[str, List[str]]):
+        self._subset = columns
+
+    def __call__(self, df: pd.DataFrame) -> pd.DataFrame:
+        try:
+            df = df.dropna(subset=self._subset)
+        except (ValueError, KeyError) as e:
+            raise DataFrameTransformError(internal_error=e)
+        else:
+            return df
+
+
+# TODO: Bracketed Data --> Lambda Transformer with Partial
