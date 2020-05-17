@@ -413,29 +413,76 @@ const cc = (function(d3){
       linkedArea = null;
     }
 
-    const simulation = d3.forceSimulation(data)
-      .force("x", d3.forceX(function(d) { return x(d[x_var]); }).strength(5))
-      .force("y", d3.forceY(height / 2))
-      .force("collide", d3.forceCollide(data[0].circleSize * 1.5))
-      .stop();
+    if(data.length < 100){
+      const simulation = d3.forceSimulation(data)
+        .force("x", d3.forceX(function(d) { return x(d[x_var]); }).strength(5))
+        .force("y", d3.forceY(height / 2))
+        .force("collide", d3.forceCollide(data[0].circleSize * 1.5))
+        .stop();
 
-    for (var i = 0; i < 120; ++i) simulation.tick();
+      for (var i = 0; i < 120; ++i) simulation.tick();
 
-    // Graph data points
-    svg.append("g")
-      .attr("stroke", "#505050")
-      .attr("stroke-width", 1.5)
-    .selectAll("circle")
-      .data(data)
-      .join("circle")
-      .attr("id", d => d.areaID)
-      .attr("class", "datapoints")
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y)
-      .attr("r", d => d.circleSize)
-      .attr("fill", d => d.colour)
-      .on("mouseover", handleMouseOver)
-      .on("mouseout", handleMouseOut);
+      // Graph data points
+      svg.append("g")
+        .attr("stroke", "#505050")
+        .attr("stroke-width", 1.5)
+      .selectAll("circle")
+        .data(data)
+        .join("circle")
+        .attr("id", d => d.areaID)
+        .attr("class", "datapoints")
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y)
+        .attr("r", d => d.circleSize)
+        .attr("fill", d => d.colour)
+        .on("mouseover", handleMouseOver)
+        .on("mouseout", handleMouseOut);
+    } else {
+      // Set the y scale
+      let y = d3.scaleLinear()
+        .domain([-3, 3]).nice()
+        .range([height - margin.bottom, margin.top]);
+
+      let randomY = d3.randomBates(7);
+
+      let contours = d3.contourDensity()
+        .x(d => x(d[x_var]))
+        .y(d => {return y((randomY() - 0.5) * 6)})
+        // .size([(width - margin.left - margin.right), (height - margin.top - margin.bottom)])
+        .size([width, height])
+        .bandwidth(20)
+        .thresholds(30)
+        (data)
+
+      svg.append("g")
+         .attr("fill", "none")
+         .attr("stroke", "#000")
+         .attr("stroke-opacity", 0.15)
+         .attr("stroke-linejoin", "round")
+       .selectAll("path")
+       .data(contours)
+       .enter().append("path")
+         .attr("stroke-width", (d, i) => i % 5 ? 0.25 : 1)
+         .attr("d", d3.geoPath());
+
+       svg.append("g")
+         .attr("stroke", "#505050")
+         .attr("stroke-width", 0.5)
+       .selectAll("circle")
+         .data(data)
+         .join("circle")
+         .attr("id", d => d.areaID)
+         .attr("class", "datapoints")
+         .attr("cx", d => x(d[x_var]))
+         .attr("cy", d => {return y((randomY() - 0.5) * 6)})
+         .attr("r", 2)
+         .attr("fill", d => d.colour)
+
+
+
+    }
+
+
   } // end drawBeeswarm
 
   // Calculate variables and redraw plot, recolour map
@@ -453,10 +500,10 @@ const cc = (function(d3){
     });
 
     if(chosen_objs.every(d => {
-      // return (d.lsoa === true);
+      return (d.lsoa === true);
 
       // Temporarily disable LSOA level
-      return false;
+      // return false;
     })){
       data = data.LSOAs;
       boundaries = LSOAs;

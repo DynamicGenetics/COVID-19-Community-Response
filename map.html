@@ -32,7 +32,7 @@
         <h3 class="ui dividing header">
           <div class="content">
             <span class="landing-page-light">Wales Community Response</span>
-            <div class="sub header">Citizen-led support in Wales</div>
+            <div class="sub header">Citizen-led support during the COVID-19 outbreak</div>
           </div>
         </h3>
         <svg id="plot-area"></svg>
@@ -187,9 +187,11 @@
     				},
             "paint": {
               'fill-color': ["get","colour"],
-              'fill-opacity': ['interpolate', ["exponential", 2], ['zoom'], 7, 0.8, 11, 0.2]
+              'fill-opacity': ['interpolate', ["exponential", 2], ['zoom'], 7, 0.8, 11, 0.4]
             }
-          }, "settlement-subdivision-label");
+          // }, "settlement-subdivision-label");
+          }, "road-simple");
+
           map.addLayer({
             "id": "LA_borders",
             "type": "line",
@@ -207,6 +209,8 @@
               ]
             }
           }, "settlement-subdivision-label");
+          // }, "road-simple");
+
 
           map.addSource("boundaries_LSOAs", {
             "type": "geojson",
@@ -222,9 +226,11 @@
     				},
             "paint": {
               'fill-color': ["get","colour"],
-              'fill-opacity': ['interpolate', ["exponential", 6], ['zoom'], 7, 0.8, 11, 0.2]
+              'fill-opacity': ['interpolate', ["exponential", 6], ['zoom'], 7, 0.8, 11, 0.4]
             }
-          }, "settlement-subdivision-label");
+          // }, "settlement-subdivision-label");
+          }, "road-simple");
+
           map.addLayer({
             "id": "LSOA_borders",
             "type": "line",
@@ -242,6 +248,8 @@
               ]
             }
           }, "settlement-subdivision-label");
+          // }, "road-simple");
+
 
           map.addSource("groups_source", {type: "geojson", data: groups});
     			map.addLayer({
@@ -258,6 +266,7 @@
               "circle-color": "#505050"
     				}
     			}, "settlement-subdivision-label");
+          // }, "road-simple");
 
           cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs);
 
@@ -329,20 +338,30 @@
                   {source: "boundaries_LSOAs", id: hoveredArea},
                   {hover: false}
                 );
-                if(e.features[0].id != hoveredArea){
-                  d3.selectAll("circle.datapoints")
-                    .transition().duration(50)
-                    .attr("r", "3").attr("stroke-width", 1.5);
-                }
+                // if(e.features[0].id != hoveredArea){
+                //   d3.selectAll("circle.datapoints")
+                //     .transition().duration(50)
+                //     .attr("r", "2").attr("stroke-width", 0.5);
+                // }
+
+                d3.select("#target_overlay").remove();
               }
               hoveredArea = e.features[0].id;
               map.setFeatureState(
                 {source: "boundaries_LSOAs", id: hoveredArea},
                 {hover: true}
               );
-              d3.select("circle#" + e.features[0].properties.LSOA11CD)
-                .transition().duration(50)
-                .attr("r", "12").attr("stroke-width", 2);
+              // d3.select("circle#" + e.features[0].properties.LSOA11CD)
+              //   .transition().duration(50)
+              //   .attr("r", "6").attr("stroke-width", 1);
+
+              let target = d3.select("circle#" + e.features[0].properties.LSOA11CD);
+              let tx = target.attr("cx");
+              let ty = target.attr("cy");
+              let tfill = target.attr("fill");
+              let overlay = d3.select("#plot-area").append("g").attr("id", "target_overlay");
+
+              overlay.append("circle").attr("r", "6").attr("stroke", "#505050").attr("stroke-width", 1.5).attr("cx", tx).attr("cy", ty).attr("fill", tfill);
             }
           });
 
@@ -353,9 +372,11 @@
                 {source: "boundaries_LSOAs", id: hoveredArea},
                 {hover: false}
               );
-              d3.selectAll("circle.datapoints")
-                .transition().duration(50)
-                .attr("r", "3").attr("stroke-width", 1.5);
+              // d3.selectAll("circle.datapoints")
+              //   .transition().duration(50)
+              //   .attr("r", "2").attr("stroke-width", 0.5);
+
+              d3.select("#target_overlay").remove();
             }
             hoveredArea = null;
           });
