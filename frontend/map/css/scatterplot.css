@@ -74,6 +74,11 @@
   margin-right: 52px;
 } */
 
+.landing-page-light {
+  font-family: 'Raleway', Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  font-weight: 400;
+}
+
 #sidebar h3 .sub.header {
   margin: 0px;
 }
