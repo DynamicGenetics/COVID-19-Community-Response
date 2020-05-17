@@ -131,7 +131,7 @@ const cc = (function(d3){
     // Axis functions
     xAxis = g => g
       .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".0s")))
+      .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".2s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
       .call(g => g.select(".domain").remove())
@@ -148,7 +148,7 @@ const cc = (function(d3){
 
     yAxis = g => g
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).tickFormat(d3.format(".0s")))
+      .call(d3.axisLeft(y).tickFormat(d3.format(".2s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
       .call(g => g.select(".domain").remove())
@@ -317,7 +317,7 @@ const cc = (function(d3){
     // Axis function
     xAxis = g => g
       .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".0s")))
+      .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".2s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
       .call(g => g.select(".domain").remove())
