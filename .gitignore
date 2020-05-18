@@ -2,12 +2,16 @@
 data/deprec/
 # leriomaggio: ignored as this is a folder for local dev exps.
 data/local
+# ninadicara: other options for local data folders to be ignored
+backend/data/static/source/local
 
 # LA Keys
 data/la_keys.geojson
 
 #Twitter Dataset should be ignored
 data/tweets_dataset.csv
+# Updated git ignore for twitter dataset after reorganisation
+backend/data/live/raw/tweets_dataset.csv
 
 # Development Mapbox access token
 frontend/js/mapbox-access-token.js
