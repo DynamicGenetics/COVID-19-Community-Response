@@ -35,7 +35,7 @@
             <div class="sub header">Citizen-led support during the COVID-19 outbreak</div>
           </div>
         </h3>
-        <svg id="plot-area"></svg>
+        <div id="plot-container"><svg id="plot-area"></svg></div>
         <div id="support_area">
           <!-- <h3 class="ui header">Support</h3> -->
           <h4 class="ui horizontal support divider header">
@@ -95,9 +95,10 @@
       const height=380;
       const margin = ({top: 30, right: 20, bottom: 40, left: 40});
 
-      // Load data for x and y and wait for both
-      // const x_promise = d3.csv("./data/covidCases_phw.csv", function(d, i) {return {lad18nm: d.lad18nm, areaID: d.areaID, x: +d.value};});
-      // const y_promise = d3.csv("./data/censusData_comm.csv", function(d, i) {return {lad18nm: d.lad18nm, areaID: d.areaID, y: +d.value};});
+      // Define a hidden div for tooltips
+      d3.select("#plot-container").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
       // Load json data structure
       const data_promise = d3.json("./frontend/map/data/data.json");
@@ -119,6 +120,7 @@
         const supports = data.variables.filter(d => d.class === "support");
         const needs = data.variables.filter(d => d.class === "challenge");
 
+        // Set up selection input for supports
         d3.select("#multi-select_support input").property("value", supports[0].name);
         console.log(supports.map(d => {return {name: d.label, value: d.name}}));
         const support_menu = d3.select("#support_menu");
@@ -126,14 +128,14 @@
           support_menu.append("div").attr("class", "item").attr("data-value", element.name).html(element.label);
         });
 
-
+        // Set up selection input for needs
         d3.select("#multi-select_needs input").property("value", needs[0].name);
         const needs_menu = d3.select("#needs_menu");
         needs.forEach(element => {
           needs_menu.append("div").attr("class", "item").attr("data-value", element.name).html(element.label);
         });
 
-
+        // Select variables for page load
         let chosen_supports = [supports[0].name];
         let chosen_needs = [needs[0].name];
         // let chosen_needs = needs.map(d => d.name);
@@ -173,6 +175,7 @@
 
         map.on('load', function () {
 
+          // Add map sources and layers
           map.addSource("boundaries_LAs", {
             "type": "geojson",
             "data": LAs,
@@ -187,10 +190,10 @@
     				},
             "paint": {
               'fill-color': ["get","colour"],
-              'fill-opacity': ['interpolate', ["exponential", 2], ['zoom'], 7, 0.8, 11, 0.4]
+              'fill-opacity': ['interpolate', ["exponential", 2], ['zoom'], 7, 0.8, 13, 0.3]
             }
-          // }, "settlement-subdivision-label");
-          }, "road-simple");
+          }, "settlement-subdivision-label");
+          // }, "road-simple");
 
           map.addLayer({
             "id": "LA_borders",
@@ -226,10 +229,10 @@
     				},
             "paint": {
               'fill-color': ["get","colour"],
-              'fill-opacity': ['interpolate', ["exponential", 6], ['zoom'], 7, 0.8, 11, 0.4]
+              'fill-opacity': ['interpolate', ["exponential", 6], ['zoom'], 7, 0.8, 13, 0.3]
             }
-          // }, "settlement-subdivision-label");
-          }, "road-simple");
+          }, "settlement-subdivision-label");
+          // }, "road-simple");
 
           map.addLayer({
             "id": "LSOA_borders",
@@ -268,8 +271,6 @@
     			}, "settlement-subdivision-label");
           // }, "road-simple");
 
-          cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs);
-
           // Hillshade layer (optional)
           // map.addSource('dem', {'type': 'raster-dem','url': 'mapbox://mapbox.terrain-rgb'});
           // map.addLayer({
@@ -280,6 +281,8 @@
           //   // where hillshading sits in the Mapbox Outdoors style
           // }, 'waterway-shadow');
 
+          // Draw plot of chosen variables, and colour map to match
+          cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs);
 
           // Local authority mouse events
           map.on('mouseover', "local_authorities", function(e) {

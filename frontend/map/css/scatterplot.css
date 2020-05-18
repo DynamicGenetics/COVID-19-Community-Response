@@ -39,15 +39,47 @@
 	height: 100vh;
 }
 
+#plot-container {
+  margin-left: 12px;
+  position: relative;
+}
+
 #plot-area {
   height: 390px;
   width: 390px;
   z-index: 6;
-  padding-left: 12px;
+  /* padding-left: 12px; */
   font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
-  /* position: absolute;
-  top: 12px;
+  /* top: 12px;
   left: 10px; */
+}
+
+.tooltip {
+  position: absolute;
+  width: 120px;
+  height: 26px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 20;
+  /* display: inline; */
+  left: 0px;
+  right: 0px;
+}
+
+.tooltip::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  right: 10px;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
 }
 
 #sidebar {
