@@ -28,6 +28,28 @@ const cc = (function(d3){
     return colourScale;
   }
 
+  function getColourScale_need(values){
+    let xcs = d3.extent(values);
+    // ColorBrewer palette, interpolation in LAB for perceptual constancy
+    let colourScale = d3.scaleLinear()
+      .domain([xcs[0],
+        xcs[1]])
+      .range(["#ffffef","#dd1661"])
+      .interpolate(d3.interpolateLab);
+    return colourScale;
+  }
+
+  function getColourScale_support(values){
+    let xcs = d3.extent(values);
+    // ColorBrewer palette, interpolation in LAB for perceptual constancy
+    let colourScale = d3.scaleLinear()
+      .domain([xcs[0],
+        xcs[1]])
+      .range(["#ffffef","#225fb3"])
+      .interpolate(d3.interpolateLab);
+    return colourScale;
+  }
+
   // Return closure function to make sidebar toggle button
   // Button svg has id open_close for styling
   function getToggleAdder(){
@@ -253,13 +275,6 @@ const cc = (function(d3){
     function handleMouseOver(d, i){
       let this_circle = d3.select(this);
       this_circle.transition().duration(50).attr("r", "12").attr("stroke-width", 2);
-      linkedArea = map.querySourceFeatures(boundaries_source,{
-        filter: ["==",["get", d.mapID], d.areaID]
-      })[0].id;
-      map.setFeatureState(
-        {source: boundaries_source, id: linkedArea},
-        {hover: true}
-      );
 
       let x = this_circle.attr("cx");
       let y = this_circle.attr("cy");
@@ -273,6 +288,14 @@ const cc = (function(d3){
         .style("left", ((x - tooltip_width) + 15) + "px")
         .style("top", (y - 45) + "px");
       tooltip.transition().duration(50).style("opacity", 0.8);
+
+      linkedArea = map.querySourceFeatures(boundaries_source,{
+        filter: ["==",["get", d.mapID], d.areaID]
+      })[0].id;
+      map.setFeatureState(
+        {source: boundaries_source, id: linkedArea},
+        {hover: true}
+      );
     }
 
     function handleMouseOut(d, i){
@@ -326,7 +349,7 @@ const cc = (function(d3){
   } // End draw scatterplot
 
   // Add the beeswarm plot
-  function drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source){
+  function drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source, variable_class){
 
     const svg = d3.select(plotAreaId).append("g").attr("id", "plot");
 
@@ -349,7 +372,21 @@ const cc = (function(d3){
       }
     );
 
-    let risk_colour = cc.getColourScale(colour_scale_values);
+    // let risk_colour = cc.getColourScale(colour_scale_values);
+    let risk_colour, axis_colour, axis_text;
+    if(variable_class == "support"){
+      risk_colour = cc.getColourScale_support(colour_scale_values);
+      axis_colour = "#225fb3";
+      axis_text = "Community support →";
+    } else if(variable_class == "need"){
+      risk_colour = cc.getColourScale_need(colour_scale_values);
+      axis_colour = "#dd1661";
+      axis_text = "Community need →";
+    } else {
+      risk_colour = cc.getColourScale(colour_scale_values);
+      axis_colour = "#000000";
+      axis_text = "Selected measure →";
+    }
 
     // Axis function
     xAxis = g => g
@@ -365,7 +402,8 @@ const cc = (function(d3){
         .attr("y", margin.bottom)
         .attr("fill", "#000")
         .attr("text-anchor", "end")
-        .text("Selected measure →"))
+        .text(axis_text)
+        .attr("fill", axis_colour))
 
     // Grid function
     grid = g => g
@@ -433,13 +471,6 @@ const cc = (function(d3){
     function handleMouseOver(d, i){
       let this_circle = d3.select(this);
       this_circle.transition().duration(50).attr("r", "12").attr("stroke-width", 2);
-      linkedArea = map.querySourceFeatures(boundaries_source,{
-        filter: ["==",["get", d.mapID], d.areaID]
-      })[0].id;
-      map.setFeatureState(
-        {source: boundaries_source, id: linkedArea},
-        {hover: true}
-      );
 
       let x = this_circle.attr("cx");
       let y = this_circle.attr("cy");
@@ -453,6 +484,14 @@ const cc = (function(d3){
         .style("left", ((x - tooltip_width) + 15) + "px")
         .style("top", (y - 45) + "px");
       tooltip.transition().duration(50).style("opacity", 0.8);
+
+      linkedArea = map.querySourceFeatures(boundaries_source,{
+        filter: ["==",["get", d.mapID], d.areaID]
+      })[0].id;
+      map.setFeatureState(
+        {source: boundaries_source, id: linkedArea},
+        {hover: true}
+      );
     }
 
     function handleMouseOut(d, i){
@@ -617,18 +656,22 @@ const cc = (function(d3){
         cc.drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries, boundaries_source);
       } else {
         // beeswarm
-        cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source);
+        cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source, "need");
       }
     } else if(supports_var !== null){
       x_var = supports_var;
       // beeswarm
-      cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source);
+      cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source, "support");
     } else {
-      console.log("No variables selected");
-      boundaries.features.forEach(d => {
-        d.properties.colour = "#ffffff";
-      });
-      map.getSource(boundaries_source).setData(boundaries);
+      // console.log("No variables selected");
+      // boundaries.features.forEach(d => {
+      //   d.properties.colour = "#ffffff";
+      // });
+      // map.getSource(boundaries_source).setData(boundaries);
+      map.setLayoutProperty("LA_borders", 'visibility', 'none');
+      map.setLayoutProperty("local_authorities", 'visibility', 'none');
+  		map.setLayoutProperty("LSOA_borders", 'visibility', 'none');
+      map.setLayoutProperty("lower_super_output_areas", 'visibility', 'none');
     }
   }
 
@@ -637,6 +680,8 @@ const cc = (function(d3){
     drawBeeswarm: drawBeeswarm,
     redraw: redraw,
     getColourScale: getColourScale,
+    getColourScale_support: getColourScale_support,
+    getColourScale_need: getColourScale_need,
     getToggleAdder: getToggleAdder,
     z_score: z_score,
     sumOfZ: sumOfZ

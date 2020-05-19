@@ -423,8 +423,20 @@
         	let popup = new mapboxgl.Popup({
         		// closeButton: false,
         		// closeOnClick: false,
-            maxWidth: "none"
+            maxWidth: "none",
+            // offset: [0,-5],
+            className: "map_popup"
         	});
+
+          map.on('mouseover', "community_groups", function(e) {
+          // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+          });
+
+          map.on('mouseleave', "community_groups", function(e) {
+          // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = '';
+          });
 
           map.on("click", "community_groups", function(e) {
           // Change the cursor style as a UI indicator.
@@ -439,7 +451,11 @@
             let groupLoc = e.features[0].properties.Location;
 
             // Combine group information into one description
-            let description = "<h4 style=\"margin-top:0px;\">Group Information</h4> <p><strong>Title:  </strong>" + groupTitle  + "<br><strong>Source: </strong>" + groupSource + "<br><strong>URL: </strong>" + groupURL + "<br><strong>Location:  </strong>" + groupLoc + "</p>"
+            // let description = "<h4 style=\"margin-top:0px;\">Group Information</h4> <p><strong>Title:  </strong>" + groupTitle  + "<br><strong>Source: </strong>" + groupSource + "<br><strong>URL: </strong>" + groupURL + "<br><strong>Location:  </strong>" + groupLoc + "</p>"
+            let description = `<h4>${groupTitle}</h4>
+                              <p><strong>Location:</strong> ${groupLoc}</p>
+                              <p><strong>URL:</strong> ${groupURL}</p>
+                              <p><strong>Source:</strong> ${groupSource}</p>`
 
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
@@ -465,12 +481,14 @@
         // Set up variable selection drop-downs
         $('#multi-select_support')
           .dropdown({
+            // useLabels: false,
             onChange: handleSelectionChange
           });
         $('#multi-select_support').dropdown('set value', supports[0].name);
 
         $('#multi-select_needs')
           .dropdown({
+            // useLabels: false,
             onChange: handleSelectionChange
           });
 

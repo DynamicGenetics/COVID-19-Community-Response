@@ -140,3 +140,51 @@ circle.hovered {
 	height: 100vh;
 	z-index: 1;
 }
+
+.map_popup div.mapboxgl-popup-content, .map_popup button {
+  color: #ffffff;
+  background-color: #000000;
+  opacity: 0.8;
+  /* border-radius: 6px; */
+}
+
+.map_popup div.mapboxgl-popup-content h4 {
+  margin-top: 7px;
+}
+
+.map_popup div.mapboxgl-popup-content a {
+  color: #cccccc;
+}
+
+.map_popup div.mapboxgl-popup-content a:hover {
+  color: #ffffff;
+  /* border-bottom: 1px solid; */
+}
+
+/* .map_popup div.mapboxgl-popup-content {
+  border-radius: 6px;
+} */
+
+.mapboxgl-popup-anchor-bottom div.mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-left div.mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right div.mapboxgl-popup-tip {
+  border-top-color: #000000;
+  opacity: 0.8;
+}
+
+.mapboxgl-popup-anchor-top div.mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-left div.mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right div.mapboxgl-popup-tip {
+  border-bottom-color: #000000;
+  opacity: 0.8;
+}
+
+.mapboxgl-popup-anchor-right div.mapboxgl-popup-tip {
+  border-left-color: #000000;
+  opacity: 0.8;
+}
+
+.mapboxgl-popup-anchor-left div.mapboxgl-popup-tip {
+  border-right-color: #000000;
+  opacity: 0.8;
+}
