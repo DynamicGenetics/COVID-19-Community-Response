@@ -251,7 +251,8 @@ const cc = (function(d3){
 
     // Mouse event handlers for graph
     function handleMouseOver(d, i){
-      d3.select(this).transition().duration(50).attr("r", "12").attr("stroke-width", 2);
+      let this_circle = d3.select(this);
+      this_circle.transition().duration(50).attr("r", "12").attr("stroke-width", 2);
       linkedArea = map.querySourceFeatures(boundaries_source,{
         filter: ["==",["get", d.mapID], d.areaID]
       })[0].id;
@@ -259,6 +260,19 @@ const cc = (function(d3){
         {source: boundaries_source, id: linkedArea},
         {hover: true}
       );
+
+      let x = this_circle.attr("cx");
+      let y = this_circle.attr("cy");
+
+      let tooltip_text = d.areaName;
+      let tooltip_width = (tooltip_text.length * 8) + 14;
+
+      let tooltip = d3.select(".cc_tooltip");
+      tooltip.html(tooltip_text)
+        .style("width", tooltip_width + "px")
+        .style("left", ((x - tooltip_width) + 15) + "px")
+        .style("top", (y - 45) + "px");
+      tooltip.transition().duration(50).style("opacity", 0.8);
     }
 
     function handleMouseOut(d, i){
@@ -268,6 +282,9 @@ const cc = (function(d3){
         {hover: false}
       );
       linkedArea = null;
+
+      let tooltip = d3.select(".cc_tooltip");
+      tooltip.transition().duration(50).style("opacity", 0);
     }
 
     if(data.length < 100){
@@ -424,14 +441,16 @@ const cc = (function(d3){
         {hover: true}
       );
 
-      console.log("tooltip");
-
       let x = this_circle.attr("cx");
       let y = this_circle.attr("cy");
 
-      let tooltip = d3.select(".tooltip");
-      tooltip.html(d.areaName)
-        .style("left", (x - 105) + "px")
+      let tooltip_text = d.areaName;
+      let tooltip_width = (tooltip_text.length * 8) + 14;
+
+      let tooltip = d3.select(".cc_tooltip");
+      tooltip.html(tooltip_text)
+        .style("width", tooltip_width + "px")
+        .style("left", ((x - tooltip_width) + 15) + "px")
         .style("top", (y - 45) + "px");
       tooltip.transition().duration(50).style("opacity", 0.8);
     }
@@ -444,7 +463,7 @@ const cc = (function(d3){
       );
       linkedArea = null;
 
-      let tooltip = d3.select(".tooltip");
+      let tooltip = d3.select(".cc_tooltip");
       tooltip.transition().duration(50).style("opacity", 0);
     }
 

@@ -54,14 +54,14 @@
   left: 10px; */
 }
 
-.tooltip {
+.cc_tooltip {
   position: absolute;
-  width: 120px;
+  /* width: 150px; */
   height: 26px;
   background-color: black;
   color: #fff;
   text-align: center;
-  padding: 5px 0;
+  padding: 4px 0;
   font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
   border-radius: 6px;
   pointer-events: none;
@@ -71,7 +71,7 @@
   right: 0px;
 }
 
-.tooltip::after {
+.cc_tooltip::after {
   content: " ";
   position: absolute;
   top: 100%; /* At the bottom of the tooltip */

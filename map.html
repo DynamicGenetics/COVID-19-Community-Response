@@ -97,7 +97,7 @@
 
       // Define a hidden div for tooltips
       d3.select("#plot-container").append("div")
-        .attr("class", "tooltip")
+        .attr("class", "cc_tooltip")
         .style("opacity", 0);
 
       // Load json data structure
@@ -308,9 +308,22 @@
                 {source: "boundaries_LAs", id: hoveredArea},
                 {hover: true}
               );
-              d3.select("circle#" + e.features[0].properties.lad18cd)
-                .transition().duration(50)
+              let target = d3.select("circle#" + e.features[0].properties.lad18cd)
+              target.transition().duration(50)
                 .attr("r", "12").attr("stroke-width", 2);
+
+              let x = target.attr("cx");
+              let y = target.attr("cy");
+
+              let tooltip_text = e.features[0].properties.lad18nm;
+              let tooltip_width = (tooltip_text.length * 8) + 14;
+
+              let tooltip = d3.select(".cc_tooltip");
+              tooltip.html(tooltip_text)
+                .style("width", tooltip_width + "px")
+                .style("left", ((x - tooltip_width) + 15) + "px")
+                .style("top", (y - 45) + "px");
+              tooltip.transition().duration(50).style("opacity", 0.8);
             }
           });
 
@@ -326,6 +339,10 @@
                 .attr("r", "6").attr("stroke-width", 1.5);
             }
             hoveredArea = null;
+
+            let tooltip = d3.select(".cc_tooltip");
+            tooltip.transition().duration(50).style("opacity", 0);
+
       		});
 
           // LSOA events
@@ -365,6 +382,20 @@
               let overlay = d3.select("#plot-area").append("g").attr("id", "target_overlay");
 
               overlay.append("circle").attr("r", "6").attr("stroke", "#505050").attr("stroke-width", 1.5).attr("cx", tx).attr("cy", ty).attr("fill", tfill);
+
+              let x = target.attr("cx");
+              let y = target.attr("cy");
+
+              let tooltip_text = e.features[0].properties.LSOA11NM;
+              let tooltip_width = (tooltip_text.length * 8) + 14;
+
+              let tooltip = d3.select(".cc_tooltip");
+              tooltip.html(tooltip_text)
+                .style("width", tooltip_width + "px")
+                .style("left", ((x - tooltip_width) + 15) + "px")
+                .style("top", (y - 39) + "px");
+              tooltip.transition().duration(50).style("opacity", 0.8);
+
             }
           });
 
@@ -382,6 +413,10 @@
               d3.select("#target_overlay").remove();
             }
             hoveredArea = null;
+
+            let tooltip = d3.select(".cc_tooltip");
+            tooltip.transition().duration(50).style("opacity", 0);
+
           });
 
           // Create a popup, but don't add it to the map yet.
