@@ -2,7 +2,7 @@
 :root {
   --support: #225fb3;
   --needs: #dd1661;
-  --color-primary: #f8f8ff; /* Primary color for landing page consistency */
+  /* --color-primary: #f8f8ff; /* Primary color for landing page consistency */ */
 }
 
 .ui.support.header {
@@ -19,7 +19,7 @@
 	left: 17px;
 	height: 80px;
 	z-index: 6;
-  filter: drop-shadow(0 0 20px var(--color-primary));
+  filter: drop-shadow(0 0 20px #ffffff);
 }
 
 #logo_area {
@@ -37,18 +37,49 @@
 	margin-left: auto;
 	margin-right: auto;
 	height: 100vh;
-	background-color: var(--color-primary);
+}
+
+#plot-container {
+  margin-left: 12px;
+  position: relative;
 }
 
 #plot-area {
   height: 390px;
   width: 390px;
   z-index: 6;
-  padding-left: 12px;
+  /* padding-left: 12px; */
   font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
-  /* position: absolute;
-  top: 12px;
+  /* top: 12px;
   left: 10px; */
+}
+
+.cc_tooltip {
+  position: absolute;
+  /* width: 150px; */
+  height: 26px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 4px 0;
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 20;
+  /* display: inline; */
+  left: 0px;
+  right: 0px;
+}
+
+.cc_tooltip::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  right: 10px;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
 }
 
 #sidebar {
@@ -58,7 +89,7 @@
   position: absolute;
   top: 0px;
   right: 0px;
-  background: var(--color-primary);
+  background: #ffffff;
   padding-bottom: 5px;
   border-bottom-left-radius: 5px;
 }
@@ -73,6 +104,11 @@
 /* #sidebar h3.header {
   margin-right: 52px;
 } */
+
+.landing-page-light {
+  font-family: 'Raleway', Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  font-weight: 400;
+}
 
 #sidebar h3 .sub.header {
   margin: 0px;
@@ -103,4 +139,52 @@ circle.hovered {
 	width: 100%;
 	height: 100vh;
 	z-index: 1;
+}
+
+.map_popup div.mapboxgl-popup-content, .map_popup button {
+  color: #ffffff;
+  background-color: #000000;
+  opacity: 0.8;
+  /* border-radius: 6px; */
+}
+
+.map_popup div.mapboxgl-popup-content h4 {
+  margin-top: 7px;
+}
+
+.map_popup div.mapboxgl-popup-content a {
+  color: #cccccc;
+}
+
+.map_popup div.mapboxgl-popup-content a:hover {
+  color: #ffffff;
+  /* border-bottom: 1px solid; */
+}
+
+/* .map_popup div.mapboxgl-popup-content {
+  border-radius: 6px;
+} */
+
+.mapboxgl-popup-anchor-bottom div.mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-left div.mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right div.mapboxgl-popup-tip {
+  border-top-color: #000000;
+  opacity: 0.8;
+}
+
+.mapboxgl-popup-anchor-top div.mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-left div.mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right div.mapboxgl-popup-tip {
+  border-bottom-color: #000000;
+  opacity: 0.8;
+}
+
+.mapboxgl-popup-anchor-right div.mapboxgl-popup-tip {
+  border-left-color: #000000;
+  opacity: 0.8;
+}
+
+.mapboxgl-popup-anchor-left div.mapboxgl-popup-tip {
+  border-right-color: #000000;
+  opacity: 0.8;
 }
