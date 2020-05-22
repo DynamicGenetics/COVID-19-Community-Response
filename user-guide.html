@@ -18,23 +18,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="frontend/landing-page/css/all.css">
 
-  <!-- Page title -->
+  <!-- Page title and favicon -->
   <title>COVID-19 Community Response</title>
+  <link rel="shortcut icon" type="image/jpg" href="frontend/landing-page/img/logo-main.png"/>
 
 </head>
 
 <body>
-
-  <!-- Main body container -->
-  <div class="container-fluid">
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-md navbar-light bg-light font-head">
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
       <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="navbar-brand mx-auto" href="index.html"><h3 class="font-head-light">Wales Community Response<br>Ymated Cymunedol Cymru</h3></a>
-          </li>
+            <div class="row">
+              <div class="col-xl-2"><img src="frontend/landing-page/img/logo-main.png" class="rounded mx-auto d-block" alt="Project Logo" style="max-height: 60px !important; max-width: auto !important;">
+              </div>
+              <div class="col-xl-10"><a class="navbar-brand mx-auto" href="index.html"><h3 class="font-head-light">Wales Community Response<br>Ymated Cymunedol Cymru</h3></a>
+              </div>
+            </div>
+            </li>
       </ul>
     </div>
     <div class="mx-auto order-0">
@@ -118,10 +121,10 @@
 
     <!-- Alternative content block -->
     <div class="row" id="subhead">
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
 
       <!-- Left content -->
-      <div class="col-sm mainContent">
+      <div class="col-xl-5 mainContent">
         <div class="content-container">
           <h1 class="font-head-light">User guide</h1>
           <br>
@@ -141,14 +144,14 @@
       </div>
       
       <!-- Right content -->
-      <div class="col-sm mainContent">
+      <div class="col-xl-3 sideContent">
         <img src="frontend/landing-page/img/db3.png" class="img-dashboard">
       </div>
 
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
 
       <!-- continue btn -->
-      <div class="col-sm-12">
+      <div class="col-xl-12">
         <div class="btn-continue mx-auto">
           <div class="btn-continue-bg2 bg-img-virus-lowRes"></div>
           <a href="#block2"><i class="fas fa-sort-down i-guide-carat col-primary col-hov-emphasis"></i></a>
@@ -166,10 +169,10 @@
 
     <!-- Content block -->
     <div class="row" id="block2">
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
 
         <!-- Left content -->
-        <div class="col-sm mainContent">
+        <div class="col-xl-5 mainContent">
           <div class="content-container">
             <h1 class="font-head">About</h1><br>
             <p> 
@@ -182,11 +185,11 @@
         </div>
 
         <!-- Right content -->
-        <div class="col-sm mainContent">
+        <div class="col-xl-3 sideContent">
           <img src="frontend/landing-page/img/db4.png" class="img-dashboard">
         </div>
 
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
     </div><!-- / row -->
     
     <!-- continue btn -->
@@ -206,15 +209,15 @@
 
     <!-- Content block -->
     <div class="row" id="block3">
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
 
         <!-- Left content -->
-        <div class="col-sm mainContent">
+        <div class="col-xl-3 sideContent">
           <img src="frontend/landing-page/img/db5.png" class="img-dashboard">
         </div>
 
         <!-- Right content -->
-        <div class="col-sm mainContent">
+        <div class="col-xl-5 mainContent">
           <div class="content-container">
             <h1 class="font-head">Our data</h1><br>
             <p>
@@ -229,12 +232,16 @@
                 Wiki 
               </a> guide.
               Some data is not publicly available, but we always report our sources and the results from this data can still be viewed in the dashboard.
+              <br>
+              <br> We kindly thank the <a href='https://wcva.cymru/'>WCVA</a>, <a href='https://covidmutualaid.org/'>Mutual Aid</a>, <a href='https://gov.wales/statistics-and-research'>
+                Welsh Government Statistics and Research</a> for collecting and making this data available. We also thank Open Street Map for their map
+                of Wales, you can suggest improvements <a href='https://www.openstreetmap.org/fixthemap'> here</a>.
 
           </p>
           </div>
         </div>
 
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
     </div><!-- / row -->
     
     <!-- continue btn -->
@@ -254,28 +261,31 @@
 
     <!-- Content block -->
     <div class="row" id="block4">
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
 
         <!-- Left content -->
-        <div class="col-sm mainContent">
+        <div class="col-xl-5 mainContent">
           <div class="content-container">
             <h1 class="font-head">Data layers</h1><br>
             <p>There are two types of data layers:</p>
               <ul>
-                <li><p><strong>Risk factors:</strong> Factors which indicate that a community may be at elevated risk during the COVID-19 pandemic</p></li>
-                <li><p><strong>Community resources:</strong> Factors which indicate that a community may have better resources for coping during COVID-19 pandemic</p></li>
+                <li><p><strong>Local need:</strong> Factors which indicate that a community may be at elevated risk during the COVID-19 pandemic</p></li>
+                <li><p><strong>Local support:</strong> Factors which indicate that a community may have better resources for coping during COVID-19 pandemic</p></li>
               </ul>
+            <p>We are using covid mutual aid database to identify community support groups, if you don't your local group on the map 
+              <a href='https://covidmutualaid.org/local-groups/'> you can register it here.</a>
+            </p>
             <br>
           </div>
 
         </div>
 
         <!-- Right content -->
-        <div class="col-sm mainContent">
+        <div class="col-xl-3 sideContent">
           <img src="frontend/landing-page/img/db9.png" class="img-dashboard">
         </div>
 
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
     </div><!-- / row -->
 
     <!-- continue btn -->
@@ -295,38 +305,32 @@
     
     <!-- Content block -->
     <div class="row" id="block5">
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
 
         <!-- Left content -->
-        <div class="col-sm mainContent">
+        <div class="col-xl-5 mainContent">
           <div class="content-container">
             <h1 class="font-head">Automatic analysis</h1><br>
             <p>
               As you select layers, analyses will be made to determine which areas are most at risk in terms of the selected factors. Selecting <strong>two</strong> 
               layers will initiate a bivariate analysis to identify vulnerable areas in terms of both factors.
-              <br>
+              <br><br>
+              Note: Your view will reset each time you reload the map.
+
             </p>
           </div>
         </div>
 
         <!-- Right content -->
-        <div class="col-sm mainContent">
-          <img src="frontend/landing-page/img/db6.png" class="img-dashboard">
-          <a href="map.html" class="btn btn-lg btn-info bg-col-highlight border-col-highlight" id="btn-go" style="position: absolute; bottom:0;">
-            Go to the dashboard
+        <div class="col-xl-3 sideContent">
+          <img src="frontend/landing-page/img/db6.png" class="img-dashboard" style="margin-bottom: 20vh;">
+          <a href="map.html" class="btn btn-lg btn-info bg-col-emphasis border-col-emphasis font-head-light" id="btn-go" style="position: absolute; bottom: 5vh;">
+            Go to the map
           </a>
         </div>
 
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
     </div><!-- / row -->
-
-    <!-- continue btn -->
-    <div class="row">
-      <div class="btn-continue">
-        <div class="btn-continue-bg bg-col-emphasis"></div>
-        <a href="map.html"><i class="fas fa-check i-guide-check col-primary col-hov-highlight"></i></a>
-      </div>
-    </div>
 
     
     <!-- Scrolly image -->
@@ -336,7 +340,6 @@
     
 
   </div>  
- </div>
 
 
   <!-- Optional bootstrap JavaScript -->
@@ -351,7 +354,7 @@
   <!-- Page footer text -->
   <div class="container-fluid" id="footer">
       <div class="row text-muted">
-        <div class="col-sm centered alignRight footer-links">
+        <div class="col-xl centered alignRight footer-links">
           <p>
             Images courtesy of  
             <a href="https://unsplash.com/" class="muteLink">Unsplash</a>
