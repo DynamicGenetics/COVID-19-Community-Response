@@ -25,19 +25,34 @@
 
 <body>
 
-  <!-- Main body container -->
-  <div class="container-fluid">
-
-
     <!-- Splash screen -->
     <div class="row">
       <div class="img-scrolly-splash bg-img-aerial" id="splash">
-        <img src="frontend/landing-page/img/logo-main.png" class="rounded" alt="Project Logo" id="logo-splash-project">
-        <h1 id="title-splash">Wales Community Response<br>
-        <hr style="margin-top: 0.4rem; margin-bottom: 0.4rem; border: 0; border-top: 1px solid rgba(255, 255, 255, 0.5);">
-        Ymated Cymunedol Cymru
-        </h1>
-        <a href="#subhead" class="text-center"><div class="icons-down-splash col-hov-emphasis"><i class="fas fa-angle-down"></i> <i class="fas fa-chevron-down"></i> <i class="fas fa-angle-down"></i></div></a>
+        
+        <div class="row bg-none" style="position: absolute; bottom: 0px; left: 0px; width: 100%;">
+          
+          <div class="col-xl-5 bg-none">
+            <img src="frontend/landing-page/img/logo-main.png" class="rounded mx-auto d-block" alt="Project Logo" id="logo-splash-project">
+          </div>
+
+          <div class="col-xl-2 bg-none"></div>
+
+          <div class="col-xl-5 bg-none"></div>
+          
+          <div class="col-xl-5 bg-none">
+            <h1 id="title-splash" class="centered">Wales Community Response<br>
+            Ymated Cymunedol Cymru
+            </h1>
+          </div>
+
+          <div class="col-xl-2 bg-none">
+            <a href="#subhead" class="text-center"><div class="icons-down-splash col-hov-emphasis"><i class="fas fa-angle-down"></i> <i class="fas fa-chevron-down"></i> <i class="fas fa-angle-down"></i></div></a>
+          </div> 
+          
+          <div class="col-xl-5 bg-none"></div>
+
+        </div>
+
       </div>
     </div><!-- / row
 
@@ -123,10 +138,10 @@
 
     <!-- Main content block -->
     <div class="row" id="subhead">
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
 
       <!-- Left content -->
-      <div class="col-sm mainContent">
+      <div class="col-xl mainContent">
         <div class="content-container">
           <h1 class="font-head-light">Community response map for COVID-19</h1>
           <br>
@@ -137,11 +152,11 @@
       </div>
       
       <!-- Right content -->
-      <div class="col-sm mainContent">
+      <div class="col-xl mainContent">
         <img src="frontend/landing-page/img/db1_flip.png" class="img-dashboard">
       </div>
 
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
     </div><!-- / row -->
 
 
@@ -153,10 +168,10 @@
 
     <!-- Main content block -->
     <div class="row" id="about">
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
 
         <!-- Left content -->
-        <div class="col-sm mainContent">
+        <div class="col-xl mainContent">
           <div class="content-container">
             <h1 class="font-head">Identifying vulnerability</h1><br>
             <p> 
@@ -173,25 +188,20 @@
         </div>
 
         <!-- Right content -->
-        <div class="col-sm mainContent">
+        <div class="col-xl mainContent">
           <img src="frontend/landing-page/img/db7.png" class="img-dashboard">
         </div>
 
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
     </div><!-- / row -->
 
 
     <!-- Main content block -->
     <div class="row">
-      <div class="col-sm-2"></div><!-- Spacing col -->
+      <div class="col-xl-2"></div><!-- Spacing col -->
 
-        <!-- Left content -->
-        <div class="col-sm mainContent">
-          <img src="frontend/landing-page/img/db11.png" class="img-dashboard">
-        </div>
-
-        <!-- Right content -->
-        <div class="col-sm mainContent">
+        <!-- left content -->
+        <div class="col-xl mainContent">
           <div class="content-container">
             <h1 class="font-head">Community support</h1><br>
             <p>  
@@ -205,7 +215,12 @@
           </div>
         </div>
 
-      <div class="col-sm-2"></div><!-- Spacing col -->
+        <!-- Right content -->
+        <div class="col-xl mainContent">
+          <img src="frontend/landing-page/img/db11.png" class="img-dashboard">
+        </div>
+
+      <div class="col-xl-2"></div><!-- Spacing col -->
     </div><!-- / row -->
 
 
@@ -232,7 +247,7 @@
   <div class="row">
     
     <!-- Left content-->
-    <div class="col-sm-3 mx-auto my-auto" id="team">
+    <div class="col-xl-3 mx-auto my-auto" id="team">
 
       <div class="ft-small-logos centered">
         <a href="https://dynamicgenetics.org/" title="Dynamic Genetics Lab">
@@ -268,7 +283,7 @@
     </div> <!-- /col-3-sm-->
 
     <!-- Middle content -->
-    <div class="col-sm-5 mainContent">
+    <div class="col-xl-5 mainContent">
 
       <div class="content-container">
         <h1 class="font-head-light">Project team</h1>
@@ -307,19 +322,18 @@
 
         </p>
       </div>
-    </div>
-
-    <!-- Right content -->
-    <div class="col-sm-4 mainContent">
-      <img src="frontend/landing-page/img/db8.png" class="img-dashboard">
-    </div>
     
+  </div>
+
+  <!-- Right content -->
+  <div class="col-xl-4 mainContent">
+    <img src="frontend/landing-page/img/db8.png" class="img-dashboard">
   </div>
 
   <!-- Page footer text -->
   <div class="container-fluid" id="footer">
       <div class="row text-muted">
-        <div class="col-sm alignRight footer-links">
+        <div class="col-xl alignRight footer-links">
           <p>
             Images courtesy of  
             <a href="https://unsplash.com/" class="muteLink">Unsplash</a>
