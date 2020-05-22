@@ -8,7 +8,7 @@ from warnings import warn
 from dataclasses import dataclass
 
 
-DATA_FOLDER = os.path.join(os.path.abspath(os.path.dirname("__file__")), "..", "data")
+DATA_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "data")
 
 
 @dataclass
@@ -25,11 +25,12 @@ class Dataset:
     name: str  # dataset unique name
     data_format: str  # format of the data (e.g. CSV, GeoJSON)
     filename: str  # name of the datafile
+    sub_dir: str = None  # optional sub-directory of backend/data/static
 
     @property
     def source_path(self):
         try:  # BTAFTP
-            data_path = os.path.join(DATA_FOLDER, self.filename)
+            data_path = os.path.join(DATA_FOLDER, self.sub_dir, self.filename)
             with open(data_path) as _:
                 pass
         except FileNotFoundError:
@@ -62,18 +63,28 @@ class Dataset:
 
 DATA_MAP = {
     "twitter": Dataset(
-        name="Twitter Dataset", data_format="csv", filename="tweets_dataset.csv"
+        name="Twitter Dataset",
+        data_format="csv",
+        filename="tweets_dataset.csv",
+        sub_dir=os.path.join("live", "raw"),
     ),
-    "demographics": Dataset(
-        name="Demographics", data_format="csv", filename="demographics.csv"
+    "la_population": Dataset(
+        name="Population",
+        data_format="csv",
+        filename="LA_population_count.csv",
+        sub_dir=os.path.join("static", "cleaned"),
     ),
     "la_boundaries": Dataset(
         name="Local Authorities Boundaries",
         data_format="geojson",
-        filename="boundaries_LAs.geojson",
+        filename="Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson",
+        sub_dir=os.path.join("static", "geoboundaries"),
     ),
     "la_keys": Dataset(
-        name="Local Authorities Keys", data_format="geojson", filename="la_keys.geojson"
+        name="Local Authorities Keys",
+        data_format="geojson",
+        filename="la_keys.geojson",
+        sub_dir=os.path.join("static", "source", "local"),
     ),
     "covid_cases": Dataset(
         name="Covid-19 Cases", data_format="geojson", filename="cases.geojson"
@@ -103,25 +114,27 @@ def generate_la_keys(data_filename: str = "la_keys.geojson"):
 
     # Create a version of the static demographics file that
     # we can join with LA data
-    la_demog = DATA_MAP["demographics"]
+    la_pop = DATA_MAP["la_population"]
     # Local Authorities Geoobjects
     la_geo = DATA_MAP["la_boundaries"]
 
     # Merge these to get a geopandas dataframe with population and lhb information
     la_key_df = pd.merge(
         la_geo.data,
-        la_demog.data[["id_area", "pop", "lhb"]],
-        left_on="lad18cd",
-        right_on="id_area",
-        how="left",
+        la_pop.data[["lad19cd", "population_count"]],
+        on="lad19cd",
+        how="inner",
     )
-    # Population should be an int, not a string.
-    la_key_df["pop"] = la_key_df["pop"].str.replace(",", "").astype(int)
     # Get rid of the (no longer needed) 'id_area' col - it's a duplicate of lad18cd
-    la_key_df.drop("id_area", axis=1, inplace=True)
+    # la_key_df.drop("id_area", axis=1, inplace=True)
 
+    la_key_df.to_file(
+        os.path.join(
+            DATA_FOLDER, DATA_MAP["la_keys"].sub_dir, DATA_MAP["la_keys"].filename
+        ),
+        driver="GeoJSON",
+    )
     warn("Local Authorities Keys data generated!")
-    la_key_df.to_file(os.path.join(DATA_FOLDER, data_filename), driver="GeoJSON")
 
 
 def load_local_authorities() -> Dataset:
