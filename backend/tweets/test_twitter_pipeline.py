@@ -20,6 +20,6 @@ if __name__ == "__main__":
     print("Twitter Dataset Columns: ", tweets_data.columns)
     print(
         "All Tweets have a matched LA: ",
-        tweets_data[tweets_data["lad18nm"].isna()].shape[0] == 0,
+        tweets_data[tweets_data["lad19nm"].isna()].shape[0] == 0,
     )
     print("-" * 80)
