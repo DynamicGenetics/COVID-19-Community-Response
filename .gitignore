@@ -2,6 +2,8 @@
 data/deprec/
 # leriomaggio: ignored as this is a folder for local dev exps.
 data/local
+# Nina local development data folder
+backend/data/static/source/local
 
 # LA Keys
 data/la_keys.geojson
