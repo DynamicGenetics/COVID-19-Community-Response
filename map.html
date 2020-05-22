@@ -32,37 +32,22 @@
         <h3 class="ui dividing header">
           <div class="content">
             <span class="landing-page-light">Wales Community Response</span>
-            <div class="sub header">Citizen-led support during the COVID-19 outbreak</div>
+            <div class="sub header">Local support during the COVID-19 outbreak</div>
           </div>
         </h3>
-        <div id="plot-container"><svg id="plot-area"></svg></div>
-        <div id="colour_scale"></div>
-        <div id="support_area">
-          <!-- <h3 class="ui header">Support</h3> -->
-          <h4 class="ui horizontal support divider header">
-            <i class="arrow circle up icon"></i>
-            <div class="content">
-              Support
-            </div>
-          </h4>
-          <div class="ui multiple selection dropdown" id="multi-select_support">
-          <!-- This will receive comma separated value like OH,TX,WY !-->
-            <input name="support" type="hidden" value="">
-            <div class="text"></div>
-            <i class="dropdown icon"></i>
-            <!-- <div class="default text">Select indicators of support...</div> -->
-            <div id="support_menu" class="menu">
-            </div>
-          </div>
-        </div>
-        <div id="needs_area">
-          <!-- <h3 class="ui header">Need</h3> -->
-          <h4 class="ui horizontal needs divider header">
-              <i class="arrow circle right icon"></i>
-              <div class="content">
-                Need
+        <div class=select_container id=support_container><h4>Local support</h4><i class="arrow circle up icon" id=y_axis></i><i class="arrow circle right icon" id=x_axis></i>
+            <div class="ui multiple selection dropdown" id="multi-select_support">
+            <!-- This will receive comma separated value like OH,TX,WY !-->
+              <input name="support" type="hidden" value="">
+              <div class="text"></div>
+              <i class="dropdown icon"></i>
+              <!-- <div class="default text">Select indicators of support...</div> -->
+              <div id="support_menu" class="menu">
               </div>
-          </h4>
+            </div>
+        </div>
+        <div id="plot-container"><svg id="plot-area"></svg></div>
+        <div class=select_container id=needs_container><h4>Local need</h4><i class="arrow circle right icon" id=axis_label></i>
           <div class="ui multiple selection dropdown" id="multi-select_needs">
           <!-- This will receive comma separated value like OH,TX,WY !-->
             <input name="need" type="hidden" value="">
@@ -73,6 +58,7 @@
             </div>
           </div>
         </div>
+        <div id="colour_scale"></div>
 
     <script>
 
@@ -92,9 +78,10 @@
       }
 
       // Set up plotting area
-      const width=380;
-      const height=380;
-      const margin = ({top: 30, right: 20, bottom: 40, left: 40});
+      const width=400;
+      const height=365;
+      // const margin = ({top: 30, right: 20, bottom: 40, left: 40});
+      const margin = ({top: 10, right: 22, bottom: 25, left: 48});
 
       // Define a hidden div for tooltips
       d3.select("#plot-container").append("div")

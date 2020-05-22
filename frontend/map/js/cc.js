@@ -156,34 +156,34 @@ const cc = (function(d3){
       .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".2s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
-      .call(g => g.select(".domain").remove())
-      .call(g => g.append("text")
-        .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
-        .style("font-size", "14px")
-        .attr("x", width-2)
-        .attr("y", margin.bottom)
-        .attr("fill", "#000")
-        .attr("text-anchor", "end")
-        .text("Community need →")
-        .attr("fill", "#dd1661")
-      )
+      // .call(g => g.select(".domain").remove())
+      // .call(g => g.append("text")
+      //   .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      //   .style("font-size", "14px")
+      //   .attr("x", width-2)
+      //   .attr("y", margin.bottom)
+      //   .attr("fill", "#000")
+        // .attr("text-anchor", "end")
+        // .text("Community need →")
+        // .attr("fill", "#dd1661")
+      // )
 
     yAxis = g => g
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(y).tickFormat(d3.format(".2s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
-      .call(g => g.select(".domain").remove())
-      .call(g => g.append("text")
-        .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
-        .style("font-size", "14px")
-        .attr("x", -margin.left)
-        .attr("y", 10)
-        .attr("fill", "#000")
-        .attr("text-anchor", "start")
-        .text("↑ Community support")
-        .attr("fill", "#225fb3")
-      )
+      // .call(g => g.select(".domain").remove())
+      // .call(g => g.append("text")
+      //   .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      //   .style("font-size", "14px")
+      //   .attr("x", -margin.left)
+      //   .attr("y", 10)
+      //   .attr("fill", "#000")
+      //   // .attr("text-anchor", "start")
+      //   // .text("↑ Community support")
+      //   // .attr("fill", "#225fb3")
+      // )
 
     // Grid function
     grid = g => g
@@ -394,16 +394,16 @@ const cc = (function(d3){
       .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".2s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
-      .call(g => g.select(".domain").remove())
-      .call(g => g.append("text")
-      .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
-      .style("font-size", "14px")
-        .attr("x", width - 2)
-        .attr("y", margin.bottom)
-        .attr("fill", "#000")
-        .attr("text-anchor", "end")
-        .text(axis_text)
-        .attr("fill", axis_colour))
+      // .call(g => g.select(".domain").remove())
+      // .call(g => g.append("text")
+      // .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      // .style("font-size", "14px")
+      //   .attr("x", width - 2)
+      //   .attr("y", margin.bottom)
+      //   .attr("fill", "#000")
+      //   // .attr("text-anchor", "end")
+      //   // .text(axis_text)
+      //   // .attr("fill", axis_colour))
 
     // Grid function
     grid = g => g
@@ -649,25 +649,37 @@ const cc = (function(d3){
       needs_var = "needs_composite";
     }
     if(needs_var !== null){
+
+      d3.select("i#axis_label").transition().duration(50).style("opacity", 1);
+      d3.select("i#x_axis").transition().duration(50).style("opacity", 0);
+
       x_var = needs_var;
       if(supports_var !== null){
         y_var = supports_var;
+        d3.select("i#y_axis").transition().duration(50).style("opacity", 1);
+
         // scatterplot
         cc.drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries, boundaries_source);
       } else {
+        d3.select("i#y_axis").transition().duration(50).style("opacity", 0);
+
         // beeswarm
         cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source, "need");
       }
     } else if(supports_var !== null){
       x_var = supports_var;
+
+      d3.select("i#x_axis").transition().duration(50).style("opacity", 1);
+      d3.select("i#y_axis").transition().duration(50).style("opacity", 0);
+      d3.select("i#axis_label").transition().duration(50).style("opacity", 0);
+
       // beeswarm
       cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source, "support");
     } else {
-      // console.log("No variables selected");
-      // boundaries.features.forEach(d => {
-      //   d.properties.colour = "#ffffff";
-      // });
-      // map.getSource(boundaries_source).setData(boundaries);
+      d3.select("i#x_axis").transition().duration(50).style("opacity", 0);
+      d3.select("i#y_axis").transition().duration(50).style("opacity", 0);
+      d3.select("i#axis_label").transition().duration(50).style("opacity", 0);
+      
       map.setLayoutProperty("LA_borders", 'visibility', 'none');
       map.setLayoutProperty("local_authorities", 'visibility', 'none');
   		map.setLayoutProperty("LSOA_borders", 'visibility', 'none');

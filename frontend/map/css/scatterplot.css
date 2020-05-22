@@ -2,6 +2,7 @@
 :root {
   --support: #225fb3;
   --needs: #dd1661;
+  --deselected: #e8e8e8;
   /* --color-primary: #f8f8ff; /* Primary color for landing page consistency */ */
 }
 
@@ -40,13 +41,14 @@
 }
 
 #plot-container {
-  margin-left: 12px;
+  /* margin-left: 12px; */
+  /* margin-left: 0px; */
   position: relative;
 }
 
 #plot-area {
-  height: 390px;
-  width: 390px;
+  height: 365px;
+  width: 400px;
   z-index: 6;
   /* padding-left: 12px; */
   font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
@@ -114,13 +116,83 @@
   margin: 0px;
 }
 
+#sidebar div.select_container {
+  /* height: 40px; */
+  width: 380px;
+  margin: 10px;
+  border: solid 1px #000000;
+  border-radius: 6px;
+  position: relative;
+}
+
+#sidebar div#support_container {
+  color: var(--support);
+  border: solid 1px var(--support);
+  margin-top: 15px;
+}
+
+#sidebar div#needs_container {
+  color: var(--needs);
+  border: solid 1px var(--needs);
+}
+
+#sidebar div#support_container i#y_axis {
+  font-size: 20px;
+  position: absolute;
+  bottom: -10px;
+  left: 26px;
+  display: block;
+  background-color: #ffffff;
+  padding-left: 2px;
+  padding-right: 2px;
+  opacity: 1;
+}
+
+#sidebar div#support_container i#x_axis {
+  font-size: 20px;
+  position: absolute;
+  bottom: -10px;
+  right: 4px;
+  display: block;
+  background-color: #ffffff;
+  padding-left: 2px;
+  padding-right: 2px;
+  opacity: 0;
+}
+
+#sidebar div#needs_container i#axis_label {
+  font-size: 20px;
+  position: absolute;
+  top: -10px;
+  right: 4px;
+  display: block;
+  background-color: #ffffff;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+div.select_container h4 {
+  position: absolute;
+  top: -10px;
+  left: 5px;
+  display: block;
+  background-color: #ffffff;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
 #canvas {
   margin-left: 25px;
 }
 
-div#multi-select_support, div#multi-select_needs {
-  width: 390px;
-  margin-left: 5px;
+div#multi-select_support {
+  width: 368px;
+  margin: 12px 5px 12px 5px;
+}
+
+div#multi-select_needs {
+  width: 368px;
+  margin: 12px 5px 12px 5px;
 }
 
 #open_close {
