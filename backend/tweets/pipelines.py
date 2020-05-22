@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import json
 from typing import Tuple, Callable, List
-from typing import Sequence, Tuple, Union
+from typing import Sequence, Union
 from abc import ABC, abstractmethod
 from functools import partial
 from shapely.geometry import Polygon, Point
@@ -208,8 +208,8 @@ def match_local_authorities(
 
     Returns
     -------
-    A tuple containing the name, the code, and the reference of 
-    the top matching LA, or all of them (in the form of 
+    A tuple containing the name, the code, and the reference of
+    the top matching LA, or all of them (in the form of
     a pd.DataFrame)
     """
 
@@ -230,7 +230,7 @@ def match_local_authorities(
     # Local Authorities of Interest are those that overlap with the bbox
     laoi = la_df[la_df["geometry"].intersects(bbox)].copy()
 
-    if laoi.shape[0] == 0:  ## no overlap found
+    if laoi.shape[0] == 0:  # no overlap found
         return None
 
     # Intersection over the union is a measure of how exactly the bounding box and the la overlap
@@ -240,7 +240,7 @@ def match_local_authorities(
     # Pop weight is the proportion of the la population covered by the bounding box.
     laoi["pop_weight"] = (
         laoi["geometry"].apply(lambda g: (g.intersection(bbox).area / g.area))
-        * laoi["pop"]
+        * laoi["population_count"]
     )
     # The final likelihood is the IoU multiplied by the population weight
     laoi["likelihood"] = laoi["iou"] * laoi["pop_weight"]
@@ -249,7 +249,7 @@ def match_local_authorities(
 
     if return_all:
         return laoi
-    return laoi["lad18nm"].iat[0], laoi["lad18cd"].iat[0], laoi["lhb"].iat[0]
+    return laoi["lad19nm"].iat[0], laoi["lad19cd"].iat[0]
 
 
 # %%
@@ -293,9 +293,8 @@ def match_reference_la(data):
     data["la"].fillna(residual_matchings, inplace=True)
 
     # Split values for LA in three cols
-    data["lad18nm"] = data["la"].apply(lambda c: c[0])
-    data["lad18cd"] = data["la"].apply(lambda c: c[1])
-    data["lhb"] = data["la"].apply(lambda c: c[2])
+    data["lad19nm"] = data["la"].apply(lambda c: c[0])
+    data["lad19cd"] = data["la"].apply(lambda c: c[1])
 
     # Drop la column - not needed anymore
     data.drop("la", axis=1, inplace=True)
