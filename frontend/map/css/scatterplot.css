@@ -114,6 +114,10 @@
   margin: 0px;
 }
 
+#canvas {
+  margin-left: 25px;
+}
+
 div#multi-select_support, div#multi-select_needs {
   width: 390px;
   margin-left: 5px;

@@ -36,6 +36,7 @@
           </div>
         </h3>
         <div id="plot-container"><svg id="plot-area"></svg></div>
+        <div id="colour_scale"></div>
         <div id="support_area">
           <!-- <h3 class="ui header">Support</h3> -->
           <h4 class="ui horizontal support divider header">
@@ -99,6 +100,9 @@
       d3.select("#plot-container").append("div")
         .attr("class", "cc_tooltip")
         .style("opacity", 0);
+
+      // Add a color ramp legend
+      cc.ramp("#colour_scale", cc.getColourScale([0,1]));
 
       // Load json data structure
       const data_promise = d3.json("./frontend/map/data/data.json");

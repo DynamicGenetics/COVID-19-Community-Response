@@ -673,6 +673,26 @@ const cc = (function(d3){
   		map.setLayoutProperty("LSOA_borders", 'visibility', 'none');
       map.setLayoutProperty("lower_super_output_areas", 'visibility', 'none');
     }
+  } // end redraw
+
+  // Colour ramp function adapted from https://observablehq.com/@mbostock/color-ramp
+  function ramp(plot_area, color, n = 350) {
+    const canvas = d3.select(plot_area).append("canvas")
+      .attr("id", "canvas")
+      .attr("width", 350)
+      .attr("height", 10)
+      .style("imageRendering", "crisp-edges");
+    const context = canvas.node().getContext("2d");
+    // canvas.style.margin = "0 -14px";
+    // canvas.style.width = "400px";
+    // canvas.style.height = "40px";
+    // canvas.style.imageRendering = "crisp-edges";
+    // canvas.style.imageRendering = "pixelated";
+    for (let i = 0; i < n; ++i) {
+      context.fillStyle = color(i / (n - 1));
+      context.fillRect(i, 0, 1, 10);
+    }
+    return canvas;
   }
 
   return {
@@ -684,6 +704,7 @@ const cc = (function(d3){
     getColourScale_need: getColourScale_need,
     getToggleAdder: getToggleAdder,
     z_score: z_score,
-    sumOfZ: sumOfZ
+    sumOfZ: sumOfZ,
+    ramp: ramp
   };
 })(d3);
