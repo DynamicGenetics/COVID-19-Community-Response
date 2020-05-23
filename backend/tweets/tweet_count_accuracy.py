@@ -4,9 +4,7 @@ import pandas as pd
 import geopandas as gpd
 from pipelines import TwitterPipeline
 from datasets import load_tweets, load_annotated_tweets
-from tweet_functions import analyse_sentiment
 import re
-from warnings import warn
 from datasets import load_local_authorities
 
 
@@ -19,7 +17,8 @@ tweets = TwitterPipeline().apply(tweets.data, verbosity=2)
 # %% Load the annotated tweets, append them to tweets
 annotated = load_annotated_tweets()
 
-
+# %%
+tweets = pd.merge(tweets, annotated, on="id_str", how="left")
 
 # %%
 # Can keywords produce useful subsets of the data?
@@ -39,48 +38,54 @@ tw5 = tweets[
 ].copy()
 
 # Get combinations of the above to use
-tw1 = tweets[
-    tweets["text"].str.contains(
-        "community support | support group | community group", regex=True, na=False
-    )
-]
-tw1["tw1"] = 1
-tw2_3 = tw2.merge(tw3["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
-tw2_3["tw2_3"] = 1
-tw2_4 = tw2.merge(tw4["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
-tw2_3[]
-tw2_5 = tw2.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
-tw3_4 = tw3.merge(tw4["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
-tw3_5 = tw3.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
-tw4_5 = tw4.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
-tw6 = tweets[tweets["text"].str.contains("volunt", regex=True, na=False)]
+dfs = {
+    "tw1": tweets[
+        tweets["text"].str.contains(
+            "community support | support group | community group", regex=True, na=False
+        )
+    ],
+    "tw2_3": tw2.merge(tw3["id_str"], how="inner", on="id_str", suffixes=("", "_y")),
+    "tw2_4": tw2.merge(tw4["id_str"], how="inner", on="id_str", suffixes=("", "_y")),
+    "tw2_5": tw2.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y")),
+    "tw3_4": tw3.merge(tw4["id_str"], how="inner", on="id_str", suffixes=("", "_y")),
+    "tw3_5": tw3.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y")),
+    "tw4_5": tw4.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y")),
+    "tw6": tweets[tweets["text"].str.contains("volunt", regex=True, na=False)],
+}
 
+# Join all of the tweets and add to dictionary
+dfs["tws"] = pd.concat(dfs.values()).drop_duplicates("id_str")  # Full subset
 
-# 
-# Join all of the tweets
-df_list = [tw1, tw2_3, tw2_4, tw2_5, tw3_4, tw3_5, tw4_5, tw6]  # 7093 tweets data
-tws = pd.concat(df_list).drop_duplicates("id_str")  # Full subset
-
-# 
-tws.shape
-
-# 
-# Now, we want to group by local authority to prepare the dataset for mapping
-tws_out = tws.groupby(["lad19cd"]).count().reset_index()
-
-# 
-la = load_local_authorities()
-la = la.data
-
-tws_out["count"] = tws_out["id_str"].copy()
-tws_out = pd.merge(
-    la, tws_out[["count", "lad18cd"]], left_on="lad18cd", right_on="lad18cd"
-)
 
 # %%
-tws_out["tweets_per_pop"] = tws_out["count"] / tws_out["pop"]
-tws_out["tweets_per_pop"] /= tws_out["tweets_per_pop"].max()
+def calculate_accuracies(ground_truth_col: str, df_dict: dict = dfs):
+    cols = [
+        "df_name",
+        "total_tweets",
+        "true_pos",
+        "false_pos",
+        "true_pos_pct",
+        "false_pos_pct",
+    ]
+    lst = []
+    for name, df in dfs.items():
+        entries = df.shape[0]
+        true_pos = (df[ground_truth_col] == 1).sum()
+        false_pos = (df[ground_truth_col] == 0).sum()
+        unlabelled = df[ground_truth_col].isna().sum()
+        true_pos_pct = (true_pos / (entries - unlabelled)) * 100
+        false_pos_pct = (false_pos / (entries - unlabelled)) * 100
+        row = [name, entries, true_pos, false_pos, true_pos_pct, false_pos_pct]
+        lst.append(row)
 
-# %%
-tws_out = tws_out[["lad18cd", "lad18nm", "geometry", "tweets_per_pop"]]
-tws_out.to_file("../data/twitter_count.geojson", driver="GeoJSON")
+    accuracies = pd.DataFrame(lst, columns=cols)
+    return accuracies
+
+
+accuracies_ND = calculate_accuracies("support_ND")
+accuracies_LH = calculate_accuracies("support_LH")
+
+print(accuracies_ND)
+print(accuracies_LH)
+
+# Outcome is fairly poor - need for more accurate classification
