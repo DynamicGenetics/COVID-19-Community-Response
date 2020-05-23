@@ -53,6 +53,10 @@ class Dataset:
             return pd.read_csv(self.source_path)
         if self.data_format == "geojson":
             return gpd.read_file(self.source_path)
+        if self.data_format == "xlsx":
+            return pd.read_excel(self.source_path)
+        if self.data_format == "pkl":
+            return pd.read_pickle(self.source_path)
         raise NotImplementedError(f'Data Format for "{self.name}" not yet suported')
 
 
@@ -66,7 +70,7 @@ DATA_MAP = {
         name="Twitter Dataset",
         data_format="csv",
         filename="tweets_dataset.csv",
-        sub_dir=os.path.join("live", "raw"),
+        sub_dir="tweets",
     ),
     "la_population": Dataset(
         name="Population",
@@ -86,8 +90,23 @@ DATA_MAP = {
         filename="la_keys.geojson",
         sub_dir=os.path.join("static", "source", "local"),
     ),
-    "covid_cases": Dataset(
-        name="Covid-19 Cases", data_format="geojson", filename="cases.geojson"
+    "annotated_tweets": Dataset(
+        name="Annotated Tweets",
+        data_format="pkl",
+        filename="tws_annotated.pkl",
+        sub_dir="tweets",
+    ),
+    "annotated_ND": Dataset(
+        name="ND Annotations",
+        data_format="xlsx",
+        filename="annotated_tweets_ND.xlsx",
+        sub_dir="tweets",
+    ),
+    "annotated_LH": Dataset(
+        name="LD Annotations",
+        data_format="xlsx",
+        filename="annotated_tweets_LH.xlsx",
+        sub_dir="tweets",
     ),
 }
 
@@ -118,15 +137,13 @@ def generate_la_keys(data_filename: str = "la_keys.geojson"):
     # Local Authorities Geoobjects
     la_geo = DATA_MAP["la_boundaries"]
 
-    # Merge these to get a geopandas dataframe with population and lhb information
+    # Merge these to get a geopandas dataframe with population information
     la_key_df = pd.merge(
         la_geo.data,
         la_pop.data[["lad19cd", "population_count"]],
         on="lad19cd",
         how="inner",
     )
-    # Get rid of the (no longer needed) 'id_area' col - it's a duplicate of lad18cd
-    # la_key_df.drop("id_area", axis=1, inplace=True)
 
     la_key_df.to_file(
         os.path.join(
@@ -144,3 +161,47 @@ def load_local_authorities() -> Dataset:
     if not la_dataset.is_valid:
         generate_la_keys()
     return la_dataset
+
+
+def generate_annotated_tws_df():
+    """Generates the annotated dataframe from the annotated spreadsheets
+    and returns as a pd.DataFrame, and saves out to .pkl format.
+    """
+
+    nd_ann = DATA_MAP["annotated_ND"]
+    lh_ann = DATA_MAP["annotated_LH"]
+
+    # Merge both versions of the annotations
+    df = pd.merge(lh_ann.data, nd_ann.data[["id_str", "support"]], on="id_str")
+
+    # Tidy up the dataframe a little
+    df = df[["id_str", "support_x", "Potential category of support", "support_y"]]
+    df.rename(
+        columns={
+            "support_x": "support_LH",
+            "support_y": "support_ND",
+            "Potential category of support": "category_LH",
+        },
+        inplace=True,
+    )
+
+    # Write it out as a .pkl file for future use
+    df.to_pickle(
+        os.path.join(
+            DATA_FOLDER,
+            DATA_MAP["annotated_tweets"].sub_dir,
+            DATA_MAP["annotated_tweets"].filename,
+        )
+    )
+    warn("Annotated dataset generated!")
+
+    return df
+
+
+def load_annotated_tweets() -> Dataset:
+    """Load the dataframe of annotated tweets"""
+
+    annotated_tws = DATA_MAP["annotated_tweets"]
+    if not annotated_tws.is_valid:
+        generate_annotated_tws_df()
+    return annotated_tws.data
