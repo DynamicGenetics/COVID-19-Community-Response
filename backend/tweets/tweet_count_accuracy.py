@@ -1,11 +1,13 @@
 # %%
-# Import Functions
+# Imports
 import pandas as pd
 import geopandas as gpd
 from pipelines import TwitterPipeline
-from datasets import load_tweets
+from datasets import load_tweets, load_annotated_tweets
 from tweet_functions import analyse_sentiment
 import re
+from warnings import warn
+from datasets import load_local_authorities
 
 
 # %% Load Tweets
@@ -13,13 +15,11 @@ tweets = load_tweets()
 # %% Filter the tweets from Wales and format the text
 tweets = TwitterPipeline().apply(tweets.data, verbosity=2)
 
-###############
-# EXPLORATION #
-###############
 
-# %%
-# How many tweets are defined by Twitter as being in Welsh?
-# len(tweets[tweets["lang"].str.contains("cy")])
+# %% Load the annotated tweets, append them to tweets
+annotated = load_annotated_tweets()
+
+
 
 # %%
 # Can keywords produce useful subsets of the data?
@@ -44,8 +44,11 @@ tw1 = tweets[
         "community support | support group | community group", regex=True, na=False
     )
 ]
+tw1["tw1"] = 1
 tw2_3 = tw2.merge(tw3["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
+tw2_3["tw2_3"] = 1
 tw2_4 = tw2.merge(tw4["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
+tw2_3[]
 tw2_5 = tw2.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
 tw3_4 = tw3.merge(tw4["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
 tw3_5 = tw3.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
@@ -53,24 +56,19 @@ tw4_5 = tw4.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y"))
 tw6 = tweets[tweets["text"].str.contains("volunt", regex=True, na=False)]
 
 
-# %%
+# 
 # Join all of the tweets
 df_list = [tw1, tw2_3, tw2_4, tw2_5, tw3_4, tw3_5, tw4_5, tw6]  # 7093 tweets data
 tws = pd.concat(df_list).drop_duplicates("id_str")  # Full subset
 
-# %%
+# 
 tws.shape
 
-# %%
-# NEXT STEP - inspect - do the tweets look ok?
-
-# %%
+# 
 # Now, we want to group by local authority to prepare the dataset for mapping
-tws_out = tws.groupby(["lad18cd"]).count().reset_index()
+tws_out = tws.groupby(["lad19cd"]).count().reset_index()
 
-# %%
-from datasets import load_local_authorities
-
+# 
 la = load_local_authorities()
 la = la.data
 
