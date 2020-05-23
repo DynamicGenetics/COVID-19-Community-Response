@@ -1,6 +1,7 @@
 from geojson import Feature, MultiPolygon, FeatureCollection
 import json
 
+
 # %%
 # In progress - how to define how certain the match is
 def class_uncertainty(laoi):
@@ -12,7 +13,6 @@ def class_uncertainty(laoi):
     # Get the list of values
     a = laoi["likelihood"]
     a.reset_index().drop()
-    del l["index"]
 
     # If there was only one, the
     if len(a) == 1:
