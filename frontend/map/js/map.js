@@ -8,9 +8,8 @@ const addToggle = cc.getToggleAdder();
 addToggle("div#sidebar", sidebarWidth);
 */
 
-
+// Add event listener to toggle button
 document.getElementById("toggleButton").addEventListener("click", function(){toggled=toggleSidebar(toggled);});
-console.log(document.getElementById("toggleButton"))
 
 // Toggle sidebar manually
 var toggled=false
