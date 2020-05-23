@@ -119,6 +119,7 @@ p{
 /* General spacing and layout */
 .spacer-50{
     margin: 50px;
+    width: 100%;
 }
 .spacer-100{
     margin:2rem;
@@ -236,6 +237,8 @@ p{
 .img-dashboard{
     max-height: 30vh;
     max-width: auto;
+    padding: 20px;
+    margin-top: 50px;
 }
 .logos-about{
     width: auto;
