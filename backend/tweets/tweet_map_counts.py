@@ -66,7 +66,7 @@ tws.shape
 
 # %%
 # Now, we want to group by local authority to prepare the dataset for mapping
-tws_out = tws.groupby(["lad18cd"]).count().reset_index()
+tws_out = tws.groupby(["lad19cd"]).count().reset_index()
 
 # %%
 from datasets import load_local_authorities
