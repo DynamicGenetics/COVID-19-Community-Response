@@ -3,15 +3,45 @@
 const sidebarWidth = 400;
 
 // Opener / closer for sidebar
+/*
 const addToggle = cc.getToggleAdder();
 addToggle("div#sidebar", sidebarWidth);
+*/
+
+
+document.getElementById("toggleButton").addEventListener("click", function(){toggled=toggleSidebar(toggled);});
+console.log(document.getElementById("toggleButton"))
+
+// Toggle sidebar manually
+var toggled=false
+function toggleSidebar(toggled){
+    
+    switch(toggled){
+
+        // If toggled then open it
+        case true:
+            document.getElementById("sidebar").style.right = '0px';
+            document.getElementById("toggleButton").style.right;
+            document.getElementById("toggleButton").innerHTML = '<i class="fas fa-times"></i>';
+            return false;
+
+        // If not toggled then close it
+        case false:
+            document.getElementById("sidebar").style.right = '-100%';
+            document.getElementById("toggleButton").style.right;
+            document.getElementById("toggleButton").innerHTML = '<i class="fas fa-plus"></i>';
+            return true;
+    }
+}
 
 // Automatically close sidebar on smaller screens
 const mq = window.matchMedia("(max-width: 813px)");
 if (mq.matches) {
-    const b = document.getElementById('opener');
-    let evt = new MouseEvent("click");
-    b.dispatchEvent(evt);
+    //const b = document.getElementById('opener');
+    //let evt = new MouseEvent("click");
+    //b.dispatchEvent(evt);
+
+    toggled=toggleSidebar(toggled);
 }
 
 // Set up plotting area
