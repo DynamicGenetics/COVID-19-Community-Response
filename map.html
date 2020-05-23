@@ -67,7 +67,7 @@
 
       // Opener / closer for sidebar
       const addToggle = cc.getToggleAdder();
-      addToggle("div#sidebar", sidebarWidth);
+      addToggle("div#sidebar", "div#content", sidebarWidth);
 
       // Automatically close sidebar on smaller screens
       const mq = window.matchMedia("(max-width: 813px)");

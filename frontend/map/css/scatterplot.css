@@ -38,6 +38,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	height: 100vh;
+  position: relative;
 }
 
 #plot-container {
@@ -196,7 +197,8 @@ div#multi-select_needs {
 }
 
 #open_close {
-  position: fixed;
+  /* position: fixed; */
+  position: absolute;
   top: 5px;
   right: 5px;
   height: 40px;

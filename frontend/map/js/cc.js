@@ -54,9 +54,10 @@ const cc = (function(d3){
   // Button svg has id open_close for styling
   function getToggleAdder(){
     let open = true;
-    function addToggle(sidebarSelector, sidebarWidth){
+    function addToggle(sidebarSelector, pageContentSelector, sidebarWidth){
       const sidebar = d3.select(sidebarSelector);
-      const open_close = sidebar.append("svg").attr("id","open_close");
+      const page_contents = d3.select(pageContentSelector);
+      const open_close = page_contents.append("svg").attr("id","open_close");
       open_close.append("circle").attr("id", "opener").attr("cx", 20).attr("cy", 20).attr("r", 20).attr("fill", "#fff").attr("opacity", 0.5).style("cursor", "pointer");
       const cross_lines = open_close.append("g").attr("class", "cross_lines").style("pointer-events", "none");
       cross_lines.append("path").attr("d", "M 20 10 V 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
@@ -679,7 +680,7 @@ const cc = (function(d3){
       d3.select("i#x_axis").transition().duration(50).style("opacity", 0);
       d3.select("i#y_axis").transition().duration(50).style("opacity", 0);
       d3.select("i#axis_label").transition().duration(50).style("opacity", 0);
-      
+
       map.setLayoutProperty("LA_borders", 'visibility', 'none');
       map.setLayoutProperty("local_authorities", 'visibility', 'none');
   		map.setLayoutProperty("LSOA_borders", 'visibility', 'none');
