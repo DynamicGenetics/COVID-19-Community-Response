@@ -10,6 +10,7 @@ data/la_keys.geojson
 
 #Twitter Dataset should be ignored
 backend/data/live/raw/tweets_dataset.csv
+backend/data/tweets/tweets_dataset.csv
 
 # Development Mapbox access token
 frontend/js/mapbox-access-token.js
