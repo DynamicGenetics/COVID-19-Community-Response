@@ -182,6 +182,37 @@ div.select_container h4 {
   padding-right: 2px;
 }
 
+#sidebar div i.help {
+  font-size: 20px;
+  display: block;
+  background-color: #ffffff;
+  padding-left: 2px;
+  padding-right: 2px;
+  color: #a2a2a2;
+}
+
+#sidebar div i.help:hover {
+  color: #4c4c4c;
+}
+
+#sidebar div#support_container i.help {
+  position: absolute;
+  right: 4px;
+  top: -10px;
+}
+
+#sidebar div#plot-container i.help {
+  position: absolute;
+  right: 6px;
+  top: 1px;
+}
+
+#sidebar div#needs_container i.help {
+  position: absolute;
+  right: 4px;
+  bottom: -10px;
+}
+
 #canvas {
   margin-left: 25px;
 }
