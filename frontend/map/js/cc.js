@@ -55,6 +55,7 @@ const cc = (function(d3){
   function getToggleAdder(){
     let open = true;
     function addToggle(sidebarSelector, pageContentSelector, sidebarWidth){
+      hiddenWidth = sidebarWidth + 100;
       const sidebar = d3.select(sidebarSelector);
       const page_contents = d3.select(pageContentSelector);
       const open_close = page_contents.append("svg").attr("id","open_close");
@@ -66,7 +67,7 @@ const cc = (function(d3){
 
       d3.select("#opener").on("click", e => {
         if(open){
-          sidebar.transition().duration(750).style("right", "-" + sidebarWidth + "px");
+          sidebar.transition().duration(750).style("right", "-" + hiddenWidth + "px");
           open_close.transition().duration(750).style("transform", "rotate(90deg)");
           open = false;
         } else {
