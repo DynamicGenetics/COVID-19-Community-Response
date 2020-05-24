@@ -503,6 +503,23 @@ LA_INTERNET_ACCESS = Dataset(
     csv_name="has_internet_percent",
 )
 
+LA_WCVA = Dataset(
+    data=s.SOURCE_WCVA_ONLINE_LA,
+    res=DataResolution.LA,
+    key_col="AREA CODE",
+    key_is_code=False,
+    csv_name="wcva_count",
+)
+
+LA_GP = Dataset(
+    data=s.SOURCE_GP_ONLINE_LA,
+    res=DataResolution.LA,
+    key_col="ladcd",
+    key_is_code=True,
+    keep_cols=["lad19cd", "MHOL_pct"],
+    csv_name="gp",
+)
+
 # LA_INTERNET_USE = Dataset(
 #     data=s.SOURCE_INTERNET_USE_LA,
 #     res=DataResolution.LA,
@@ -523,45 +540,11 @@ LA_INTERNET_ACCESS = Dataset(
 #     csv_name="ethnicities_percent",
 # )
 
-# if __name__ == "__main__":
-#     LA_STATIC_DATASETS = [
-#     LA_WELSH,
-#     LA_POPULATION,
-#     LA_OVER_65,
-#     LA_IMD,
-#     LA_VULNERABLE,
-#     LA_COHESION,
-#     LA_INTERNET_ACCESS,
-#     ]
+if __name__ == "__main__":
 
-#     LSOA_STATIC_DATASETS = [
-#     LSOA_WELSH,
-#     LSOA_POPULATION,
-#     LSOA_OVER_65,
-#     LSOA_POPDENSITY,
-#     ]
+    TEST_DATASETS = [LA_WCVA, LA_GP]
 
-#     la_static_datasets = map(lambda d: d.standardise(), LA_STATIC_DATASETS)
-#     la_static_datasets = map(lambda d: d.standardised_data, la_static_datasets)
+    test = map(lambda d: d.standardise(), TEST_DATASETS)
+    test = map(lambda d: d.standardised_data, test)
 
-#     lsoa_static_datasets = map(lambda d: d.standardise(), LSOA_STATIC_DATASETS)
-#     lsoa_static_datasets = map(lambda d: d.standardised_data, lsoa_static_datasets)
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Apply functions to each dataset, and create new constant
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# WELSH_LSOA = clean_data(LSOA_WELSH) -> WELSH_LSOA.standardise()
-# WELSH_LA = clean_data(LA_WELSH)
-# POPULATION_LSOA = clean_data(LSOA_POPDENSITY)
-# POPULATION_LA = clean_data(LA_POPULATION)
-# OVER_65_LSOA = clean_data(LSOA_OVER_65)
-# OVER_65_LA = clean_data(LA_OVER_65)
-# IMD_LSOA = clean_data(LSOA_IMD)
-# IMD_LA = clean_data(LA_IMD)
-# POPDENSITY_LSOA = clean_data(LSOA_POPDENSITY)
-# POPDENSITY_LA = clean_data(LA_POPDENSITY)
-# VULNERABLE_LA = clean_data(LA_VULNERABLE)
-# COMM_COHESION_LA = clean_data(LA_COHESION)
-# INTERNET_ACCESS_LA = clean_data(LA_INTERNET_ACCESS)
-# INTERNET_USE_LA = clean_data(LA_INTERNET_USE)
-# ETHNICITY_LA = clean_data(LA_ETHNICITY)
+    print("Test run successfully")

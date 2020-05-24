@@ -4,13 +4,6 @@ import pandas as pd
 import os
 from functools import partial
 
-# ++++++++++++++++++++++++++
-# What does this script do?
-# +++++++++++++++++++++++++++
-# It reads in each file from the source/folder in turn.
-# Some files in this folder contain mutiple data columns so these are seperated out
-# to different dataframe constants for clarity.
-
 # ++++++++++++++++++++++++++++++++++
 # Read data into acceptable format
 # ++++++++++++++++++++++++++++++++++
@@ -89,6 +82,10 @@ SOURCE_INTERNET_ACCESS_LA = pd.read_excel(
     skiprows=4,  # Data starts on row 5
     nrows=22,  # Only parse 22 rows as there is more data underneath
 )
+
+SOURCE_GP_ONLINE_LA = pd.read_csv(p("la_gp_online.csv"))
+
+SOURCE_WCVA_ONLINE_LA = pd.read_csv(p("la_wcva_2020-05-18.csv"))
 
 # # NB Here we aren't reading in the last column, because it is half empty.
 # SOURCE_INTERNET_USE_LA = pd.read_excel(
