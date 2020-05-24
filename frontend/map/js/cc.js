@@ -690,11 +690,16 @@ const cc = (function(d3){
   } // end redraw
 
   // Colour ramp function adapted from https://observablehq.com/@mbostock/color-ramp
-  function ramp(plot_area, color, n = 350) {
+  function ramp(plot_area, color, n = 380) {
     const canvas = d3.select(plot_area).append("canvas")
       .attr("id", "canvas")
-      .attr("width", 350)
+      .attr("width", 380)
       .attr("height", 10)
+      .style("position", "absolute")
+      .style("bottom", "5px")
+      .style("left", "10px")
+      // .style("margin-left", "10px")
+      // .style("margin-top", "30px")
       .style("imageRendering", "crisp-edges");
     const context = canvas.node().getContext("2d");
     // canvas.style.margin = "0 -14px";

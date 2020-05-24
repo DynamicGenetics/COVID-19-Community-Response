@@ -213,9 +213,29 @@ div.select_container h4 {
   bottom: -10px;
 }
 
-#canvas {
-  margin-left: 25px;
+#colour_scale {
+  height: 40px;
+  width: 400px;
+  position: relative;
 }
+
+#colour_scale #scale_support_label {
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  color: var(--support);
+}
+
+#colour_scale #scale_needs_label {
+  position: absolute;
+  top: 4px;
+  right: 10px;
+  color: var(--needs);
+}
+
+/* #canvas {
+  margin-top: 30px;
+} */
 
 div#multi-select_support {
   width: 368px;
