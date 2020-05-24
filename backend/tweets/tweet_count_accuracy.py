@@ -21,18 +21,20 @@ tweets = pd.merge(tweets, annotated, on="id_str", how="left")
 
 # %%
 # Can keywords produce useful subsets of the data?
-tw2 = tweets[tweets["text"].str.contains("help", regex=True, na=False)].copy()
+tw2 = tweets[tweets["text"].str.contains(r"help", regex=True, na=False)].copy()
 tw3 = tweets[
-    tweets["text"].str.contains("shop | food | medic | pharmac", regex=True, na=False)
+    tweets["text"].str.contains(r"shop | food | medic | pharmac", regex=True, na=False)
 ].copy()
 tw4 = tweets[
     tweets["text"].str.contains(
-        "street | neighbour | road | village", regex=True, na=False
+        r"street | neighbour | road | village | community | next ?door",
+        regex=True,
+        na=False,
     )
 ].copy()
 tw5 = tweets[
     tweets["text"].str.contains(
-        "facebook | whatsapp | next ?door ", regex=True, na=False
+        r"facebook | whatsapp | next ?door ", regex=True, na=False
     )
 ].copy()
 
@@ -40,7 +42,7 @@ tw5 = tweets[
 dfs = {
     "tw1": tweets[
         tweets["text"].str.contains(
-            "community support | support group | community group", regex=True, na=False
+            r"community support | support group | community group", regex=True, na=False
         )
     ],
     "tw2_3": tw2.merge(tw3["id_str"], how="inner", on="id_str", suffixes=("", "_y")),
@@ -51,6 +53,15 @@ dfs = {
     "tw4_5": tw4.merge(tw5["id_str"], how="inner", on="id_str", suffixes=("", "_y")),
     "tw6": tweets[tweets["text"].str.contains("volunt", regex=True, na=False)],
 }
+
+# Add tweets about shopping that aren't about online shopping
+online_tweets = tweets[
+    tweets["text"].str.contains(r"on ?line | click", regex=True, na=False)
+]
+df = pd.merge(
+    dfs["tw2_3"], online_tweets["id_str"], on="id_str", how="outer", indicator=True
+)
+dfs["tw7"] = df[df["_merge"] == "left_only"]
 
 # Join all of the tweets and add to dictionary
 dfs["tws"] = pd.concat(dfs.values()).drop_duplicates("id_str")  # Full subset
