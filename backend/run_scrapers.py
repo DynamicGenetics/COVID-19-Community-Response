@@ -1,6 +1,6 @@
 """
 Intended purpose of this script:
-1. Get updated data using googleScrape () & phwScraper()
+1. Get updated data using police_coders_scrape () & phwScraper()
 2. Save scraping data archived by date (csv)
 3. Overwrite most recent data (csv)
 4. Produce groupCount layer as a count of groups per area
@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     # Get latest community group data
     groups = police_coders_scrape(fn_groups_raw, root_path)
-    print("Message (googleScrape): Scraped group count: ", groups)
+    print("Message (police_coders_scrape): Scraped group count: ", groups)
 
     # Get welsh border as polygon Shape object
     welsh_border_polygon = get_welsh_boundary(
@@ -88,6 +88,7 @@ if __name__ == "__main__":
     # Get latest covid case data from PHW
     phw_scrape("backend/data/live/raw/phwCovidStatement.xlsx")
 
+    # Clean into format the data pipeline is expecting
     covid = clean_data(
         "backend/data/live/raw/phwCovidStatement.xlsx",
         "backend/data/live/cleaned/phwCovidStatement.csv",
