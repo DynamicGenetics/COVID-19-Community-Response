@@ -31,7 +31,7 @@ GP_LOOKUP = pd.read_csv(
 
 def gp_to_area(gp_data, postcode_lookup, gp_lookup):
     """Using data and lookup tables, generates a new dataframe with the LA and LSOA
-    matched to each GP practice.
+    matched to each GP practice code.
 
     Arguments:
         gp_data {pd.DataFrame} -- Data on number of patients per GP practice.
@@ -67,7 +67,8 @@ def gp_to_area(gp_data, postcode_lookup, gp_lookup):
 
 def mhol_to_pct(df, LA: bool = False, LSOA: bool = False, MSOA: bool = False):
     """For a dataframe with rows of each GP practice mapped to LA or LSOA codes and names,
-    sums "patients_total" and "MHOL_true", and creates new col with total percenatage over each LA.
+    sums "patients_total" and "MHOL_true" across area, and creates new col with total percenatage 
+    over each LA.
 
     Arguments:
         df {pd.Dataframe} -- Each row is a unique GP practice with an area code and name, and
