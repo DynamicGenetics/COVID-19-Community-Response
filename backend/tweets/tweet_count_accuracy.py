@@ -13,7 +13,6 @@ tweets = load_tweets()
 # %% Filter the tweets from Wales and format the text
 tweets = TwitterPipeline().apply(tweets.data, verbosity=2)
 
-
 # %% Load the annotated tweets, append them to tweets
 annotated = load_annotated_tweets()
 
