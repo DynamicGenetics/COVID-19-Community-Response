@@ -20,16 +20,17 @@ LA_COVID = Dataset(
     res=DataResolution.LA,
     key_col="la_name",
     key_is_code=False,
-    csv_name="LA_shielded_pop_count",
+    csv_name="covid_count",
     keep_cols=["lad19nm", "covidIncidence_100k"],
 )
 
 LA_GROUP_COUNTS = Dataset(
     data=SOURCE_GROUP_COUNTS_LA,
     res=DataResolution.LA,
-    key_col="areaID",
+    key_col="area_code",
     key_is_code=True,
-    csv_name="LA_group_counts",
+    rename={"groupCount": "groups_count"},
+    csv_name="group_counts",
 )
 
 LA_WCVA = Dataset(

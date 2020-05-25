@@ -242,7 +242,7 @@ COVID_CASES = Variable(
 )
 
 GROUPS = Variable(
-    data=LA_LIVE_MASTER["group_count"],
+    data=LA_LIVE_MASTER["groups_count"],
     label="Community Support Groups (%)",
     data_class="support",
     la_and_lsoa=False,
