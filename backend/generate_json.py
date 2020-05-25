@@ -9,9 +9,11 @@ import json
 from datasets.live import LA_LIVE
 from datasets.static import LA_STATIC, LSOA_STATIC
 
-LA_STATIC_MASTER = LA_STATIC.prepared_dataset
-LSOA_STATIC_MASTER = LSOA_STATIC.prepared_dataset
-LA_LIVE_MASTER = LA_LIVE.prepared_dataset
+from datasets import BASE_FOLDER
+
+LA_STATIC_MASTER = LA_STATIC.master_dataset
+LSOA_STATIC_MASTER = LSOA_STATIC.master_dataset
+LA_LIVE_MASTER = LA_LIVE.master_dataset
 
 
 @dataclass
@@ -40,7 +42,7 @@ class Variable:
 
     def transform(self):
         self.data_transformed_ = self.data
-        self.data_transformed_ = self.transform_per100k()
+        self.data_transformed_ = self.transform_per100()
         if self.invert:
             self.data_transformed_ = self.invert_data()
 
@@ -58,7 +60,7 @@ class Variable:
         new_name = "_".join(name_to_change.split("_")[:-1])
         return new_name
 
-    def transform_per100k(self):
+    def transform_per100(self):
         """Based on variable type, perform transformation"""
         if self.data_type == "percentage":
             return self.data_transformed_
@@ -143,12 +145,7 @@ class DataDashboard:
 
     def write(self):
         JSON_OUT = os.path.join(
-            os.path.abspath(os.path.dirname(__file__)),
-            "..",
-            "frontend",
-            "map",
-            "data",
-            "data.json",
+            BASE_FOLDER, "..", "..", "frontend", "map", "data", "data.json",
         )
         with open(JSON_OUT, "w") as outfile:
             json.dump(self.to_json(), outfile)
@@ -245,7 +242,7 @@ COVID_CASES = Variable(
 )
 
 GROUPS = Variable(
-    data=LA_STATIC_MASTER["group_count"],
+    data=LA_LIVE_MASTER["group_count"],
     label="Community Support Groups (%)",
     data_class="support",
     la_and_lsoa=False,
