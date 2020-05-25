@@ -6,12 +6,12 @@ import os
 import json
 
 # Local imports
-from master_datasets import LA_MASTER, LSOA_MASTER
+from datasets.live import LA_LIVE
+from datasets.static import LA_STATIC, LSOA_STATIC
 
-##### Local Files for Debugging/Testing
-# LA_MASTER = pd.read_csv('la_master.csv', index_col=['area_code'])
-# LA_MASTER.rename(columns={'wimd_20pct_percent':'wimd_2019'}, inplace=True)
-# LSOA_MASTER = pd.read_csv('lsoa_master.csv',index_col=['area_code', 'area_name'])
+LA_STATIC_MASTER = LA_STATIC.prepared_dataset
+LSOA_STATIC_MASTER = LSOA_STATIC.prepared_dataset
+LA_LIVE_MASTER = LA_LIVE.prepared_dataset
 
 
 @dataclass
@@ -61,18 +61,18 @@ class Variable:
     def transform_per100k(self):
         """Based on variable type, perform transformation"""
         if self.data_type == "percentage":
-            return self.data_transformed_ * 1000
+            return self.data_transformed_
         elif self.data_type == "count":
             if self.res == "LA":
-                return (self.data_transformed_ / LA_POPULATION) * 1000
+                return (self.data_transformed_ / LA_POPULATION) * 100
             elif self.res == "LSOA":
-                return (self.data_transformed_ / LSOA_POPULATION) * 1000
+                return (self.data_transformed_ / LSOA_POPULATION) * 100
         elif self.data_type == "density":
             return self.data_transformed_
         elif self.data_type == "rank":
             return self.data_transformed_
         elif self.data_type == "per100k":
-            return self.data_transformed_
+            return self.data_transformed_ / 1000
         else:
             raise Exception(
                 "Transformation of data type: {} are not suppored".format(
@@ -83,7 +83,7 @@ class Variable:
     def invert_data(self):
         """Invert data direction AFTER transformation"""
         if self.data_type in ["percentage", "count", "per100k"]:
-            return 100000 - self.data_transformed_
+            return 100 - self.data_transformed_
         elif self.data_type == "rank":
             return (self.data_transformed_.max() + 1) - self.data_transformed_
         else:
@@ -154,12 +154,12 @@ class DataDashboard:
             json.dump(self.to_json(), outfile)
 
 
-LA_POPULATION = LA_MASTER["population_count"]
-LSOA_POPULATION = LSOA_MASTER["population_count"]
+LA_POPULATION = LA_STATIC_MASTER["population_count"]
+LSOA_POPULATION = LSOA_STATIC_MASTER["population_count"]
 
 LA_POPDENSITY = Variable(
-    data=LA_MASTER["pop_density_persqkm"],
-    label="Population Density (people per sq km)",
+    data=LA_STATIC_MASTER["pop_density_persqkm"],
+    label="Population Density (sq. km)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -167,16 +167,16 @@ LA_POPDENSITY = Variable(
 )
 
 LSOA_POPDENSITY = Variable(
-    data=LSOA_MASTER["pop_density_persqkm"],
-    label="Population Density (people per sq km)",
+    data=LSOA_STATIC_MASTER["pop_density_persqkm"],
+    label="Population Density (sq. km)",
     data_class="challenge",
     invert=False,
     data_type="density",
 )
 
 LA_OVER_65 = Variable(
-    data=LA_MASTER["over_65_count"],
-    label="Over Age 65 (per 100,000 people)",
+    data=LA_STATIC_MASTER["over_65_count"],
+    label="Over Age 65 (%)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -184,16 +184,16 @@ LA_OVER_65 = Variable(
 )
 
 LSOA_OVER_65 = Variable(
-    data=LSOA_MASTER["over_65_count"],
-    label="Over Age 65 (per 100,000 people)",
+    data=LSOA_STATIC_MASTER["over_65_count"],
+    label="Over Age 65 (%)",
     data_class="challenge",
     invert=False,
     data_type="count",
 )
 
 LA_WIMD = Variable(
-    data=LA_MASTER["wimd_2019"],
-    label="20% Most Deprived (per 100,000 people)",
+    data=LA_STATIC_MASTER["wimd_2019"],
+    label="20% Most Deprived (%)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -201,7 +201,7 @@ LA_WIMD = Variable(
 )
 
 LSOA_WIMD = Variable(
-    data=LSOA_MASTER["wimd_2019"],
+    data=LSOA_STATIC_MASTER["wimd_2019"],
     label="Index of Multiple Deprivation (Rank)",
     data_class="challenge",
     invert=True,
@@ -209,8 +209,8 @@ LSOA_WIMD = Variable(
 )
 
 HAS_INTERNET = Variable(
-    data=LA_MASTER["has_internet_percent"],
-    label="No Internet Access (per 100,000 people)",
+    data=LA_STATIC_MASTER["has_internet_percent"],
+    label="No Internet Access (%)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=True,  # originally percent WITH internet but we need inverse for map
@@ -218,8 +218,8 @@ HAS_INTERNET = Variable(
 )
 
 VULNERABLE = Variable(
-    data=LA_MASTER["vulnerable_pct"],
-    label="At Risk Population (per 100,000 people)",
+    data=LA_STATIC_MASTER["vulnerable_pct"],
+    label="At Risk Population (%)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -227,8 +227,8 @@ VULNERABLE = Variable(
 )
 
 BELONGING = Variable(
-    data=LA_MASTER["belong_percent"],
-    label="Community Cohesion (per 100,000 people)",
+    data=LA_STATIC_MASTER["belong_percent"],
+    label="Community Cohesion (%)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -236,8 +236,8 @@ BELONGING = Variable(
 )
 
 COVID_CASES = Variable(
-    data=LA_MASTER["covidIncidence_100k"],
-    label="COVID-19 Known Cases (per 100,000 people)",
+    data=LA_LIVE_MASTER["covidIncidence_100k"],
+    label="COVID-19 Known Cases (%)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -245,8 +245,8 @@ COVID_CASES = Variable(
 )
 
 GROUPS = Variable(
-    data=LA_MASTER["group_count"],
-    label="Community Support Groups (per 100,000 people)",
+    data=LA_STATIC_MASTER["group_count"],
+    label="Community Support Groups (%)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -254,12 +254,40 @@ GROUPS = Variable(
 )
 
 SHIELDING = Variable(
-    data=LA_MASTER["shielded_count"],
-    label="Shielding Population (per 100,000 people)",
+    data=LA_STATIC_MASTER["shielded_count"],
+    label="Shielding Population (%)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
     data_type="count",
+)
+
+VOLS_TOTAL = Variable(
+    data=LA_LIVE_MASTER["total_vol_count"],
+    label="Registered Volunteers (%)",
+    data_class="support",
+    la_and_lsoa=False,
+    invert=False,
+    data_type="count",
+)
+
+VOLS_INCREASE = Variable(
+    data=LA_LIVE_MASTER["vol_increase_pct"],
+    label="Volunteer Increase since March (%)",
+    data_class="support",
+    la_and_lsoa=False,
+    invert=False,
+    data_type="percentage",
+)
+
+
+GP_DIGITAL = Variable(
+    data=LA_STATIC_MASTER["MHOL_pct"],
+    label="GP Patients registered online",
+    data_class="challenge",
+    la_and_lsoa=False,
+    invert=True,
+    data_type="percentage",
 )
 
 # TWEETS = Variable(
@@ -283,6 +311,9 @@ LA_VARBS = Variables(
         COVID_CASES,
         SHIELDING,
         GROUPS,
+        VOLS_TOTAL,
+        VOLS_INCREASE,
+        GP_DIGITAL,
         # TWEETS
     )
 )
