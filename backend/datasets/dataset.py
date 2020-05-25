@@ -392,6 +392,8 @@ class MasterDataset:
                         self.file_path
                     )
                 )
+                # Set the index in the pandas dataframe
+                self.master_dataset_.set_index(["area_code", "area_name"], inplace=True)
             except FileNotFoundError:
                 self._create_master_dataset()
                 self.write(self.master_dataset_, self.file_path)
@@ -446,23 +448,26 @@ class MasterDataset:
             datasets,
         )
         # Make the naming of the index cols consistent
-        if self.res == DataResolution.LSOA:
-            data.rename(
-                columns={"LSOA11CD": "area_code", "LSOA11NM": "area_name"}, inplace=True
-            )
-            if data.shape[0] != 1909:
-                raise Exception(
-                    "An error has occured. There are not the expected 1909 rows in the LA dataset."
-                )
-        elif self.res == DataResolution.LA:
-            data.rename(
-                columns={"lad19cd": "area_code", "lad19nm": "area_name"}, inplace=True
-            )
+        data.rename_axis(
+            index={
+                "LSOA11CD": "area_code",
+                "LSOA11NM": "area_name",
+                "lad19cd": "area_code",
+                "lad19nm": "area_name",
+            },
+            inplace=True,
+        )
+
+        if self.res == DataResolution.LA:
             if data.shape[0] != 22:
                 raise Exception(
                     "An error has occured. There are not the expected 22 rows in the LA dataset."
                 )
-
+        elif self.res == DataResolution.LSOA:
+            if data.shape[0] != 1909:
+                raise Exception(
+                    "An error has occured. There are not the expected 1909 rows in the LA dataset."
+                )
         return data
 
     @staticmethod
