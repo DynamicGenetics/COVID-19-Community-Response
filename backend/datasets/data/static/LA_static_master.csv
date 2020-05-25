@@ -1,4 +1,4 @@
-lad19cd,lad19nm,shielded_count,population_count,over_65_count,pop_density_persqkm,vulnerable_count,vulnerable_pct,has_internet_percent,MHOL_pct,welsh_speakers_percent,wimd_2019,belong_percent
+area_code,area_name,shielded_count,population_count,over_65_count,pop_density_persqkm,vulnerable_count,vulnerable_pct,has_internet_percent,MHOL_pct,welsh_speakers_percent,wimd_2019,belong_percent
 W06000001,Isle of Anglesey,2034.0,69961.0,17992.0,98.355065,156.0,50.0,85.991,22.85421775672008,66.213088,13.636363636363635,73.8
 W06000002,Gwynedd,3154.0,124178.0,28171.0,48.986847999999995,136.0,40.0,87.453,13.056020605280102,73.920334,5.47945205479452,81.7
 W06000003,Conwy,3222.0,117181.0,32154.0,104.083636,195.0,48.5,87.733,11.090505548705304,40.628716,12.676056338028168,78.3
