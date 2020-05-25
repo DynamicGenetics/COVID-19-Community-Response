@@ -4,12 +4,29 @@ Downloads PHW dashboard data Excel file, saves as xlsx
 """
 
 import requests
+import os
 import pandas as pd
 from datetime import datetime
-from get_data_url import get_data_link
+from .get_data_url import get_data_link
 
 
-def phw_scrape(output_path):
+def run_phw_scraper(raw_folder, cleaned_folder):
+    """Get latest data from PHW"""
+
+    name = "phwCovidStatement"
+    raw = os.path.join(raw_folder, name + ".xlsx")
+    cleaned = cleaned_folder = os.path.join(cleaned_folder, name + ".csv")
+
+    get_phw_data(raw)
+    covid = clean_data(raw, cleaned)
+
+    print(
+        "Message (phwScraper): Scraped covid data (latest data found: {})".format(covid)
+    )
+
+
+def get_phw_data(output_path):
+    """Downloads PHW dashboard data Excel file, saves as xlsx"""
 
     # Download data download for phw covid cases statement
     try:
