@@ -34,8 +34,8 @@ from scrapers.phw_covid_statement.phw_scraper import phw_scrape, area_code, clea
 if __name__ == "__main__":
 
     # Define file output paths
-    fn_groups_raw = "backend/data/live/raw/groups_raw.csv"
-    fn_groups_cleaned = "backend/data/live/cleaned/groups.csv"
+    fn_groups_raw = "backend/datasets/data/live/raw/groups_raw.csv"
+    fn_groups_cleaned = "backend/datasets/data/live/cleaned/groups.csv"
     root_path = "backend/scrapers/police_coders_groups/"
 
     # Get latest community group data
@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     # Get welsh border as polygon Shape object
     welsh_border_polygon = get_welsh_boundary(
-        "backend/data/static/geoboundaries/boundaries_Wales.geojson"
+        "backend/datasets/data/static/geoboundaries/boundaries_Wales.geojson"
     )
 
     # Search if group coordinates are located within welsh border Shape object
@@ -57,18 +57,18 @@ if __name__ == "__main__":
 
     # Get boundary shapes and names for la and lsoa levels
     boundary_info_LA = get_boundaries_LA(
-        "backend/data/static/geoboundaries/boundaries_LA.geojson"
+        "backend/datasets/data/static/geoboundaries/boundaries_LA.geojson"
     )
     boundary_info_LSOA = get_boundaries_LSOA(
-        "backend/data/static/geoboundaries/boundaries_LSOA.geojson"
+        "backend/datasets/data/static/geoboundaries/boundaries_LSOA.geojson"
     )
 
     # Make seperate counts of groups per la and lsoa
     count_LA = count_groups(
-        "backend/data/live/cleaned/groups.csv", boundary_info_LA, "lad18cd"
+        "backend/datasets/data/live/cleaned/groups.csv", boundary_info_LA, "lad18cd"
     )
     count_LSOA = count_groups(
-        "backend/data/live/cleaned/groups.csv", boundary_info_LSOA, "LSOA11CD"
+        "backend/datasets/data/live/cleaned/groups.csv", boundary_info_LSOA, "LSOA11CD"
     )
 
     print(
@@ -78,20 +78,22 @@ if __name__ == "__main__":
     )
 
     # Save counts of groups by areas to seperate csvs
-    count_LA.to_csv("backend/data/live/cleaned/groupCount_LA.csv", index=False)
-    count_LSOA.to_csv("backend/data/live/cleaned/groupCount_LSOA.csv", index=False)
+    count_LA.to_csv("backend/datasets/data/live/cleaned/groupCount_LA.csv", index=False)
+    count_LSOA.to_csv(
+        "backend/datasets/data/live/cleaned/groupCount_LSOA.csv", index=False
+    )
 
 
 # run PHW Covid Case scraper
 if __name__ == "__main__":
 
     # Get latest covid case data from PHW
-    phw_scrape("backend/data/live/raw/phwCovidStatement.xlsx")
+    phw_scrape("backend/datasets/data/live/raw/phwCovidStatement.xlsx")
 
     # Clean into format the data pipeline is expecting
     covid = clean_data(
-        "backend/data/live/raw/phwCovidStatement.xlsx",
-        "backend/data/live/cleaned/phwCovidStatement.csv",
+        "backend/datasets/data/live/raw/phwCovidStatement.xlsx",
+        "backend/datasets/data/live/cleaned/phwCovidStatement.csv",
     )
     print(
         "Message (phwScraper): Scraped covid data (latest data found: {})".format(covid)
