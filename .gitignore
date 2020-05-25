@@ -3,14 +3,14 @@ data/deprec/
 # leriomaggio: ignored as this is a folder for local dev exps.
 data/local
 # Nina local development data folder
-backend/data/static/source/local
+backend/datasets/data/static/source/local
 
 # LA Keys
 data/la_keys.geojson
 
 #Twitter Dataset should be ignored
-backend/data/live/raw/tweets_dataset.csv
-backend/data/tweets/tweets_dataset.csv
+backend/datasets/data/live/raw/tweets_dataset.csv
+backend/datasets/data/tweets/tweets_dataset.csv
 
 # Development Mapbox access token
 frontend/js/mapbox-access-token.js
