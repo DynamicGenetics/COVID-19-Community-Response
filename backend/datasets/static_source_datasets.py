@@ -7,15 +7,10 @@ from functools import partial
 # ++++++++++++++++++++++++++++++++++
 # Read data into acceptable format
 # ++++++++++++++++++++++++++++++++++
-from data import SOURCE_DATA_FOLDER, LIVE_DATA_FOLDER
+from datasets import SOURCE_DATA_FOLDER
 
 # Base folders for all Source Files
 p = partial(os.path.join, SOURCE_DATA_FOLDER)
-p_live = partial(os.path.join, LIVE_DATA_FOLDER)
-
-SOURCE_COVID_COUNT_LA = pd.read_csv(p_live("phwCovidStatement.csv"))
-
-SOURCE_GROUP_COUNTS_LA = pd.read_csv(p_live("groupCount_LA.csv"))
 
 SOURCE_SHEILDING_LA = pd.read_csv(p("shielded_pop_LA.csv"))
 
@@ -28,16 +23,14 @@ SOURCE_WELSH_LA = pd.read_csv(
 
 # Read Population data (includes age based data)
 SOURCE_POPULATION_LSOA = pd.read_excel(
-    p("lsoa_population_2018-19.xlsx"),
-    sheet_name="Mid-2018 Persons",  # Sheet 4
+    p("lsoa_population_2018-19_mid_2018_persons.xlsx"),
     usecols="A, D",  # Reads columns - Area Codes, All Ages
     skiprows=4,  # Data starts on row 5
     na_filter=False,  # Speed up read in of data, we know there are no NA values here
 )
 
 SOURCE_OVER_65_LSOA = pd.read_excel(
-    p("lsoa_population_2018-19.xlsx"),
-    sheet_name="Mid-2018 Persons",  # Sheet 4
+    p("lsoa_population_2018-19_mid_2018_persons.xlsx"),
     usecols="A, BR:CQ",  # Reads columns - Area Codes, 65:90+
     skiprows=4,  # Data starts on row 5
     na_filter=False,  # Speed up read in of data, we know there are no NA values here
@@ -63,7 +56,7 @@ SOURCE_POPDENSITY_LA = pd.read_csv(p("la_pop_density_2018.csv"), usecols=[1, 11]
 vulnerable_and_cohesion = pd.read_excel(
     p("la_vulnerableProxy_and_cohesion.xlsx"),
     sheet_name="By local authority",
-    usecols="B:X",  # Sheet 4
+    usecols="B:X",
 )
 # Select only the columns of interest and transpose
 vulnerable_and_cohesion = vulnerable_and_cohesion.iloc[[1, 20, 21, 38]].T
@@ -85,9 +78,10 @@ SOURCE_INTERNET_ACCESS_LA = pd.read_excel(
 
 SOURCE_GP_ONLINE_LA = pd.read_csv(p("la_gp_online.csv"))
 
-SOURCE_WCVA_ONLINE_LA = pd.read_csv(p("la_wcva_2020-05-18.csv"))
+# -------------------------
+# Currently unused datasets
+# --------------------------
 
-# # NB Here we aren't reading in the last column, because it is half empty.
 # SOURCE_INTERNET_USE_LA = pd.read_excel(
 #     p(
 #         "National Survey results - internet use and freqency of access by local authority.xlsx"
