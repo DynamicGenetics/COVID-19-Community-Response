@@ -196,7 +196,7 @@ class Dataset:
         df_new.reset_index(drop=True, inplace=True)
 
         # Strip surrounding whitespace if there is any.
-        df_new[key_col] = df_new[key_col].apply(lambda x: x.strip())
+        df_new[key_col] = df_new[key_col].apply(lambda x: x.strip()).copy()
 
         # If the column-name doesn't match the standard keyname, change it to that
         if res == DataResolution.LA:
@@ -364,12 +364,7 @@ class MasterDataset:
     res: DataResolution  # Resolution at 'LSOA' or 'LA'
     freq: DataFrequency  # 'live' or 'static'
     from_csv: bool = True  # Is it ok to read the dataset from csv, if it exists?
-    master_dataset_: pd.DataFrame = field(init=False)
-    prepared_dataset_: pd.DataFrame = field(init=False)
-
-    def __post_init__(self):
-        self.master_dataset_ = self._set_master_dataset()
-        self.prepared_dataset_ = self._set_prepared_dataset()
+    master_dataset_: pd.DataFrame = field(init=False, default=None)
 
     @property
     def file_path(self):
@@ -379,11 +374,11 @@ class MasterDataset:
 
     @property
     def master_dataset(self):
+        if self.master_dataset_ is not None:
+            return self.master_dataset_
+        else:
+            self._set_master_dataset()
         return self.master_dataset_
-
-    @property
-    def prepared_dataset(self):
-        return self.prepared_dataset_
 
     def _set_master_dataset(self):
         """Either sets previous master dataset from csv, or generates new one
@@ -398,21 +393,21 @@ class MasterDataset:
                     )
                 )
             except FileNotFoundError:
-                self.master_dataset_ = self._merge_datasets()
+                self._create_master_dataset()
                 self.write(self.master_dataset_, self.file_path)
         else:
-            self.master_dataset_ = self._merge_datasets()
+            self._create_master_dataset()
             self.write(self.master_dataset_, self.file_path)
 
         return self.master_dataset_
 
-    def _set_prepared_dataset(self):
-        """Applies transformations to variables from master dataset and
-        sets prepared dataset attribute as pd.DataFrame """
+    def _create_master_dataset(self):
+        """Applies transformations to variables and sets
+        master dataset attribute as a pd.DataFrame """
 
-        # Instatiate prepared dataset by calling the set up property of master
-        data = self.master_dataset_
-
+        # Instatiate full dataset by merging all the data sources
+        data = self._merge_datasets()
+        data = data.astype("float64")
         if self.freq == DataFrequency.STATIC:
             if self.res == DataResolution.LA:
                 data = self._create_welsh_col(data)
@@ -424,8 +419,8 @@ class MasterDataset:
             if self.res == DataResolution.LA:
                 data = self._create_vol_increase_col(data)
         # Currently no live lsoa level data to manage
-        self.prepared_dataset_ = data
-        return self.prepared_dataset_
+        self.master_dataset_ = data
+        return self
 
     def _merge_datasets(self):
         """Given the list of datasets, merges them into one dataframe"""
@@ -534,9 +529,9 @@ class MasterDataset:
         """Sum percentages for feelings of belonging, to create summary col. Drop redundant cols"""
         # For now, just keep the percentage of people who feel they belong
         belonging_cols = data.filter(regex=("belong")).columns
-        data["belong_percent"] = (
-            data["belong_agree_pct"] + data["belong_strongagree_pct"]
-        )
+        data["belong_percent"] = pd.to_numeric(
+            data["belong_agree_pct"]
+        ) + pd.to_numeric(data["belong_strongagree_pct"])
         data.drop(columns=belonging_cols, inplace=True)
 
         return data
