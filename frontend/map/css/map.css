@@ -3,7 +3,6 @@
   --support: #225fb3;
   --needs: #dd1661;
   --deselected: #e8e8e8;
-  /* --color-primary: #f8f8ff; /* Primary color for landing page consistency */ */
 }
 
 .ui.support.header {
@@ -103,10 +102,6 @@
   margin-right: 12px;
   margin-bottom: 12px;
 }
-
-/* #sidebar h3.header {
-  margin-right: 52px;
-} */
 
 .landing-page-light {
   font-family: 'Raleway', Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
@@ -232,10 +227,6 @@ div.select_container h4 {
   right: 10px;
   color: var(--needs);
 }
-
-/* #canvas {
-  margin-top: 30px;
-} */
 
 div#multi-select_support {
   width: 368px;

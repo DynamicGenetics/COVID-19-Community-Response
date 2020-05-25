@@ -42,14 +42,11 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
   let LAs, LSOAs, groups;
   [data, LAs, LSOAs, groups] = data;
 
-  console.log(data);
-
   const supports = data.variables.filter(d => d.class === "support");
   const needs = data.variables.filter(d => d.class === "challenge");
 
   // Set up selection input for supports
   d3.select("#multi-select_support input").property("value", supports[0].name);
-  console.log(supports.map(d => {return {name: d.label, value: d.name}}));
   const support_menu = d3.select("#support_menu");
   supports.forEach(element => {
     support_menu.append("div").attr("class", "item").attr("data-value", element.name).html(element.label);
@@ -65,15 +62,6 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
   // Select variables for page load
   let chosen_supports = [supports[0].name];
   let chosen_needs = [needs[0].name];
-  // let chosen_needs = needs.map(d => d.name);
-  // let chosen_needs = [];
-  // let chosen_supports = [];
-
-  console.log(supports);
-  console.log(needs);
-
-  // data = data.LAs;
-  // let LSOAs = data.LSOAs;
 
   // Set up map
   let map = new mapboxgl.Map({
@@ -88,14 +76,8 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
     ]
   });
 
-  // Draw scatter plot
-  // cc.drawScatterplot("#plot-area", x_var, y_var, data, height, width, margin, map, boundaries);
-
-  // Draw beeswarm plot
-  // cc.drawBeeswarm("#plot-area", x_var, data, height, width, margin, map, boundaries);
-
-  // // Calculate variables and redraw plot, recolour map
-  // cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, boundaries);
+  // Navigation controls
+  map.addControl(new mapboxgl.NavigationControl(), "bottom-left");
 
   // Remember the latest hovered map area
   let hoveredArea = null;
@@ -285,11 +267,6 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
             {source: "boundaries_LSOAs", id: hoveredArea},
             {hover: false}
           );
-          // if(e.features[0].id != hoveredArea){
-          //   d3.selectAll("circle.datapoints")
-          //     .transition().duration(50)
-          //     .attr("r", "2").attr("stroke-width", 0.5);
-          // }
 
           d3.select("#target_overlay").remove();
         }
@@ -298,9 +275,6 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
           {source: "boundaries_LSOAs", id: hoveredArea},
           {hover: true}
         );
-        // d3.select("circle#" + e.features[0].properties.LSOA11CD)
-        //   .transition().duration(50)
-        //   .attr("r", "6").attr("stroke-width", 1);
 
         let target = d3.select("circle#" + e.features[0].properties.LSOA11CD);
         let tx = target.attr("cx");
@@ -333,9 +307,6 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
           {source: "boundaries_LSOAs", id: hoveredArea},
           {hover: false}
         );
-        // d3.selectAll("circle.datapoints")
-        //   .transition().duration(50)
-        //   .attr("r", "2").attr("stroke-width", 0.5);
 
         d3.select("#target_overlay").remove();
       }
@@ -348,26 +319,21 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
 
     // Create a popup, but don't add it to the map yet.
     let popup = new mapboxgl.Popup({
-      // closeButton: false,
-      // closeOnClick: false,
       maxWidth: "none",
-      // offset: [0,-5],
       className: "map_popup"
     });
 
     map.on('mouseover', "community_groups", function(e) {
-    // Change the cursor style as a UI indicator.
+    // Change the cursor style as a UI indicator
       map.getCanvas().style.cursor = 'pointer';
     });
 
     map.on('mouseleave', "community_groups", function(e) {
-    // Change the cursor style as a UI indicator.
+    // Change the cursor style as a UI indicator
       map.getCanvas().style.cursor = '';
     });
 
     map.on("click", "community_groups", function(e) {
-    // Change the cursor style as a UI indicator.
-      //map.getCanvas().style.cursor = 'pointer';
 
       let coordinates = e.features[0].geometry.coordinates.slice();
 
@@ -399,10 +365,6 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
 
     });
 
-    // map.on("mouseout", "community_groups", function(e) {
-    //   popup.remove();
-    // });
-
   });
 
   // Set up variable selection drop-downs
@@ -421,9 +383,6 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
 
   // Redraw when the selected variables change
   function handleSelectionChange(value, text, $selectedItem) {
-    console.log("redrawing");
-    console.log(d3.select("#multi-select_support input").property("value").split(','));
-    console.log(d3.select("#multi-select_needs input").property("value").split(','));
 
     chosen_supports = d3.select("#multi-select_support input").property("value").split(',');
     if(chosen_supports[0] === ""){

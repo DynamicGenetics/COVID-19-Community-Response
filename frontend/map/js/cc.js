@@ -698,15 +698,8 @@ const cc = (function(d3){
       .style("position", "absolute")
       .style("bottom", "5px")
       .style("left", "10px")
-      // .style("margin-left", "10px")
-      // .style("margin-top", "30px")
       .style("imageRendering", "crisp-edges");
     const context = canvas.node().getContext("2d");
-    // canvas.style.margin = "0 -14px";
-    // canvas.style.width = "400px";
-    // canvas.style.height = "40px";
-    // canvas.style.imageRendering = "crisp-edges";
-    // canvas.style.imageRendering = "pixelated";
     for (let i = 0; i < n; ++i) {
       context.fillStyle = color(i / (n - 1));
       context.fillRect(i, 0, 1, 10);
