@@ -7,6 +7,7 @@ import os
 # ------------------
 
 from datasets import SOURCE_DATA_FOLDER
+from .dataset import DataResolution
 
 
 GP_DATA = pd.read_excel(
@@ -68,7 +69,7 @@ def gp_to_area(gp_data, postcode_lookup, gp_lookup):
     return gp_areas
 
 
-def mhol_to_pct(df, LA: bool = False, LSOA: bool = False, MSOA: bool = False):
+def mhol_to_pct(df, res=DataResolution):
     """For a dataframe with rows of each GP practice mapped to LA or LSOA codes and names,
     sums "patients_total" and "MHOL_true" across area, and creates new col with total percentage
     over each LA.
@@ -83,21 +84,21 @@ def mhol_to_pct(df, LA: bool = False, LSOA: bool = False, MSOA: bool = False):
     """
 
     # Now create the datasets we need for mapping
-    if LA:
+    if res == DataResolution.LA:
         df_counts = pd.pivot_table(
             df,
             values=["patients_total", "MHOL_true"],
             index=["ladcd", "ladnm"],
             aggfunc=np.sum,
         )
-    if LSOA:  # Assume this means it is LA
+    elif res == DataResolution.LSOA:  # Assume this means it is LA
         df_counts = pd.pivot_table(
             df,
             values=["patients_total", "MHOL_true"],
             index=["lsoa11cd", "lsoa11nm"],
             aggfunc=np.sum,
         )
-    if MSOA:
+    elif res == DataResolution.MSOA:
         df_counts = pd.pivot_table(
             df,
             values=["patients_total", "MHOL_true"],
@@ -116,9 +117,9 @@ def mhol_to_pct(df, LA: bool = False, LSOA: bool = False, MSOA: bool = False):
 # ------------------------
 
 GP_AREAS = gp_to_area(GP_DATA, POSTCODES, GP_LOOKUP)
-LA_COUNTS = mhol_to_pct(GP_AREAS, LA=True)
-LSOA_COUNTS = mhol_to_pct(GP_AREAS, LSOA=True)
-MSOA_COUNTS = mhol_to_pct(GP_AREAS, MSOA=True)
+LA_COUNTS = mhol_to_pct(GP_AREAS, DataResolution.LA)
+LSOA_COUNTS = mhol_to_pct(GP_AREAS, DataResolution.LSOA)
+MSOA_COUNTS = mhol_to_pct(GP_AREAS, DataResolution.MSOA)
 
 
 LA_COUNTS.to_csv(os.path.join(SOURCE_DATA_FOLDER, "la_gp_online.csv"))

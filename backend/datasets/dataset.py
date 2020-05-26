@@ -18,6 +18,7 @@ import datasets
 class DataResolution(Enum):
     LA = "LA"
     LSOA = "LSOA"
+    MSOA = "MSOA"
 
 
 class DataFrequency(Enum):
