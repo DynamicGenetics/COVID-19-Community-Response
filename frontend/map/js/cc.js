@@ -54,9 +54,11 @@ const cc = (function(d3){
   // Button svg has id open_close for styling
   function getToggleAdder(){
     let open = true;
-    function addToggle(sidebarSelector, sidebarWidth){
+    function addToggle(sidebarSelector, pageContentSelector, sidebarWidth){
+      hiddenWidth = sidebarWidth + 100;
       const sidebar = d3.select(sidebarSelector);
-      const open_close = sidebar.append("svg").attr("id","open_close");
+      const page_contents = d3.select(pageContentSelector);
+      const open_close = page_contents.append("svg").attr("id","open_close");
       open_close.append("circle").attr("id", "opener").attr("cx", 20).attr("cy", 20).attr("r", 20).attr("fill", "#fff").attr("opacity", 0.5).style("cursor", "pointer");
       const cross_lines = open_close.append("g").attr("class", "cross_lines").style("pointer-events", "none");
       cross_lines.append("path").attr("d", "M 20 10 V 30").attr("stroke", "#4c4c4c").attr("stroke-width", 4).attr("stroke-linecap", "round");
@@ -65,7 +67,7 @@ const cc = (function(d3){
 
       d3.select("#opener").on("click", e => {
         if(open){
-          sidebar.transition().duration(750).style("right", "-" + sidebarWidth + "px");
+          sidebar.transition().duration(750).style("right", "-" + hiddenWidth + "px");
           open_close.transition().duration(750).style("transform", "rotate(90deg)");
           open = false;
         } else {
@@ -156,34 +158,34 @@ const cc = (function(d3){
       .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".2s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
-      .call(g => g.select(".domain").remove())
-      .call(g => g.append("text")
-        .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
-        .style("font-size", "14px")
-        .attr("x", width-2)
-        .attr("y", margin.bottom)
-        .attr("fill", "#000")
-        .attr("text-anchor", "end")
-        .text("Community need →")
-        .attr("fill", "#dd1661")
-      )
+      // .call(g => g.select(".domain").remove())
+      // .call(g => g.append("text")
+      //   .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      //   .style("font-size", "14px")
+      //   .attr("x", width-2)
+      //   .attr("y", margin.bottom)
+      //   .attr("fill", "#000")
+        // .attr("text-anchor", "end")
+        // .text("Community need →")
+        // .attr("fill", "#dd1661")
+      // )
 
     yAxis = g => g
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(y).tickFormat(d3.format(".2s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
-      .call(g => g.select(".domain").remove())
-      .call(g => g.append("text")
-        .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
-        .style("font-size", "14px")
-        .attr("x", -margin.left)
-        .attr("y", 10)
-        .attr("fill", "#000")
-        .attr("text-anchor", "start")
-        .text("↑ Community support")
-        .attr("fill", "#225fb3")
-      )
+      // .call(g => g.select(".domain").remove())
+      // .call(g => g.append("text")
+      //   .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      //   .style("font-size", "14px")
+      //   .attr("x", -margin.left)
+      //   .attr("y", 10)
+      //   .attr("fill", "#000")
+      //   // .attr("text-anchor", "start")
+      //   // .text("↑ Community support")
+      //   // .attr("fill", "#225fb3")
+      // )
 
     // Grid function
     grid = g => g
@@ -394,16 +396,16 @@ const cc = (function(d3){
       .call(d3.axisBottom(x).ticks(width / 80).tickFormat(d3.format(".2s")))
       .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
       .style("font-size", "12px")
-      .call(g => g.select(".domain").remove())
-      .call(g => g.append("text")
-      .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
-      .style("font-size", "14px")
-        .attr("x", width - 2)
-        .attr("y", margin.bottom)
-        .attr("fill", "#000")
-        .attr("text-anchor", "end")
-        .text(axis_text)
-        .attr("fill", axis_colour))
+      // .call(g => g.select(".domain").remove())
+      // .call(g => g.append("text")
+      // .style("font-family", "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif")
+      // .style("font-size", "14px")
+      //   .attr("x", width - 2)
+      //   .attr("y", margin.bottom)
+      //   .attr("fill", "#000")
+      //   // .attr("text-anchor", "end")
+      //   // .text(axis_text)
+      //   // .attr("fill", axis_colour))
 
     // Grid function
     grid = g => g
@@ -649,30 +651,60 @@ const cc = (function(d3){
       needs_var = "needs_composite";
     }
     if(needs_var !== null){
+
+      d3.select("i#axis_label").transition().duration(50).style("opacity", 1);
+      d3.select("i#x_axis").transition().duration(50).style("opacity", 0);
+
       x_var = needs_var;
       if(supports_var !== null){
         y_var = supports_var;
+        d3.select("i#y_axis").transition().duration(50).style("opacity", 1);
+
         // scatterplot
         cc.drawScatterplot(plotAreaId, x_var, y_var, data, height, width, margin, map, boundaries, boundaries_source);
       } else {
+        d3.select("i#y_axis").transition().duration(50).style("opacity", 0);
+
         // beeswarm
         cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source, "need");
       }
     } else if(supports_var !== null){
       x_var = supports_var;
+
+      d3.select("i#x_axis").transition().duration(50).style("opacity", 1);
+      d3.select("i#y_axis").transition().duration(50).style("opacity", 0);
+      d3.select("i#axis_label").transition().duration(50).style("opacity", 0);
+
       // beeswarm
       cc.drawBeeswarm(plotAreaId, x_var, data, height, width, margin, map, boundaries, boundaries_source, "support");
     } else {
-      // console.log("No variables selected");
-      // boundaries.features.forEach(d => {
-      //   d.properties.colour = "#ffffff";
-      // });
-      // map.getSource(boundaries_source).setData(boundaries);
+      d3.select("i#x_axis").transition().duration(50).style("opacity", 0);
+      d3.select("i#y_axis").transition().duration(50).style("opacity", 0);
+      d3.select("i#axis_label").transition().duration(50).style("opacity", 0);
+
       map.setLayoutProperty("LA_borders", 'visibility', 'none');
       map.setLayoutProperty("local_authorities", 'visibility', 'none');
   		map.setLayoutProperty("LSOA_borders", 'visibility', 'none');
       map.setLayoutProperty("lower_super_output_areas", 'visibility', 'none');
     }
+  } // end redraw
+
+  // Colour ramp function adapted from https://observablehq.com/@mbostock/color-ramp
+  function ramp(plot_area, color, n = 380) {
+    const canvas = d3.select(plot_area).append("canvas")
+      .attr("id", "canvas")
+      .attr("width", 380)
+      .attr("height", 10)
+      .style("position", "absolute")
+      .style("bottom", "5px")
+      .style("left", "10px")
+      .style("imageRendering", "crisp-edges");
+    const context = canvas.node().getContext("2d");
+    for (let i = 0; i < n; ++i) {
+      context.fillStyle = color(i / (n - 1));
+      context.fillRect(i, 0, 1, 10);
+    }
+    return canvas;
   }
 
   return {
@@ -684,6 +716,7 @@ const cc = (function(d3){
     getColourScale_need: getColourScale_need,
     getToggleAdder: getToggleAdder,
     z_score: z_score,
-    sumOfZ: sumOfZ
+    sumOfZ: sumOfZ,
+    ramp: ramp
   };
 })(d3);
