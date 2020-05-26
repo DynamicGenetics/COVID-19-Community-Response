@@ -4,14 +4,36 @@ Downloads PHW dashboard data Excel file, saves as xlsx
 """
 
 import requests
+import os
 import pandas as pd
-from datetime import datetime
+from .get_data_url import get_data_link
 
 
-def phw_scrape(output_path):
+def run_phw_scraper(raw_folder, cleaned_folder):
+    """Get latest data from PHW"""
+
+    name = "phwCovidStatement"
+    raw = os.path.join(raw_folder, name + ".xlsx")
+    cleaned = cleaned_folder = os.path.join(cleaned_folder, name + ".csv")
+
+    get_phw_data(raw)
+    covid = clean_data(raw, cleaned)
+
+    print(
+        "Message (phwScraper): Scraped covid data (latest data found: {})".format(covid)
+    )
+
+
+def get_phw_data(output_path):
+    """Downloads PHW dashboard data Excel file, saves as xlsx"""
 
     # Download data download for phw covid cases statement
-    url = "http://www2.nphs.wales.nhs.uk:8080/CommunitySurveillanceDocs.nsf/b4472ecab22fa0d580256f10003199e7/49b553ea08eff65780258566004e8895/$FILE/Rapid%20COVID-19%20surveillance%20data.xlsx"
+    try:
+        url = get_data_link()
+    except Exception as e:
+        url = "http://www2.nphs.wales.nhs.uk:8080/CommunitySurveillanceDocs.nsf/3dc04669c9e1eaa880257062003b246b/77fdb9a33544aee88025855100300cab/$FILE/Rapid%20COVID-19%20surveillance%20data.xlsx"
+        raise e
+
     r = requests.get(url, allow_redirects=True)
 
     # Save in native xlsx format
