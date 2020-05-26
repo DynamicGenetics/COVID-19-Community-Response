@@ -6,7 +6,6 @@ Downloads PHW dashboard data Excel file, saves as xlsx
 import requests
 import os
 import pandas as pd
-from datetime import datetime
 from .get_data_url import get_data_link
 
 
