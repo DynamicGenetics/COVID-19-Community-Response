@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 import os
 
-from datasets import SOURCE_DATA_FOLDER, LIVE_DATA_FOLDER
-
 # ------------------
 # Read in the data
 # ------------------
