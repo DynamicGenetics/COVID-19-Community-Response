@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import os
 
+from datasets import SOURCE_DATA_FOLDER, LIVE_DATA_FOLDER
+
 # ------------------
 # Read in the data
 # ------------------
@@ -121,6 +123,6 @@ LSOA_COUNTS = mhol_to_pct(GP_AREAS, LSOA=True)
 MSOA_COUNTS = mhol_to_pct(GP_AREAS, MSOA=True)
 
 
-LA_COUNTS.to_csv(os.path.join("static", "source", "la_gp_online.csv"))
-LSOA_COUNTS.to_csv(os.path.join("static", "source", "lsoa_gp_online.csv"))
-MSOA_COUNTS.to_csv(os.path.join("static", "source", "msoa_gp_online.csv"))
+LA_COUNTS.to_csv(os.path.join(SOURCE_DATA_FOLDER, "la_gp_online.csv"))
+LSOA_COUNTS.to_csv(os.path.join(SOURCE_DATA_FOLDER, "lsoa_gp_online.csv"))
+MSOA_COUNTS.to_csv(os.path.join(SOURCE_DATA_FOLDER, "msoa_gp_online.csv"))
