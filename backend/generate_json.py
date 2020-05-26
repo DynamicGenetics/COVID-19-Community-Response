@@ -287,14 +287,14 @@ GP_DIGITAL = Variable(
     data_type="percentage",
 )
 
-# TWEETS = Variable(
-#     data=LA_MASTER["tweets_count"],
-#     label="Tweets About Community Support",
-#     data_class="support",
-#     la_and_lsoa=False,
-#     invert=False,
-#     data_type="count",
-# )
+TWEETS = Variable(
+    data=LA_LIVE_MASTER["tweets_percent"],
+    label="Tweets About Community Support (%)",
+    data_class="support",
+    la_and_lsoa=False,
+    invert=False,
+    data_type="percentage",
+)
 
 
 LA_VARBS = Variables(
@@ -311,7 +311,7 @@ LA_VARBS = Variables(
         VOLS_TOTAL,
         VOLS_INCREASE,
         GP_DIGITAL,
-        # TWEETS
+        TWEETS,
     )
 )
 
