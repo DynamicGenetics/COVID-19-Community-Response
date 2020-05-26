@@ -98,7 +98,8 @@ def mhol_to_pct(df, res=DataResolution):
             index=["lsoa11cd", "lsoa11nm"],
             aggfunc=np.sum,
         )
-    elif res == DataResolution.MSOA:
+    # DataResolution.MSOA:
+    else:
         df_counts = pd.pivot_table(
             df,
             values=["patients_total", "MHOL_true"],
