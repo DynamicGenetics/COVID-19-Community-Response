@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from functools import partial
 
-from datasets import SOURCE_DATA_FOLDER, LIVE_DATA_FOLDER
+from datasets import LIVE_DATA_FOLDER
 
 from datasets.dataset import DataResolution, DataFrequency, Dataset, MasterDataset
 
