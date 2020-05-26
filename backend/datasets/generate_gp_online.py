@@ -6,20 +6,23 @@ import os
 # Read in the data
 # ------------------
 
+from datasets import SOURCE_DATA_FOLDER
+
+
 GP_DATA = pd.read_excel(
-    "static/source/local/Digital Exclusion sources.xlsx",
+    os.path.join(SOURCE_DATA_FOLDER, "local", "Digital Exclusion sources.xlsx"),
     sheet_name="Pts Registered with MHOL",
     use_cols=["A", "C", "E:G"],
     skiprows=1,
     na_filter=False,
 )
 POSTCODES = pd.read_csv(
-    "static/source/local/PCD_OA_LSOA_MSOA_LAD_FEB19_UK_LU.csv",
+    os.path.join(SOURCE_DATA_FOLDER, "local", "PCD_OA_LSOA_MSOA_LAD_FEB19_UK_LU.csv"),
     encoding="ISO-8859-1",
     usecols=[2, 7, 8, 9, 10, 11, 12],  # Only include relevant cols
 )
 GP_LOOKUP = pd.read_csv(
-    "static/source/local/epraccur.csv",
+    os.path.join(SOURCE_DATA_FOLDER, "local", "epraccur.csv"),
     usecols=[0, 9],
     names=["practice_ID", "postcode"],
 )
@@ -67,7 +70,7 @@ def gp_to_area(gp_data, postcode_lookup, gp_lookup):
 
 def mhol_to_pct(df, LA: bool = False, LSOA: bool = False, MSOA: bool = False):
     """For a dataframe with rows of each GP practice mapped to LA or LSOA codes and names,
-    sums "patients_total" and "MHOL_true" across area, and creates new col with total percenatage 
+    sums "patients_total" and "MHOL_true" across area, and creates new col with total percentage
     over each LA.
 
     Arguments:
