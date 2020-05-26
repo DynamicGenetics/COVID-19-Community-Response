@@ -28,8 +28,8 @@ def police_coders_scrape(filename, root_path):
         # The file token.pickle stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists("{}token.pickle".format(root_path)):
-            with open("{}token.pickle".format(root_path), "rb") as token:
+        if os.path.exists(os.path.join(root_path, "token.pickle")):
+            with open(os.path.join(root_path, "token.pickle"), "rb") as token:
                 creds = pickle.load(token)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
@@ -37,11 +37,11 @@ def police_coders_scrape(filename, root_path):
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    "{}credentials.json".format(root_path), SCOPES
+                    os.path.join(root_path, "credentials.json"), SCOPES
                 )
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
-            with open("{}token.pickle".format(root_path), "wb") as token:
+            with open(os.path.join(root_path, "token.pickle"), "wb") as token:
                 pickle.dump(creds, token)
 
         service = build("sheets", "v4", credentials=creds)
