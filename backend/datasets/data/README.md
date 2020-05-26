@@ -5,10 +5,10 @@ For a full explanation of the different data sources please see the [project wik
 ## Folder Structure
 
 ### Static
-Static files are those that will not be reguarly updated as part of the dashboard. They are generated once, and then are ready for use.  
+Static files are those that will not be regularly updated as part of the dashboard. They are generated once, and then are ready for use.  
 
 ### Live
-Live files are updated reguarly by either scrapers, or regular API calls. 
+Live files are updated regularly by either scrapers, or regular API calls. 
 
 
 #### Raw and Cleaned in Static and Live
