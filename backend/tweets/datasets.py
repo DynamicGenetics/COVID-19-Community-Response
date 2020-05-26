@@ -8,7 +8,9 @@ from warnings import warn
 from dataclasses import dataclass
 
 
-DATA_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "data")
+DATA_FOLDER = os.path.join(
+    os.path.abspath(os.path.dirname(__file__)), "..", "datasets", "data"
+)
 
 
 @dataclass
