@@ -19,4 +19,4 @@ group and [Public Health Wales](https://phw.nhs.wales).
 ## Documentation
 
 You can view the **documentation** for this project, and the data sources,
-on our [wiki](https://github.com/DynamicGenetics/Covid-Communities-Map/wiki)
+on our [wiki](https://osf.io/c48hw/)
