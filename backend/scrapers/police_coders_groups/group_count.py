@@ -1,10 +1,50 @@
 """
-Intended purpose of this script:
-1. Get LA and LSOA boundaries as shape objects
-2. Get list of groups and their coordinates
-3. Locate groups to LA and LSOA boundaries
-4. Count how many groups are in each LA & LSOA
-5. Save LA and LSOA counts into seperate csvs
+Summary:
+
+1. Get welsh boundaries
+2. Identify the number of community support groups within each geographical area
+3. Output results as csv
+4. This was conducted at both Local Authority (LA) and Lower Layer Super Output Area level (LSOA)
+
+
+Methods:
+
+
+count_groups(input_path, boundary_info, areaID_name)
+
+Description:
+Returns a pandas df containing the number of community support groups within each geographical boundary area
+
+Parameters:
+input_path= File path to cleaned community group data csv boundary_info= Dictionary containing {'polygons': list of boundary polygon objects, 'areaID_list' : list of local area IDs} areaID_name= Column header name containing the IDs of local areas in the cleaned community group data csv file
+
+
+get_boundaries_LA(fileNm_areas)
+
+Description:
+Returns a dictionary containing {'polygons': list of LA level boundary polygon objects, 'areaID_list' : list of local area IDs}
+
+Parameters:
+fileNm_areas= File path to geojson file containing LA level boundaries
+
+
+get_boundaries_LSOA(fileNm_areas)
+
+Description:
+Returns a dictionary containing {'polygons': list of LSOA boundary polygon objects, 'areaID_list' : list of local area IDs}
+
+Parameters:
+fileNm_areas= File path to geojson file containing LSOA level boundaries
+
+
+locate_group(polygons, group_coords)
+
+Description:
+Returns the local area ID within which the given group is located
+
+Parameters:
+polygons= List of polygon boundary objects group_coords= Coordinates to search the polygons for
+
 
 """
 

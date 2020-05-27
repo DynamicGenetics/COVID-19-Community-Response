@@ -1,6 +1,49 @@
 """
-police_coders_scrape () function:
-Uses google sheets API to get Police Coders group list, saves as CSV
+Summary:
+
+1. Get up-to-date data using police_coders_scrape() method
+2. Clean into format the data pipeline is expecting
+3. Save data as csv (overwriting old data if necessary)
+
+
+Methods:
+
+
+police_coders_scrape(filename, root_path)
+
+Description:
+Downloads police coders community support group list and saves as CSV
+
+Parameters:
+filename = File path to raw data output location root_path = File path to folder containing this script
+
+
+filter_welsh_groups(input_path, polygon)
+
+Description:
+Return a csv list of groups which are located in Wales, as well as the last row which is used as a header.
+
+Parameters:
+input_path = File path to raw data location polygon= Polygon object of Welsh country boundary
+
+
+write_data_to_CSV(output, row, out_path)
+
+Description:
+Writes data to csv
+
+Parameters:
+output= csv list of groups row= Row to be used as header out_path= File path to cleaned data output location
+
+
+get_welsh_boundary(fileNm_Wales)
+
+Description:
+Returns a polygon shape containing the Welsh boundary
+
+Parameters:
+fileNm_Wales= File path to Welsh geojson boundary file
+
 """
 
 import pickle
