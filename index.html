@@ -58,25 +58,25 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="#top">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Map</a>
+            <a class="nav-link" href="./map.html">Map</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">User guide</a>
+            <a class="nav-link" href="./user-guide.html">User guide</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#team">The team</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Data</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Code</a>
+            <a class="nav-link dropdown-toggle alignCenter" href="#" id="navbarDropdown" role="button" data-toggle="modal" data-target="#dataModal" aria-haspopup="true" aria-expanded="false">
+              Data and code
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown"></div>
           </li>
         </ul>
       </div>
@@ -90,7 +90,7 @@
             <h1>Mapping the Community Response to COVID-19 in Wales</h1>
             <p class="lead">Using open data and digital footprint analysis to identify the communities in greatest need of support</p>
             <a class="btn btn-lg btn-success" href="#about" role="button">About the project &raquo;</a>
-            <a class="btn btn-lg btn-success" href="#" role="button">Get started &raquo;</a>
+            <a class="btn btn-lg btn-success" href="./user-guide.html" role="button">Get started &raquo;</a>
           </div>
         </div>
       </div>
@@ -218,4 +218,45 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
   </body>
+
+  <!-- Modal -->
+  <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-head" id="exampleModalLongTitle">Open data and code</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/">
+            Documentation Wiki
+            <span>
+              <small><ul><li>Methods</li><li>Data sources</li></ul></small>
+            </span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/">
+            Open Science Framework Data Repository
+            <span>
+              <small><ul><li>Data</li></ul></small>
+            </span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="https://github.com/DynamicGenetics/Covid-Communities-Map/">
+            GitHub Code Repository
+            <span>
+              <small><ul><li>Code wiki</li><li>Data pipeline</li><li>Map and data visualisation</li><li>Application Programming Interface query and download methods</li></ul></small>
+            </span>
+          </a>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </html>
