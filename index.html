@@ -1,378 +1,221 @@
 <!doctype html>
-
 <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="COVID-19 Community Response Map for Wales">
+    <meta name="author" content="The Dynamic Genetics Lab">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>COVID-19 Community Response</title>
 
-<head>
-  
-  <!-- Meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-  <!-- Style -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="stylesheet" href="frontend/landing-page/css/homeStyle.css">
-  <link rel="stylesheet" href="frontend/landing-page/css/backgrounds.css">
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="frontend/landing-page/css/all.css">
+    <!-- Site specific CSS -->
+    <link rel="stylesheet" href="frontend/landing-page/css/variation.css">
 
-  <!-- Page title -->
-  <title>COVID-19 Community Response</title>
-  <link rel="shortcut icon" type="image/jpg" href="frontend/landing-page/img/logo-main-fav.png"/>
-  
-</head>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap" rel="stylesheet">
 
-<body>
+    <!-- Favicons -->
+    <!-- <link rel="apple-touch-icon" href="/docs/4.5/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="/docs/4.5/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/docs/4.5/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="manifest" href="/docs/4.5/assets/img/favicons/manifest.json">
+    <link rel="mask-icon" href="/docs/4.5/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
+    <link rel="icon" href="/docs/4.5/assets/img/favicons/favicon.ico">
+    <meta name="msapplication-config" content="/docs/4.5/assets/img/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#563d7c"> -->
 
-    <!-- Splash screen -->
-    <div class="row">
-      <div class="img-scrolly-splash bg-img-aerial" id="splash">
-        
-        <div class="row bg-none" style="position: absolute; bottom: 0px; left: 0px; width: 100%;">
-          
-          <div class="col-xl-5 bg-none">
-            <img src="frontend/landing-page/img/logo-main.png" class="rounded mx-auto d-block" alt="Project Logo" id="logo-splash-project">
-          </div>
 
-          <div class="col-xl-2 bg-none"></div>
+    <!-- <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
 
-          <div class="col-xl-5 bg-none"></div>
-          
-          <div class="col-xl-5 bg-none">
-            <h1 id="title-splash" class="centered">Wales Community Response<br>
-            Ymateb Cymunedol Cymru
-            </h1>
-          </div>
-
-          <div class="col-xl-2 bg-none">
-            <a href="#subhead" class="text-center"><div class="icons-down-splash col-hov-emphasis"><i class="fas fa-angle-down"></i> <i class="fas fa-chevron-down"></i> <i class="fas fa-angle-down"></i></div></a>
-          </div> 
-          
-          <div class="col-xl-5 bg-none"></div>
-
-        </div>
-
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style> -->
+    <!-- Custom styles for this template -->
+    <!-- <link href="navbar-top-fixed.css" rel="stylesheet"> -->
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <!-- <img src="frontend/landing-page/img/logo-main.png" alt="Project Logo" id="logo-nav"> -->
+      <a class="navbar-brand" href="#">COVID-19 Response Map</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Map</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">User guide</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#team">The team</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Code</a>
+          </li>
+        </ul>
       </div>
-    </div><!-- / row
+    </nav>
 
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light font-head">
-      <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-          <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-              </li>
-          </ul>
-      </div>
-      <div class="mx-auto order-0">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-      </div>
-      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item alignCenter">
-              <a class="nav-link" href="map.html">
-                <i class="fas fa-globe-americas fa-nav fa-emphasis col-hov-highlight"></i><br>Map
-              </a>
-            </li>
-            <li class="nav-item alignCenter">
-              <a class="nav-link" href="user-guide.html"><i class="fas fa-book-open fa-nav col-hov-emphasis"></i><br>User guide</a>
-            </li>
-            <li class="nav-item alignCenter">
-              <a class="nav-link" href="index.html#about"><i class="fas fa-info-circle fa-nav col-hov-emphasis"></i><br>About</a>                
-            </li>
-            <li class="nav-item alignCenter">
-              <a class="nav-link" href="index.html#team"><i class="fas fa-users-cog fa-nav col-hov-emphasis"></i><br>The team</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link dropdown-toggle alignCenter" href="#" id="navbarDropdown" role="button" data-toggle="modal" data-target="#dataModal" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-flask fa-nav col-hov-emphasis"></i><br>Data
-              </a>
-              
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              </div>
-            </li>
-          </ul>
-      </div>
-
-      <!-- Modal -->
-      <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title font-head" id="exampleModalLongTitle">Data catalogue</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              
-              <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/">
-                <i class="fab fa-wikipedia-w i-mid"></i>
-                Wiki Documentation
-                <span class="text-muted"> 
-                  <small><ul><li>Methods</li><li>Data sources</li></ul></small>
-                </span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/">
-                <img src="frontend/landing-page/img/logo-osf.png" style="max-height: 2rem; width: auto; padding: none; margin: none;"></i>
-                OSF Data Repository
-                <span class="text-muted"> 
-                  <small><ul><li>Data</li></ul></small>
-                </span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="https://github.com/DynamicGenetics/Covid-Communities-Map/">
-                <i class="fab fa-github i-mid"></i>
-                GitHub Code Repository
-                <span class="text-muted"> 
-                  <small><ul><li><i class="fab fa-wikipedia-w"></i> Code Wiki</li><li>Data pipeline</li><li>Map</li><li>API query and download methods</li></ul></small>
-                </span>
-              </a>
-    
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
-            </div>
+    <main role="main" class="container-fluid" id="main-content">
+      <div class="jumbotron jumbotron-fluid parallax parallax-header">
+        <div class="container">
+          <div class="jumbotron-text">
+            <img src="frontend/landing-page/img/logo-main.png" alt="Project Logo" id="logo">
+            <h1>Mapping the Community Response to COVID-19 in Wales</h1>
+            <p class="lead">Using open data and digital footprint analysis to identify the communities in greatest need of support</p>
+            <a class="btn btn-lg btn-success" href="#about" role="button">About the project &raquo;</a>
+            <a class="btn btn-lg btn-success" href="#" role="button">Get started &raquo;</a>
           </div>
         </div>
       </div>
 
-    </nav>  
-
-
-    <!-- Main content block -->
-    <div class="row" id="subhead">
-      <div class="col-xl-2"></div><!-- Spacing col -->
-
-      <!-- Left content -->
-      <div class="col-xl mainContent">
-        <div class="content-container">
-          <h1 class="font-head-light">Community response map for COVID-19</h1>
-          <br>
-          <h4 id="subheading">Using open data and digital footprint analysis to identify the most vulnerable communities in Wales</h4>
-          <br>
-          <a href="user-guide.html" class="btn btn-lg btn-info my-2 my-sm-0 bg-col-highlight border-col-highlight font-head-light" style="margin-right: 10px;">Get started</a>
-          <a href="#about" class="btn btn-lg btn-light my-2 my-sm-0 font-head-light border-col-shade">About</a>
-          <br><br>
-        </div>
-      </div>
-      
-      <!-- Right content -->
-      <div class="col-xl mainContent">
-        <img src="frontend/landing-page/img/db1_flip.png" class="img-dashboard" style="margin: 0px;"> 
-      </div>
-
-      <div class="col-xl-2"></div><!-- Spacing col -->
-    </div><!-- / row -->
-
-    
-      <!-- continue btn -->
-      <div class="col-xl-12">
-        <div class="btn-continue mx-auto">
-          <div class="btn-continue-bg2 bg-img-virus"></div>
-          <a href="#about"><i class="fas fa-sort-down i-guide-carat col-primary col-hov-emphasis"></i></a>
-        </div>
-      </div>
-
-
-    <!-- Scrolly image -->
-    <div class="row">
-      <div class="img-scrolly bg-img-virus"></div>
-    </div><!-- / row -->
-    
-
-    <!-- Main content block -->
-    <div class="row" id="about">
-      <div class="col-xl-2"></div><!-- Spacing col -->
-
-        <!-- Left content -->
-        <div class="col-xl mainContent">
-          <img src="frontend/landing-page/img/db7.png" class="img-dashboard">
-        </div>
-
-        <!-- Right content -->
-        <div class="col-xl mainContent">
-          <div class="content-container">
-            <h1 class="font-head">Identifying vulnerability</h1><br>
-            <p> 
-
-              Since the pandemic started communities have been mobilising to help each other;  
-              from shopping for elderly neighbours, to offering to sew face masks. This map is 
-              part of an effort to better understand which communities have better community 
-              cohesion and organisation. 
-
+      <div class="container" id="about">
+        <h2>About the project</h2>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <h4>Identifying vulnerability</h4>
+            <p>
+              Since the pandemic started communities have been mobilising to help each other;
+              from shopping for elderly neighbours, to offering to sew face masks. This map is
+              part of an effort to better understand which communities have better community
+              cohesion and organisation.
             </p>
           </div>
-        </div>
-
-      <div class="col-xl-2"></div><!-- Spacing col -->
-    </div><!-- / row -->
-
-
-    <!-- Main content block -->
-    <div class="row">
-      <div class="col-xl-2"></div><!-- Spacing col -->
-
-        <!-- left content -->
-        <div class="col-xl mainContent">
-          <div class="content-container">
-            <h1 class="font-head">Highlighting need and support</h1><br>
-            <p>  
-
-              Understanding which communities are vulnerable during this pandemic can help government  
-              agencies and third sector organisations consider which areas need the most help. Community 
+          <div class="col-12 col-md-6">
+            <h4>Highlighting need and support</h4>
+            <p>
+              Understanding which communities are vulnerable during this pandemic can help government
+              agencies and third sector organisations consider which areas need the most help. Community
               support can offer a protective factor against adverse events. Some areas are more vulnerable
-              than others and this map highlights the areas where the balance between support and need suggests 
+              than others and this map highlights the areas where the balance between support and need suggests
               that they could benefit from additional support.
-
             </p>
           </div>
         </div>
+      </div>
 
-        <!-- Right content -->
-        <div class="col-xl mainContent">
-          <img src="frontend/landing-page/img/db11.png" class="img-dashboard">
-        </div>
+      <div class="parallax parallax-body"></div>
 
-        <!-- continue btn -->
-        <div class="col-xl-12">
-          <div class="btn-continue mx-auto">
-            <div class="btn-continue-bg2 bg-img-virus"></div>
-            <a href="#team"><i class="fas fa-sort-down i-guide-carat col-primary col-hov-emphasis"></i></a>
+      <div class="container" id="team">
+        <h2>Project team</h2>
+        <p>This project is a collaboration between the
+        <a href="https://phw.nhs.wales/services-and-teams/knowledge-directorate/research-and-evaluation/">
+        Public Health Wales Research & Evaluation Division</a> and the <a href="https://dynamicgenetics.org/">
+        Dynamic Genetics lab</a>, part of the <a href="http://www.bristol.ac.uk/integrative-epidemiology/">
+        MRC Integrative Epidemiology Unit</a> at the <a href="http://www.bristol.ac.uk/">
+        University of Bristol</a>.</p>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <h4>University of Bristol</h4>
+            <dl>
+              <dt>Dr Oliver Davis</dt><dd>Associate Professor and Turing Fellow</dd>
+              <dt>Dr Valerio Maggio</dt><dd>Senior Research Associate in Data Science and Artificial Intelligence</dd>
+              <dt>Dr Alastair Tanner</dt><dd>Research Software Engineer</dd>
+              <dt>Nina Di Cara</dt><dd>Doctoral Researcher</dd>
+              <dt>Chris Moreno-Stokoe</dt><dd>Doctoral Researcher</dd>
+              <dt>Benjamin Woolf</dt><dd>Doctoral Researcher</dd>
+            </dl>
+          </div>
+          <div class="col-12 col-md-6">
+            <h4>Public Health Wales</h4>
+            <dl>
+              <dt>Dr Alisha Davies</dt><dd>Head of Research & Evaluation</dd>
+              <dt>Dr Jiao Song</dt><dd>Public Health Research Statistician</dd>
+              <dt>Elysha Rhys-Sambrook</dt><dd>Project Support Officer</dd>
+              <dt>Lucia Homolova</dt><dd>Public Health Research Assistant</dd>
+            </dl>
           </div>
         </div>
-
-      <div class="col-xl-2"></div><!-- Spacing col -->
-    </div><!-- / row -->
-
-
-    <!-- Scrolly image -->
-    <div class="row">
-      <div class="img-scrolly bg-img-virus"></div>
-    </div><!-- / row -->
-    
-
-  </div>  
- </div>
-
-
-  <!-- Optional bootstrap JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</body>
-
-<footer class="footer bg-col-primary">
-
-  <!-- Team content block  -->
-  <div class="row">
-    
-    <!-- Left content-->
-    <div class="col-xl-3 mx-auto my-auto" id="team">
-
-      <div class="ft-small-logos centered">
-        <a href="https://dynamicgenetics.org/" title="Dynamic Genetics Lab">
-          <img src="frontend/landing-page/img/logo-dynamicgenetics1.png" class="logo-footer-lg"></a>
       </div>
 
-      <div class="ft-small-logos centered">
-        <a href="https://phw.nhs.wales/" title="Public Health Wales">
-          <img src="frontend/landing-page/img/logo-phw.png" class="logo-footer-lg"></a>
-      </div>
+      <div class="parallax parallax-body"></div>
 
-      <div class="ft-small-logos centered">
-        <a href="https://www.bristol.ac.uk/" title="University of Bristol">
-          <img src="frontend/landing-page/img/logo-uob1.png" class="logo-footer-sm"></a><br>
-      </div>
-      
-      <div class="ft-small-logos centered">
-        <a href="http://www.bristol.ac.uk/integrative-epidemiology/" 
-        title="Medical Research Council: Integrative Epidemiology Unit">
-          <img src="frontend/landing-page/img/logo-ieu.png" class="logo-footer-sm"></a><br>
-      </div>
+      <div class="container" id="sponsors">
+        <div class="row">
 
-      <div class="ft-small-logos centered">
-        <a href="https://esrc.ukri.org/" title="Economic and Social Research Council">
-          <img src="frontend/landing-page/img/logo-esrc.png" class="logo-footer-sm"></a><br>
-      </div>
+          <div class="col-12 col-sm-6 col-lg-4 centered">
+            <a href="https://phw.nhs.wales/" title="Public Health Wales">
+              <img src="frontend/landing-page/img/logo-phw.png" class="logo-height-equal"></a>
+          </div>
 
-      <div class="ft-small-logos centered">
-        <a href="https://www.turing.ac.uk/" title="Alan Turing Institute">
-          <img src="frontend/landing-page/img/logo-turing.png" class="logo-footer-sm"></a>
-      </div>
+          <div class="col-12 col-sm-6 col-lg-4 centered">
+            <a href="https://www.bristol.ac.uk/" title="University of Bristol">
+              <img src="frontend/landing-page/img/logo-uob1.png" class="logo-height-equal"></a><br>
+          </div>
 
-    </div> <!-- /col-3-sm-->
+          <div class="col-12 col-sm-6 col-lg-4 centered">
+            <a href="http://www.bristol.ac.uk/integrative-epidemiology/"
+            title="Medical Research Council: Integrative Epidemiology Unit">
+              <img src="frontend/landing-page/img/logo-ieu.png" class="logo-height-equal"></a><br>
+          </div>
 
-    <!-- Middle content -->
-    <div class="col-xl-5 mainContent">
+          <div class="col-12 col-sm-6 col-lg-4 centered">
+            <a href="https://dynamicgenetics.org/" title="Dynamic Genetics Lab">
+              <img src="frontend/landing-page/img/logo-dynamicgenetics1.png" class="logo-height-equal"></a>
+          </div>
 
-      <div class="content-container">
-        <h1 class="font-head-light">Project team</h1>
-        <p> 
+          <div class="col-12 col-sm-6 col-lg-4 centered">
+            <a href="https://www.mapbox.com/community/" title="mapbox">
+              <img src="frontend/landing-page/img/mapbox-logo-black.svg" class="logo-mapbox"></a>
+          </div>
 
-          This project is a collaboration between the 
-          <a href="https://phw.nhs.wales/services-and-teams/knowledge-directorate/research-and-evaluation/">
-            Public Health Wales Research & Evaluation Division
-          </a> 
-          and the 
-          <a href="https://dynamicgenetics.org/">
-            University of Bristol’s Dynamic Genetics lab</a>.  
+          <div class="col-12 col-sm-6 col-lg-4 centered">
+            <a href="https://www.turing.ac.uk/" title="Alan Turing Institute">
+              <img src="frontend/landing-page/img/logo-turing.png" class="logo-height-equal"></a>
+          </div>
 
-          <br>
-          <br>
-          <h4 class="font-head">University of Bristol: </h4>
-          <br>
+          <div class="col-12 centered">
+            <a href="https://esrc.ukri.org/" title="Economic and Social Research Council">
+              <img src="frontend/landing-page/img/logo-esrc.png" class="logo-esrc"></a><br>
+          </div>
 
-          Nina Di Cara <span class="text-muted">– Doctoral Researcher (Mental Health Data Science)</span><br>
-          Chris Moreno-Stokoe <span class="text-muted">– Doctoral Researcher (Genetic Epidemiology and Human-Computer Interaction)</span><br>
-          Dr Oliver Davis <span class="text-muted">– Associate Professor and Turing Fellow </span><br>
-          Dr Valerio Maggio <span class="text-muted">– Senior Research Associate in Data Science and AI </span><br>
-          Dr Alastair Tanner <span class="text-muted">– Research Software Engineer </span><br>
-          Benjamin Woolf <span class="text-muted">– Doctoral Researcher (Psychiatric and Genetic Epidemiology)</span><br>
-          
-          <br>
-          <br>
-          <h4 class="font-head">Public Health Wales: </h4>
-          <br>
 
-          Dr Alisha Davies <span class="text-muted">– Head of the Research & Evaluation Division</span><br>
-          Dr Jiao Song <span class="text-muted">– Public Health Research Statistician</span><br>
-          Elysha Rhys-Sambrook <span class="text-muted">– Project Support Officer</span><br>
-          Lucia Homolova <span class="text-muted">– Public Health Research Assistant</span><br>
-
-        </p>
-      </div>
-    
-  </div>
-
-  <!-- Right content -->
-  <div class="col-xl-4 mainContent">
-    <img src="frontend/landing-page/img/db8.png" class="img-dashboard">
-  </div>
-
-  <!-- Page footer text -->
-  <div class="container-fluid" id="footer">
-      <div class="row text-muted">
-        <div class="col-xl alignRight footer-links">
-          <p>
-            Images courtesy of  
-            <a href="https://unsplash.com/" class="muteLink">Unsplash</a>
-            <a href="https://unsplash.com/@steffmitchell" class="muteLink"><sub>1</sub></a>
-            <a href="https://unsplash.com/@fusion_medical_animation" class="muteLink"><sub>2</sub></a>
-            <a href="https://unsplash.com/@terminath0r" class="muteLink"><sub>3</sub></a>            
-            and 
-            <a href="https://www.freepik.com/" class="muteLink"> Freepik </a>
-            <a href="https://www.freepik.com/pikisuperstar" class="muteLink"><sub>3</sub></a>
-          </p>
         </div>
-  </div>
+      </div>
 
-</footer>
+    </main>
 
+    <div class="container" id="footer">
+      <div class="row">
+        <div class="copyright col-12 col-md-6"><p>Site Copyright &copy; <a href="https://dynamicgenetics.org">Dynamic Genetics Lab</a>, 2020</p></div>
+        <div class="image-attribution col-12 col-md-6"><p>Images by
+        <a href="https://unsplash.com/@steffmitchell">Steffan Mitchell</a> and
+        <a href="https://unsplash.com/@fusion_medical_animation">Fusion Medical Animation</a>
+        on <a href="https://unsplash.com">Unsplash</a></p></div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+  </body>
 </html>

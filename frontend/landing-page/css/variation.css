@@ -1,0 +1,182 @@
+
+:root {
+  --support: #225fb3;
+  --needs: #dd1661;
+  --deselected: #e8e8e8;
+  --logo-red: #c32b38;
+  --logo-mid-blue: #3781ff;
+  --logo-yellow-green: #d6df45;
+  --logo-mid-green: #4c8b44;
+  --logo-dark-green: #337541;
+  --logo-light-gray: #cccccc;
+  --logo-dark-blue: #001d95;
+}
+
+body, html {
+  min-height: 100rem;
+  /* padding-top: 3.5rem; */
+  height: 100%;
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: Raleway,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  font-weight: 400;
+}
+
+/* .navbar {
+  height: 3.5rem;
+} */
+
+#logo-nav {
+  height: 4.7rem;
+  filter: drop-shadow(0 0 10px var(--gray-dark));
+  position: absolute;
+  top: 0.7rem;
+  left: 1rem;
+}
+
+.navbar-brand {
+  /* margin-left: 5rem; */
+  font-family: Raleway,'Helvetica Neue',Arial,Helvetica,sans-serif;
+}
+
+#logo {
+  height: 10rem;
+  margin-bottom: 1rem;
+}
+
+main#main-content {
+  padding-top: 3.5rem;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.parallax {
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  /* Set text colour to show up */
+  color: #ffffff;
+}
+
+.parallax-header {
+  /* The image used */
+  background-image: url(../img/aerial1.jpg);
+  /* backdrop-filter: brightness(20%); */
+
+  /* Set a specific height */
+  min-height: 100vh;
+
+  padding: 0px;
+}
+
+.parallax-body {
+  /* The image used */
+  background-image: url(../img/virus2.jpg);
+  /* backdrop-filter: brightness(20%); */
+
+  /* Set a specific height */
+  height: 250px;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.parallax h1, .parallax h2, .parallax p, .parallax #logo, .parallax .btn {
+  filter: drop-shadow(0 0 10px #000000);
+}
+
+.jumbotron div.container {
+  position: relative;
+  /* position: absolute;
+  top: 0px; */
+  height: 100vh;
+}
+
+div.jumbotron-text {
+  position: absolute;
+  top: 20vh;
+  left: 20px;
+  margin-right: 10px;
+}
+
+div.jumbotron-text .btn {
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+}
+
+#about h2, #team h2 {
+  margin-bottom: 1.5rem;
+}
+
+#about a, #team a, #footer a {
+  color: var(--logo-mid-green);
+}
+
+#about a:hover, #team a:hover, #footer a:hover {
+  color: var(--logo-dark-green);
+  text-decoration: none;
+}
+
+/* #team div div ul {
+  list-style: none;
+} */
+
+#team div div ul li {
+  padding-left: 0px;
+}
+
+/* #team div div ul li::before {
+  content: "\200B";
+} */
+
+/* .text-muted {
+  color: #cccccc;
+} */
+
+#sponsors {
+  min-height: 100px;
+}
+
+#sponsors .row div {
+  height: 100px;
+  width: 350px;
+}
+
+.logo-height-equal {
+  height: 70px;
+}
+
+.logo-esrc {
+  height: 85px;
+}
+
+.logo-mapbox {
+  height: 50px;
+}
+
+.centered{
+    display: flex;
+    justify-content: center;
+}
+
+#footer {
+  padding-top: 20px;
+}
+
+#footer div {
+  height: 60px;
+}
+
+/* Turn off parallax scrolling for phones */
+@media only screen and (max-device-width: 576px) {
+  .parallax {
+    background-attachment: scroll;
+  }
+  div.jumbotron-text {
+    top: 2vh;
+  }
+}
