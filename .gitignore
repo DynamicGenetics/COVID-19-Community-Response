@@ -16,6 +16,9 @@ backend/datasets/data/tweets/tweets_dataset.csv
 frontend/js/mapbox-access-token.js
 frontend/map/js/mapbox-access-token.js
 
+#Google API credentials file
+backend/scrapers/police_coders_groups/credentials.json
+
 # venv
 venv/
 
