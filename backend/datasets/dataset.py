@@ -367,7 +367,7 @@ class Dataset:
 
         # Patching
         df = self.std_data_
-        res = self.res.name
+        res = self.res
         keep_cols = self.keep_cols
         key_is_code = self.key_is_code
 
@@ -506,7 +506,7 @@ class MasterDataset:
     @property
     def file_path(self):
         """Returns str filepath to write csv to, based on freq and res"""
-        filename = self.res.value + "_" + self.freq.value + "_master.csv"
+        filename = self.res.name + "_" + self.freq.name + "_master.csv"
         filepath = os.path.join(datasets.BASE_FOLDER, "data", self.freq.name, filename)
         return filepath
 
