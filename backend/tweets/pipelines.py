@@ -235,7 +235,8 @@ def match_local_authorities(
     if laoi.shape[0] == 0:  # no overlap found
         return None
 
-    # Intersection over the union is a measure of how exactly the bounding box and the la overlap
+    # Intersection over the union is a measure of how exactly the bounding box
+    # and the la overlap
     laoi["iou"] = la_df["geometry"].apply(
         lambda g: g.intersection(bbox).area / g.union(bbox).area
     )
