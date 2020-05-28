@@ -1,9 +1,12 @@
-"""
-Intended purpose of this script:
-1. Get updated data using run_police_coders_scraper () & run_phw_scraper()
-2. Save scraping data archived by date (csv)
-3. Overwrite most recent data (csv)
-4. Produce groupCount layer as a count of groups per area
+"""When run as `__main__` this module will run the police coders scraper, and the PHW scraper. 
+
+Notes
+-------
+Running this script will execute the following actions:
+    1. Get updated data using run_police_coders_scraper () & run_phw_scraper()
+    2. Save scraping data archived by date (csv)
+    3. Overwrite most recent data (csv)
+    4. Produce groupCount layer as a count of groups per area
 """
 
 from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER, GEO_DATA_FOLDER
