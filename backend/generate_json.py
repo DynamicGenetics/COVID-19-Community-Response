@@ -12,13 +12,6 @@ Notes
     Prior to doing this you must also have added the data source to the `live` or `static`
     modules in the `datasets` package, so that they appear in the corresponding MasterDataset object.
 
-    The dataclasses defined in this module are:
-        Variable
-        Variables
-        DataDashboard
-    Each of these classes expect instances of the previous class, except Variable which expects
-    a pd.Series as its data input.
-
     The pd.Series provided to the Variable class instances are columns from the instances
     of MasterDataset that are imported from the `datasets` package. These are:
         LA_STATIC_MASTER (from `datasets.static`)
