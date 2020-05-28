@@ -257,7 +257,8 @@ class Dataset:
             LSOA = self.clean_keys(LSOA, res=DataResolution.LSOA, key_col="LSOA11CD")
             LA = self.clean_keys(LA, res=DataResolution.LA, key_col="lad19cd")
         except Exception as e:
-            # clean_keys will raise an exception if the right number of rows are not merged.
+            # clean_keys will raise an exception if the right number of rows are not
+            # merged.
             raise e
 
         return LSOA, LA
@@ -441,7 +442,8 @@ class Dataset:
             # Derive the names for the new columns from exitsing names
             name_counts = col + "_count"
             name_percent = col + "_pct"
-            # Apply the extract_data function to each line, and the data to two new columns
+            # Apply the extract_data function to each line, and the data to two new
+            # columns
             df[name_counts] = df[col].apply(lambda x: extract_data(x)[0])
             df[name_percent] = df[col].apply(lambda x: extract_data(x)[1])
             df.drop(columns=col, inplace=True)
@@ -710,7 +712,8 @@ class MasterDataset:
         in each LA.
         """
         imd_cols = data.filter(regex=("LSOAs")).columns
-        # What percentage of LSOAs in this LA are from the top 20% most deprived in Wales?
+        # What percentage of LSOAs in this LA are from the top 20% most deprived
+        # in Wales?
         data["wimd_2019"] = (data[imd_cols[2]] / data[imd_cols[0]]) * 100
         data.drop(columns=imd_cols, inplace=True)
 

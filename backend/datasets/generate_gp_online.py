@@ -53,11 +53,11 @@ def gp_to_area(gp_data, postcode_lookup, gp_lookup):
     Parameters
     ----------
     gp_data : pd.DataFrame
-        Data on number of patients per GP practice. Should contain cols `GP Practice Code`, 
+        Data on number of patients per GP practice. Should contain cols `GP Practice Code`,
         `MHOL patient count`, `Patients (2019)`.
     postcode_lookup : pd.DataFrame
-        A df with a column of postcodes (`pscds`) and columns matching each postcode to an 
-        LSOA, LA and MSOA area. 
+        A df with a column of postcodes (`pscds`) and columns matching each postcode to an
+        LSOA, LA and MSOA area.
     gp_lookup : pd.DataFrame
         A df with a column of GP practice IDs (`practice_ID`) and postcodes (`postcode`).
 
