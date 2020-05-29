@@ -5,7 +5,7 @@ from warnings import warn
 
 
 def get_data_link():
-    """Use Selenium to open a Safari window and get the url link"""
+    """Use Selenium to open a Safari window and get the url link of most recent dataset"""
     home_page_url = "https://public.tableau.com/views/RapidCOVID-19virology-Public/Headlinesummary?:display_count=y&:embed=y&:showAppBanner=false&:showVizHome=no"  # Define URL
 
     browser = webdriver.Safari()  # Open Safari

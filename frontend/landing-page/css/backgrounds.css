@@ -4,7 +4,11 @@
 .bg-img-map{
     background-image: url(../img/map1.jpg);
 }
-.bg-img-aerial{
+/* .bg-img-aerial{
     background-image: linear-gradient(to bottom, #f5f6fc00,#f5f6fc00, #000000e1),
     url(../img/aerial1.jpg);
+} */
+
+.bg-img-aerial{
+    background-image: url(../img/aerial1.jpg);
 }

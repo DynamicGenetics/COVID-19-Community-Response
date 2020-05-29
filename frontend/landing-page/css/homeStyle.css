@@ -63,8 +63,12 @@ a:hover{
 }
 
 /* Font */
-p, h1, h2, h3, h4, h5, footer, nav{
-    font-family: 'Roboto', sans-serif;
+
+
+
+p, h1, h2, h3, h4, h5, footer, nav, body{
+    /* font-family: 'Roboto', sans-serif; */
+		font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
 }
 p{
     font-size: 1.3rem;
@@ -133,12 +137,12 @@ p{
     display: flex;
     justify-content: center;
     position: relative;
-} 
+}
 .sideContent{
     display: flex;
     justify-content: center;
     position: relative;
-} 
+}
 .centered{
     display: flex;
     justify-content: center;
@@ -153,7 +157,7 @@ p{
 /* Splash */
 .icons-down-splash{
     color: var(--primary-color);
-    /*position: absolute; 
+    /*position: absolute;
     bottom: 0;
     right: 45%;*/
     padding: 20px;
@@ -182,13 +186,13 @@ p{
 }
 #title-splash{
     color: var(--primary-color);
-    /*position: absolute; 
+    /*position: absolute;
     bottom: 0;
     left: 0;*/
     font-family: 'Raleway', sans-serif;
     font-weight: 300;
     padding: 20px;
-    text-align: center; 
+    text-align: center;
     text-shadow: 2px 2px 5px black;
 }
 #logo-splash-project{

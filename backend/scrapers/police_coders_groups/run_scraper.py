@@ -1,16 +1,15 @@
-"""
-Intended purpose of this script:
-1. Get updated data using googleScrape ()
-2. Save scraping data archived by date (csv)
-3. Overwrite most recent data (csv)
-4. Produce groupCount layer as a count of groups per area
+"""This module executes the police coders scraper.
 
-police_coders_scrape () function:
-Uses google sheets API to get Police Coders group list, saves as CSV
-
-groupCount() function:
-Count the number of groups per area to produce the groupCount layer
+    Notes
+    ----------
+    Intended purpose of this script:
+    1. Get updated data using googleScrape ()
+    2. Save scraping data archived by date (csv)
+    3. Overwrite most recent data (csv)
+    4. Produce groupCount layer as a count of groups per area
 """
+
+
 import os
 
 from .police_scraper import police_coders_scrape
@@ -28,6 +27,17 @@ from .group_count import (
 
 
 def run_police_coders_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_FOLDER):
+    """Executes the tasks required to run the Police Coders data collector.
+
+    Parameters
+    ----------
+    LIVE_RAW_DATA_FOLDER : str
+        Path to the live raw data folder.
+    LIVE_DATA_FOLDER : str
+        Path to the live cleaned data folder.
+    GEO_DATA_FOLDER : str
+        Path to the geoboundaries data folder.
+    """
     # Define file output paths
     fn_groups_raw = os.path.join(LIVE_RAW_DATA_FOLDER, "groups_raw.csv")
     fn_groups_cleaned = os.path.join(LIVE_DATA_FOLDER, "groups.csv")

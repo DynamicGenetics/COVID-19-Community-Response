@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Package: backend.tweets &mdash; COVID Community Response v1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Package: scrapers.police_coders_groups" href="backend.scrapers.police_coders_groups.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> COVID Community Response
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Data Processing Packages:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="backend.html">Package: backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backend.scrapers.html">Package: backend.scrapers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Package: backend.tweets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.tweets.datasets">datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.tweets.pipelines">pipelines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backend.datasets.html">Package: backend.datasets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">COVID Community Response</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="backend.html">Package: backend</a> &raquo;</li>
+        
+      <li>Package: backend.tweets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/backend.tweets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="package-backend-tweets">
+<h1>Package: backend.tweets<a class="headerlink" href="#package-backend-tweets" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-backend.tweets.datasets">
+<span id="datasets"></span><h2>datasets<a class="headerlink" href="#module-backend.tweets.datasets" title="Permalink to this headline">¶</a></h2>
+<p>Python Module to handle data loading</p>
+<dl class="py class">
+<dt id="backend.tweets.datasets.Dataset">
+<em class="property">class </em><code class="sig-prename descclassname">backend.tweets.datasets.</code><code class="sig-name descname">Dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data_format</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.tweets.datasets.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>(Data)Class encapsulating information for a single
+Dataset. Dataset instances will be saved into
+a global DATA_DICTIONARY (see below) acting as a
+proxy to access available datasets.</p>
+<p>This mechanism acts as a surrogate for a Database
+and so potentially subject to change in the future.</p>
+<dl class="py attribute">
+<dt id="backend.tweets.datasets.Dataset.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#backend.tweets.datasets.Dataset.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chosen dataset unique name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="backend.tweets.datasets.Dataset.data_format">
+<code class="sig-name descname">data_format</code><a class="headerlink" href="#backend.tweets.datasets.Dataset.data_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format of the data (e.g. CSV, GeoJSON)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="backend.tweets.datasets.Dataset.filename">
+<code class="sig-name descname">filename</code><a class="headerlink" href="#backend.tweets.datasets.Dataset.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the datafile (including file extension)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.tweets.datasets.Dataset.data">
+<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#backend.tweets.datasets.Dataset.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads and returns a pd.DataFrame of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – When reading of the file type is not supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id0">
+<code class="sig-name descname">data_format</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id1">
+<code class="sig-name descname">filename</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="backend.tweets.datasets.Dataset.is_valid">
+<em class="property">property </em><code class="sig-name descname">is_valid</code><a class="headerlink" href="#backend.tweets.datasets.Dataset.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the file can be found at the source path provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>FileNotFoundError:</strong> – When the file does not exist at the given path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id2">
+<code class="sig-name descname">name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="backend.tweets.datasets.Dataset.source_path">
+<em class="property">property </em><code class="sig-name descname">source_path</code><a class="headerlink" href="#backend.tweets.datasets.Dataset.source_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the source path for the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>FileNotFoundError:</strong> – When the file does not exist at the given path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.tweets.datasets.generate_la_keys">
+<code class="sig-prename descclassname">backend.tweets.datasets.</code><code class="sig-name descname">generate_la_keys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_filename</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'la_keys.geojson'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.tweets.datasets.generate_la_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the Local Authorities Keys.</p>
+<p>This function merges demographics and buondaries of Local Authorithies
+(as retrieved from “buondaries_LAs.geojson”)
+to generate an LA lookup table to be used for a
+quicker geographical location attribution for tweets.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.tweets.datasets.load_local_authorities">
+<code class="sig-prename descclassname">backend.tweets.datasets.</code><code class="sig-name descname">load_local_authorities</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#backend.tweets.datasets.Dataset" title="backend.tweets.datasets.Dataset">backend.tweets.datasets.Dataset</a><a class="headerlink" href="#backend.tweets.datasets.load_local_authorities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the Local Authorities Keys Dataset, or generate it if not found.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.tweets.datasets.load_tweets">
+<code class="sig-prename descclassname">backend.tweets.datasets.</code><code class="sig-name descname">load_tweets</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#backend.tweets.datasets.Dataset" title="backend.tweets.datasets.Dataset">backend.tweets.datasets.Dataset</a><a class="headerlink" href="#backend.tweets.datasets.load_tweets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the Tweets Dataset</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-backend.tweets.pipelines">
+<span id="pipelines"></span><h2>pipelines<a class="headerlink" href="#module-backend.tweets.pipelines" title="Permalink to this headline">¶</a></h2>
+<p>Module containing class for creating custom transformation pipelines, a series of
+functions used for transforming Twitter data, and a Twitter transformation pipeline.</p>
+<dl class="py class">
+<dt id="backend.tweets.pipelines.Pipeline">
+<em class="property">class </em><code class="sig-prename descclassname">backend.tweets.pipelines.</code><code class="sig-name descname">Pipeline</code><a class="headerlink" href="#backend.tweets.pipelines.Pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>ABC implementing the general template of a
+Dynamic Pipeline to process the Twitter dataset.</p>
+<p>The pipeline is composed by a sequence of
+(name, function) pairs.
+Valid (Pipe) functions must comply to the following signature:</p>
+<blockquote>
+<div><p>Callable[[pd.DataFrame], pd.DataFrame]</p>
+</div></blockquote>
+<p>Therefore, only one parameter is expected, i.e. the dataset
+in the form of a pandas.DataFrame, and a DataFrame is returned
+(to be fed as input for the next step).</p>
+<p>(Concrete) pipeline definitions are obtained via subclassing:
+steps are hard-coded so to have pre-defined and controllable
+behaviours. However, it is always possible to register
+extra steps into a pipeline via the <cite>register</cite> method.</p>
+<dl class="py method">
+<dt id="backend.tweets.pipelines.Pipeline.apply">
+<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">verbosity</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#backend.tweets.pipelines.Pipeline.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the pipeline on input data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – Input data to initialise the pipeline</p></li>
+<li><p><strong>verbosity</strong> (<em>int</em><em>, </em><em>optional</em>) – Controls the verbosity of the execution of the pipeline,
+by default 0 (no verbosity)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>New copy of the data after the execution of all the steps
+of the pipeline.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.tweets.pipelines.Pipeline.create_pipeline">
+<em class="property">abstract </em><code class="sig-name descname">create_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Tuple<span class="p">[</span>str<span class="p">, </span>Callable<span class="p">[</span><span class="p">[</span>pandas.core.frame.DataFrame<span class="p">]</span><span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span><span class="p">]</span><span class="p">]</span><a class="headerlink" href="#backend.tweets.pipelines.Pipeline.create_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="backend.tweets.pipelines.Pipeline.register">
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">op</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>str<span class="p">, </span>Callable<span class="p">[</span><span class="p">[</span>pandas.core.frame.DataFrame<span class="p">]</span><span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.tweets.pipelines.Pipeline.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a virtual subclass of an ABC.</p>
+<p>Returns the subclass, to allow usage as a class decorator.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="backend.tweets.pipelines.TwitterPipeline">
+<em class="property">class </em><code class="sig-prename descclassname">backend.tweets.pipelines.</code><code class="sig-name descname">TwitterPipeline</code><a class="headerlink" href="#backend.tweets.pipelines.TwitterPipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#backend.tweets.pipelines.Pipeline" title="backend.tweets.pipelines.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">backend.tweets.pipelines.Pipeline</span></code></a></p>
+<p>Implementation of the Pipeline class for reading and preparing tweets.</p>
+<dl class="py method">
+<dt id="backend.tweets.pipelines.TwitterPipeline.create_pipeline">
+<code class="sig-name descname">create_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Tuple<span class="p">[</span>str<span class="p">, </span>Callable<span class="p">[</span><span class="p">[</span>pandas.core.frame.DataFrame<span class="p">]</span><span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span><span class="p">]</span><span class="p">]</span><a class="headerlink" href="#backend.tweets.pipelines.TwitterPipeline.create_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.tweets.pipelines.convert_coordinates">
+<code class="sig-prename descclassname">backend.tweets.pipelines.</code><code class="sig-name descname">convert_coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">col</span><span class="o">=</span><span class="default_value">'geo.coordinates'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.tweets.pipelines.convert_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a Pandas dataframe with a column geo.coordinates (col)
+and adds the lat and long to their own columns
+for easy conversion to geojson.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.tweets.pipelines.match_local_authorities">
+<code class="sig-prename descclassname">backend.tweets.pipelines.</code><code class="sig-name descname">match_local_authorities</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bbox</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">la_df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">return_all</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>Tuple<span class="p">[</span>str<span class="p">, </span>str<span class="p">, </span>str<span class="p">]</span><span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span><a class="headerlink" href="#backend.tweets.pipelines.match_local_authorities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Intersection Over Union for the the Local Authorities that
+overlap with the bounding box. Requires ‘geometry’ col in LA geopandas df.
+Returns df of local authorities of interest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bbox</strong> (<em>BoundingBox</em>) – Bounding box coordinates of the tweet</p></li>
+<li><p><strong>la_df</strong> (<em>pd.DataFrame</em>) – (pandas) DataFrame containing information of
+the Local Authorities (keys) to match</p></li>
+<li><p><strong>return_all</strong> (<em>bool</em>) – Flag controlling whether to return only the top
+matching local authorities or all of them
+(ranked by likelihood). By default, False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>A tuple containing the name, the code, and the reference of</em></p></li>
+<li><p><em>the top matching LA, or all of them (in the form of</em></p></li>
+<li><p><em>a pd.DataFrame)</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.tweets.pipelines.match_reference_la">
+<code class="sig-prename descclassname">backend.tweets.pipelines.</code><code class="sig-name descname">match_reference_la</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.tweets.pipelines.match_reference_la" title="Permalink to this definition">¶</a></dt>
+<dd><p>Choose LA with highest likelihood. Add LA and LHB to dataset.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="backend.scrapers.police_coders_groups.html" class="btn btn-neutral float-left" title="Package: scrapers.police_coders_groups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Nina Di Cara, Chris Moreno-Stokoe, Oliver Davis, Valerio Maggio, Benjamin Woolf
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
