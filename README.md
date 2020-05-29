@@ -20,4 +20,4 @@ on the [Open Science Framework](https://bit.ly/covidresponsemapwiki)
 
 ## Technical Documentation  
 
-Documentation of the code used to create the map is available in the `docs/` folder of this repository. 
+Documentation of the code used to create the map is available in the `docs/` folder of [this repository](docs/build/html/index.html). 
