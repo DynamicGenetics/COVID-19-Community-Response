@@ -1,4 +1,13 @@
-"""Dataset Classes"""
+"""This module contains the classes used to standardise, format and combine the data sources used to
+create the map.
+
+The classes defined in this module are:
+    DataResolution
+    DataFrequency
+The dataclasses defined in this module are:
+    Dataset
+    MasterDataset
+"""
 
 # Import packages
 import pandas as pd
@@ -16,41 +25,91 @@ import datasets
 
 
 class DataResolution(Enum):
-    LA = "LA"
-    LSOA = "LSOA"
-    MSOA = "MSOA"
+    """Defines a geographic resolution.
+
+    Example
+    ---------
+    `DataResolution.LA`
+
+    Parameters
+    ----------
+    Enum : str
+        Define the DataResolution as "LA", "LSOA", "MSOA".
+    """
+
+    LA = "LA", """Local Authority"""
+    LSOA = "LSOA", """Lower Super Output Area"""
+    MSOA = "MSOA", """Middle Super Output Area"""
 
 
 class DataFrequency(Enum):
+    """Defines a time resolution.
+
+    Example
+    ---------
+    `DataFrequency.LIVE`
+
+    Parameters
+    ----------
+    Enum : str
+        Define the DataFrequency as "live" or "static"
+    """
+
     LIVE = "live"
     STATIC = "static"
 
 
 @dataclass
 class Dataset:
-    """
-    Class to handle transformations to source datasets, returning them
-    as a pd.DataFrame in a standardised format.
+    """Class to handle transformations to source datasets, returning them
+    in a standardised format.
+
+    Attributes
+    ----------
+    data : pd.DataFrame
+        The source dataset to standardise. Expected to have a row for each
+        goegraphic area with at least one column defining the area name or code.
+    res : DataResolution
+        The DataResolution type of the data. See the class for options.
+    key_col: str
+        The column name of the col containing the unique area key.
+    key_is_code: bool
+        Whether or not the key_col is an area code or area name.
+    csv_name: str
+        Name of the csv to write out to, if called. The resolution is
+        automatically prepended the resolution to the name if written.
+    keep_cols: list, optional
+        List of columns to keep in the standardised dataset. If columns have been
+        renamed, use the names given after renaming. Must also include the renamed
+        key_col with its formal name ('LSOA11CD', 'LSOA11NM', 'lad19cd', 'lad19nm').
+    bracketed_data_cols: list, optional
+        List of columns that have data in the format `NUMBER (PERCENTAGE)`.
+    rename: dict, optional
+        Dictionary in format {'old_name' : 'new_name' } for columns to be renamed.
+    std_data_: pd.DataFrame
+        Standardised data, which will have a name and code column, the columns chosen to
+        keep whose contents and column names may be updated based on the args provided.
     """
 
     data: pd.DataFrame
-    res: DataResolution  # Resolution at 'LSOA' or 'LA'
-    key_col: str  # Name of the column that has a unique key
-    key_is_code: bool  # Is the key column a LA or LSOA code?
-    csv_name: str  # Name for the output CSV
-    keep_cols: list = None  # List of columns specifically wanted to keep
-    bracketed_data_cols: list = None  # List of columns where data is in the format (DATA (PERCENT))
-    rename: dict = None  # Dictionary of columns that need renaming Cleaningself('old_name' : 'new_name' }
+    res: DataResolution
+    key_col: str
+    key_is_code: bool
+    csv_name: str
+    keep_cols: list = None
+    bracketed_data_cols: list = None
+    rename: dict = None  # Dictionary of columns that need renaming Cleaning
     std_data_: pd.DataFrame = field(init=False, default=None)
 
     def standardise(self):
-        """
+        """Based on attributes, applies the correct functions to standardise the datasets.
+
+        The function will set self.std_data_
 
         Returns
         -------
-
-        """
-        """ Based on arguments provided, applies the correct functions to standardise the datasets.
+        Dataset
+            This function will return the class instance.
         """
 
         # Validate step TBD
@@ -83,19 +142,39 @@ class Dataset:
 
     @property
     def standardised_data(self):
+        """Returns the std_data_ object pd.DataFrame."""
         return self.std_data_
 
     @property
     def is_standardised(self):
+        """Returns bool of whether the standardised data has been generated."""
         return self.std_data_ is not None
 
     def csv_path(self):
+        """Generates a name to output to csv.
+
+        Returns
+        -------
+        str
+            csv_name preppended with the data resolution and appended with .csv
+        """
         return os.path.join(
-            "cleaned", "{res}_{name}.csv".format(res=self.res, name=self.csv_name)
+            "cleaned", "{res}_{name}.csv".format(res=self.res.name, name=self.csv_name)
         )
 
     def _merge_key(self):
+        """Returns most appropriate merge key str based on DataResolution
 
+        Returns
+        -------
+        str
+            Merge key to use for the matched DataResolution
+
+        Raises
+        ------
+        TypeError
+            When DataResolution is not LA or LSOA.
+        """
         if self.res == DataResolution.LA:
             return "lad19cd"
         elif self.res == DataResolution.LSOA:
@@ -104,7 +183,26 @@ class Dataset:
             raise TypeError("Unsupported Resolution")
 
     def __add__(self, other):
+        """Merges two data objects on the appropriate merge key, which is either
+        LSOA11CD or lad19cd.
 
+        Parameters
+        ----------
+        other : any
+            Data object to merge with a Dataset instance
+
+        Returns
+        -------
+        pd.DataFrame
+            A merged dataframe of the objects passed as arguments.
+
+        Raises
+        ------
+        TypeError
+            When object is not the same type as the Dataset instance.
+            When one of the arguments is standardised and the other is not.
+            When the objects have different resolutions.
+        """
         if not isinstance(other, Dataset):
             raise TypeError(
                 "unsupported operand type(s) for +: {} and {}",
@@ -135,7 +233,7 @@ class Dataset:
         return self
 
     def read_keys(self):
-        """ Reads in and returns the LSOA and LA geopandas dataframes as LSOA, LA. """
+        """ Reads and returns the LSOA and LA geopandas dataframes as constants 'LSOA', 'LA'."""
 
         # TBD: Standardise for GeoPandas DataFrame
         # MAKE THIS A CLASS ATTRIBUTE
@@ -159,7 +257,8 @@ class Dataset:
             LSOA = self.clean_keys(LSOA, res=DataResolution.LSOA, key_col="LSOA11CD")
             LA = self.clean_keys(LA, res=DataResolution.LA, key_col="lad19cd")
         except Exception as e:
-            # clean_keys will raise an exception if the right number of rows are not merged.
+            # clean_keys will raise an exception if the right number of rows are not
+            # merged.
             raise e
 
         return LSOA, LA
@@ -170,17 +269,35 @@ class Dataset:
         for joins in the next steps. Accepts key as a code or name, at LA or LSOA level.
         Will rename key column if it is not the standard name.
 
-        Arguments:
-            df {pd.DataFrame} -- Dataframe to be cleaned
-            res {str} -- Accepts 'LA' or 'LSOA' as resolution of the data
-            key_col {str} -- Name of column containing the code or name
+        Notes
+        ----------
+        Renaming of the key columns depends on the DataResolution.
+        For LSOA they will be `LSOA11CD` and `LSOA11NM` for code and name respectively.
+        For LA they will be `lad19cd` and `ladnm19` respectively.
 
-        Keyword Arguments:
-            key_is_code {bool} -- Assumes the key column a code. If false, key column is
-                                    a name. (default: {True})
+        Parameters
+        ----------
+        df : pd.DataFrame
+            Dataframe to be cleaned
+        res : DataResolution
+            Accepts 'LA' or 'LSOA' as resolution of the data
+        key_col : [type]
+            Name of column containing the code or name
+        key_is_code : bool, optional
+            If True the key_col is a code. If false, key_col is
+            a name. By default True
 
-        Returns:
-            df {pd.DataFrame} -- Returns dataframe with required rows for that resolution.
+        Returns
+        -------
+        pd.DataFrame
+            Returns dataframe with key_col stripped of whitespace, filted
+            to only Welsh areas and renamed for consistency.
+
+        Raises
+        ------
+        Exception
+            When the number of rows after merging on the new key column names cannot
+            match the DataResolution.
         """
 
         # Make sure res is defined correctly
@@ -235,21 +352,18 @@ class Dataset:
         """Given dataframe and chosen cols, will use LA or LSOA geopandas dataframes to create
         standardised columns for area codes and names
 
-        Arguments:
-            df {pd.DataFrame} -- df with a key column.
-            res {str} -- 'LA' or 'LSOA'
+        Returns
+        -------
+        pd.DataFrame
+            self.data with standardised key codes and names. If keep_cols is used then only
+            those columns will be returned.
 
-        Keyword Arguments:
-            keep_cols {list} -- If only keeping some columns, pass a list of col names (default: {[]})
-            key_is_code {bool} -- Assumes the key column a code. If false, key column is
-                                    a name.  (default: {True})
-
-        Raises:
-            Exception: Exception raised if wrong number of rows written out.
-            ValueError: Raised if res is not 'LA' or 'LSOA'
-
-        Returns:
-            dataframe -- returns df with standardised key codes and names.
+        Raises
+        ------
+        Exception
+            When the number of rows generated does not match the DataResolution
+        ValueError
+            When the DataResolution is not LA or LSOA
         """
 
         # Patching
@@ -304,12 +418,15 @@ class Dataset:
         """For a df with columns in the format 'NUMBER (PERCENTAGE)' this function extracts the
         data into two new columns and deletes the original column.
 
-        Arguments:
-            df {pd.DataFrame} -- DataFrame containing 'cols'
-            cols {list} -- list of cols where data needs extracting
+        Notes
+        -------
+        The two new columns will be named the same as the original column, but with `_count`
+        or `_pct` appended.
 
-        Returns:
-            df {pd.DataFrame} -- DataFrame with each col replaced by two new cols.
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with each col replaced by two new columns with the count and percentage.
         """
 
         df = self.std_data_
@@ -325,7 +442,8 @@ class Dataset:
             # Derive the names for the new columns from exitsing names
             name_counts = col + "_count"
             name_percent = col + "_pct"
-            # Apply the extract_data function to each line, and the data to two new columns
+            # Apply the extract_data function to each line, and the data to two new
+            # columns
             df[name_counts] = df[col].apply(lambda x: extract_data(x)[0])
             df[name_percent] = df[col].apply(lambda x: extract_data(x)[1])
             df.drop(columns=col, inplace=True)
@@ -333,21 +451,22 @@ class Dataset:
         return df
 
     def write(self):
-        """Writes a df to csv in the cleaned folder, using naming convention of
-        resolution_name.csv. If name already exists it will not write to path.
+        """Writes the standardised data to csv in the cleaned folder, using naming convention
+        of resolution_name.csv. If the same file already exists it will not write.
 
-        Arguments:
-            df {pd.DataFrame} -- df to write
-            res {str} -- resolution of the df data ('LA' or 'LSOA')
-            csv_name {str} -- name of the data to include in path.
+        Raises
+        ------
+        ValueError
+            If the data has not already been standardised.
         """
+
         if not self.is_standardised:
             raise ValueError("Dataset requires to be standardised first")
 
         # if a file already exists on this path, alert user
         # WARNING warning.warn
         if os.path.isfile(self.csv_path()):
-            print("This file already exists. Please delete if new copy needed.")
+            warn("This file already exists. Please delete if new copy needed.")
         else:
             self.std_data_.to_csv(self.csv_path(), index=False)
             print("File written to " + self.csv_path())
@@ -355,26 +474,47 @@ class Dataset:
 
 @dataclass
 class MasterDataset:
-    """ Used to call or generate the merged 'master' dataset used
+    """Used to call or generate the merged 'master' dataset used
     to write to json. Can be used to generate the 'live' or 'static'
     master datasets. Will write out to csv if it does not already exist,
     or if user chooses 'from_csv' to be False.
+
+    Notes
+    ----------
+    When the master dataset is created, certain data transformation are assumed,
+    which create variables from expected columns in LSOA/LA STATIC or LIVE datasets.
+    These are detailed in the _create_master_dataset method.
+
+    Attributes
+    ----------
+    datasets: List[Dataset]
+        A list of Dataset instances to be merged into the master dataset.
+    res: DataResoltion
+        The DataResolution of the data. Accepts LA or LSOA.
+    freq: DataFrequency
+        The DataFrequency of the data. Accepts STATIC or LIVE.
+    from_csv: bool
+        Whether the master dataset should be built from previously generated csv.
+    master_dataset_: pd.DataFrame
+        The final merged dataset.
     """
 
     datasets: List[Dataset]
-    res: DataResolution  # Resolution at 'LSOA' or 'LA'
-    freq: DataFrequency  # 'live' or 'static'
-    from_csv: bool = True  # Is it ok to read the dataset from csv, if it exists?
+    res: DataResolution
+    freq: DataFrequency
+    from_csv: bool = True
     master_dataset_: pd.DataFrame = field(init=False, default=None)
 
     @property
     def file_path(self):
-        filename = self.res.value + "_" + self.freq.value + "_master.csv"
+        """Returns str filepath to write csv to, based on freq and res"""
+        filename = self.res.name + "_" + self.freq.name + "_master.csv"
         filepath = os.path.join(datasets.BASE_FOLDER, "data", self.freq.name, filename)
         return filepath
 
     @property
     def master_dataset(self):
+        """Returns the master dataset, and generates it if it does not exist."""
         if self.master_dataset_ is not None:
             return self.master_dataset_
         else:
@@ -382,8 +522,25 @@ class MasterDataset:
         return self.master_dataset_
 
     def _set_master_dataset(self):
-        """Either sets previous master dataset from csv, or generates new one
-        if not found or user requested 'from_csv' as False."""
+        """
+        Either returns previous master dataset from csv as a pd.DataFrame,
+        or generates new one if not found or user requested 'from_csv' as False.
+
+        Notes
+        -------
+        If `from_csv=False` or the master csv cannot be found in the expected location
+        this method will generate it, and then write it to the expected location.
+        This also means that in cases where `from_csv=False` any existing .csv in the same
+        location will be overwritten.
+
+        Also note that the index of the df will be set as the name and code key columns.
+
+        Returns
+        -------
+        pd.DataFrame
+            Returns self.master_dataset_ which is an instance of a pandas DataFrame.
+        """
+
         if self.from_csv:
             try:
                 self.master_dataset_ = pd.read_csv(self.file_path)
@@ -405,8 +562,18 @@ class MasterDataset:
         return self.master_dataset_
 
     def _create_master_dataset(self):
-        """Applies transformations to variables and sets
-        master dataset attribute as a pd.DataFrame """
+        """Applies transformations to variables and sets the master_dataset_
+        attribute as the merged pd.DataFrame. Returns class instance.
+
+        Notes
+        -------
+        This method will set the master_dataset_ attribute as the merged df.
+
+        Returns
+        -------
+        MasterDataset
+            Returns the MasterDataset instance.
+        """
 
         # Instatiate full dataset by merging all the data sources
         data = self._merge_datasets()
@@ -426,7 +593,18 @@ class MasterDataset:
         return self
 
     def _merge_datasets(self):
-        """Given the list of datasets, merges them into one dataframe"""
+        """Given the list of datasets, standardises them then merges them into one df.
+
+        Returns
+        -------
+        pd.DataFrame
+            Returns the merged dataframe.
+
+        Raises
+        ------
+        Exception
+            When number of rows generated after merge does not match the DataResolution.
+        """
 
         # First, standardise all the datasets
         datasets = map(lambda d: d.standardise(), self.datasets)
@@ -473,7 +651,7 @@ class MasterDataset:
 
     @staticmethod
     def _create_over_65_col(data):
-        """Create a new over_65 column in the LSOA master and drop the redundant columns.
+        """Create a new over_65 column in the master and drop the redundant columns.
         """
         # Crate new 'over 65' variable for the population data (adding up all
         # singlar age cols from 65:90+)
@@ -489,6 +667,10 @@ class MasterDataset:
     @staticmethod
     def _create_welsh_col(data):
         """Sums welsh speaking frequency to create overall welsh speaking column, and drop redundant columns.
+
+        Notes
+        -------
+        The frequencies summed are those who speak Welsh 'daily', 'weekly' or 'less often'.
         """
         # Get the sum of the people who do use Welsh at all
         welsh_cols = [
@@ -521,10 +703,17 @@ class MasterDataset:
 
     @staticmethod
     def _create_wimd_col(data):
-        """Generate a column for IMD and drop redundant columns.
+        """Generate a column for index of multiple deprivation and drop redundant columns.
+
+        Notes
+        -------
+        The column generated by the method is calculated by dividing the number of LSOAs in
+        each LA that are in the top 20% most deprived in Wales, by the total number of LSOAs
+        in each LA.
         """
         imd_cols = data.filter(regex=("LSOAs")).columns
-        # What percentage of LSOAs in this LA are from the top 20% most deprived in Wales?
+        # What percentage of LSOAs in this LA are from the top 20% most deprived
+        # in Wales?
         data["wimd_2019"] = (data[imd_cols[2]] / data[imd_cols[0]]) * 100
         data.drop(columns=imd_cols, inplace=True)
 
@@ -544,7 +733,14 @@ class MasterDataset:
 
     @staticmethod
     def _create_vol_increase_col(data):
-        """Create col for proportional percentage increase in volunteers"""
+        """Create col for proportional percentage increase in volunteers.
+
+        Notes
+        -------
+        Given the total number of volunteers recorded on 01.03.2020 (`total_vol_count`)
+        and then number of new volunteers registered (`new_vol_count`), the new `vol_increase_pct`
+        col is the percentage increase from the 01.03.2020 to the date the latest data was provided.
+        """
 
         total = data["total_vol_count"]
         new = data["new_vol_count"]
@@ -556,4 +752,5 @@ class MasterDataset:
 
     @staticmethod
     def write(data, filepath):
+        """Writes data to csv on the given filepath."""
         data.to_csv(filepath)

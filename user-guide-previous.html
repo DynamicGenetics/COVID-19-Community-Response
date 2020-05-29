@@ -1,0 +1,396 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+  <!-- Meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="frontend/landing-page/css/all.css">
+
+  <!-- Style -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="frontend/landing-page/css/homeStyle.css">
+  <link rel="stylesheet" href="frontend/landing-page/css/backgrounds.css">
+
+  <!-- Page title and favicon -->
+  <title>COVID-19 Community Response</title>
+  <link rel="shortcut icon" type="image/jpg" href="frontend/landing-page/img/logo-main-fav.png"/>
+
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-md navbar-light bg-light font-head">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <div class="row">
+              <div class="col-xl-2"><img src="frontend/landing-page/img/logo-main.png" class="rounded mx-auto d-block" alt="Project Logo" style="max-height: 60px !important; max-width: auto !important;">
+              </div>
+              <div class="col-xl-10"><a class="navbar-brand mx-auto" href="index.html"><h3 class="font-head-light">Wales Community Response<br>Ymateb Cymunedol Cymru</h3></a>
+              </div>
+            </div>
+            </li>
+      </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+            <li class="nav-item active">
+              <a class="navbar-brand mx-auto" href="index.html"><h3 class="font-head-light">COVID-19 Community Response</h3></a>
+            </li>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item alignCenter">
+            <a class="nav-link" href="map.html">
+              <i class="fas fa-globe-americas fa-nav fa-emphasis col-hov-highlight"></i><br>Map
+            </a>
+          </li>
+          <li class="nav-item alignCenter">
+            <span class="nav-link active" href="#"><i class="fas fa-book-open fa-nav"></i><br>User guide</span>
+          </li>
+          <li class="nav-item alignCenter">
+            <a class="nav-link" href="index.html#about"><i class="fas fa-info-circle fa-nav col-hov-emphasis"></i><br>About</a>
+          </li>
+          <li class="nav-item alignCenter">
+            <a class="nav-link" href="index.html#team"><i class="fas fa-users-cog fa-nav col-hov-emphasis"></i><br>The team</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link dropdown-toggle alignCenter" href="#" id="navbarDropdown" role="button" data-toggle="modal" data-target="#dataModal" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-flask fa-nav col-hov-emphasis"></i><br>Data
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            </div>
+          </li>
+        </ul>
+    </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-head" id="exampleModalLongTitle">Data catalogue</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+          <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/">
+            <i class="fab fa-wikipedia-w i-mid"></i>
+            Wiki Documentation
+            <span class="text-muted">
+              <small><ul><li>Methods</li><li>Data sources</li></ul></small>
+            </span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/">
+            <img src="frontend/landing-page/img/logo-osf.png" style="max-height: 2rem; width: auto; padding: none; margin: none;"></i>
+            OSF Data Repository
+            <span class="text-muted">
+              <small><ul><li>Data</li></ul></small>
+            </span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="https://github.com/DynamicGenetics/Covid-Communities-Map/">
+            <i class="fab fa-github i-mid"></i>
+            GitHub Code Repository
+            <span class="text-muted">
+              <small><ul><li><i class="fab fa-wikipedia-w"></i> Code Wiki</li><li>Data pipeline</li><li>Map</li><li>API query and download methods</li></ul></small>
+            </span>
+          </a>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</nav>
+
+    <!-- Scrolly image -->
+    <div class="row" id="block1">
+        <div class="img-scrolly-sm bg-img-aerial" id="user-guide-splash"></div>
+      </div><!-- / row -->
+
+
+    <!-- Alternative content block -->
+    <div class="row" id="subhead">
+      <div class="col-xl-2"></div><!-- Spacing col -->
+
+      <!-- Left content -->
+      <div class="col-xl-5 mainContent">
+        <div class="content-container">
+          <h1 class="font-head-light">User guide</h1>
+          <br>
+          <h4 id="subheading">This is a short guide to the map and how to use it
+            to identify vulnerable communities in Wales
+            <br><br>
+            <span>Full documentation on our
+            <a href="https://osf.io/c48hw/wiki/home/"> methods</a>,
+            <a href="https://osf.io/c48hw/"> data</a>, and
+            <a href="https://github.com/DynamicGenetics/Covid-Communities-Map/"> code</a>
+            can be found on their respective pages. </span>
+            <br><br><br>
+            <em>Scroll down or press the button
+              <a href="#block2">
+                <img src="frontend/landing-page/img/ico-arrow.png" class="ico-small">
+              </a>  to get started
+            </em>
+          </h4>
+          <br>
+        </div>
+      </div>
+
+      <!-- Right content -->
+      <div class="col-xl-3 sideContent">
+        <div class="spacer-50"></div>
+        <img src="frontend/landing-page/img/db3.png" class="img-dashboard my-auto">
+      </div>
+
+      <div class="col-xl-2"></div><!-- Spacing col -->
+
+      <!-- continue btn -->
+      <!-- <div class="col-xl-12">
+        <div class="btn-continue mx-auto">
+          <div class="btn-continue-bg2 bg-img-virus"></div>
+          <a href="#block2"><i class="fas fa-sort-down i-guide-carat col-primary col-hov-emphasis"></i></a>
+        </div>
+      </div> -->
+
+    </div><!-- / row -->
+
+
+    <!-- Scrolly image -->
+    <div class="row">
+      <div class="img-scrolly-sm bg-img-virus" id="user-guide-scrolly"></div>
+    </div><!-- / row -->
+
+
+    <!-- Content block -->
+    <div class="row" id="block2">
+      <div class="col-xl-2"></div><!-- Spacing col -->
+
+        <!-- Left content -->
+        <div class="col-xl-5 mainContent">
+          <div class="content-container">
+            <h1 class="font-head">About</h1><br>
+            <p>
+              On this map you can explore data from government, community and social media sources to better understand the distribution of community
+              support and community-level vulnerabilities in Wales during the COVID-19 pandemic. You can choose the variables you want to compare to answer the
+              questions that you are interested in.
+              <br>
+            </p>
+          </div>
+        </div>
+
+        <!-- Right content -->
+        <div class="col-xl-3 sideContent">
+          <img src="frontend/landing-page/img/db4.png" class="img-dashboard">
+        </div>
+
+      <div class="col-xl-2"></div><!-- Spacing col -->
+    </div><!-- / row -->
+
+    <!-- continue btn -->
+    <div class="row">
+      <div class="btn-continue">
+        <div class="btn-continue-bg2 bg-img-virus"></div>
+        <a href="#block3"><i class="fas fa-sort-down i-guide-carat col-primary col-hov-emphasis"></i></a>
+      </div>
+    </div>
+
+
+    <!-- Scrolly image -->
+    <div class="row">
+      <div class="img-scrolly bg-img-virus"></div>
+    </div><!-- / row -->
+
+
+    <!-- Content block -->
+    <div class="row" id="block3">
+      <div class="col-xl-2"></div><!-- Spacing col -->
+
+        <!-- Left content -->
+        <div class="col-xl-3 sideContent">
+          <img src="frontend/landing-page/img/db5.png" class="img-dashboard" style="margin-top: 100px;">
+        </div>
+
+        <!-- Right content -->
+        <div class="col-xl-5 mainContent">
+          <div class="content-container">
+            <h1 class="font-head">Our data</h1><br>
+            <p>
+
+              We have combined NHS and census data with online sources such as Twitter and Police Rewired.
+              Most of the data used for the map is publicly available. You can access our data on our
+              <a href="https://osf.io/c48hw/">
+                Open Science Framework (OSF)
+              </a> page
+               or view our data documentation on the
+              <a href="https://osf.io/c48hw/wiki/home/">
+                Wiki
+              </a> guide.
+              Some data is not publicly available, but we always report our sources and the results from this data can still be viewed in the map.
+              <br>
+              <br> We kindly thank the <a href='https://wcva.cymru/'>WCVA</a>, <a href='https://covidmutualaid.org/'>Mutual Aid</a>, <a href='https://gov.wales/statistics-and-research'>
+                Welsh Government Statistics and Research</a> for collecting and making this data available. We also thank Open Street Map for their map
+                of Wales, you can suggest improvements <a href='https://www.openstreetmap.org/fixthemap'> here</a>.
+
+          </p>
+          </div>
+        </div>
+
+      <div class="col-xl-2"></div><!-- Spacing col -->
+    </div><!-- / row -->
+
+    <!-- continue btn -->
+    <div class="row">
+      <div class="btn-continue">
+        <div class="btn-continue-bg2 bg-img-virus"></div>
+        <a href="#block4"><i class="fas fa-sort-down i-guide-carat col-primary col-hov-emphasis"></i></a>
+      </div>
+    </div>
+
+
+    <!-- Scrolly image -->
+    <div class="row">
+      <div class="img-scrolly bg-img-virus"></div>
+    </div><!-- / row -->
+
+
+    <!-- Content block -->
+    <div class="row" id="block4">
+      <div class="col-xl-2"></div><!-- Spacing col -->
+
+        <!-- Left content -->
+        <div class="col-xl-5 mainContent">
+          <div class="content-container">
+            <h1 class="font-head">Data layers</h1><br>
+            <p>There are two types of data layers:</p>
+              <ul>
+                <li><p><strong>Local need:</strong> Factors which indicate that a community may be at elevated risk during the COVID-19 pandemic</p></li>
+                <li><p><strong>Local support:</strong> Factors which indicate that a community may have better resources for coping during COVID-19 pandemic</p></li>
+              </ul>
+            <p>We are using the <a href="https://www.policecoders.org/home/covid-19"> Police Rewired community support dataset </a>  to map community support groups.
+              If you don't see your local group then you can add it by registering on the
+              <a href='https://covidmutualaid.org/local-groups/'> Covid Mutual Aid website.</a>
+            </p>
+            <br>
+          </div>
+
+        </div>
+
+        <!-- Right content -->
+        <div class="col-xl-3 sideContent">
+          <img src="frontend/landing-page/img/db9.png" class="img-dashboard">
+        </div>
+
+      <div class="col-xl-2"></div><!-- Spacing col -->
+    </div><!-- / row -->
+
+    <!-- continue btn -->
+    <div class="row">
+      <div class="btn-continue">
+        <div class="btn-continue-bg2 bg-img-virus"></div>
+        <a href="#block5"><i class="fas fa-sort-down i-guide-carat col-primary col-hov-emphasis"></i></a>
+      </div>
+    </div>
+
+
+    <!-- Scrolly image -->
+    <div class="row">
+      <div class="img-scrolly bg-img-virus"></div>
+    </div><!-- / row -->
+
+
+    <!-- Content block -->
+    <div class="row" id="block5">
+      <div class="col-xl-2"></div><!-- Spacing col -->
+
+        <!-- Left content -->
+        <div class="col-xl-5 mainContent">
+          <div class="content-container">
+            <h1 class="font-head">Automatic analysis</h1><br>
+            <p>
+              As you select layers, analyses will be made to determine which areas are most at risk in terms of the selected factors. Selecting <strong>two</strong>
+              layers will initiate a bivariate analysis to identify vulnerable areas in terms of both factors.
+              <br><br>
+              <em>Please note that your view and analysis will reset each time you reload the map.</em>
+
+            </p>
+          </div>
+        </div>
+
+        <!-- Right content -->
+        <div class="col-xl-3 sideContent">
+          <img src="frontend/landing-page/img/db6.png" class="img-dashboard" style="margin-bottom: 20vh;">
+          <a href="map.html" class="btn btn-lg btn-info bg-col-emphasis border-col-emphasis font-head-light" id="btn-go" style="position: absolute; bottom: 5vh;">
+            Go to the map
+          </a>
+        </div>
+
+      <div class="col-xl-2"></div><!-- Spacing col -->
+    </div><!-- / row -->
+
+
+    <!-- Scrolly image -->
+    <div class="row">
+      <div class="img-scrolly bg-img-map"></div>
+    </div><!-- / row -->
+
+
+  </div>
+
+
+  <!-- Optional bootstrap JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+
+<footer class="footer bg-col-primary">
+
+  <!-- Page footer text -->
+  <div class="container-fluid" id="footer">
+      <div class="row text-muted">
+        <div class="col-xl centered alignRight footer-links">
+          <p>
+            Images courtesy of
+            <a href="https://unsplash.com/" class="muteLink">Unsplash</a>
+            <a href="https://unsplash.com/@steffmitchell" class="muteLink"><sub>1</sub></a>
+            <a href="https://unsplash.com/@fusion_medical_animation" class="muteLink"><sub>2</sub></a>
+            <a href="https://unsplash.com/@terminath0r" class="muteLink"><sub>3</sub></a>
+            and
+            <a href="https://www.freepik.com/" class="muteLink"> Freepik </a>
+            <a href="https://www.freepik.com/pikisuperstar" class="muteLink"><sub>3</sub></a>
+          </p>
+        </div>
+  </div>
+
+</footer>
+
+<script>
+  $(function(){
+    document.getElementById('user-guide-splash').style.backgroundImage = "background-image: linear-gradient(to bottom, #f5f6fc00,#f5f6fc00, #000000e1), url('img/map1.jpg')";
+    document.getElementById('user-guide-scrolly').style.backgroundImage = "background-image: linear-gradient(to bottom, #f5f6fc00,#f5f6fc00, #000000e1), url('img/virus2.jpg')";
+    console.log("high res images loaded");
+  })
+</script>
+
+</html>

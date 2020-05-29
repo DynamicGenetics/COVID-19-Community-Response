@@ -1,11 +1,4 @@
-"""
-Intended purpose of this script:
-1. Get LA and LSOA boundaries as shape objects
-2. Get list of groups and their coordinates
-3. Locate groups to LA and LSOA boundaries
-4. Count how many groups are in each LA & LSOA
-5. Save LA and LSOA counts into seperate csvs
-
+"""Module containing functions required to count the number of groups per area.
 """
 
 import pandas as pd
@@ -16,6 +9,24 @@ from shapely.geometry import shape, Point
 
 # Count the number of groups per LA and LSOA
 def count_groups(input_path, boundary_info, areaID_name):
+    """Creates and returns a pandas df containing the number of community
+    support groups within each geographical boundary area.
+
+    Parameters
+    ----------
+    input_path : str
+        File path to cleaned community group data
+    boundary_info : dict
+        Dictionary containing
+        {'polygons': list of boundary polygon objects, 'areaID_list' : list of local area IDs}
+    areaID_name : str
+        Column header name containing the IDs of local areas in the cleaned community group data csv file
+
+    Returns
+    -------
+    pd.DataFrame
+        df containing the number of community support groups within each geographical boundary area
+    """
 
     # Seperate information about boundaries from the data packages given as paramaters
     polygons = boundary_info["polygons"]
@@ -52,6 +63,18 @@ def count_groups(input_path, boundary_info, areaID_name):
 
 # Import LA boundaries as shape object
 def get_boundaries_LA(fileNm_areas):
+    """Generates a dictionary of LA boundary polygons and areas IDs.
+
+    Parameters
+    ----------
+    fileNm_areas : str
+        File path to geojson file containing LA level boundaries
+
+    Returns
+    -------
+    dict
+        Format: {'polygons': list of LA level boundary polygon objects, 'areaID_list' : list of local area IDs}
+    """
 
     with open(fileNm_areas) as boundaries:
         bounds = json.load(boundaries)
@@ -72,6 +95,18 @@ def get_boundaries_LA(fileNm_areas):
 
 # Import LSOA boundaries as shape object
 def get_boundaries_LSOA(fileNm_areas):
+    """Generates a dictionary of LSOA boundary polygons and areas IDs.
+
+    Parameters
+    ----------
+    fileNm_areas: str
+        File path to geojson file containing LSOA level boundaries
+
+    Returns
+    -------
+    dict
+        Format: {'polygons': list of LSOA boundary polygon objects, 'areaID_list' : list of local area IDs}
+    """
 
     with open(fileNm_areas) as boundaries:
         bounds = json.load(boundaries)
@@ -92,7 +127,20 @@ def get_boundaries_LSOA(fileNm_areas):
 
 # Locate which area the group is located
 def locate_group(polygons, group_coords):
+    """Locate the area the group is contained within.
 
+    Parameters
+    ----------
+    polygons : list
+        List of polygon boundary objects
+    group_coords : list
+        Coordinates to search the polygons for
+
+    Returns
+    -------
+    str
+        The local area ID within which the given group is located
+    """
     # Check all the boundaries to see which one contains the group point location
     for polygon in polygons:
 

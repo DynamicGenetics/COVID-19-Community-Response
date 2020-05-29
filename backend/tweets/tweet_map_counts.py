@@ -1,5 +1,6 @@
 # %%
 # Import Functions
+from datasets import load_local_authorities
 import pandas as pd
 import geopandas as gpd
 from pipelines import TwitterPipeline
@@ -69,7 +70,6 @@ tws.shape
 tws_out = tws.groupby(["lad18cd"]).count().reset_index()
 
 # %%
-from datasets import load_local_authorities
 
 la = load_local_authorities()
 la = la.data

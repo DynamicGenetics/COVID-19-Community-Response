@@ -1,7 +1,4 @@
-"""
-police_coders_scrape () function:
-Uses google sheets API to get Police Coders group list, saves as CSV
-"""
+"""Main worker module for collecing the Police Rewired data from Google Sheets."""
 
 import pickle
 import os.path
@@ -12,7 +9,15 @@ from google.auth.transport.requests import Request
 
 
 def police_coders_scrape(filename, root_path):
+    """Downloads police coders community support group list and saves as CSV.
 
+    Parameters
+    -------
+    filename: str
+        File path to raw data output location
+    root_path: str
+        File path to folder containing this script
+    """
     # If modifying these scopes, delete the file token.pickle.
     SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 

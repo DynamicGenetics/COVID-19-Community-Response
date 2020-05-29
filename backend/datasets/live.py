@@ -1,3 +1,21 @@
+"""Handles live data from reading to master dataset generation.
+
+This module reads, standardises and defines the master dataset for data sources
+from the data/live folder.
+
+Notes
+-----
+This module imports classes from the `dataset` module.
+The `LA_LIVE` master dataset definition has `from_csv=False`. This means that the
+live dataset master will always be regenerated from the source files given here,
+rather than read from the existing master csv.
+
+To add a new live datasource, follow the existing examples for a `SOURCE_` constant
+that is read from file, passed to a `Dataset` definition, and then the Dataset
+definition defined in the `LA_LIVE` datasets list to ensure it is included.
+
+"""
+
 import pandas as pd
 import os
 from functools import partial

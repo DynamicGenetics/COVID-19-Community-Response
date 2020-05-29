@@ -56,9 +56,9 @@ def write_bbox_geojson(data, col="bbox_geojson"):
     # Make a Mutlipolygon from the values.
     features = Feature(geometry=MultiPolygon(data[col].tolist()))
 
-    ## All the other columns used as properties
+    # All the other columns used as properties
     # properties = df.drop(['lat', 'lng'], axis=1).to_dict('records')
-    ## Add properties to the geo_json
+    # Add properties to the geo_json
     # feature_collection = FeatureCollection(features=features, properties=properties)
 
     feature_collection = FeatureCollection(features=features)

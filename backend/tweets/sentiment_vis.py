@@ -1,3 +1,4 @@
+from plotnine import ggplot, geom_line, aes, labs, theme, element_text
 import pandas as pd
 
 # Setting up to use with iPython
@@ -141,7 +142,6 @@ hourly_avg = pd.concat([comphouravg.reset_index(drop=True), covidcomphouravg], a
 daily_avg = pd.concat([compdayavg.reset_index(drop=True), covidcompdayavg], axis=1)
 
 # Import plotnine plotting library
-from plotnine import *
 
 # Now create some nicer plots...
 

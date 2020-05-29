@@ -1,6 +1,12 @@
+from nltk.corpus import stopwords
 import pandas as pd
 import re
-from .tweet_functions import *
+from .tweet_functions import (
+    create_datetime_index,
+    get_welsh_tweets,
+    tidy_text_cols,
+    analyse_sentiment,
+)
 
 # For text cleaning
 import demoji
@@ -17,7 +23,8 @@ tweets_azure = pd.read_csv("25032020.csv")
 
 # Concatenate the tweets
 tweets = pd.concat([tweets_vbox, tweets_azure])
-# We also seem to have two tweet ID columns ('id' and 'id_str'), so get rid of one of those.
+# We also seem to have two tweet ID columns ('id' and 'id_str'), so get
+# rid of one of those.
 del tweets["id_str"]
 
 # Make the datetime the index
@@ -39,14 +46,13 @@ df["emoji"] = df["text"].apply(lambda x: demoji.findall(x))
 # So, lets make a new column for text that we can tokenise, called 'nlp_text'
 
 # Remove special characters
-df["nlp_text"] = df["text"].apply(lambda x: re.sub("[^a-z\s]", "", x))
+df["nlp_text"] = df["text"].apply(lambda x: re.sub(r"[^a-z\s]", "", x))
 
 # Lower case all words
 df["nlp_text"] = df["nlp_text"].str.lower()
 
 # Removing stopwords (using stopword list from NLTK) - NB this takes AGES.
 nltk.download("stopwords")
-from nltk.corpus import stopwords
 
 stopwords = set(stopwords.words("english"))
 df["nlp_text"] = df["nlp_text"].apply(
@@ -54,9 +60,11 @@ df["nlp_text"] = df["nlp_text"].apply(
 )
 
 #########
-# Now the text is a bit cleaner we can create a spaCy object for each tweet, and apply some basic sentiment analysis.
+# Now the text is a bit cleaner we can create a spaCy object for each
+# tweet, and apply some basic sentiment analysis.
 
-# First create a spaCy object ('doc') for each tweet, and save to a new column so we can call it.
+# First create a spaCy object ('doc') for each tweet, and save to a new
+# column so we can call it.
 nlp = spacy.load("en_core_web_sm")
 df["spacy_doc"] = df["nlp_text"].apply(lambda x: nlp(x))
 
@@ -64,5 +72,6 @@ df["spacy_doc"] = df["nlp_text"].apply(lambda x: nlp(x))
 df = analyse_sentiment(df)
 
 ########
-# Now the dataframe is read in, cleaned and prepared for analysis we can pickle it out and use another script to analyse it.
+# Now the dataframe is read in, cleaned and prepared for analysis we can
+# pickle it out and use another script to analyse it.
 df.to_pickle("corona_tweets.pkl")
