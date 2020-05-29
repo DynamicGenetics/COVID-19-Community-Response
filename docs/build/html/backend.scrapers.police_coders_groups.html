@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Package: scrapers.police_coders_groups &mdash; COVID Community Response v1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Package: backend.tweets" href="backend.tweets.html" />
+    <link rel="prev" title="Package: scrapers.phw_covid_statement" href="backend.scrapers.phw_covid_statement.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> COVID Community Response
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Data Processing Packages:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="backend.html">Package: backend</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="backend.scrapers.html">Package: backend.scrapers</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="backend.scrapers.html#subpackages">Subpackages:</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="backend.scrapers.phw_covid_statement.html">Package: scrapers.phw_covid_statement</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Package: scrapers.police_coders_groups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-backend.scrapers.police_coders_groups.group_count">group_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-backend.scrapers.police_coders_groups.localise">localise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-backend.scrapers.police_coders_groups.police_scraper">police_scraper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-backend.scrapers.police_coders_groups.run_scraper">run_scraper</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backend.tweets.html">Package: backend.tweets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backend.datasets.html">Package: backend.datasets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">COVID Community Response</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="backend.html">Package: backend</a> &raquo;</li>
+        
+          <li><a href="backend.scrapers.html">Package: backend.scrapers</a> &raquo;</li>
+        
+      <li>Package: scrapers.police_coders_groups</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/backend.scrapers.police_coders_groups.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="package-scrapers-police-coders-groups">
+<h1>Package: scrapers.police_coders_groups<a class="headerlink" href="#package-scrapers-police-coders-groups" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules:<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-backend.scrapers.police_coders_groups.group_count">
+<span id="group-count"></span><h2>group_count<a class="headerlink" href="#module-backend.scrapers.police_coders_groups.group_count" title="Permalink to this headline">¶</a></h2>
+<p>Module containing functions required to count the number of groups per area.</p>
+<dl class="py function">
+<dt id="backend.scrapers.police_coders_groups.group_count.count_groups">
+<code class="sig-prename descclassname">backend.scrapers.police_coders_groups.group_count.</code><code class="sig-name descname">count_groups</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_path</span></em>, <em class="sig-param"><span class="n">boundary_info</span></em>, <em class="sig-param"><span class="n">areaID_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.scrapers.police_coders_groups.group_count.count_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a pandas df containing the number of community
+support groups within each geographical boundary area.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_path</strong> (<em>str</em>) – File path to cleaned community group data</p></li>
+<li><p><strong>boundary_info</strong> (<em>dict</em>) – Dictionary containing
+{‘polygons’: list of boundary polygon objects, ‘areaID_list’ : list of local area IDs}</p></li>
+<li><p><strong>areaID_name</strong> (<em>str</em>) – Column header name containing the IDs of local areas in the cleaned community group data csv file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df containing the number of community support groups within each geographical boundary area</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.scrapers.police_coders_groups.group_count.get_boundaries_LA">
+<code class="sig-prename descclassname">backend.scrapers.police_coders_groups.group_count.</code><code class="sig-name descname">get_boundaries_LA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fileNm_areas</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.scrapers.police_coders_groups.group_count.get_boundaries_LA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a dictionary of LA boundary polygons and areas IDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fileNm_areas</strong> (<em>str</em>) – File path to geojson file containing LA level boundaries</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Format: {‘polygons’: list of LA level boundary polygon objects, ‘areaID_list’ : list of local area IDs}</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.scrapers.police_coders_groups.group_count.get_boundaries_LSOA">
+<code class="sig-prename descclassname">backend.scrapers.police_coders_groups.group_count.</code><code class="sig-name descname">get_boundaries_LSOA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fileNm_areas</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.scrapers.police_coders_groups.group_count.get_boundaries_LSOA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a dictionary of LSOA boundary polygons and areas IDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fileNm_areas</strong> (<em>str</em>) – File path to geojson file containing LSOA level boundaries</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Format: {‘polygons’: list of LSOA boundary polygon objects, ‘areaID_list’ : list of local area IDs}</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.scrapers.police_coders_groups.group_count.locate_group">
+<code class="sig-prename descclassname">backend.scrapers.police_coders_groups.group_count.</code><code class="sig-name descname">locate_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">polygons</span></em>, <em class="sig-param"><span class="n">group_coords</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.scrapers.police_coders_groups.group_count.locate_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Locate the area the group is contained within.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>polygons</strong> (<em>list</em>) – List of polygon boundary objects</p></li>
+<li><p><strong>group_coords</strong> (<em>list</em>) – Coordinates to search the polygons for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The local area ID within which the given group is located</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-backend.scrapers.police_coders_groups.localise">
+<span id="localise"></span><h2>localise<a class="headerlink" href="#module-backend.scrapers.police_coders_groups.localise" title="Permalink to this headline">¶</a></h2>
+<p>Functions required to locate groups in Wales.</p>
+<dl class="py function">
+<dt id="backend.scrapers.police_coders_groups.localise.filter_welsh_groups">
+<code class="sig-prename descclassname">backend.scrapers.police_coders_groups.localise.</code><code class="sig-name descname">filter_welsh_groups</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_path</span></em>, <em class="sig-param"><span class="n">polygon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.scrapers.police_coders_groups.localise.filter_welsh_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a csv list of groups which are located in Wales, as well
+as the last row which is used as a header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_path</strong> (<em>str</em>) – File path to raw data location</p></li>
+<li><p><strong>polygon</strong> (<em>shapely.Polygon</em>) – Polygon object of Welsh country boundary</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.scrapers.police_coders_groups.localise.get_welsh_boundary">
+<code class="sig-prename descclassname">backend.scrapers.police_coders_groups.localise.</code><code class="sig-name descname">get_welsh_boundary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fileNm_Wales</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.scrapers.police_coders_groups.localise.get_welsh_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the .geojson file of the Welsh boundary, returns a polygon shape
+of the Welsh boundary.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="backend.scrapers.police_coders_groups.localise.write_data_to_CSV">
+<code class="sig-prename descclassname">backend.scrapers.police_coders_groups.localise.</code><code class="sig-name descname">write_data_to_CSV</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output</span></em>, <em class="sig-param"><span class="n">row</span></em>, <em class="sig-param"><span class="n">out_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.scrapers.police_coders_groups.localise.write_data_to_CSV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes given data to .csv</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output</strong> (<em>str</em>) – Data on each group</p></li>
+<li><p><strong>row</strong> (<em>str</em>) – Row to be used as header</p></li>
+<li><p><strong>out_path</strong> (<em>str</em>) – File path to write cleaned data</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-backend.scrapers.police_coders_groups.police_scraper">
+<span id="police-scraper"></span><h2>police_scraper<a class="headerlink" href="#module-backend.scrapers.police_coders_groups.police_scraper" title="Permalink to this headline">¶</a></h2>
+<p>Main worker module for collecing the Police Rewired data from Google Sheets.</p>
+<dl class="py function">
+<dt id="backend.scrapers.police_coders_groups.police_scraper.police_coders_scrape">
+<code class="sig-prename descclassname">backend.scrapers.police_coders_groups.police_scraper.</code><code class="sig-name descname">police_coders_scrape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">root_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.scrapers.police_coders_groups.police_scraper.police_coders_scrape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads police coders community support group list and saves as CSV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – File path to raw data output location</p></li>
+<li><p><strong>root_path</strong> (<em>str</em>) – File path to folder containing this script</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-backend.scrapers.police_coders_groups.run_scraper">
+<span id="run-scraper"></span><h2>run_scraper<a class="headerlink" href="#module-backend.scrapers.police_coders_groups.run_scraper" title="Permalink to this headline">¶</a></h2>
+<p>This module executes the police coders scraper.</p>
+<p class="rubric">Notes</p>
+<p>Intended purpose of this script:
+1. Get updated data using googleScrape ()
+2. Save scraping data archived by date (csv)
+3. Overwrite most recent data (csv)
+4. Produce groupCount layer as a count of groups per area</p>
+<dl class="py function">
+<dt id="backend.scrapers.police_coders_groups.run_scraper.run_police_coders_scraper">
+<code class="sig-prename descclassname">backend.scrapers.police_coders_groups.run_scraper.</code><code class="sig-name descname">run_police_coders_scraper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">LIVE_RAW_DATA_FOLDER</span></em>, <em class="sig-param"><span class="n">LIVE_DATA_FOLDER</span></em>, <em class="sig-param"><span class="n">GEO_DATA_FOLDER</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.scrapers.police_coders_groups.run_scraper.run_police_coders_scraper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the tasks required to run the Police Coders data collector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>LIVE_RAW_DATA_FOLDER</strong> (<em>str</em>) – Path to the live raw data folder.</p></li>
+<li><p><strong>LIVE_DATA_FOLDER</strong> (<em>str</em>) – Path to the live cleaned data folder.</p></li>
+<li><p><strong>GEO_DATA_FOLDER</strong> (<em>str</em>) – Path to the geoboundaries data folder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="backend.tweets.html" class="btn btn-neutral float-right" title="Package: backend.tweets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="backend.scrapers.phw_covid_statement.html" class="btn btn-neutral float-left" title="Package: scrapers.phw_covid_statement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Nina Di Cara, Chris Moreno-Stokoe, Oliver Davis, Valerio Maggio, Benjamin Woolf
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
