@@ -308,7 +308,7 @@ LSOA_POPULATION = LSOA_STATIC_MASTER["population_count"]
 
 LA_POPDENSITY = Variable(
     data=LA_STATIC_MASTER["pop_density_persqkm"],
-    label="Population Density (sq. km)",
+    label="Population Density (per sq. km)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -317,7 +317,7 @@ LA_POPDENSITY = Variable(
 
 LSOA_POPDENSITY = Variable(
     data=LSOA_STATIC_MASTER["pop_density_persqkm"],
-    label="Population Density (sq. km)",
+    label="Population Density (per sq. km)",
     data_class="challenge",
     invert=False,
     data_type="density",
@@ -325,7 +325,7 @@ LSOA_POPDENSITY = Variable(
 
 LA_OVER_65 = Variable(
     data=LA_STATIC_MASTER["over_65_count"],
-    label="Over Age 65 (%)",
+    label="Over Age 65 (per 100 ppl)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -334,7 +334,7 @@ LA_OVER_65 = Variable(
 
 LSOA_OVER_65 = Variable(
     data=LSOA_STATIC_MASTER["over_65_count"],
-    label="Over Age 65 (%)",
+    label="Over Age 65 (per 100 ppl)",
     data_class="challenge",
     invert=False,
     data_type="count",
@@ -342,7 +342,7 @@ LSOA_OVER_65 = Variable(
 
 LA_WIMD = Variable(
     data=LA_STATIC_MASTER["wimd_2019"],
-    label="20% Most Deprived (%)",
+    label="Areas in 20% Most Deprived (%)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -359,7 +359,7 @@ LSOA_WIMD = Variable(
 
 HAS_INTERNET = Variable(
     data=LA_STATIC_MASTER["has_internet_percent"],
-    label="No Internet Access (%)",
+    label="No Internet Access (per 100 ppl)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=True,  # originally percent WITH internet but we need inverse for map
@@ -368,7 +368,7 @@ HAS_INTERNET = Variable(
 
 VULNERABLE = Variable(
     data=LA_STATIC_MASTER["vulnerable_pct"],
-    label="At Risk Population (%)",
+    label="At Moderate Risk from COVID est. (per 100 ppl)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -377,7 +377,7 @@ VULNERABLE = Variable(
 
 BELONGING = Variable(
     data=LA_STATIC_MASTER["belong_percent"],
-    label="Community Cohesion (%)",
+    label="Sense of Community Belonging (per 100 ppl)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -386,7 +386,7 @@ BELONGING = Variable(
 
 COVID_CASES = Variable(
     data=LA_LIVE_MASTER["covidIncidence_100k"],
-    label="COVID-19 Known Cases (%)",
+    label="COVID Known Cases (per 100 ppl)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -395,7 +395,7 @@ COVID_CASES = Variable(
 
 GROUPS = Variable(
     data=LA_LIVE_MASTER["groups_count"],
-    label="Community Support Groups (%)",
+    label="Known Community Support Groups (per 100 ppl)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -404,7 +404,7 @@ GROUPS = Variable(
 
 SHIELDING = Variable(
     data=LA_STATIC_MASTER["shielded_count"],
-    label="Shielding Population (%)",
+    label="At High Risk from COVID (per 100 ppl)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -413,7 +413,7 @@ SHIELDING = Variable(
 
 VOLS_TOTAL = Variable(
     data=LA_LIVE_MASTER["total_vol_count"],
-    label="Registered Volunteers (%)",
+    label="WCVA Registered Volunteers (per 100 ppl)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -422,7 +422,7 @@ VOLS_TOTAL = Variable(
 
 VOLS_INCREASE = Variable(
     data=LA_LIVE_MASTER["vol_increase_pct"],
-    label="Volunteer Increase since March (%)",
+    label="WCVA Volunteer Increase since March (%)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -432,7 +432,7 @@ VOLS_INCREASE = Variable(
 
 GP_DIGITAL = Variable(
     data=LA_STATIC_MASTER["MHOL_pct"],
-    label="GP Patients registered online",
+    label="Not Using Online GP Services (per 100 patients)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=True,
@@ -441,7 +441,7 @@ GP_DIGITAL = Variable(
 
 TWEETS = Variable(
     data=LA_LIVE_MASTER["tweets_percent"],
-    label="Tweets About Community Support (%)",
+    label="Community Support on Twitter est. (per 100 users)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
