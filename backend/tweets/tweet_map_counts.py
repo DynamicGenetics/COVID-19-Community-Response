@@ -3,7 +3,7 @@
 import pandas as pd
 import geopandas as gpd
 from pipelines import TwitterPipeline
-from datasets import load_tweets
+from datasets import load_tweets, load_annotated_tweets
 from tweet_functions import analyse_sentiment
 import re
 import numpy as np
