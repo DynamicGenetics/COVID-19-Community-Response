@@ -1,12 +1,46 @@
 """
-phw_scrape() function:
-Downloads PHW dashboard data Excel file, saves as xlsx
+Summary:
+
+1. Get up-to-date data using phwScraper() method
+2. Clean into format the data pipeline is expecting
+3. Save data as csv (overwriting old data if necessary)
+
+
+Methods:
+
+
+phw_scrape(output_path)
+
+Description:
+Downloads PHW dashboard data Excel file, saves to output_path as xlsx
+
+Parameters:
+output_path= File path to raw data output location
+
+
+area_code(laName)
+
+Description:
+Returns the area code for a local area when given the name used in the PHW statement
+
+Parameters:
+laName= Local area name
+
+
+clean_data(input_path, output_path)
+
+Description:
+Convert xlsx data into csv formatted to be consistent with the data pipeline is expecting (e.g., expected column names)
+
+Parameters:
+input_path= File path to raw data location output_path= File path to cleaned data output location
+
+
 """
 
 import requests
 import os
 import pandas as pd
-from datetime import datetime
 from .get_data_url import get_data_link
 
 

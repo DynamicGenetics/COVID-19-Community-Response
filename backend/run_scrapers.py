@@ -1,6 +1,6 @@
 """
 Intended purpose of this script:
-1. Get updated data using police_coders_scrape () & phwScraper()
+1. Get updated data using run_police_coders_scraper () & run_phw_scraper()
 2. Save scraping data archived by date (csv)
 3. Overwrite most recent data (csv)
 4. Produce groupCount layer as a count of groups per area

@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from functools import partial
 
-from datasets import SOURCE_DATA_FOLDER, LIVE_DATA_FOLDER
+from datasets import LIVE_DATA_FOLDER
 
 from datasets.dataset import DataResolution, DataFrequency, Dataset, MasterDataset
 
@@ -14,6 +14,7 @@ SOURCE_GROUP_COUNTS_LA = pd.read_csv(p_live("groupCount_LA.csv"))
 
 SOURCE_WCVA_ONLINE_LA = pd.read_csv(p_live("la_wcva_2020-05-18.csv"), usecols=[0, 1, 2])
 
+SOURCE_TWEETS_LA = pd.read_csv(p_live("community_tweets.csv"))
 
 LA_COVID = Dataset(
     data=SOURCE_COVID_COUNT_LA,
@@ -41,8 +42,16 @@ LA_WCVA = Dataset(
     csv_name="wcva_count",
 )
 
+LA_TWEETS = Dataset(
+    data=SOURCE_TWEETS_LA,
+    res=DataResolution.LA,
+    key_col="lad19cd",
+    key_is_code=True,
+    csv_name="tweets_percentage",
+)
+
 LA_LIVE = MasterDataset(
-    datasets=[LA_COVID, LA_GROUP_COUNTS, LA_WCVA],
+    datasets=[LA_COVID, LA_GROUP_COUNTS, LA_WCVA, LA_TWEETS],
     res=DataResolution.LA,
     freq=DataFrequency.LIVE,
     from_csv=False,
