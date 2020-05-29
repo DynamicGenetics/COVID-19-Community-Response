@@ -73,8 +73,7 @@ main#main-content {
 .parallax-ug-header {
   background-image: url(../img/aerial1.jpg);
   height: 250px;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
+  margin-top: 3.5rem;
 }
 
 .parallax-body {
@@ -179,6 +178,21 @@ span.need {
 .centered {
     display: flex;
     justify-content: center;
+}
+
+.ug-img {
+  width: 100%;
+  border: 1px #cccccc solid;
+}
+
+.ug-img-div-50 {
+  width: 50%;
+  margin: 0 auto 2rem auto;
+}
+
+.ug-img-div {
+  width: 100%;
+  margin: 0 auto 2rem auto;
 }
 
 #footer {
