@@ -13,7 +13,11 @@ group and [Public Health Wales](https://phw.nhs.wales).
 
 [COVID-19 Community Response Map](https://covidresponsemap.wales)
 
-## Documentation
+## Data Documentation
 
 You can view the **documentation** for this project, and the data sources,
 on the [Open Science Framework](https://bit.ly/covidresponsemapwiki)
+
+## Technical Documentation  
+
+Documentation of the code used to create the map is available in the `docs/` folder of this repository. 
