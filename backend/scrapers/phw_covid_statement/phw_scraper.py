@@ -1,41 +1,5 @@
-"""
-Summary:
-
-1. Get up-to-date data using phwScraper() method
-2. Clean into format the data pipeline is expecting
-3. Save data as csv (overwriting old data if necessary)
-
-
-Methods:
-
-
-phw_scrape(output_path)
-
-Description:
-Downloads PHW dashboard data Excel file, saves to output_path as xlsx
-
-Parameters:
-output_path= File path to raw data output location
-
-
-area_code(laName)
-
-Description:
-Returns the area code for a local area when given the name used in the PHW statement
-
-Parameters:
-laName= Local area name
-
-
-clean_data(input_path, output_path)
-
-Description:
-Convert xlsx data into csv formatted to be consistent with the data pipeline is expecting (e.g., expected column names)
-
-Parameters:
-input_path= File path to raw data location output_path= File path to cleaned data output location
-
-
+"""Module containing functions required for attaining and cleaning data on COVID cases in each
+Local Authority from the Public Health Wales dashboard.
 """
 
 import requests
@@ -45,7 +9,18 @@ from .get_data_url import get_data_link
 
 
 def run_phw_scraper(raw_folder, cleaned_folder):
-    """Get latest data from PHW"""
+    """Get latest data from PHW.
+
+    This function will get the latest data, write it to the raw folder as a .xlsx.
+    It will then clean it it, and write the cleaned data to the clean folder.
+
+    Parameters
+    ----------
+    raw_folder : str
+        File path to write the raw scraped data to.
+    cleaned_folder : str
+        File path to write the cleaned data to.
+    """
 
     name = "phwCovidStatement"
     raw = os.path.join(raw_folder, name + ".xlsx")
@@ -60,7 +35,15 @@ def run_phw_scraper(raw_folder, cleaned_folder):
 
 
 def get_phw_data(output_path):
-    """Downloads PHW dashboard data Excel file, saves as xlsx"""
+    """Downloads PHW dashboard data Excel file, saves as xlsx to given output path.
+
+    Runs the function `get_data_link`.
+
+    Parameters
+    ----------
+    output_path : str
+        File path to raw data output location
+    """
 
     # Download data download for phw covid cases statement
     try:
@@ -78,7 +61,22 @@ def get_phw_data(output_path):
 
 
 def clean_data(input_path, output_path):
+    """Given an input path, will read the raw data from there, select the sheet with the
+    COVID cases data, get the most recent data and match it to the correct local authority codes.
 
+    Parameters
+    ----------
+    input_path : str
+        File path to read the raw data from
+    output_path : str
+        File path to write the cleaned data to
+
+    Returns
+    -------
+    str, list
+        String of most recent date data was collected from, and a list of the column names written
+        to .csv.
+    """
     # Read sheet contianing COVID case data from phw statement
     df = pd.read_excel(input_path, sheet_name="Tests by specimen date")
 
@@ -122,11 +120,12 @@ def clean_data(input_path, output_path):
     # Save cleaned data frame as csv in cleaned data folder
     cleaned.to_csv(output_path, index=None, header=True)
 
-    # Return data and list column headers to print in console for information on data collected
+    # Return date and list column headers to print in console for information on data collected
     return (recent_date, list(cleaned.columns))
 
 
 def area_code(laName):
+    """For Local Authority name given, returns the corresponding code."""
 
     # If header, creare new header for area ID col
     if laName == "Local Authority":

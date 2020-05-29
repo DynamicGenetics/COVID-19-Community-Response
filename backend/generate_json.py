@@ -1,3 +1,25 @@
+"""This module is used to write and define the content and structure of the final `data.json`
+file that is used to plot the data on the frontend.
+
+Notes
+-------
+    Running this module as `__main__` will generate the .json file and write it to the
+    data folder in the frontend.
+
+    If you are adding new variables, you must first define it as a Variable instance, and then
+    add the name of the varible instance to either the `LA_VARBS` or `LSOA_VARBS` list,
+    depending on whether it is an LA or LSOA variable.
+    Prior to doing this you must also have added the data source to the `live` or `static`
+    modules in the `datasets` package, so that they appear in the corresponding MasterDataset object.
+
+    The pd.Series provided to the Variable class instances are columns from the instances
+    of MasterDataset that are imported from the `datasets` package. These are:
+        LA_STATIC_MASTER (from `datasets.static`)
+        LSOA_STATIC_MASTER (from `datasets.static`)
+        LA_LIVE_MASTER (from `datasets.live`)
+"""
+
+
 import pandas as pd
 from dataclasses import dataclass
 from typing import Sequence
@@ -18,17 +40,45 @@ LA_LIVE_MASTER = LA_LIVE.master_dataset
 
 @dataclass
 class Variable:
+    """This class defines the metadata and transformations needed for
+    a variable. It will generate the transformed variable, and will also
+    generate and object with the variable's associated metadata.
+
+    Notes
+    -------
+    Not all transformations can be applied to all data types. For instance,
+    data of type `rank` cannot be transformed to a percentage. In these cases,
+    the variable data is returned as itself.
+
+    Attributes
+    -------
     data: pd.Series
-    label: str  # Human readable label
-    data_class: str  # Is the data 'support' or 'challenge'
-    invert: bool  # Does the direction of the data need to be inverted before mapping?
-    data_type: str  # Is the data a percentage, a count or a rank?
-    la_and_lsoa: bool = True  # If LA, is it available at both levels?
+        The variable data. Index should be set as area name and area code.
+    label: str
+        Human readable label to be presented on the map.
+    data_class: str
+        Accepts options 'support' or 'challenge'
+    invert: bool
+        Does the direction of the data need to be inverted before mapping?
+    data_type: str
+        Is the data a percentage, a count or a rank?
+    la_and_lsoa: bool
+        Is it available at both LA and LSOA resolution? By default, True.
+    data_transformed_: pd.Series
+        Set by calling the `transform` method. By default, None.
+    """
+
+    data: pd.Series
+    label: str
+    data_class: str
+    invert: bool
+    data_type: str
+    la_and_lsoa: bool = True
     data_transformed_: pd.Series = None
 
     @property
     def res(self):
-        """Guess resolution of the data depending on its size"""
+        """Guess and set the resolution of the data depending on no. of rows."""
         if self.data.shape[0] == 22:
             return "LA"
         elif self.data.shape[0] == 1909:
@@ -41,6 +91,14 @@ class Variable:
             )
 
     def transform(self):
+        """Applies transformation methods to the variable and sets
+        the data_transformed_ attribute.
+
+        Returns
+        -------
+        Variable
+            Returns self
+        """
         self.data_transformed_ = self.data
         self.data_transformed_ = self.transform_per100()
         if self.invert:
@@ -53,15 +111,35 @@ class Variable:
 
     @property
     def transformed_data(self):
+        """Returns transformed data. Will return `None` if `transform` method
+        has not been applied. """
+        if self.data_transformed_ is None:
+            self.transform()
         return self.data_transformed_
 
     def new_name(self):
+        """Assuming all variables are originally named `name_datatype` this method
+        removes the `_datatype` and returns just `name` as str."""
         name_to_change = self.data.name
         new_name = "_".join(name_to_change.split("_")[:-1])
         return new_name
 
     def transform_per100(self):
-        """Based on variable type, perform transformation"""
+        """Based on variable type, perform transforms to percentage if possible, and
+        sets self.data_transformed_ as the output.
+
+        Notes
+        -------
+        The percentage for `count` type data will be as a percentage of the population
+        variable at that geography.
+        For `per100k` this will just be divided by 1000.
+        All other data types (`percentage`, `density`, `rank`) they will be returned as given.
+
+        Raises
+        -------
+        Exception
+            When a data type is defined that is not yet supported.
+        """
         if self.data_type == "percentage":
             return self.data_transformed_
         elif self.data_type == "count":
@@ -83,7 +161,20 @@ class Variable:
             )
 
     def invert_data(self):
-        """Invert data direction AFTER transformation"""
+        """Invert data direction AFTER transformation and set self.data_transformed_
+        as the output.
+
+        Notes
+        -------
+        Data of type `percentage`, `count` and `per100k` are all inverted by subtracting
+        them from 100. This only holds if inversion is applied *after* transform_per100.
+        Data of type `rank` has the rank order reversed.
+
+        Raises
+        -------
+        Exception
+            When a data type is defined that is not yet supported.
+        """
         if self.data_type in ["percentage", "count", "per100k"]:
             return 100 - self.data_transformed_
         elif self.data_type == "rank":
@@ -94,6 +185,14 @@ class Variable:
             )
 
     def meta_to_json(self):
+        """Creates a dict of the metadata, containing `name`, `label`, `class`, and
+        `lsoa`. This is used in the `variables` section of the .json file.
+
+        Returns
+        -------
+        dict
+            Dictionary with keys `name`, `label`, `class` and `lsoa`.
+        """
         return {
             "name": self.new_name(),
             "label": self.label,
@@ -104,10 +203,21 @@ class Variable:
 
 @dataclass
 class Variables:
+    """This dataclass turns a list of variables into one overall dictionary object of
+    all the variable data attached to each geographic area.
+
+    Attributes
+    -------
+    variables: Sequence[Variable]
+        A sequence of the variables of the same geographic resolution to be transformed
+        into a level in the json file.
+    """
+
     variables: Sequence[Variable]
 
     @property
     def is_valid(self):
+        """Returns True if all the variables are the same geographic resolution"""
         # Check resolutions are same for all variables
         resolutions = map(lambda v: v.res, self.variables)
         if len(set(resolutions)) < 2:
@@ -116,9 +226,20 @@ class Variables:
             return False
 
     def metadata_to_json(self):
+        """Returns a list of metadata dictionaries for each variable
+        """
         return [var.meta_to_json() for var in self.variables]
 
     def data_to_json(self):
+        """Transforms the variables, merges them to one df, rounds them to 3dp,
+        then generates a list of dicts that represent each row (i.e. geographic area).
+
+        Returns
+        -------
+        list
+            List of dicts, where the keys in each dict are variable names and the
+            values are the values of each varb. This includes the area name and code as keys.
+        """
         vars = map(lambda v: v.transform(), self.variables)
         vars = map(lambda v: v.transformed_data, vars)
 
@@ -132,10 +253,35 @@ class Variables:
 
 @dataclass
 class DataDashboard:
+    """Transforms existing Variables objects into one object that can be
+    written to .json.
+
+    Attributes
+    -------
+    la_data: Variables
+        A Variables object of all the LA Variables to be included.
+    lsoa_data: Variables
+        A Variables object of all the LSOA Variables to be included.
+    """
+
     la_data: Variables
     lsoa_data: Variables
 
     def to_json(self):
+        """Creates the final dict object to write to json.
+
+        Notes
+        -------
+        The metadata written to json here is only the LA metadata. This is because
+        we assume that any LA level data is also available at LSOA level, and so the
+        LA metadata will cover all the variables available.
+
+        Returns
+        -------
+        dict
+            Dictionary with three keys: `variables`, `LAs`, `LSOAs`. The values
+            are lists of dictionaries containing the data as defined in Variables.
+        """
         # Currently only returning LA level meta data as it encompasses both
         return {
             "variables": self.la_data.metadata_to_json(),
@@ -144,6 +290,12 @@ class DataDashboard:
         }
 
     def write(self):
+        """Writes out the variables in the required json format to the frontend.
+
+        Notes
+        -------
+        The frontend data folder is assumed to be: `frontend/map/data/data.json`
+        """
         JSON_OUT = os.path.join(
             BASE_FOLDER, "..", "..", "frontend", "map", "data", "data.json",
         )

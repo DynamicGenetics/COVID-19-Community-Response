@@ -1,0 +1,615 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Package: backend &mdash; COVID Community Response v1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Package: backend.datasets" href="backend.datasets.html" />
+    <link rel="prev" title="COVID Community Response Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> COVID Community Response
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Data Processing Packages:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Package: backend</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.generate_json">generate_json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-backend.run_scrapers">run_scrapers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="backend.datasets.html">Package: backend.datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="backend.scrapers.html">Package: backend.scrapers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="backend.tweets.html">Package: backend.tweets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backend.scrapers.html">Package: backend.scrapers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backend.tweets.html">Package: backend.tweets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backend.datasets.html">Package: backend.datasets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">COVID Community Response</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Package: backend</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/backend.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="package-backend">
+<h1>Package: backend<a class="headerlink" href="#package-backend" title="Permalink to this headline">¶</a></h1>
+<p>The backend module manages all data loading, cleaning
+and processing tasks associated with generating the
+json object for the frontend visualisation.</p>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-backend.generate_json">
+<span id="generate-json"></span><h2>generate_json<a class="headerlink" href="#module-backend.generate_json" title="Permalink to this headline">¶</a></h2>
+<p>This module is used to write and define the content and structure of the final <cite>data.json</cite>
+file that is used to plot the data on the frontend.</p>
+<p class="rubric">Notes</p>
+<p>Running this module as <cite>__main__</cite> will generate the .json file and write it to the
+data folder in the frontend.</p>
+<p>If you are adding new variables, you must first define it as a Variable instance, and then
+add the name of the varible instance to either the <cite>LA_VARBS</cite> or <cite>LSOA_VARBS</cite> list,
+depending on whether it is an LA or LSOA variable.
+Prior to doing this you must also have added the data source to the <cite>live</cite> or <cite>static</cite>
+modules in the <cite>datasets</cite> package, so that they appear in the corresponding MasterDataset object.</p>
+<p>The pd.Series provided to the Variable class instances are columns from the instances
+of MasterDataset that are imported from the <cite>datasets</cite> package. These are:</p>
+<blockquote>
+<div><p>LA_STATIC_MASTER (from <cite>datasets.static</cite>)
+LSOA_STATIC_MASTER (from <cite>datasets.static</cite>)
+LA_LIVE_MASTER (from <cite>datasets.live</cite>)</p>
+</div></blockquote>
+<dl class="py class">
+<dt id="backend.generate_json.DataDashboard">
+<em class="property">class </em><code class="sig-prename descclassname">backend.generate_json.</code><code class="sig-name descname">DataDashboard</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">la_data</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#backend.generate_json.Variables" title="backend.generate_json.Variables">backend.generate_json.Variables</a></span></em>, <em class="sig-param"><span class="n">lsoa_data</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#backend.generate_json.Variables" title="backend.generate_json.Variables">backend.generate_json.Variables</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.DataDashboard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Transforms existing Variables objects into one object that can be
+written to .json.</p>
+<dl class="py attribute">
+<dt id="backend.generate_json.DataDashboard.la_data">
+<code class="sig-name descname">la_data</code><a class="headerlink" href="#backend.generate_json.DataDashboard.la_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Variables object of all the LA Variables to be included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#backend.generate_json.Variables" title="backend.generate_json.Variables">Variables</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="backend.generate_json.DataDashboard.lsoa_data">
+<code class="sig-name descname">lsoa_data</code><a class="headerlink" href="#backend.generate_json.DataDashboard.lsoa_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Variables object of all the LSOA Variables to be included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#backend.generate_json.Variables" title="backend.generate_json.Variables">Variables</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id0">
+<code class="sig-name descname">la_data</code><em class="property">: Variables</em><em class="property"> = None</em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id1">
+<code class="sig-name descname">lsoa_data</code><em class="property">: Variables</em><em class="property"> = None</em><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.DataDashboard.to_json">
+<code class="sig-name descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.DataDashboard.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the final dict object to write to json.</p>
+<p class="rubric">Notes</p>
+<p>The metadata written to json here is only the LA metadata. This is because
+we assume that any LA level data is also available at LSOA level, and so the
+LA metadata will cover all the variables available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary with three keys: <cite>variables</cite>, <cite>LAs</cite>, <cite>LSOAs</cite>. The values
+are lists of dictionaries containing the data as defined in Variables.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.DataDashboard.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.DataDashboard.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes out the variables in the required json format to the frontend.</p>
+<p class="rubric">Notes</p>
+<p>The frontend data folder is assumed to be: <cite>frontend/map/data/data.json</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="backend.generate_json.Variable">
+<em class="property">class </em><code class="sig-prename descclassname">backend.generate_json.</code><code class="sig-name descname">Variable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span></em>, <em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data_class</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">invert</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="n">data_type</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">la_and_lsoa</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">data_transformed_</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.Variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class defines the metadata and transformations needed for
+a variable. It will generate the transformed variable, and will also
+generate and object with the variable’s associated metadata.</p>
+<p class="rubric">Notes</p>
+<p>Not all transformations can be applied to all data types. For instance,
+data of type <cite>rank</cite> cannot be transformed to a percentage. In these cases,
+the variable data is returned as itself.</p>
+<dl class="py attribute">
+<dt id="backend.generate_json.Variable.data">
+<code class="sig-name descname">data</code><a class="headerlink" href="#backend.generate_json.Variable.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The variable data. Index should be set as area name and area code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>pd.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="backend.generate_json.Variable.label">
+<code class="sig-name descname">label</code><a class="headerlink" href="#backend.generate_json.Variable.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Human readable label to be presented on the map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="backend.generate_json.Variable.data_class">
+<code class="sig-name descname">data_class</code><a class="headerlink" href="#backend.generate_json.Variable.data_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts options ‘support’ or ‘challenge’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="backend.generate_json.Variable.invert">
+<code class="sig-name descname">invert</code><a class="headerlink" href="#backend.generate_json.Variable.invert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does the direction of the data need to be inverted before mapping?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="backend.generate_json.Variable.data_type">
+<code class="sig-name descname">data_type</code><a class="headerlink" href="#backend.generate_json.Variable.data_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is the data a percentage, a count or a rank?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="backend.generate_json.Variable.la_and_lsoa">
+<code class="sig-name descname">la_and_lsoa</code><a class="headerlink" href="#backend.generate_json.Variable.la_and_lsoa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is it available at both LA and LSOA resolution? By default, True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">data_transformed\_</code></dt>
+<dd><p>Set by calling the <cite>transform</cite> method. By default, None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>pd.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id2">
+<code class="sig-name descname">data</code><em class="property">: pd.Series</em><em class="property"> = None</em><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id3">
+<code class="sig-name descname">data_class</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="backend.generate_json.Variable.data_transformed_">
+<code class="sig-name descname">data_transformed_</code><em class="property">: pandas.core.series.Series</em><em class="property"> = None</em><a class="headerlink" href="#backend.generate_json.Variable.data_transformed_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id4">
+<code class="sig-name descname">data_type</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id5">
+<code class="sig-name descname">invert</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variable.invert_data">
+<code class="sig-name descname">invert_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.Variable.invert_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert data direction AFTER transformation and set <a href="#id9"><span class="problematic" id="id10">self.data_transformed_</span></a>
+as the output.</p>
+<p class="rubric">Notes</p>
+<p>Data of type <cite>percentage</cite>, <cite>count</cite> and <cite>per100k</cite> are all inverted by subtracting
+them from 100. This only holds if inversion is applied <em>after</em> transform_per100.
+Data of type <cite>rank</cite> has the rank order reversed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>Exception</strong> – When a data type is defined that is not yet supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id6">
+<code class="sig-name descname">la_and_lsoa</code><em class="property">: bool</em><em class="property"> = True</em><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id7">
+<code class="sig-name descname">label</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variable.meta_to_json">
+<code class="sig-name descname">meta_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.Variable.meta_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a dict of the metadata, containing <cite>name</cite>, <cite>label</cite>, <cite>class</cite>, and
+<cite>lsoa</cite>. This is used in the <cite>variables</cite> section of the .json file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary with keys <cite>name</cite>, <cite>label</cite>, <cite>class</cite> and <cite>lsoa</cite>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variable.new_name">
+<code class="sig-name descname">new_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.Variable.new_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assuming all variables are originally named <cite>name_datatype</cite> this method
+removes the <cite>_datatype</cite> and returns just <cite>name</cite> as str.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variable.res">
+<em class="property">property </em><code class="sig-name descname">res</code><a class="headerlink" href="#backend.generate_json.Variable.res" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guess and set the resolution of the data depending on no. of rows.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variable.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.Variable.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies transformation methods to the variable and sets
+the <a href="#id11"><span class="problematic" id="id12">data_transformed_</span></a> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns self</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#backend.generate_json.Variable" title="backend.generate_json.Variable">Variable</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variable.transform_per100">
+<code class="sig-name descname">transform_per100</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.Variable.transform_per100" title="Permalink to this definition">¶</a></dt>
+<dd><p>Based on variable type, perform transforms to percentage if possible, and
+sets <a href="#id13"><span class="problematic" id="id14">self.data_transformed_</span></a> as the output.</p>
+<p class="rubric">Notes</p>
+<p>The percentage for <cite>count</cite> type data will be as a percentage of the population
+variable at that geography.
+For <cite>per100k</cite> this will just be divided by 1000.
+All other data types (<cite>percentage</cite>, <cite>density</cite>, <cite>rank</cite>) they will be returned as given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>Exception</strong> – When a data type is defined that is not yet supported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variable.transformed_data">
+<em class="property">property </em><code class="sig-name descname">transformed_data</code><a class="headerlink" href="#backend.generate_json.Variable.transformed_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns transformed data. Will return <cite>None</cite> if <cite>transform</cite> method
+has not been applied.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="backend.generate_json.Variables">
+<em class="property">class </em><code class="sig-prename descclassname">backend.generate_json.</code><code class="sig-name descname">Variables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variables</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span><a class="reference internal" href="#backend.generate_json.Variable" title="backend.generate_json.Variable">backend.generate_json.Variable</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.Variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This dataclass turns a list of variables into one overall dictionary object of
+all the variable data attached to each geographic area.</p>
+<dl class="py attribute">
+<dt id="backend.generate_json.Variables.variables">
+<code class="sig-name descname">variables</code><a class="headerlink" href="#backend.generate_json.Variables.variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>A sequence of the variables of the same geographic resolution to be transformed
+into a level in the json file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="#backend.generate_json.Variable" title="backend.generate_json.Variable">Variable</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variables.data_to_json">
+<code class="sig-name descname">data_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.Variables.data_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the variables, merges them to one df, rounds them to 3dp,
+then generates a list of dicts that represent each row (i.e. geographic area).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of dicts, where the keys in each dict are variable names and the
+values are the values of each varb. This includes the area name and code as keys.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variables.is_valid">
+<em class="property">property </em><code class="sig-name descname">is_valid</code><a class="headerlink" href="#backend.generate_json.Variables.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if all the variables are the same geographic resolution</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.generate_json.Variables.metadata_to_json">
+<code class="sig-name descname">metadata_to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.generate_json.Variables.metadata_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of metadata dictionaries for each variable</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id8">
+<code class="sig-name descname">variables</code><em class="property">: Sequence[Variable]</em><em class="property"> = None</em><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-backend.run_scrapers">
+<span id="run-scrapers"></span><h2>run_scrapers<a class="headerlink" href="#module-backend.run_scrapers" title="Permalink to this headline">¶</a></h2>
+<p>When run as <cite>__main__</cite> this module will run the police coders scraper, and the PHW scraper.</p>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Running this script will execute the following actions:</dt><dd><ol class="arabic simple">
+<li><p>Get updated data using run_police_coders_scraper () &amp; run_phw_scraper()</p></li>
+<li><p>Save scraping data archived by date (csv)</p></li>
+<li><p>Overwrite most recent data (csv)</p></li>
+<li><p>Produce groupCount layer as a count of groups per area</p></li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="backend.datasets.html">Package: backend.datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backend.datasets.html#submodules">Submodules:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend.datasets.html#module-backend.datasets.dataset">dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend.datasets.html#module-backend.datasets.live">live</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend.datasets.html#module-backend.datasets.static">static</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend.datasets.html#module-backend.datasets.static_source_datasets">static_source_datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend.datasets.html#module-backend.datasets.generate_gp_online">generate_gp_online</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backend.scrapers.html">Package: backend.scrapers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backend.scrapers.html#subpackages">Subpackages:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="backend.scrapers.phw_covid_statement.html">Package: scrapers.phw_covid_statement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="backend.scrapers.police_coders_groups.html">Package: scrapers.police_coders_groups</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backend.tweets.html">Package: backend.tweets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backend.tweets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend.tweets.html#module-backend.tweets.datasets">datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend.tweets.html#module-backend.tweets.pipelines">pipelines</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="backend.datasets.html" class="btn btn-neutral float-right" title="Package: backend.datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="COVID Community Response Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Nina Di Cara, Chris Moreno-Stokoe, Oliver Davis, Valerio Maggio, Benjamin Woolf
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
