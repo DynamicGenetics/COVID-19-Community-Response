@@ -16,4 +16,4 @@ group and [Public Health Wales](https://phw.nhs.wales).
 ## Documentation
 
 You can view the **documentation** for this project, and the data sources,
-on the [Open Science Framework](https://osf.io/c48hw/)
+on the [Open Science Framework](https://bit.ly/covidresponsemapwiki)
