@@ -195,14 +195,23 @@
 
     <div class="container" id="footer">
       <div class="row">
-        <div class="copyright col-12 col-md-6">
-          <p>Site Copyright &copy; <a href="https://dynamicgenetics.org">Dynamic Genetics Lab</a>, 2020</p>
+        <div class="copyright col-12 col-md-4">
+          <div class="centered">
+            <p>Site Copyright &copy; <a href="https://dynamicgenetics.org">Dynamic Genetics Lab</a>, 2020</p>
+          </div>
         </div>
-        <div class="image-attribution col-12 col-md-6">
-          <p>Images by
-            <a href="https://unsplash.com/@steffmitchell">Steffan Mitchell</a> and
-            <a href="https://unsplash.com/@fusion_medical_animation">Fusion Medical Animation</a>
-            on <a href="https://unsplash.com">Unsplash</a></p>
+        <div class="langStatement col-12 col-md-4">
+          <div class="centered"><p><a href="#" href="#" id="welshLangStatement" role="button"
+            data-toggle="modal" data-target="#welsh-lang-modal" aria-haspopup="true" aria-expanded="false">Welsh language statement</a></p>
+          </div>
+        </div>
+        <div class="image-attribution col-12 col-md-4">
+          <div class="centered">
+            <p>Guide images by the <a href="https://dynamicgenetics.org">Dynamic Genetics Lab</a>; other images by
+              <a href="https://unsplash.com/@steffmitchell">Steffan Mitchell</a> and
+              <a href="https://unsplash.com/@fusion_medical_animation">Fusion Medical Animation</a>
+              on <a href="https://unsplash.com">Unsplash</a></p>
+          </div>
         </div>
       </div>
     </div>
@@ -221,8 +230,8 @@
 
   </body>
 
-  <!-- Modal -->
-  <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  <!-- Code and data modal -->
+  <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -232,27 +241,27 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body small">
+        <div class="modal-body">
 
           <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/" target="_blank">
-            Open Science Framework Data Repository
+            <h6>Open Science Framework data repository</h6>
             <ul>
-              <li>Data Documentation</li>
+              <li>Data documentation</li>
             </ul>
           </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="https://github.com/DynamicGenetics/COVID-19-Community-Response"
             target="_blank">
-            GitHub Code Repository
+            <h6>GitHub code repository</h6>
             <ul>
               <li>Data pipeline</li>
               <li>Map and data visualisation</li>
-              <li>Application Programming Interface query and download methods</li>
+              <li>Data access methods</li>
             </ul>
           </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="docs/build/html/index.html" target="_blank">
-            COVID Community Response Code Documentation
+            <h6>COVID Community Response code documentation</h6>
           </a>
 
         </div>
@@ -262,5 +271,31 @@
       </div>
     </div>
   </div>
+
+  <!-- Welsh language modal -->
+<div class="modal fade" id="welsh-lang-modal" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLongTitleWelsh">Welsh language statement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          This website has been developed by the University of Bristol with feedback from Public Health Wales;
+          it does not belong to Public Health Wales and so does not currently observe the Welsh Language Standards.
+          However, a Welsh language version is in development. Due to the need for an agile working approach during
+          these unprecedented times, it will be tested and published following feedback and refinement of
+          the current website.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </html>
