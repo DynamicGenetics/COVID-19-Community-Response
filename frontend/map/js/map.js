@@ -1,5 +1,16 @@
 // Set up sidebar
-const sidebarWidth = 400;
+let sidebarWidth = 400;
+
+// Set sidebar width for smaller screens
+const sb = window.matchMedia("(max-width: 399px)");
+if (sb.matches) {
+    sidebarWidth = 360;
+}
+
+const sbvs = window.matchMedia("(max-width: 359px)");
+if (sb.matches) {
+    sidebarWidth = 320;
+}
 
 // Opener / closer for sidebar
 const addToggle = cc.getToggleAdder();
@@ -14,8 +25,12 @@ if (mq.matches) {
 }
 
 // Set up plotting area
-const width=400;
-const height=365;
+// const width=400;
+// const height=365;
+
+const width = sidebarWidth;
+const height = sidebarWidth - 35;;
+
 // const margin = ({top: 30, right: 20, bottom: 40, left: 40});
 const margin = ({top: 10, right: 22, bottom: 25, left: 48});
 
@@ -25,7 +40,7 @@ d3.select("#plot-container").append("div")
   .style("opacity", 0);
 
 // Add a color ramp legend
-cc.ramp("#colour_scale", cc.getColourScale([0,1]));
+cc.ramp("#colour_scale", cc.getColourScale([0,1]), sidebarWidth - 20);
 
 // Load json data structure
 const data_promise = d3.json("./frontend/map/data/data.json");
