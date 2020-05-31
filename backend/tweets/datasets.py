@@ -128,18 +128,6 @@ DATA_MAP = {
         filename="tws_annotated.pkl",
         sub_dir="tweets",
     ),
-    "annotated_ND": Dataset(
-        name="ND Annotations",
-        data_format="xlsx",
-        filename="annotated_tweets_ND.xlsx",
-        sub_dir="tweets",
-    ),
-    "annotated_LH": Dataset(
-        name="LD Annotations",
-        data_format="xlsx",
-        filename="annotated_tweets_LH.xlsx",
-        sub_dir="tweets",
-    ),
 }
 
 
@@ -195,45 +183,9 @@ def load_local_authorities() -> Dataset:
     return la_dataset
 
 
-def generate_annotated_tws_df():
-    """Generates the annotated dataframe from the annotated spreadsheets
-    and returns as a pd.DataFrame, and saves out to .pkl format.
-    """
-
-    nd_ann = DATA_MAP["annotated_ND"]
-    lh_ann = DATA_MAP["annotated_LH"]
-
-    # Merge both versions of the annotations
-    df = pd.merge(lh_ann.data, nd_ann.data[["id_str", "support"]], on="id_str")
-
-    # Tidy up the dataframe a little
-    df = df[["id_str", "support_x", "Potential category of support", "support_y"]]
-    df.rename(
-        columns={
-            "support_x": "support_LH",
-            "support_y": "support_ND",
-            "Potential category of support": "category_LH",
-        },
-        inplace=True,
-    )
-
-    # Write it out as a .pkl file for future use
-    df.to_pickle(
-        os.path.join(
-            DATA_FOLDER,
-            DATA_MAP["annotated_tweets"].sub_dir,
-            DATA_MAP["annotated_tweets"].filename,
-        )
-    )
-    warn("Annotated dataset generated!")
-
-    return df
-
-
 def load_annotated_tweets() -> Dataset:
     """Load the dataframe of annotated tweets"""
 
     annotated_tws = DATA_MAP["annotated_tweets"]
-    if not annotated_tws.is_valid:
-        generate_annotated_tws_df()
+
     return annotated_tws.data
