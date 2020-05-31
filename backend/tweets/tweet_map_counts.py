@@ -1,5 +1,4 @@
-# %%
-# Import Functions
+"""Function for generating user_counts data"""
 from datasets import load_local_authorities
 import pandas as pd
 import geopandas as gpd
@@ -7,37 +6,43 @@ from pipelines import TwitterPipeline
 from datasets import load_tweets, load_annotated_tweets
 import re
 import numpy as np
+import os
 
 
-# %% Load Tweets
-tweets = load_tweets()
-# %% Filter the tweets from Wales and format the text
-tweets = TwitterPipeline().apply(tweets.data, verbosity=2)
+# Create the full dataset of annotated tweets and get +ve ones
+def generate_map_counts():
+    """Writes out percentage of positive user tweets to file
+    """
+    # Now load the full tweet dataset and find unique users per LA
+    tweets = load_tweets()
+    tweets = TwitterPipeline().apply(tweets.data, verbosity=2)
+    annotations = load_annotated_tweets()
 
+    tweets_annotated = pd.merge(annotations, tweets, on="id_str", how="left")
+    tweets_yes = tweets_annotated[tweets_annotated["support_ND"] == "1"]
+    tweets_yes = tweets_yes[["user.id_str", "lad19cd"]]
 
-tweets = pd.read_csv("new_rules_idstr_intact.csv")
+    # Get only unique users and create a table of counts by LA
+    unique = tweets_yes.drop_duplicates(subset=["user.id_str", "lad19cd"])
+    table = pd.pivot_table(
+        unique, values="user.id_str", index="lad19cd", aggfunc=np.count_nonzero
+    )
 
+    tweets = tweets[["user.id_str", "lad19cd"]]
+    unique_all = tweets.drop_duplicates(subset=["user.id_str", "lad19cd"])
+    table_all = pd.pivot_table(
+        unique_all, values="user.id_str", index="lad19cd", aggfunc=np.count_nonzero
+    )
 
-annotated = load_annotated_tweets()
-new_anno = tweets[["id_str", "support_ND"]]
-all_annos = pd.merge(annotated, new_anno, on="id_str", how="outer")
-all_annos["support_ND_x"].fillna(all_annos["support_ND_y"], inplace=True)
-all_annos["support_ND_x"] = all_annos["support_ND_x"].astype(str)
-all_annos.drop(columns=["support_ND_y"], inplace=True)
-all_annos.rename(columns={"support_ND_x": "support_ND"}, inplace=True)
-all_annos.to_pickle("new_annotations.pkl")
-
-tweets = pd.merge(all_annos, tweets, on="id_str", how="left")
-tweets_yes = tweets[tweets["support_ND"] == "1"]
-tweets_yes = tweets_yes[["user.id_str", "lad19cd"]]
-
-
-unique = tweets_yes.drop_duplicates(subset=["user.id_str", "lad19cd"])
-
-table = pd.pivot_table(
-    unique, values="user.id_str", index="lad19cd", aggfunc=np.count_nonzero
-)
-
-
-tweets = tweets[["user.id_str", "lad19cd"]]
-unique_all = tweets.drop_duplicates(subset=["user.id_str", "lad19cd"])
+    # Now merge the two counts and create the overall percentage
+    user_counts = pd.merge(table, table_all, on="lad19cd")
+    user_counts["tweets_percentage"] = (
+        user_counts["user.id_str_x"] / user_counts["user.id_str_y"]
+    ) * 100
+    user_counts = user_counts[["tweets_percentage"]]
+    user_counts.to_csv(
+        os.path.join(
+            "..", "datasets", "data", "live", "cleaned", "community_tweets.csv"
+        )
+    )
+    return user_counts
