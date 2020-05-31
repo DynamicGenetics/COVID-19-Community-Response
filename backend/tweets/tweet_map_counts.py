@@ -33,10 +33,10 @@ def generate_map_counts():
 
     # Now merge the two counts and create the overall percentage
     user_counts = pd.merge(table, table_all, on="lad19cd")
-    user_counts["tweets_percentage"] = (
+    user_counts["tweets_percent"] = (
         user_counts["user.id_str_x"] / user_counts["user.id_str_y"]
     ) * 100
-    user_counts = user_counts[["tweets_percentage"]]
+    user_counts = user_counts[["tweets_percent"]]
     user_counts.to_csv(
         os.path.join(
             "..", "datasets", "data", "live", "cleaned", "community_tweets.csv"
