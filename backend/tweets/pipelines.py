@@ -10,6 +10,7 @@ from abc import ABC, abstractmethod
 from functools import partial
 from shapely.geometry import Polygon, Point
 from datetime import datetime
+from warnings import warn
 
 # -------------------------------
 # Type Hints (Custom Definitions)
@@ -295,7 +296,13 @@ def match_reference_la(data):
     )
     data["la"].fillna(residual_matchings, inplace=True)
 
-    # Split values for LA in three cols
+    # A very small number of values are still NA because they can't be
+    # matched to a Welsh LA - drop them!
+    if data["la"].isnull().values.any():
+        warn("Dropped rows, due to no LA match")
+        data.dropna(subset=["la"], inplace=True)
+
+    # Split values for LA in two cols
     data["lad19nm"] = data["la"].apply(lambda c: c[0])
     data["lad19cd"] = data["la"].apply(lambda c: c[1])
 
