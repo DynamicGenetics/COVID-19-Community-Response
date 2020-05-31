@@ -1,5 +1,6 @@
 # %%
 # Import Functions
+from datasets import load_local_authorities
 import pandas as pd
 import geopandas as gpd
 from pipelines import TwitterPipeline

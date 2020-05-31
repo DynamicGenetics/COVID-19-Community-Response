@@ -22,6 +22,15 @@ class Dataset:
 
     This mechanism acts as a surrogate for a Database
     and so potentially subject to change in the future.
+
+    Attributes
+    -------
+    name: str
+        Chosen dataset unique name
+    data_format: str
+        Format of the data (e.g. CSV, GeoJSON)
+    filename: str
+        Name of the datafile (including file extension)
     """
 
     name: str  # dataset unique name
@@ -31,6 +40,13 @@ class Dataset:
 
     @property
     def source_path(self):
+        """Gets the source path for the file.
+
+        Raises
+        -------
+        FileNotFoundError:
+            When the file does not exist at the given path.
+        """
         try:  # BTAFTP
             data_path = os.path.join(DATA_FOLDER, self.sub_dir, self.filename)
             with open(data_path) as _:
@@ -42,6 +58,13 @@ class Dataset:
 
     @property
     def is_valid(self):
+        """Returns True if the file can be found at the source path provided.
+
+        Raises
+        -------
+        FileNotFoundError:
+            When the file does not exist at the given path.
+        """
         try:
             _ = self.source_path
         except FileNotFoundError:
@@ -51,6 +74,13 @@ class Dataset:
 
     @property
     def data(self):
+        """Reads and returns a pd.DataFrame of the data.
+
+        Raises
+        ------
+        NotImplementedError
+            When reading of the file type is not supported.
+        """
         if self.data_format == "csv":
             return pd.read_csv(self.source_path)
         if self.data_format == "geojson":
@@ -157,7 +187,7 @@ def generate_la_keys(data_filename: str = "la_keys.geojson"):
 
 
 def load_local_authorities() -> Dataset:
-    """Load the Local Authorities Keys Dataset"""
+    """Load the Local Authorities Keys Dataset, or generate it if not found."""
 
     la_dataset = DATA_MAP["la_keys"]
     if not la_dataset.is_valid:

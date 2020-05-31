@@ -1,4 +1,6 @@
-# %%
+"""Module containing class for creating custom transformation pipelines, a series of
+functions used for transforming Twitter data, and a Twitter transformation pipeline."""
+
 import pandas as pd
 import numpy as np
 import json
@@ -233,7 +235,8 @@ def match_local_authorities(
     if laoi.shape[0] == 0:  # no overlap found
         return None
 
-    # Intersection over the union is a measure of how exactly the bounding box and the la overlap
+    # Intersection over the union is a measure of how exactly the bounding box
+    # and the la overlap
     laoi["iou"] = la_df["geometry"].apply(
         lambda g: g.intersection(bbox).area / g.union(bbox).area
     )
@@ -304,6 +307,8 @@ def match_reference_la(data):
 
 # %% Twitter Pipeline
 class TwitterPipeline(Pipeline):
+    """Implementation of the Pipeline class for reading and preparing tweets."""
+
     def create_pipeline(self) -> List[Pipe]:
         # define pipeline
         filter_welsh = partial(_get_welsh_tweets, col="place.full_name")

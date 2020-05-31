@@ -1,4 +1,24 @@
-"""Module that generates the cleaned datasets for each variable from raw"""
+"""Module that generates the cleaned datasets for each variable from raw.
+
+This module standardises and defines the master dataset for data sources
+from the data/static folder.
+
+Notes
+-----
+This module imports classes from the `dataset` module, and source dataset
+constants from the `static_source_datasets` module.
+
+To add a new datasource, follow the existing examples for a `SOURCE_` constant
+that is passed to a `Dataset` definition, and then add the Dataset
+constant to the MasterDataset datasets list to ensure it is included.
+
+The `LSOA_STATIC` and `LA_STATIC` master datasets have `from_csv=True`. This means
+that the master datasets will always be read from a previously generated master csv,
+rather than regenerated from source files. If new sources are added, this will need
+to be run at least once with `from_csv=False` to integrate new sources into a new
+master csv.
+
+"""
 
 from datasets.dataset import Dataset, MasterDataset, DataResolution, DataFrequency
 import datasets.static_source_datasets as s
@@ -198,13 +218,3 @@ LSOA_STATIC = MasterDataset(
     freq=DataFrequency.STATIC,
     from_csv=True,
 )
-
-
-if __name__ == "__main__":
-
-    TEST_DATASETS = [LA_GP]
-
-    test = map(lambda d: d.standardise(), TEST_DATASETS)
-    test = map(lambda d: d.standardised_data, test)
-
-    print("Test run successfully")
