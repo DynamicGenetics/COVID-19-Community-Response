@@ -1,12 +1,9 @@
 """Function for generating user_counts data"""
-from datasets import load_local_authorities
 import pandas as pd
-import geopandas as gpd
-from pipelines import TwitterPipeline
-from datasets import load_tweets, load_annotated_tweets
-import re
 import numpy as np
 import os
+from pipelines import TwitterPipeline
+from datasets import load_tweets, load_annotated_tweets
 
 
 # Create the full dataset of annotated tweets and get +ve ones
