@@ -73,8 +73,7 @@ main#main-content {
 .parallax-ug-header {
   background-image: url(../img/aerial1.jpg);
   height: 250px;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
+  margin-top: 3.5rem;
 }
 
 .parallax-body {
@@ -181,16 +180,31 @@ span.need {
     justify-content: center;
 }
 
+.ug-img {
+  width: 100%;
+  border: 1px #cccccc solid;
+}
+
+.ug-img-div-50 {
+  width: 50%;
+  margin: 0 auto 2rem auto;
+}
+
+.ug-img-div {
+  width: 100%;
+  margin: 0 auto 2rem auto;
+}
+
 #footer {
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 #footer div {
-  height: 60px;
+  min-height: 60px;
 }
 
 /* Turn off parallax scrolling for phones */
-@media only screen and (max-device-width: 576px) {
+@media only screen and (max-device-width: 1366px) {
   .parallax {
     background-attachment: scroll;
   }
