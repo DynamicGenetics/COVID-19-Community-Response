@@ -1,22 +1,26 @@
-"""This module is used to write and define the content and structure of the final `data.json`
-file that is used to plot the data on the frontend.
+"""This module is used to write and define the content and structure of the final
+`data.json` file that is used to plot the data on the frontend.
 
 Notes
 -------
     Running this module as `__main__` will generate the .json file and write it to the
     data folder in the frontend.
 
-    If you are adding new variables, you must first define it as a Variable instance, and then
+    If you are adding new variables, you must first define it as a Variable instance,
+    and then
     add the name of the varible instance to either the `LA_VARBS` or `LSOA_VARBS` list,
     depending on whether it is an LA or LSOA variable.
-    Prior to doing this you must also have added the data source to the `live` or `static`
-    modules in the `datasets` package, so that they appear in the corresponding MasterDataset object.
+    Prior to doing this you must also have added the data source to the `live`
+    or `static`
+    modules in the `datasets` package, so that they appear in the corresponding
+    `MasterDataset` object.
 
-    The pd.Series provided to the Variable class instances are columns from the instances
-    of MasterDataset that are imported from the `datasets` package. These are:
-        LA_STATIC_MASTER (from `datasets.static`)
-        LSOA_STATIC_MASTER (from `datasets.static`)
-        LA_LIVE_MASTER (from `datasets.live`)
+    The pd.Series provided to the Variable class instances are columns from the
+    instances of `MasterDataset` that are imported from the `datasets` package.
+    These are:
+        `LA_STATIC_MASTER` (from `datasets.static`)
+        `LSOA_STATIC_MASTER` (from `datasets.static`)
+        `LA_LIVE_MASTER` (from `datasets.live`)
 """
 
 
@@ -133,7 +137,8 @@ class Variable:
         The percentage for `count` type data will be as a percentage of the population
         variable at that geography.
         For `per100k` this will just be divided by 1000.
-        All other data types (`percentage`, `density`, `rank`) they will be returned as given.
+        All other data types (`percentage`, `density`, `rank`)
+        they will be returned as given.
 
         Raises
         -------
@@ -238,13 +243,14 @@ class Variables:
         -------
         list
             List of dicts, where the keys in each dict are variable names and the
-            values are the values of each varb. This includes the area name and code as keys.
+            values are the values of each varb. This includes the area name
+            and code as keys.
         """
         vars = map(lambda v: v.transform(), self.variables)
         vars = map(lambda v: v.transformed_data, vars)
 
         data = pd.concat(vars, axis=1)
-        # Reset index the dataframe first, becasue we want the index values in json
+        # Reset index the dataframe first, because we want the index values in json
         data = data.round(3)
         data = data.reset_index()
 
@@ -432,7 +438,8 @@ VOLS_INCREASE = Variable(
 
 GP_DIGITAL = Variable(
     data=LA_STATIC_MASTER["MHOL_pct"],
-    label="Digital Exclusion: Not Registered with Online GP Services (per 100 patients)",
+    label="Digital Exclusion: Not Registered with Online GP Services "
+    + "(per 100 patients)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=True,
