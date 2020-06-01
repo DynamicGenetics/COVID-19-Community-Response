@@ -1,13 +1,18 @@
 // Set up sidebar
-let sidebarWidth = 400;
+let sidebarWidth = 440;
+
+let sb = window.matchMedia("(max-width: 879px)");
+if (sb.matches) {
+    sidebarWidth = 400;
+}
 
 // Set sidebar width for smaller screens
-const sb = window.matchMedia("(max-width: 399px)");
+sb = window.matchMedia("(max-width: 399px)");
 if (sb.matches) {
     sidebarWidth = 360;
 }
 
-const sbvs = window.matchMedia("(max-width: 359px)");
+sb = window.matchMedia("(max-width: 359px)");
 if (sb.matches) {
     sidebarWidth = 320;
 }

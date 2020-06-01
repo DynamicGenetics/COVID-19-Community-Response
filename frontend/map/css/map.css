@@ -10,11 +10,17 @@
   --logo-dark-green: #337541;
   --logo-light-gray: #cccccc;
   --logo-dark-blue: #001d95;
-  --sidebar-width: 400px;
+  --sidebar-width: 440px;
 }
 
 /* Narrow sidebar for mobile */
 /* @media only screen and (max-device-width: 576px) { */
+@media only screen and (max-device-width: 879px) {
+  :root {
+    --sidebar-width: 400px;
+  }
+}
+
 @media only screen and (max-device-width: 399px) {
   :root {
     --sidebar-width: 360px;
