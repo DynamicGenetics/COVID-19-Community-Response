@@ -351,7 +351,7 @@ LA_WIMD = Variable(
 
 LSOA_WIMD = Variable(
     data=LSOA_STATIC_MASTER["wimd_2019"],
-    label="Index of Multiple Deprivation (Rank)",
+    label="Index of Multiple Deprivation (rank)",
     data_class="challenge",
     invert=True,
     data_type="rank",
@@ -386,7 +386,7 @@ BELONGING = Variable(
 
 COVID_CASES = Variable(
     data=LA_LIVE_MASTER["covidIncidence_100k"],
-    label="COVID Cases (per 100 pop)",
+    label="COVID-19 Cases (per 100 pop)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -404,7 +404,7 @@ GROUPS = Variable(
 
 SHIELDING = Variable(
     data=LA_STATIC_MASTER["shielded_count"],
-    label="High Risk of COVID (per 100 pop)",
+    label="High Risk of COVID-19 (per 100 pop)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
