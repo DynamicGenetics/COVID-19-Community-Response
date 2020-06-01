@@ -334,7 +334,7 @@ LA_OVER_65 = Variable(
 
 LSOA_OVER_65 = Variable(
     data=LSOA_STATIC_MASTER["over_65_count"],
-    label="Over Age 65 (per 100 ppl)",
+    label="Over Age 65 (per 100 pop)",
     data_class="challenge",
     invert=False,
     data_type="count",
@@ -342,7 +342,7 @@ LSOA_OVER_65 = Variable(
 
 LA_WIMD = Variable(
     data=LA_STATIC_MASTER["wimd_2019"],
-    label="Areas in 20% Most Deprived (%)",
+    label="Most Deprived (% areas in lowest quintile of deprivation)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -359,7 +359,7 @@ LSOA_WIMD = Variable(
 
 HAS_INTERNET = Variable(
     data=LA_STATIC_MASTER["has_internet_percent"],
-    label="No Internet Access (per 100 ppl)",
+    label="Digital Exclusion: No Internet Access (per 100 pop)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=True,  # originally percent WITH internet but we need inverse for map
@@ -368,7 +368,7 @@ HAS_INTERNET = Variable(
 
 VULNERABLE = Variable(
     data=LA_STATIC_MASTER["vulnerable_pct"],
-    label="At Moderate Risk from COVID est. (per 100 ppl)",
+    label="Moderate Risk of COVID-19 (estimated per 100 pop)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -377,7 +377,7 @@ VULNERABLE = Variable(
 
 BELONGING = Variable(
     data=LA_STATIC_MASTER["belong_percent"],
-    label="Sense of Community Belonging (per 100 ppl)",
+    label="Sense of Community Belonging (per 100 pop)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -386,7 +386,7 @@ BELONGING = Variable(
 
 COVID_CASES = Variable(
     data=LA_LIVE_MASTER["covidIncidence_100k"],
-    label="COVID Known Cases (per 100 ppl)",
+    label="COVID Cases (per 100 pop)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -395,7 +395,7 @@ COVID_CASES = Variable(
 
 GROUPS = Variable(
     data=LA_LIVE_MASTER["groups_count"],
-    label="Known Community Support Groups (per 100 ppl)",
+    label="Community Support Groups (per 100 pop)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -404,7 +404,7 @@ GROUPS = Variable(
 
 SHIELDING = Variable(
     data=LA_STATIC_MASTER["shielded_count"],
-    label="At High Risk from COVID (per 100 ppl)",
+    label="High Risk of COVID (per 100 pop)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -413,7 +413,7 @@ SHIELDING = Variable(
 
 VOLS_TOTAL = Variable(
     data=LA_LIVE_MASTER["total_vol_count"],
-    label="WCVA Registered Volunteers (per 100 ppl)",
+    label="WCVA Registered Volunteers (per 100 pop)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -422,7 +422,7 @@ VOLS_TOTAL = Variable(
 
 VOLS_INCREASE = Variable(
     data=LA_LIVE_MASTER["vol_increase_pct"],
-    label="WCVA Volunteer Increase since March (%)",
+    label="WCVA Increase in Volunteers (since March 2020, %)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -432,7 +432,7 @@ VOLS_INCREASE = Variable(
 
 GP_DIGITAL = Variable(
     data=LA_STATIC_MASTER["MHOL_pct"],
-    label="Not Using Online GP Services (per 100 patients)",
+    label="Digital Exclusion: Not Registered with Online GP Services (per 100 patients)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=True,
@@ -441,7 +441,7 @@ GP_DIGITAL = Variable(
 
 TWEETS = Variable(
     data=LA_LIVE_MASTER["tweets_percent"],
-    label="Community Support on Twitter est. (per 100 users)",
+    label="Twitter Community Support (estimated per 100 users)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
