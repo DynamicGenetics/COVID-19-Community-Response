@@ -458,23 +458,23 @@ TWEETS = Variable(
 
 LA_VARBS = Variables(
     (
-        LA_POPDENSITY,
-        LA_OVER_65,
-        LA_WIMD,
-        HAS_INTERNET,
-        VULNERABLE,
+        VOLS_TOTAL,
+        VOLS_INCREASE,
+        GROUPS,
+        TWEETS,
         BELONGING,
         COVID_CASES,
         SHIELDING,
-        GROUPS,
-        VOLS_TOTAL,
-        VOLS_INCREASE,
+        VULNERABLE,
+        LA_OVER_65,
+        LA_POPDENSITY,
+        LA_WIMD,
         GP_DIGITAL,
-        TWEETS,
+        HAS_INTERNET,
     )
 )
 
-LSOA_VARBS = Variables((LSOA_POPDENSITY, LSOA_OVER_65, LSOA_WIMD))
+LSOA_VARBS = Variables((LSOA_WIMD, LSOA_OVER_65, LSOA_POPDENSITY,))
 
 # Finally, create the data with the json function!
 DATA = DataDashboard(la_data=LA_VARBS, lsoa_data=LSOA_VARBS)
