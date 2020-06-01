@@ -15,19 +15,19 @@
 
 /* Narrow sidebar for mobile */
 /* @media only screen and (max-device-width: 576px) { */
-@media only screen and (max-device-width: 879px) {
+@media only screen and (max-width: 879px) {
   :root {
     --sidebar-width: 400px;
   }
 }
 
-@media only screen and (max-device-width: 399px) {
+@media only screen and (max-width: 399px) {
   :root {
     --sidebar-width: 360px;
   }
 }
 
-@media only screen and (max-device-width: 359px) {
+@media only screen and (max-width: 359px) {
   :root {
     --sidebar-width: 320px;
   }
