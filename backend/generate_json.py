@@ -25,6 +25,7 @@ Notes
 
 
 import pandas as pd
+import geopandas as gpd
 from dataclasses import dataclass
 from typing import Sequence
 from warnings import warn
@@ -35,11 +36,49 @@ import json
 from datasets.live import LA_LIVE
 from datasets.static import LA_STATIC, LSOA_STATIC
 
-from datasets import BASE_FOLDER
+from datasets import BASE_FOLDER, LA_BOUNDARIES, LSOA_BOUNDARIES
 
-LA_STATIC_MASTER = LA_STATIC.master_dataset
-LSOA_STATIC_MASTER = LSOA_STATIC.master_dataset
-LA_LIVE_MASTER = LA_LIVE.master_dataset
+
+# ++++++++++++++++++++++
+# Import master datasets
+# ++++++++++++++++++++++
+def set_welsh_areaname(dataset):
+    """Given a master dataset, updates the area names to the
+    Welsh area names"""
+
+    if dataset.shape[0] == 22:
+        master = pd.merge(
+            dataset,
+            LA_BOUNDARIES[["lad19cd", "lad19nmw"]],
+            how="inner",
+            left_on="area_code",
+            right_on="lad19cd",
+        )
+        master.rename(
+            columns={"lad19cd": "area_code", "lad19nmw": "area_name"}, inplace=True
+        )
+    elif dataset.shape[0] == 1909:
+        master = pd.merge(
+            dataset,
+            LSOA_BOUNDARIES[["LSOA11CD", "LSOA11NMW"]],
+            how="inner",
+            left_on="area_code",
+            right_on="LSOA11CD",
+        )
+        master.rename(
+            columns={"LSOA11CD": "area_code", "LSOA11NMW": "area_name"}, inplace=True
+        )
+    else:
+        raise Exception("Data shape is not compatable with LA or LSOA")
+
+    master.set_index(keys=["area_code", "area_name"], inplace=True)
+
+    return master
+
+
+LA_STATIC_MASTER = set_welsh_areaname(LA_STATIC.master_dataset)
+LSOA_STATIC_MASTER = set_welsh_areaname(LSOA_STATIC.master_dataset)
+LA_LIVE_MASTER = set_welsh_areaname(LA_LIVE.master_dataset)
 
 
 @dataclass
