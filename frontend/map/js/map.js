@@ -244,7 +244,7 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then(data => 
         let x = target.attr("cx");
         let y = target.attr("cy");
 
-        let tooltip_text = e.features[0].properties.lad18nm;
+        let tooltip_text = e.features[0].properties.lad18nmw;
         let tooltip_width = (tooltip_text.length * 8) + 14;
 
         let tooltip = d3.select(".cc_tooltip");
