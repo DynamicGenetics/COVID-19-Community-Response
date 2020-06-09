@@ -172,7 +172,16 @@ span.need {
 }
 
 .logo-mapbox {
-  height: 50px;
+  height: 35px;
+}
+
+#thanks {
+  margin-top: 35px;
+}
+
+.message-mapbox {
+  color: grey;
+  font-size: small;
 }
 
 .centered {
@@ -196,7 +205,7 @@ span.need {
 }
 
 #footer {
-  padding-top: 10px;
+  padding-top: 60px;
 }
 
 #footer div {
