@@ -1,26 +1,31 @@
-"""This module is used to write and define the content and structure of the final `data.json`
-file that is used to plot the data on the frontend.
+"""This module is used to write and define the content and structure of the final
+`data.json` file that is used to plot the data on the frontend.
 
 Notes
 -------
     Running this module as `__main__` will generate the .json file and write it to the
     data folder in the frontend.
 
-    If you are adding new variables, you must first define it as a Variable instance, and then
+    If you are adding new variables, you must first define it as a Variable instance,
+    and then
     add the name of the varible instance to either the `LA_VARBS` or `LSOA_VARBS` list,
     depending on whether it is an LA or LSOA variable.
-    Prior to doing this you must also have added the data source to the `live` or `static`
-    modules in the `datasets` package, so that they appear in the corresponding MasterDataset object.
+    Prior to doing this you must also have added the data source to the `live`
+    or `static`
+    modules in the `datasets` package, so that they appear in the corresponding
+    `MasterDataset` object.
 
-    The pd.Series provided to the Variable class instances are columns from the instances
-    of MasterDataset that are imported from the `datasets` package. These are:
-        LA_STATIC_MASTER (from `datasets.static`)
-        LSOA_STATIC_MASTER (from `datasets.static`)
-        LA_LIVE_MASTER (from `datasets.live`)
+    The pd.Series provided to the Variable class instances are columns from the
+    instances of `MasterDataset` that are imported from the `datasets` package.
+    These are:
+        `LA_STATIC_MASTER` (from `datasets.static`)
+        `LSOA_STATIC_MASTER` (from `datasets.static`)
+        `LA_LIVE_MASTER` (from `datasets.live`)
 """
 
 
 import pandas as pd
+import geopandas as gpd
 from dataclasses import dataclass
 from typing import Sequence
 from warnings import warn
@@ -31,11 +36,49 @@ import json
 from datasets.live import LA_LIVE
 from datasets.static import LA_STATIC, LSOA_STATIC
 
-from datasets import BASE_FOLDER
+from datasets import BASE_FOLDER, LA_BOUNDARIES, LSOA_BOUNDARIES
 
-LA_STATIC_MASTER = LA_STATIC.master_dataset
-LSOA_STATIC_MASTER = LSOA_STATIC.master_dataset
-LA_LIVE_MASTER = LA_LIVE.master_dataset
+
+# ++++++++++++++++++++++
+# Import master datasets
+# ++++++++++++++++++++++
+def set_welsh_areaname(dataset):
+    """Given a master dataset, updates the area names to the
+    Welsh area names"""
+
+    if dataset.shape[0] == 22:
+        master = pd.merge(
+            dataset,
+            LA_BOUNDARIES[["lad19cd", "lad19nmw"]],
+            how="inner",
+            left_on="area_code",
+            right_on="lad19cd",
+        )
+        master.rename(
+            columns={"lad19cd": "area_code", "lad19nmw": "area_name"}, inplace=True
+        )
+    elif dataset.shape[0] == 1909:
+        master = pd.merge(
+            dataset,
+            LSOA_BOUNDARIES[["LSOA11CD", "LSOA11NMW"]],
+            how="inner",
+            left_on="area_code",
+            right_on="LSOA11CD",
+        )
+        master.rename(
+            columns={"LSOA11CD": "area_code", "LSOA11NMW": "area_name"}, inplace=True
+        )
+    else:
+        raise Exception("Data shape is not compatable with LA or LSOA")
+
+    master.set_index(keys=["area_code", "area_name"], inplace=True)
+
+    return master
+
+
+LA_STATIC_MASTER = set_welsh_areaname(LA_STATIC.master_dataset)
+LSOA_STATIC_MASTER = set_welsh_areaname(LSOA_STATIC.master_dataset)
+LA_LIVE_MASTER = set_welsh_areaname(LA_LIVE.master_dataset)
 
 
 @dataclass
@@ -133,7 +176,8 @@ class Variable:
         The percentage for `count` type data will be as a percentage of the population
         variable at that geography.
         For `per100k` this will just be divided by 1000.
-        All other data types (`percentage`, `density`, `rank`) they will be returned as given.
+        All other data types (`percentage`, `density`, `rank`)
+        they will be returned as given.
 
         Raises
         -------
@@ -238,13 +282,14 @@ class Variables:
         -------
         list
             List of dicts, where the keys in each dict are variable names and the
-            values are the values of each varb. This includes the area name and code as keys.
+            values are the values of each varb. This includes the area name
+            and code as keys.
         """
         vars = map(lambda v: v.transform(), self.variables)
         vars = map(lambda v: v.transformed_data, vars)
 
         data = pd.concat(vars, axis=1)
-        # Reset index the dataframe first, becasue we want the index values in json
+        # Reset index the dataframe first, because we want the index values in json
         data = data.round(3)
         data = data.reset_index()
 
@@ -308,7 +353,7 @@ LSOA_POPULATION = LSOA_STATIC_MASTER["population_count"]
 
 LA_POPDENSITY = Variable(
     data=LA_STATIC_MASTER["pop_density_persqkm"],
-    label="Population Density (per sq. km)",
+    label="Dwysedd Poblogaeth (fesul cilomedr sgwâr)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -317,7 +362,7 @@ LA_POPDENSITY = Variable(
 
 LSOA_POPDENSITY = Variable(
     data=LSOA_STATIC_MASTER["pop_density_persqkm"],
-    label="Population Density (per sq. km)",
+    label="Dwysedd Poblogaeth (fesul cilomedr sgwâr)",
     data_class="challenge",
     invert=False,
     data_type="density",
@@ -325,7 +370,7 @@ LSOA_POPDENSITY = Variable(
 
 LA_OVER_65 = Variable(
     data=LA_STATIC_MASTER["over_65_count"],
-    label="Over Age 65 (per 100 ppl)",
+    label="Dros 65 oed (fesul 100 o’r bob)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -334,7 +379,7 @@ LA_OVER_65 = Variable(
 
 LSOA_OVER_65 = Variable(
     data=LSOA_STATIC_MASTER["over_65_count"],
-    label="Over Age 65 (per 100 ppl)",
+    label="Dros 65 oed (fesul 100 o’r bob)",
     data_class="challenge",
     invert=False,
     data_type="count",
@@ -342,7 +387,7 @@ LSOA_OVER_65 = Variable(
 
 LA_WIMD = Variable(
     data=LA_STATIC_MASTER["wimd_2019"],
-    label="Areas in 20% Most Deprived (%)",
+    label="Mwyaf Difreintiedig (% yr ardaloedd yn y cwintel amddifadedd isaf)",
     data_class="challenge",
     la_and_lsoa=True,
     invert=False,
@@ -351,7 +396,7 @@ LA_WIMD = Variable(
 
 LSOA_WIMD = Variable(
     data=LSOA_STATIC_MASTER["wimd_2019"],
-    label="Index of Multiple Deprivation (Rank)",
+    label="Mynegai Amddifadedd Lluosog (safle)",
     data_class="challenge",
     invert=True,
     data_type="rank",
@@ -359,7 +404,7 @@ LSOA_WIMD = Variable(
 
 HAS_INTERNET = Variable(
     data=LA_STATIC_MASTER["has_internet_percent"],
-    label="No Internet Access (per 100 ppl)",
+    label="Allgáu: Dim Mynediad i’r Rhyngrwyd (fesul 100 o’r bob)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=True,  # originally percent WITH internet but we need inverse for map
@@ -368,7 +413,7 @@ HAS_INTERNET = Variable(
 
 VULNERABLE = Variable(
     data=LA_STATIC_MASTER["vulnerable_pct"],
-    label="At Moderate Risk from COVID est. (per 100 ppl)",
+    label="Risg Cymedrol o COVID-19 (amcangyfrif fesul 100 o’r bob)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -377,7 +422,7 @@ VULNERABLE = Variable(
 
 BELONGING = Variable(
     data=LA_STATIC_MASTER["belong_percent"],
-    label="Sense of Community Belonging (per 100 ppl)",
+    label="Teimlad o Berthyn Cymunedol (fesul 100 o’r bob)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -386,7 +431,7 @@ BELONGING = Variable(
 
 COVID_CASES = Variable(
     data=LA_LIVE_MASTER["covidIncidence_100k"],
-    label="COVID Known Cases (per 100 ppl)",
+    label="Achosion o COVID-19 (fesul 100 o’r bob)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -395,7 +440,7 @@ COVID_CASES = Variable(
 
 GROUPS = Variable(
     data=LA_LIVE_MASTER["groups_count"],
-    label="Known Community Support Groups (per 100 ppl)",
+    label="Grwpiau Cymorth Cymunedol (fesul 100 o’r bob)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -404,7 +449,7 @@ GROUPS = Variable(
 
 SHIELDING = Variable(
     data=LA_STATIC_MASTER["shielded_count"],
-    label="At High Risk from COVID (per 100 ppl)",
+    label="Risg Uchel o COVID-19 (fesul 100 o’r bob)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
@@ -413,7 +458,7 @@ SHIELDING = Variable(
 
 VOLS_TOTAL = Variable(
     data=LA_LIVE_MASTER["total_vol_count"],
-    label="WCVA Registered Volunteers (per 100 ppl)",
+    label="Gwirfoddolwyr CGGC Cofrestredig (fesul 100 o’r bob)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -422,7 +467,7 @@ VOLS_TOTAL = Variable(
 
 VOLS_INCREASE = Variable(
     data=LA_LIVE_MASTER["vol_increase_pct"],
-    label="WCVA Volunteer Increase since March (%)",
+    label="Cynnydd mewn Gwirfoddolwyr CGGC (er Mawrth 2020, %)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -432,7 +477,8 @@ VOLS_INCREASE = Variable(
 
 GP_DIGITAL = Variable(
     data=LA_STATIC_MASTER["MHOL_pct"],
-    label="Not Using Online GP Services (per 100 patients)",
+    label="Allgáu Digidol: Heb Gofrestru gyda Gwasanaethau Meddyg Teulu Ar-lein "
+    + "(fesul 100 o gleifion)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=True,
@@ -441,7 +487,7 @@ GP_DIGITAL = Variable(
 
 TWEETS = Variable(
     data=LA_LIVE_MASTER["tweets_percent"],
-    label="Community Support on Twitter est. (per 100 users)",
+    label="Cymorth Cymunedol Twitter (amcangyfrif fesul 100 o ddefnyddwyr)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
@@ -451,23 +497,23 @@ TWEETS = Variable(
 
 LA_VARBS = Variables(
     (
-        LA_POPDENSITY,
-        LA_OVER_65,
-        LA_WIMD,
-        HAS_INTERNET,
-        VULNERABLE,
+        VOLS_TOTAL,
+        VOLS_INCREASE,
+        GROUPS,
+        TWEETS,
         BELONGING,
         COVID_CASES,
         SHIELDING,
-        GROUPS,
-        VOLS_TOTAL,
-        VOLS_INCREASE,
+        VULNERABLE,
+        LA_OVER_65,
+        LA_POPDENSITY,
+        LA_WIMD,
         GP_DIGITAL,
-        TWEETS,
+        HAS_INTERNET,
     )
 )
 
-LSOA_VARBS = Variables((LSOA_POPDENSITY, LSOA_OVER_65, LSOA_WIMD))
+LSOA_VARBS = Variables((LSOA_WIMD, LSOA_OVER_65, LSOA_POPDENSITY,))
 
 # Finally, create the data with the json function!
 DATA = DataDashboard(la_data=LA_VARBS, lsoa_data=LSOA_VARBS)

@@ -93,8 +93,6 @@ const cc = (function(d3){
       means[element] = d3.mean(data, d => d[element]);
       sds[element] = d3.deviation(data, d => d[element]);
     });
-    console.log(means);
-    console.log(sds);
     data.forEach(element => {
       element.z_scores = [];
       vars.forEach((item, idx) => {
@@ -690,18 +688,18 @@ const cc = (function(d3){
   } // end redraw
 
   // Colour ramp function adapted from https://observablehq.com/@mbostock/color-ramp
-  function ramp(plot_area, color, n = 380) {
+  function ramp(plot_area, color, width) {
     const canvas = d3.select(plot_area).append("canvas")
       .attr("id", "canvas")
-      .attr("width", 380)
+      .attr("width", width)
       .attr("height", 10)
       .style("position", "absolute")
       .style("bottom", "5px")
       .style("left", "10px")
       .style("imageRendering", "crisp-edges");
     const context = canvas.node().getContext("2d");
-    for (let i = 0; i < n; ++i) {
-      context.fillStyle = color(i / (n - 1));
+    for (let i = 0; i < width; ++i) {
+      context.fillStyle = color(i / (width - 1));
       context.fillRect(i, 0, 1, 10);
     }
     return canvas;

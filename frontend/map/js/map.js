@@ -1,5 +1,21 @@
 // Set up sidebar
-const sidebarWidth = 400;
+let sidebarWidth = 440;
+
+let sb = window.matchMedia("(max-width: 879px)");
+if (sb.matches) {
+  sidebarWidth = 400;
+}
+
+// Set sidebar width for smaller screens
+sb = window.matchMedia("(max-width: 399px)");
+if (sb.matches) {
+  sidebarWidth = 360;
+}
+
+sb = window.matchMedia("(max-width: 359px)");
+if (sb.matches) {
+  sidebarWidth = 320;
+}
 
 // Opener / closer for sidebar
 const addToggle = cc.getToggleAdder();
@@ -8,16 +24,20 @@ addToggle("div#sidebar", "div#content", sidebarWidth);
 // Automatically close sidebar on smaller screens
 const mq = window.matchMedia("(max-width: 813px)");
 if (mq.matches) {
-    const b = document.getElementById('opener');
-    let evt = new MouseEvent("click");
-    b.dispatchEvent(evt);
+  const b = document.getElementById('opener');
+  let evt = new MouseEvent("click");
+  b.dispatchEvent(evt);
 }
 
 // Set up plotting area
-const width=400;
-const height=365;
+// const width=400;
+// const height=365;
+
+const width = sidebarWidth;
+const height = sidebarWidth - 35;;
+
 // const margin = ({top: 30, right: 20, bottom: 40, left: 40});
-const margin = ({top: 10, right: 22, bottom: 25, left: 48});
+const margin = ({ top: 10, right: 22, bottom: 25, left: 48 });
 
 // Define a hidden div for tooltips
 d3.select("#plot-container").append("div")
@@ -25,7 +45,7 @@ d3.select("#plot-container").append("div")
   .style("opacity", 0);
 
 // Add a color ramp legend
-cc.ramp("#colour_scale", cc.getColourScale([0,1]));
+cc.ramp("#colour_scale", cc.getColourScale([0, 1]), sidebarWidth - 20);
 
 // Load json data structure
 const data_promise = d3.json("./frontend/map/data/data.json");
@@ -37,7 +57,7 @@ const promiseLSOA = d3.json("./frontend/map/data/boundaries_LSOA.geojson");
 // Load groups data
 const promiseGroups = d3.json("./frontend/map/data/groups.geojson");
 
-Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data => {
+Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then(data => {
 
   let LAs, LSOAs, groups;
   [data, LAs, LSOAs, groups] = data;
@@ -98,7 +118,7 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
         "visibility": "none"
       },
       "paint": {
-        'fill-color': ["get","colour"],
+        'fill-color': ["get", "colour"],
         'fill-opacity': ['interpolate', ["exponential", 2], ['zoom'], 7, 0.8, 13, 0.3]
       }
     }, "settlement-subdivision-label");
@@ -137,7 +157,7 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
         "visibility": "none"
       },
       "paint": {
-        'fill-color': ["get","colour"],
+        'fill-color': ["get", "colour"],
         'fill-opacity': ['interpolate', ["exponential", 6], ['zoom'], 7, 0.8, 13, 0.3]
       }
     }, "settlement-subdivision-label");
@@ -163,7 +183,7 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
     // }, "road-simple");
 
 
-    map.addSource("groups_source", {type: "geojson", data: groups});
+    map.addSource("groups_source", { type: "geojson", data: groups });
     map.addLayer({
       "id": "community_groups",
       "type": "circle",
@@ -194,19 +214,19 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
     cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs);
 
     // Local authority mouse events
-    map.on('mouseover', "local_authorities", function(e) {
-    // Change the cursor style as a UI indicator.
+    map.on('mouseover', "local_authorities", function (e) {
+      // Change the cursor style as a UI indicator.
       map.getCanvas().style.cursor = 'pointer';
     });
 
-    map.on("mousemove", "local_authorities", function(e) {
+    map.on("mousemove", "local_authorities", function (e) {
       if (e.features.length > 0) {
         if (hoveredArea !== undefined) {
           map.setFeatureState(
-            {source: "boundaries_LAs", id: hoveredArea},
-            {hover: false}
+            { source: "boundaries_LAs", id: hoveredArea },
+            { hover: false }
           );
-          if(e.features[0].id != hoveredArea){
+          if (e.features[0].id != hoveredArea) {
             d3.selectAll("circle.datapoints")
               .transition().duration(50)
               .attr("r", "6").attr("stroke-width", 1.5);
@@ -214,8 +234,8 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
         }
         hoveredArea = e.features[0].id;
         map.setFeatureState(
-          {source: "boundaries_LAs", id: hoveredArea},
-          {hover: true}
+          { source: "boundaries_LAs", id: hoveredArea },
+          { hover: true }
         );
         let target = d3.select("circle#" + e.features[0].properties.lad18cd)
         target.transition().duration(50)
@@ -224,7 +244,7 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
         let x = target.attr("cx");
         let y = target.attr("cy");
 
-        let tooltip_text = e.features[0].properties.lad18nm;
+        let tooltip_text = e.features[0].properties.lad18nmw;
         let tooltip_width = (tooltip_text.length * 8) + 14;
 
         let tooltip = d3.select(".cc_tooltip");
@@ -236,12 +256,12 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
       }
     });
 
-    map.on('mouseleave', "local_authorities", function(e) {
+    map.on('mouseleave', "local_authorities", function (e) {
       map.getCanvas().style.cursor = '';
-      if(hoveredArea !== undefined) {
+      if (hoveredArea !== undefined) {
         map.setFeatureState(
-          {source: "boundaries_LAs", id: hoveredArea},
-          {hover: false}
+          { source: "boundaries_LAs", id: hoveredArea },
+          { hover: false }
         );
         d3.selectAll("circle.datapoints")
           .transition().duration(50)
@@ -255,25 +275,25 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
     });
 
     // LSOA events
-    map.on('mouseover', "lower_super_output_areas", function(e) {
-    // Change the cursor style as a UI indicator.
+    map.on('mouseover', "lower_super_output_areas", function (e) {
+      // Change the cursor style as a UI indicator.
       map.getCanvas().style.cursor = 'pointer';
     });
 
-    map.on("mousemove", "lower_super_output_areas", function(e) {
+    map.on("mousemove", "lower_super_output_areas", function (e) {
       if (e.features.length > 0) {
         if (hoveredArea !== undefined) {
           map.setFeatureState(
-            {source: "boundaries_LSOAs", id: hoveredArea},
-            {hover: false}
+            { source: "boundaries_LSOAs", id: hoveredArea },
+            { hover: false }
           );
 
           d3.select("#target_overlay").remove();
         }
         hoveredArea = e.features[0].id;
         map.setFeatureState(
-          {source: "boundaries_LSOAs", id: hoveredArea},
-          {hover: true}
+          { source: "boundaries_LSOAs", id: hoveredArea },
+          { hover: true }
         );
 
         let target = d3.select("circle#" + e.features[0].properties.LSOA11CD);
@@ -300,12 +320,12 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
       }
     });
 
-    map.on('mouseleave', "lower_super_output_areas", function(e) {
+    map.on('mouseleave', "lower_super_output_areas", function (e) {
       map.getCanvas().style.cursor = '';
-      if(hoveredArea !== undefined) {
+      if (hoveredArea !== undefined) {
         map.setFeatureState(
-          {source: "boundaries_LSOAs", id: hoveredArea},
-          {hover: false}
+          { source: "boundaries_LSOAs", id: hoveredArea },
+          { hover: false }
         );
 
         d3.select("#target_overlay").remove();
@@ -323,17 +343,17 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
       className: "map_popup"
     });
 
-    map.on('mouseover', "community_groups", function(e) {
-    // Change the cursor style as a UI indicator
+    map.on('mouseover', "community_groups", function (e) {
+      // Change the cursor style as a UI indicator
       map.getCanvas().style.cursor = 'pointer';
     });
 
-    map.on('mouseleave', "community_groups", function(e) {
-    // Change the cursor style as a UI indicator
+    map.on('mouseleave', "community_groups", function (e) {
+      // Change the cursor style as a UI indicator
       map.getCanvas().style.cursor = '';
     });
 
-    map.on("click", "community_groups", function(e) {
+    map.on("click", "community_groups", function (e) {
 
       let coordinates = e.features[0].geometry.coordinates.slice();
 
@@ -346,9 +366,9 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
       // Combine group information into one description
       // let description = "<h4 style=\"margin-top:0px;\">Group Information</h4> <p><strong>Title:  </strong>" + groupTitle  + "<br><strong>Source: </strong>" + groupSource + "<br><strong>URL: </strong>" + groupURL + "<br><strong>Location:  </strong>" + groupLoc + "</p>"
       let description = `<h4>${groupTitle}</h4>
-                        <p><strong>Location:</strong> ${groupLoc}</p>
+                        <p><strong>Lleoliad:</strong> ${groupLoc}</p>
                         <p><strong>URL:</strong> ${groupURL}</p>
-                        <p><strong>Source:</strong> ${groupSource}</p>`
+                        <p><strong>Ffynhonnell:</strong> ${groupSource}</p>`
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -385,11 +405,11 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
   function handleSelectionChange(value, text, $selectedItem) {
 
     chosen_supports = d3.select("#multi-select_support input").property("value").split(',');
-    if(chosen_supports[0] === ""){
+    if (chosen_supports[0] === "") {
       chosen_supports = [];
     }
     chosen_needs = d3.select("#multi-select_needs input").property("value").split(',');
-    if(chosen_needs[0] === ""){
+    if (chosen_needs[0] === "") {
       chosen_needs = [];
     }
     cc.redraw("#plot-area", chosen_supports, chosen_needs, data, height, width, margin, map, LAs, LSOAs);

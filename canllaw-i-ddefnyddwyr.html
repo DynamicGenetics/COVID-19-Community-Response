@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Mapio’r Ymateb Cymunedol i COVID-19 yng Nghymru">
+    <meta name="author" content="The Dynamic Genetics Lab">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>Map Ymateb COVID-19</title>
+    <link rel="shortcut icon" type="image/jpg" href="frontend/landing-page/img/logo-main-fav.png" />
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Site specific CSS -->
+    <link rel="stylesheet" href="frontend/landing-page/css/variation.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap"
+      rel="stylesheet">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <!-- <img src="frontend/landing-page/img/logo-main.png" alt="Project Logo" id="logo-nav"> -->
+      <a class="navbar-brand" href="./index.html">Map Ymateb COVID-19</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#about">Ynglŷn â</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./map.html">Map</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./canllaw-i-ddefnyddwyr.html">Canllaw i Ddefnyddwyr</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#team">Y tîm</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link dropdown-toggle alignCenter" href="#" id="navbarDropdown" role="button"
+              data-toggle="modal" data-target="#dataModal" aria-haspopup="true" aria-expanded="false">
+              Data a chôd
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown"></div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://covidresponsemap.wales/">English</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="parallax parallax-ug-header">
+      <div class="container">
+        <div class="page-title">
+          <h1>Canllaw i ddefnyddwyr </h1>
+        </div>
+      </div>
+    </div>
+
+    <main role="main" class="container-fluid user-guide" id="main-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <h4>Trosolwg</h4>
+            <p>Mae dwy ran i’r darlunio hwn: y map yn y brif ffenestr, a’r graff yn y bar ochr ar y dde.</p>
+          </div>
+          <div class="col-12 col-lg-8">
+            <div class="ug-img-div"><img src="frontend/landing-page/img/userguide/view_1.png"
+                alt="view of the map screen" class="ug-img"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <h4>Data</h4>
+            <p>Ceir hefyd dau fath o ddata: ffactorau y disgwylir iddynt <span class="support">gynorthwyo</span>
+              cymunedau a dangosyddion <span class="need">angen</span> yn y cymunedau hynny.</p>
+            <p>Rydych yn dewis mesurau cymorth ac angen yn y bar ochr. Gallwch newid y mesurau a ddewisir i ateb
+              cwestiynau gwahanol.</p>
+            <p>Caif y mesurau yr ydych yn eu dewis eu gosod ar y graff, pob cylch yn cyfateb ag ardal. Mae sawl cylch
+              sydd yno’n dibynnu pa mor fanwl yw’r data ar gyfer y mesur hwnnw (ac i sawl ardal y caiff y map ei rannu).
+            </p>
+            <p>Mae disgrifiadau o’r mesurau ar gael yn <a href="https://osf.io/c48hw/wiki/Data%20Records/">
+                Ystorfa Fframwaith Gwyddoniaeth Agored</a> y prosiect.
+          </div>
+          <div class="col-12 col-lg-8">
+            <div class="ug-img-div-50"><img src="frontend/landing-page/img/userguide/view_2.png" alt="view of the graph"
+                class="ug-img"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <h4>Mesur unigol</h4>
+            <p>Os ydych yn dewis un mesur o’r gwymplen, mae’r graff yn dangos sut mae’r mesur hwnnw’n amrywio rhwng
+              ardaloedd gwahanol, o fod yn isel ar y chwith i fod yn uchel ar y dde. Mae’r llinell yn dangos gwerth
+              cyfartalog (cymedr) y mesur hwnnw. Yma rydym wedi dewis nifer y gwirfoddolwyr cofrestredig fesul 100 o
+              bobl.</p>
+            <p>Mae lliwiau mwy dwys yn adlewyrchu gwerthoedd mwy o’r mesur hwnnw. Mae mwy o <span
+                class="support">gymorth</span> bob amser yn <span class="support">las</span>; mae mwy o <span
+                class="need">angen</span> bob amser yn <span class="need">goch</span>.</p>
+            <p>Defnyddir yr un lliwiau yn y map.</p>
+          </div>
+          <div class="col-12 col-lg-8">
+            <div class="ug-img-div-50"><img src="frontend/landing-page/img/userguide/view_3.png"
+                alt="view of a single measures graphed" class="ug-img"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <h4>Dau fesur</h4>
+            <p>Os ydych yn ychwanegu un mesur <span class="support">cymorth</span> ac un mesur <span
+                class="need">angen</span>,
+              byddant yn cael eu gosod yn erbyn ei gilydd, gydag <span class="need">angen</span> ar yr echelin
+              llorweddol a <span class="support">chymorth</span> ar yr echelin fertigol. Yma rydym wedi dewis nifer o
+              wirfoddolwyr cofrestredig fesul 100 o bobl fel y mesur cymorth, a nifer yr achosion hysbys o COVID-19
+              fesul 100 o bobl fel y mesur angen.</p>
+            <p>Mae’r ochr dde ar waelod y graff yn adlewyrchu ardaloedd ag angen uchel a chymorth isel, tra bod y brig
+              yn adlewyrchu ardaloedd ag angen isel a chymorth uchel.</p>
+            <p>Felly ardaloedd gerllaw ochr dde gwaelod y graff sydd â’r <span class="need">coch</span> mwyaf dwys, tra
+              bod y rheiny gerllaw ochr chwith brig y graff sydd â’r <span class="support">glas</span> mwyaf dwys.</p>
+            <p>Mae’r llinell lwyd, letraws ar y graff yn dangos y duedd o ran y ffordd y mae’r ddau fesur yn
+              gysylltiedig. Mae llinell o’r chwith isel i’r dde uchel yn awgrymu wrth i un gynyddu, bod y llall hefyd yn
+              cynyddu; mae llinell o’r dde uchel i’r chwith isel yn awgrymu wrth i un gynyddu, bod y llall yn gostwng.
+            </p>
+          </div>
+          <div class="col-12 col-lg-8">
+            <div class="ug-img-div-50"><img src="frontend/landing-page/img/userguide/view_2.png"
+                alt="view of two measures graphed" class="ug-img"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <h4>Lliwiau’r map</h4>
+            <p>Mae hyn yn cael ei drosi i’r map. Ardaloedd coch dwysach yw’r rheiny â mwy o <span
+                class="need">angen</span>,
+              tra bod ardaloedd glas dwysach yn ardaloedd â mwy o <span class="support">gymorth</span>, fel y diffinnir
+              gan y mesurau yr ydych wedi eu dewis yn y bar ochr.</p>
+          </div>
+          <div class="col-12 col-lg-8">
+            <div class="ug-img-div"><img src="frontend/landing-page/img/userguide/view_1.png"
+                alt="view of the colours on the map" class="ug-img"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <h4>Cyfuno mesurau</h4>
+            <p>Gallwch hefyd gyfuno mwy nag un mesur cymorth i wneud mesur cymorth cyfunol. Ychwanegwch fesur
+              <span class="support">cymorth</span> arall o’r gwymplen. Gallwch wneud yr un peth ar gyfer mesurau <span
+                class="need">angen</span>.</p>
+            <p>Caiff y mesurau eu hychwanegu at ei gilydd â phwysau cyfwerth. Caiff y mesurau cyfunol hyn eu graddio fel
+              sgorau Z, gan ddangos sut mae gwerth ardal yn berthnasol i’r gwerth cyfartalog ar draws pob ardal (y
+              cymedr). Mae sgorau Z cadarnhaol uwchlaw’r cymedr, tra bod sgorau negyddol islaw’r cymedr.</p>
+            <p>Wrth gwrs, ni fydd pob cyfuniad o’r mesurau yn gwneud synnwyr, felly cofiwch hynny wrth ddewis.</p>
+            <p>Rhoddir y mesurau cyfunol ar y cydraniad uchaf sydd ar gael i’r holl fesurau sydd yn ffurfio’r sgôr
+              cyfunol.</p>
+          </div>
+          <div class="col-12 col-lg-8">
+            <div class="ug-img-div"><img src="frontend/landing-page/img/userguide/view_4.png"
+                alt="view of combined measures" class="ug-img"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <h4>Rhyngweithio gyda’r map</h4>
+            <p>Am gymorth, cliciwch y botwm marc cwestiwn yng nghornel y dewis yr hoffech ddeall mwy amdano.
+            </p>
+            <p>Gallwch gau’r bar ochr trwy glicio’r <strong>&times;</strong> ar yr ochr dde ar frig y sgrin, neu ei agor
+              trwy glicio’r <strong>+</strong> (sy’n weledol pan fydd y bar ochr ar gau).</p>
+            <p>Ar y map ei hun, bydd hofran dros ardal yn dangos ble mae’r ardal honno’n ymddangos yn y graff yn y bar
+              ochr.</p>
+          </div>
+          <div class="col-12 col-lg-8">
+            <div class="ug-img-div"><img src="frontend/landing-page/img/userguide/view_5.png"
+                alt="view of a highlighted area" class="ug-img"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <h4>Tremio a chwyddo</h4>
+            <p>Gallwch dremio i ardaloedd gwahanol o’r map trwy lusgo, neu chwyddo am olwg fanylach trwy sgrolio neu
+              ddefnyddio’r rheolyddion ar yr ochr chwith ar waelod y sgrîn.</p>
+            <p>Bydd chwyddo ar y map yn datgelu pwyntiau sydd yn cyfateb â grwpiau cymorth cymunedol. Bydd clicio ar un
+              o’r pwyntiau hyn yn dangos gwybodaeth am y grŵp.</p>
+          </div>
+          <div class="col-12 col-lg-8">
+            <div class="ug-img-div"><img src="frontend/landing-page/img/userguide/view_6.png"
+                alt="view of the zoomed map" class="ug-img"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="parallax parallax-body"></div>
+
+    </main>
+
+    <div class="container" id="footer">
+      <div class="row">
+        <div class="copyright col-12 col-md-6">
+          <div class="centered">
+            <p>Hawlfraint y Safle &copy; <a href="https://dynamicgenetics.org">Dynamic
+                Genetics Lab</a>, 2020</p>
+          </div>
+        </div>
+        <div class="image-attribution col-12 col-md-6">
+          <div class="centered">
+            <p>Delweddau canllaw gan <a href="https://dynamicgenetics.org">Dynamic
+                Genetics Lab</a>; delweddau eraill gan
+              <a href="https://unsplash.com/@steffmitchell">Steffan Mitchell</a>
+              a
+              <a href="https://unsplash.com/@fusion_medical_animation">Fusion
+                Medical Animation</a>
+              ar <a href="https://unsplash.com">Unsplash</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"></script>
+
+  </body>
+
+  <!-- Code and data modal -->
+  <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLongTitle">Agor data a chôd</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/" target="_blank">
+            <h6>Agor ystorfa ddata Fframwaith Gwyddoniaeth Agored </h6>
+            <ul>
+              <li>Dogfennau data</li>
+            </ul>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="https://github.com/DynamicGenetics/COVID-19-Community-Response"
+            target="_blank">
+            <h6>Ystorfa côd GitHub</h6>
+            <ul>
+              <li>Llinell ddata</li>
+              <li>Gweld data a map</li>
+              <li>Dulliau mynediad at ddata</li>
+            </ul>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="docs/build/html/index.html" target="_blank">
+            <h6>Dogfennau côd Ymateb Cymunedol COVID-19</h6>
+          </a>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Yn ôl
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</html>
