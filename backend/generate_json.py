@@ -457,7 +457,7 @@ TWEETS = Variable(
 
 ZOE_SUPPORT = Variable(
     data=LA_LIVE_MASTER["has_someone_close_pct"],
-    label="ZOE App: Can Count On Someone Close (per 100 pop)",
+    label="Symptom Tracker: Can Count On Someone Close (per 100 pop)",
     data_class="support",
     la_and_lsoa=False,
     invert=False,
