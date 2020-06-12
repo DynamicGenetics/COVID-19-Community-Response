@@ -1,4 +1,4 @@
-"""When run as `__main__` this module will run the police coders scraper, and the PHW scraper. 
+"""When run as `__main__` this module will run the police coders scraper, and the PHW scraper.
 
 Notes
 -------
