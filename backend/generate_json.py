@@ -494,6 +494,15 @@ TWEETS = Variable(
     data_type="percentage",
 )
 
+ZOE_SUPPORT = Variable(
+    data=LA_LIVE_MASTER["has_someone_close_pct"],
+    label="ZOE App: Can Count On Someone Close (per 100 pop)",
+    data_class="support",
+    la_and_lsoa=False,
+    invert=False,
+    data_type="percentage",
+)
+
 
 LA_VARBS = Variables(
     (
@@ -510,6 +519,7 @@ LA_VARBS = Variables(
         LA_WIMD,
         GP_DIGITAL,
         HAS_INTERNET,
+        ZOE_SUPPORT,
     )
 )
 
