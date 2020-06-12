@@ -31,3 +31,4 @@ sphinx_rtd_theme
 pre-commit
 # scrapers
 selenium
+webdriver-manager

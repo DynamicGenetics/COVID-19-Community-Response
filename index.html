@@ -1,386 +1,332 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description"
-          content="Mapping the Community Response to COVID-19 in Wales">
-    <meta name="author" content="The Dynamic Genetics Lab">
-    <meta name="generator" content="Jekyll v4.0.1">
-    <title>COVID-19 Community Response</title>
-    <link rel="shortcut icon" type="image/jpg"
-          href="frontend/landing-page/img/logo-main-fav.png"/>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Mapping the Community Response to COVID-19 in Wales">
+        <meta name="keywords" content="Wales, COVID Response map, COVID19, COVID-19, Community, Welsh, Community Response, Community Support, COVID-19 Community Response">
+        <meta name="author" content="The Dynamic Genetics Lab">
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-          crossorigin="anonymous">
+        <title>COVID-19 Community Response</title>
+        <link rel="shortcut icon" type="image/jpg" href="frontend/landing-page/img/logo-main-fav.png" />
+        <link rel="alternate" hreflang="cy" href="https://mapymatebcovid.cymru/" />
+        <link rel="alternate" hreflang="en-gb" href="https://covidresponsemap.wales" />
+        <link rel="canonical" href="https://covidresponsemap.wales/" />
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-    <!-- Site specific CSS -->
-    <link rel="stylesheet" href="frontend/landing-page/css/variation.css">
+        <!-- Site specific CSS -->
+        <link rel="stylesheet" href="frontend/landing-page/css/variation.css">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap"
-          rel="stylesheet">
-</head>
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;800&display=swap"
+            rel="stylesheet">
+    </head>
 
-<body>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <!-- <img src="frontend/landing-page/img/logo-main.png" alt="Project Logo" id="logo-nav"> -->
-    <a class="navbar-brand" href="./index.html">COVID-19 Response Map</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarCollapse"
-            aria-controls="navbarCollapse" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#about">About</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./map.html">Map</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./user-guide.html">User guide</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#team">The team</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link dropdown-toggle alignCenter" href="#"
-                   id="navbarDropdown" role="button"
-                   data-toggle="modal" data-target="#dataModal" aria-haspopup="true"
-                   aria-expanded="false">
-                    Data and code
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown"></div>
-            </li>
-        </ul>
-    </div>
-</nav>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <!-- <img src="frontend/landing-page/img/logo-main.png" alt="Project Logo" id="logo-nav"> -->
+            <a class="navbar-brand" href="./index.html">COVID-19 Response Map</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./map.html">Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./user-guide.html">User guide</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#team">The team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle alignCenter" href="#" id="navbarDropdown" role="button"
+                            data-toggle="modal" data-target="#dataModal" aria-haspopup="true" aria-expanded="false">
+                            Data and code
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown"></div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://mapymatebcovid.cymru/">Cymraeg</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-<main role="main" class="container-fluid" id="main-content">
-    <div class="jumbotron jumbotron-fluid parallax parallax-header">
-        <div class="container">
-            <div class="jumbotron-text">
-                <img src="frontend/landing-page/img/logo-main.png" alt="Project Logo"
-                     id="logo">
-                <h1>Mapping the Community Response to COVID-19 in Wales</h1>
-                <p class="lead">Using open data and digital footprint analysis to
-                    identify the communities in greatest need
-                    of support</p>
-                <a class="btn btn-lg btn-success" href="#about" role="button">About the
-                    project &raquo;</a>
-                <a class="btn btn-lg btn-success" href="./user-guide.html"
-                   role="button">Get started &raquo;</a>
+        <main role="main" class="container-fluid" id="main-content">
+            <div class="jumbotron jumbotron-fluid parallax parallax-header">
+                <div class="container">
+                    <div class="jumbotron-text">
+                        <img src="frontend/landing-page/img/logo-main.png" alt="Project Logo" id="logo">
+                        <h1>Mapping the Community Response to COVID-19 in Wales</h1>
+                        <p class="lead">Using open data and digital footprint analysis to
+                            identify the communities in greatest need
+                            of support</p>
+                        <a class="btn btn-lg btn-success" href="#about" role="button">About the
+                            project &raquo;</a>
+                        <a class="btn btn-lg btn-success" href="./user-guide.html" role="button">Get started &raquo;</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container" id="about">
+                <h2>About the project</h2>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <h4>Identifying vulnerability</h4>
+                        <p>
+                            Since the pandemic started communities have been mobilising to help
+                            each other;
+                            from shopping for elderly neighbours, to offering a friendly face or
+                            other support.
+                            This map is part of an effort to better understand which communities
+                            have better community
+                            cohesion and organisation.
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <h4>Highlighting need and support</h4>
+                        <p>
+                            Understanding which communities are vulnerable during this pandemic
+                            can help government
+                            agencies and third sector organisations consider which areas need
+                            the most help. Community
+                            support can offer a protective factor against adverse events. Some
+                            areas are more vulnerable
+                            than others and this map highlights the areas where there is an
+                            imbalance between support and
+                            need that suggests they could benefit from additional support.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="parallax parallax-body"></div>
+
+            <div class="container" id="team">
+                <h2>Project team</h2>
+                <p>This project is a collaboration between the
+                    <a href="https://phw.nhs.wales/services-and-teams/knowledge-directorate/research-and-evaluation/">
+                        Public Health Wales Research & Evaluation Division</a> and the <a
+                        href="https://dynamicgenetics.org/">
+                        Dynamic Genetics lab</a>, part of the <a
+                        href="http://www.bristol.ac.uk/integrative-epidemiology/">
+                        MRC Integrative Epidemiology Unit</a> at the <a href="http://www.bristol.ac.uk/">
+                        University of Bristol</a> and supported by the <a href="https://www.turing.ac.uk">Alan Turing
+                        Institute</a>.</p>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <h4>University of Bristol</h4>
+                        <dl>
+                            <dt>Dr Oliver Davis</dt>
+                            <dd>Associate Professor and Turing Fellow</dd>
+                            <dt>Dr Valerio Maggio</dt>
+                            <dd>Senior Research Associate in Data Science and Artificial
+                                Intelligence
+                            </dd>
+                            <dt>Dr Alastair Tanner</dt>
+                            <dd>Research Software Engineer</dd>
+                            <dt>Nina Di Cara</dt>
+                            <dd>MRC-funded Doctoral Researcher</dd>
+                            <dt>Chris Moreno-Stokoe</dt>
+                            <dd>ESRC-funded Doctoral Researcher</dd>
+                            <dt>Benjamin Woolf</dt>
+                            <dd>ESRC-funded Doctoral Researcher</dd>
+                        </dl>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <h4>Public Health Wales</h4>
+                        <dl>
+                            <dt>Dr Alisha Davies</dt>
+                            <dd>Head of Research & Evaluation</dd>
+                            <dt>Dr Jiao Song</dt>
+                            <dd>Public Health Research Statistician</dd>
+                            <dt>Elysha Rhys-Sambrook</dt>
+                            <dd>Project Support Officer</dd>
+                            <dt>Lucia Homolova</dt>
+                            <dd>Public Health Research Assistant</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        If you would like to get in touch about this project, please send an
+                        email to
+                        <a href="mailto:phw.research@wales.nhs.uk" title="Public Health Wales">
+                            phw.research@wales.nhs.uk
+                        </a>.<br>
+                        If you would like your local community group to appear on the map, please register it with
+                        <a href="https://covidmutualaid.org/" target="_blank"> COVID-19 Mutual Aid.</a> Note that it
+                        may take a couple of days to update.
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="parallax parallax-body"></div>
+
+            <div class="container" id="sponsors">
+                <div class="row">
+                    ​
+                    <div class="col-12 col-sm-6 col-lg-4 centered">
+                        <a href="https://phw.nhs.wales/" title="Public Health Wales">
+                            <img src="frontend/landing-page/img/logo-phw.png" class="logo-height-equal"
+                                alt="Public Health Wales Logo" />
+                        </a>
+                    </div>
+                    ​
+                    <div class="col-12 col-sm-6 col-lg-4 centered">
+                        <a href="https://www.bristol.ac.uk/" title="University of Bristol">
+                            <img src="frontend/landing-page/img/logo-uob1.png" class="logo-height-equal"
+                                alt="University of Bristol" />
+                        </a>
+                    </div>
+                    ​
+                    <div class="col-12 col-sm-6 col-lg-4 centered">
+                        <a href="http://www.bristol.ac.uk/integrative-epidemiology/"
+                            title="Medical Research Council: Integrative Epidemiology Unit">
+                            <img src="frontend/landing-page/img/logo-ieu.png"
+                                alt="Medical Research Council: Integrative Epidemiology Unit"
+                                class="logo-height-equal">
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    ​
+                    <div class="col-12 col-sm-6 col-lg-4 centered">
+                        <a href="https://dynamicgenetics.org/" title="Dynamic Genetics Lab">
+                            <img src="frontend/landing-page/img/logo-dynamicgenetics1.png" alt="Dynamic Genetics Lab"
+                                class="logo-height-equal" />
+                        </a>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-lg-4 centered">
+                        <a href="https://www.turing.ac.uk/" title="Alan Turing Institute">
+                            <img src="frontend/landing-page/img/logo-turing.png" alt="Alan Turing Institute"
+                                class="logo-height-equal" />
+                        </a>
+                    </div>
+                    ​
+                    <div class="col-12 col-sm-6 col-lg-4 centered">
+                        <a href="https://esrc.ukri.org/" title="Economic and Social Research Council">
+                            <img src="frontend/landing-page/img/logo-esrc.png"
+                                alt="Economic and Social Research Council" class="logo-esrc"></a>
+                        <br>
+                    </div>
+                    ​
+                    ​
+                </div>
+            </div>
+            ​ ​
+            <div class="container" id="thanks">
+                <div class="row">
+                    <div class="col-12 centered">
+                        <a href="https://www.mapbox.com/community/" title="mapbox">
+                            <img src="frontend/landing-page/img/mapbox-logo-black.svg" alt="MapBox Community"
+                                class="logo-mapbox" />
+                        </a>
+                    </div>
+                    <div class="message-mapbox col-12 col-md-8 offset-md-2" style="padding-top: 15px;">
+                        Special thanks to the Mapbox Community team for
+                        subsidised access to the Mapbox application programming interface
+                    </div>
+                </div>
+            </div>
+            ​
+            <br />
+
+        </main>
+
+        <div class="container" id="footer">
+            <div class="row">
+                <div class="copyright col-12 col-md-6">
+                    <div class="centered">
+                        <p>Site Copyright &copy; <a href="https://dynamicgenetics.org">Dynamic
+                                Genetics Lab</a>, 2020</p>
+                    </div>
+                </div>
+                <div class="image-attribution col-12 col-md-6">
+                    <div class="centered">
+                        <p>Guide images by the <a href="https://dynamicgenetics.org">Dynamic
+                                Genetics Lab</a>; other images by
+                            <a href="https://unsplash.com/@steffmitchell">Steffan Mitchell</a>
+                            and
+                            <a href="https://unsplash.com/@fusion_medical_animation">Fusion
+                                Medical Animation</a>
+                            on <a href="https://unsplash.com">Unsplash</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
+    </body>
+
+    <!-- Code and data modal -->
+    <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLongTitle">Open data and code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/" target="_blank">
+                        <h6>Open Science Framework data repository</h6>
+                        <ul>
+                            <li>Data documentation</li>
+                        </ul>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="https://github.com/DynamicGenetics/COVID-19-Community-Response"
+                        target="_blank">
+                        <h6>GitHub code repository</h6>
+                        <ul>
+                            <li>Data pipeline</li>
+                            <li>Map and data visualisation</li>
+                            <li>Data access methods</li>
+                        </ul>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="docs/build/html/index.html" target="_blank">
+                        <h6>COVID-19 Community Response code documentation</h6>
+                    </a>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Back
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="container" id="about">
-        <h2>About the project</h2>
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <h4>Identifying vulnerability</h4>
-                <p>
-                    Since the pandemic started communities have been mobilising to help
-                    each other;
-                    from shopping for elderly neighbours, to offering a friendly face or
-                    other support.
-                    This map is part of an effort to better understand which communities
-                    have better community
-                    cohesion and organisation.
-                </p>
-            </div>
-            <div class="col-12 col-md-6">
-                <h4>Highlighting need and support</h4>
-                <p>
-                    Understanding which communities are vulnerable during this pandemic
-                    can help government
-                    agencies and third sector organisations consider which areas need
-                    the most help. Community
-                    support can offer a protective factor against adverse events. Some
-                    areas are more vulnerable
-                    than others and this map highlights the areas where there is an
-                    imbalance between support and
-                    need that suggests they could benefit from additional support.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div class="parallax parallax-body"></div>
-
-    <div class="container" id="team">
-        <h2>Project team</h2>
-        <p>This project is a collaboration between the
-            <a href="https://phw.nhs.wales/services-and-teams/knowledge-directorate/research-and-evaluation/">
-                Public Health Wales Research & Evaluation Division</a> and the <a
-                    href="https://dynamicgenetics.org/">
-                Dynamic Genetics lab</a>, part of the <a
-                    href="http://www.bristol.ac.uk/integrative-epidemiology/">
-                MRC Integrative Epidemiology Unit</a> at the <a
-                    href="http://www.bristol.ac.uk/">
-                University of Bristol</a> and supported by the <a
-                    href="https://www.turing.ac.uk">Alan Turing Institute</a>.</p>
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <h4>University of Bristol</h4>
-                <dl>
-                    <dt>Dr Oliver Davis</dt>
-                    <dd>Associate Professor and Turing Fellow</dd>
-                    <dt>Dr Valerio Maggio</dt>
-                    <dd>Senior Research Associate in Data Science and Artificial
-                        Intelligence
-                    </dd>
-                    <dt>Dr Alastair Tanner</dt>
-                    <dd>Research Software Engineer</dd>
-                    <dt>Nina Di Cara</dt>
-                    <dd>MRC-funded Doctoral Researcher</dd>
-                    <dt>Chris Moreno-Stokoe</dt>
-                    <dd>ESRC-funded Doctoral Researcher</dd>
-                    <dt>Benjamin Woolf</dt>
-                    <dd>ESRC-funded Doctoral Researcher</dd>
-                </dl>
-            </div>
-            <div class="col-12 col-md-6">
-                <h4>Public Health Wales</h4>
-                <dl>
-                    <dt>Dr Alisha Davies</dt>
-                    <dd>Head of Research & Evaluation</dd>
-                    <dt>Dr Jiao Song</dt>
-                    <dd>Public Health Research Statistician</dd>
-                    <dt>Elysha Rhys-Sambrook</dt>
-                    <dd>Project Support Officer</dd>
-                    <dt>Lucia Homolova</dt>
-                    <dd>Public Health Research Assistant</dd>
-                </dl>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                If you would like to get in touch about this project, please send an
-                email to
-                <a href="mailto:phw.research@wales.nhs.uk" title="Public Health Wales">
-                    phw.research@wales.nhs.uk
-                </a>, or to
-                <a href="mailto:icc.ymchwil@wales.nhs.uk" title="Iechyd Cyhoeddus Cymru">
-                    icc.ymchwil@wales.nhs.uk</a>
-                if you would prefer to correspond in Welsh.
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <div class="parallax parallax-body"></div>
-
-    <div class="container" id="sponsors">
-        <div class="row">
-
-            <div class="col-12 col-sm-6 col-lg-4 centered">
-                <a href="https://phw.nhs.wales/" title="Public Health Wales">
-                    <img src="frontend/landing-page/img/logo-phw.png"
-                         class="logo-height-equal"
-                         alt="Public Health Wales Logo"></a>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4 centered">
-                <a href="https://www.bristol.ac.uk/" title="University of Bristol">
-                    <img src="frontend/landing-page/img/logo-uob1.png"
-                         class="logo-height-equal"
-                         alt="University of Bristol"></a><br>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4 centered">
-                <a href="http://www.bristol.ac.uk/integrative-epidemiology/"
-                   title="Medical Research Council: Integrative Epidemiology Unit">
-                    <img src="frontend/landing-page/img/logo-ieu.png"
-                         alt="Medical Research Council: Integrative Epidemiology Unit"
-                         class="logo-height-equal"></a><br>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4 centered">
-                <a href="https://dynamicgenetics.org/" title="Dynamic Genetics Lab">
-                    <img src="frontend/landing-page/img/logo-dynamicgenetics1.png"
-                         alt="Dynamic Genetics Lab"
-                         class="logo-height-equal"></a>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4 centered">
-                <a href="https://www.mapbox.com/community/" title="mapbox">
-                    <img src="frontend/landing-page/img/mapbox-logo-black.svg"
-                         alt="MapBox Community" class="logo-mapbox"></a>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4 centered">
-                <a href="https://www.turing.ac.uk/" title="Alan Turing Institute">
-                    <img src="frontend/landing-page/img/logo-turing.png"
-                         alt="Alan Turing Institute"
-                         class="logo-height-equal"></a>
-            </div>
-
-            <div class="col-12 centered">
-                <a href="https://esrc.ukri.org/"
-                   title="Economic and Social Research Council">
-                    <img src="frontend/landing-page/img/logo-esrc.png"
-                         alt="Economic and Social Research Council"
-                         class="logo-esrc"></a>
-                <br>
-            </div>
-
-
-        </div>
-    </div>
-
-</main>
-
-<div class="container" id="footer">
-    <div class="row">
-        <div class="copyright col-12 col-md-4">
-            <div class="centered">
-                <p>Site Copyright &copy; <a href="https://dynamicgenetics.org">Dynamic
-                    Genetics Lab</a>, 2020</p>
-            </div>
-        </div>
-        <div class="langStatement col-12 col-md-4">
-            <div class="centered">
-                <p><a href="#" id="welshLangStatement" role="button"
-                      data-toggle="modal"
-                      data-target="#welsh-lang-modal" aria-haspopup="true"
-                      aria-expanded="false">Welsh language statement</a>
-                </p>
-            </div>
-        </div>
-        <div class="image-attribution col-12 col-md-4">
-            <div class="centered">
-                <p>Guide images by the <a href="https://dynamicgenetics.org">Dynamic
-                    Genetics Lab</a>; other images by
-                    <a href="https://unsplash.com/@steffmitchell">Steffan Mitchell</a>
-                    and
-                    <a href="https://unsplash.com/@fusion_medical_animation">Fusion
-                        Medical Animation</a>
-                    on <a href="https://unsplash.com">Unsplash</a></p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
-
-</body>
-
-<!-- Code and data modal -->
-<div class="modal fade" id="dataModal" tabindex="-1" role="dialog"
-     aria-labelledby="modalCenterTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLongTitle">Open data and code</h5>
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <a class="dropdown-item" href="https://osf.io/c48hw/wiki/home/"
-                   target="_blank">
-                    <h6>Open Science Framework data repository</h6>
-                    <ul>
-                        <li>Data documentation</li>
-                    </ul>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item"
-                   href="https://github.com/DynamicGenetics/COVID-19-Community-Response"
-                   target="_blank">
-                    <h6>GitHub code repository</h6>
-                    <ul>
-                        <li>Data pipeline</li>
-                        <li>Map and data visualisation</li>
-                        <li>Data access methods</li>
-                    </ul>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="docs/build/html/index.html"
-                   target="_blank">
-                    <h6>COVID-19 Community Response code documentation</h6>
-                </a>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    Back
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Welsh language modal -->
-<div class="modal fade" id="welsh-lang-modal" tabindex="-1" role="dialog"
-     aria-labelledby="modalCenterTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLongTitleWelsh">Welsh language
-                    statement</h5>
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>
-                    Datblygwyd y wefan hon gan Brifysgol Bryste gydag adborth gan Iechyd
-                    Cyhoeddus Cymru; nid yw’n eiddo
-                    i Iechyd Cyhoeddus Cymru ac felly’n cadw at Safonau’r Gymraeg. Fodd
-                    bynnag, mae fersiwn Cymraeg yn cael
-                    ei ddatblygu. Oherwydd yr angen am ymagwedd hyblyg tuag at waith yn
-                    ystod y cyfnod digynsail hwn, caiff
-                    ei phrofi a’i chyhoeddi yn dilyn adborth ac ar ôl mireinio’r wefan
-                    bresennol.
-                <hr />
-                This website has been developed by the University of Bristol with
-                feedback from Public Health Wales;
-                it does not belong to Public Health Wales and so does not currently
-                observe the Welsh Language Standards.
-                However, a Welsh language version is in development. Due to the need for
-                an agile working approach during
-                these unprecedented times, it will be tested and published following
-                feedback and refinement of
-                the current website.
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    Back
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 </html>
