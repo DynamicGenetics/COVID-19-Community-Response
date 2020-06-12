@@ -14,7 +14,7 @@ def get_data_link():
 
     def get_url():
         element = browser.find_element_by_id("tabZoneId66")
-        xpath = '//*[@id="tabZoneId66"]/div/div/div/a'
+        xpath = '//*[@id="tabZoneId67"]/div/div/div/div[1]/div/span/div[3]/span/a'
         result = element.find_element_by_xpath(xpath)
         return result.get_attribute("href")
 
