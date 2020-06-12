@@ -521,3 +521,4 @@ DATA = DataDashboard(la_data=LA_VARBS, lsoa_data=LSOA_VARBS)
 
 if __name__ == "__main__":
     DATA.write()
+    print("Successfully executed!")
