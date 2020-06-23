@@ -8,6 +8,8 @@ import logging
 import pandas as pd
 from .get_data_url import get_data_link
 
+logger = logging.getLogger(__name__)
+
 
 def run_phw_scraper(raw_folder, cleaned_folder):
     """Get latest data from PHW.
@@ -30,7 +32,7 @@ def run_phw_scraper(raw_folder, cleaned_folder):
     get_phw_data(raw)
     covid = clean_data(raw, cleaned)
 
-    logging.info(
+    logger.info(
         "Message (phwScraper): Scraped covid data (latest data found: {})".format(covid)
     )
 

@@ -7,6 +7,8 @@ from warnings import warn
 import os
 import logging
 
+logger = logging.getLogger(__name__)
+
 
 def get_data_link():
     """Use Selenium to open a Chrome window and get the url link of most recent dataset"""
@@ -30,9 +32,7 @@ def get_data_link():
     try:
         url = get_url()
     except NoSuchElementException as e:
-        logging.critical(
-            "The XPATH for the scraper probably needs updating.", exc_info=True
-        )
+        logger.critical("The XPATH for the scraper needs updating.", exc_info=True)
         raise e
     finally:
         browser.quit()

@@ -8,6 +8,8 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+logger = logging.getLogger(__name__)
+
 
 def police_coders_scrape(filename, root_path):
     """Downloads police coders community support group list and saves as CSV.
@@ -62,7 +64,7 @@ def police_coders_scrape(filename, root_path):
         values = result.get("values", [])
 
         if not values:
-            logging.warn("No data found.")
+            logger.warn("No data found.")
             return "No data found."
 
         else:
