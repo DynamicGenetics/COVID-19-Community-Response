@@ -9,7 +9,7 @@
     4. Produce groupCount layer as a count of groups per area
 """
 
-
+import logging
 import os
 
 from .police_scraper import police_coders_scrape
@@ -45,7 +45,7 @@ def run_police_coders_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_F
 
     # Get latest community group data
     groups = police_coders_scrape(fn_groups_raw, root_path)
-    print("Message (googleScrape): Scraped group count: ", groups)
+    logging.info("Message (googleScrape): Scraped group count: ", groups)
 
     # Get welsh border as polygon Shape object
     welsh_border_polygon = get_welsh_boundary(
@@ -72,7 +72,7 @@ def run_police_coders_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_F
     count_LA = count_groups(fn_groups_cleaned, boundary_info_LA, "lad18cd")
     count_LSOA = count_groups(fn_groups_cleaned, boundary_info_LSOA, "LSOA11CD")
 
-    print(
+    logging.info(
         "Message (groupCount): Performed count of groups per area, {} groups localised to LAs and {} to LSOAs".format(
             count_LA["groupCount"].sum(), count_LSOA["groupCount"].sum()
         )

@@ -1,5 +1,6 @@
 """Main worker module for collecing the Police Rewired data from Google Sheets."""
 
+import logging
 import pickle
 import os.path
 import csv
@@ -61,7 +62,7 @@ def police_coders_scrape(filename, root_path):
         values = result.get("values", [])
 
         if not values:
-            print("No data found.")
+            logging.warn("No data found.")
             return "No data found."
 
         else:
