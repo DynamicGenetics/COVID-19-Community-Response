@@ -45,7 +45,7 @@ def run_police_coders_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_F
 
     # Get latest community group data
     groups = police_coders_scrape(fn_groups_raw, root_path)
-    logging.info("Message (googleScrape): Scraped group count: ", groups)
+    logging.info("Message (googleScrape): Scraped group count: {} ".format(groups))
 
     # Get welsh border as polygon Shape object
     welsh_border_polygon = get_welsh_boundary(
