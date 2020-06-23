@@ -14,6 +14,7 @@ import pandas as pd
 import geopandas as gpd
 import re
 import os
+import logging
 from warnings import warn
 from dataclasses import dataclass
 from dataclasses import field
@@ -544,7 +545,7 @@ class MasterDataset:
         if self.from_csv:
             try:
                 self.master_dataset_ = pd.read_csv(self.file_path)
-                warn(
+                logging.info(
                     """Master dataset was read from path: {}. If new variables need to be added
                 then add 'from_csv=False' to create a new version.""".format(
                         self.file_path
