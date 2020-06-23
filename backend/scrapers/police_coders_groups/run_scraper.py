@@ -25,6 +25,8 @@ from .group_count import (
     locate_group,
 )
 
+logger = logging.getLogger(__name__)
+
 
 def run_police_coders_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_FOLDER):
     """Executes the tasks required to run the Police Coders data collector.
@@ -45,7 +47,7 @@ def run_police_coders_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_F
 
     # Get latest community group data
     groups = police_coders_scrape(fn_groups_raw, root_path)
-    logging.info("Message (googleScrape): Scraped group count: {} ".format(groups))
+    logger.info("Message (googleScrape): Scraped group count: {} ".format(groups))
 
     # Get welsh border as polygon Shape object
     welsh_border_polygon = get_welsh_boundary(
@@ -72,7 +74,7 @@ def run_police_coders_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_F
     count_LA = count_groups(fn_groups_cleaned, boundary_info_LA, "lad18cd")
     count_LSOA = count_groups(fn_groups_cleaned, boundary_info_LSOA, "LSOA11CD")
 
-    logging.info(
+    logger.info(
         "Message (groupCount): Performed count of groups per area, {} groups localised to LAs and {} to LSOAs".format(
             count_LA["groupCount"].sum(), count_LSOA["groupCount"].sum()
         )

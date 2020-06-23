@@ -4,6 +4,8 @@ import csv
 import logging
 from shapely.geometry import shape, Point
 
+logger = logging.getLogger(__name__)
+
 
 def filter_welsh_groups(input_path, polygon):
     """Return a csv list of groups which are located in Wales, as well
@@ -54,7 +56,7 @@ def write_data_to_CSV(output, row, out_path):
         for row in output:
             writer.writerow(row.values())
 
-    logging.info(
+    logger.info(
         "Message (iterateGroups): Localised {} groups to Wales".format(len(output))
     )
 
