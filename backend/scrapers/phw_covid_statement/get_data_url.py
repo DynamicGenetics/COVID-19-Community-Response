@@ -5,6 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time  # Waiting function
 from warnings import warn
 import os
+import logging
 
 
 def get_data_link():
@@ -29,10 +30,7 @@ def get_data_link():
     try:
         url = get_url()
     except NoSuchElementException:
-        warn(
-            "Can't find the element. I'm going to wait 10 seconds \n"
-            "in case the webpage still needs to load."
-        )
+        logging.warn("Element not found")
         time.sleep(10)
         url = get_url()
     finally:

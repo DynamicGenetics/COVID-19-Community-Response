@@ -4,6 +4,7 @@ Local Authority from the Public Health Wales dashboard.
 
 import requests
 import os
+import logging
 import pandas as pd
 from .get_data_url import get_data_link
 
@@ -29,7 +30,7 @@ def run_phw_scraper(raw_folder, cleaned_folder):
     get_phw_data(raw)
     covid = clean_data(raw, cleaned)
 
-    print(
+    logging.info(
         "Message (phwScraper): Scraped covid data (latest data found: {})".format(covid)
     )
 
