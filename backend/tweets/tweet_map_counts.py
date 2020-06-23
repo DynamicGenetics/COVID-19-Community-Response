@@ -7,14 +7,10 @@ from datasets import load_tweets, load_annotated_tweets
 
 
 # Create the full dataset of annotated tweets and get +ve ones
-def generate_map_counts():
+def generate_map_counts(tweets, annotations):
     """Writes out percentage of positive user tweets to file
     """
     # Now load the full tweet dataset and find unique users per LA
-    tweets = load_tweets()
-    tweets = TwitterPipeline().apply(tweets.data, verbosity=2)
-    annotations = load_annotated_tweets()
-
     tweets_annotated = pd.merge(annotations, tweets, on="id_str", how="left")
     tweets_yes = tweets_annotated[tweets_annotated["support_ND"] == "1"]
     tweets_yes = tweets_yes[["user.id_str", "lad19cd"]]
@@ -33,13 +29,28 @@ def generate_map_counts():
 
     # Now merge the two counts and create the overall percentage
     user_counts = pd.merge(table, table_all, on="lad19cd")
+
+    user_counts.to_csv("user_counts.csv")
+
     user_counts["tweets_percentage"] = (
         user_counts["user.id_str_x"] / user_counts["user.id_str_y"]
     ) * 100
     user_counts = user_counts[["tweets_percentage"]]
+
+    dir = os.path.dirname(os.path.abspath(__file__))
     user_counts.to_csv(
         os.path.join(
-            "..", "datasets", "data", "live", "cleaned", "community_tweets.csv"
+            dir, "..", "datasets", "data", "live", "cleaned", "community_tweets.csv"
         )
     )
     return user_counts
+
+
+if __name__ == "__main__":
+    tweets = load_tweets()
+    tweets = TwitterPipeline().apply(tweets.data, verbosity=2)
+    tweets = tweets.loc["2020-03-01":]
+
+    annotations = load_annotated_tweets()
+
+    generate_map_counts(tweets, annotations)
