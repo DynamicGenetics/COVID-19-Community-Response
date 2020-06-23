@@ -29,10 +29,11 @@ def get_data_link():
 
     try:
         url = get_url()
-    except NoSuchElementException:
-        logging.warn("Element not found")
-        time.sleep(10)
-        url = get_url()
+    except NoSuchElementException as e:
+        logging.critical(
+            "The XPATH for the scraper probably needs updating.", exc_info=True
+        )
+        raise e
     finally:
         browser.quit()
 
