@@ -34,6 +34,9 @@ SOURCE_WCVA_ONLINE_LA = pd.read_csv(p_live("la_wcva_2020-05-18.csv"), usecols=[0
 
 SOURCE_TWEETS_LA = pd.read_csv(p_live("community_tweets.csv"))
 
+SOURCE_ZOE_SUPPORT_LA = pd.read_csv(p_live("help_need20200531.csv"), nrows=3).T
+SOURCE_ZOE_SUPPORT_LA.reset_index(level=0, inplace=True)
+
 LA_COVID = Dataset(
     data=SOURCE_COVID_COUNT_LA,
     res=DataResolution.LA,
@@ -68,8 +71,19 @@ LA_TWEETS = Dataset(
     csv_name="tweets_percentage",
 )
 
+LA_ZOE_SUPPORT = Dataset(
+    data=SOURCE_ZOE_SUPPORT_LA,
+    res=DataResolution.LA,
+    key_col="index",
+    key_is_code=False,
+    rename={2: "has_someone_close"},
+    keep_cols=["lad19nm", "has_someone_close"],
+    bracketed_data_cols=["has_someone_close"],
+    csv_name="zoe_support",
+)
+
 LA_LIVE = MasterDataset(
-    datasets=[LA_COVID, LA_GROUP_COUNTS, LA_WCVA, LA_TWEETS],
+    datasets=[LA_COVID, LA_GROUP_COUNTS, LA_WCVA, LA_TWEETS, LA_ZOE_SUPPORT],
     res=DataResolution.LA,
     freq=DataFrequency.LIVE,
     from_csv=False,
