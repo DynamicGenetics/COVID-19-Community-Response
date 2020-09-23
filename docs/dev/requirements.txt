@@ -31,5 +31,5 @@ slackclient
 # Code Formatting Integration
 pre-commit
 # scrapers
-selenium
-webdriver-manager
+requests
+BeautifulSoup4
