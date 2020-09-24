@@ -15,15 +15,16 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-from slack_token import SLACK_TOKEN, SLACK_CHANNEL
+from slack_tokens import SLACK_TOKEN, SLACK_CHANNEL
 from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER, GEO_DATA_FOLDER
-
+from scrapers.police_coders_groups.run_scraper import run_police_coders_scraper
+from scrapers.phw_covid_statement.phw_scraper import run_phw_scraper
 
 # ------
 # Set up
 # ------
 # Initialise logger
-logger = logging.getLogger("schedule")
+logger = logging.getLogger("scheduler")
 # Slack connection set up
 client = WebClient(token=SLACK_TOKEN)
 
@@ -108,12 +109,14 @@ def update_json():
 
 
 if __name__ == "__main__":
+
     # Run safe scheduler every day at 4pm and 4.15pm BST
     scheduler = SafeScheduler()
+
     scheduler.every().day.at("15:00").do(run_scrapers())
     scheduler.every().day.at("15:15").do(update_json())
 
     # Sleep function
     while True:
         scheduler.run_pending()
-        time.sleep(42)
+        time.sleep(60)
