@@ -18,7 +18,7 @@ frontend/map/js/mapbox-access-token.js
 
 # Credentials and Tokens
 backend/scrapers/police_coders_groups/credentials.json
-slack_token.py
+slack_tokens.py
 token.pickle
 
 # venv
