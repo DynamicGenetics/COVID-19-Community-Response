@@ -1,11 +1,23 @@
+"""This module is responsible for the automated updating of the COVID cumulative
+cases data from Public Health Wales, and fetching groups from Police Coders.
+When run as main it will execute both scrapers daily at 3pm, and update the JSON 5
+minutes later at 3.05pm. If a task raises an exception, it will
+send a notification to the lab Slack group to notify us to check the logs."""
+
 import time
 import functools
+import traceback
 import logging
 import datetime
 import sys
 from traceback import format_exc
 from slack import WebClient
 from schedule import Scheduler
+
+from slack_tokens import SLACK_TOKEN, SLACK_CHANNEL
+from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER, GEO_DATA_FOLDER
+from scrapers.police_coders_groups.run_scraper import run_police_coders_scraper
+from scrapers.phw_covid_statement.phw_scraper import run_phw_scraper
 
 # NB Necessary to set up the logging config before running the local imports
 logging.basicConfig(
@@ -14,11 +26,6 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
 )
-
-from slack_tokens import SLACK_TOKEN, SLACK_CHANNEL
-from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER, GEO_DATA_FOLDER
-from scrapers.police_coders_groups.run_scraper import run_police_coders_scraper
-from scrapers.phw_covid_statement.phw_scraper import run_phw_scraper
 
 # ------
 # Set up
@@ -74,10 +81,9 @@ def with_logging(func):
         except Exception as e:
 
             message = (
-                "Hello from ErrorBot! :tada: The following exception "
-                "has been raised by the scheduling system: {} \n You will need to check the logs.".format(
-                    e
-                )
+                "Hello from ErrorBot! :tada: An exception "
+                "has been raised by the scheduling system, inside SafeScheduler."
+                "Here is the traceback: {}".format(traceback.print_exc())
             )
 
             client.chat_postMessage(
@@ -110,13 +116,35 @@ def update_json():
 
 if __name__ == "__main__":
 
-    # Run safe scheduler every day at 4pm and 4.15pm BST
-    scheduler = SafeScheduler()
+    try:
+        client.chat_postMessage(
+            channel=SLACK_CHANNEL,
+            text="Thanks, the scheduler is up and running again. :raised_hands:",
+        )
 
-    scheduler.every().day.at("15:00").do(run_scrapers())
-    scheduler.every().day.at("15:15").do(update_json())
+        # Run safe scheduler every day at 4pm and 4.15pm BST
+        scheduler = SafeScheduler()
 
-    # Sleep function
-    while True:
-        scheduler.run_pending()
-        time.sleep(60)
+        scheduler.every().day.at("15:00").do(run_scrapers)
+        scheduler.every().day.at("15:05").do(update_json)
+
+        # Sleep function
+        while True:
+            scheduler.run_pending()
+            time.sleep(60)
+
+    except Exception as e:
+        message = (
+            ":skull: It's a me, ErrorBot! Unfortunately the scheduler script has stopped running.\n"
+            "{}".format(traceback.format_exc())
+        )
+
+        client.chat_postMessage(channel=SLACK_CHANNEL, text=message)
+
+        logger.critical(
+            "Running script terminated. Message sent to Slack. Traceback was {}".format(
+                traceback.format_exc()
+            )
+        )
+
+        raise e
