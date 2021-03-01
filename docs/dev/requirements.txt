@@ -27,8 +27,9 @@ requests-oauthlib==1.3.0
 tweet-preprocessor==0.5.0
 sphinx
 sphinx_rtd_theme
+slackclient
 # Code Formatting Integration
 pre-commit
 # scrapers
-selenium
-webdriver-manager
+requests
+BeautifulSoup4
