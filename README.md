@@ -1,5 +1,7 @@
 # COVID-19 Community Response Map
 
+[![DOI](https://zenodo.org/badge/250368942.svg)](https://zenodo.org/badge/latestdoi/250368942)
+
 This is a project to map community support in Wales throughout the COVID-19 pandemic.
 
 We are using a range of open and government data sources to understand the population
