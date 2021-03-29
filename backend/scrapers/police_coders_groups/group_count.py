@@ -4,7 +4,10 @@
 import pandas as pd
 from pandas import Series
 import json
+import logging
 from shapely.geometry import shape, Point
+
+logger = logging.getLogger(__name__)
 
 
 # Count the number of groups per LA and LSOA
@@ -148,4 +151,6 @@ def locate_group(polygons, group_coords):
             return polygon["id"]
 
     # If not located return error code
-    print("Warning (groupCount): Unable to locate group ({})".format(group_coords))
+    logger.warning(
+        "Warning (groupCount): Unable to locate group ({})".format(group_coords)
+    )

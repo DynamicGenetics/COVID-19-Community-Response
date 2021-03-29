@@ -4,8 +4,11 @@ Local Authority from the Public Health Wales dashboard.
 
 import requests
 import os
+import logging
 import pandas as pd
 from .get_data_url import get_data_link
+
+logger = logging.getLogger(__name__)
 
 
 def run_phw_scraper(raw_folder, cleaned_folder):
@@ -29,7 +32,7 @@ def run_phw_scraper(raw_folder, cleaned_folder):
     get_phw_data(raw)
     covid = clean_data(raw, cleaned)
 
-    print(
+    logger.info(
         "Message (phwScraper): Scraped covid data (latest data found: {})".format(covid)
     )
 
@@ -49,7 +52,6 @@ def get_phw_data(output_path):
     try:
         url = get_data_link()
     except Exception as e:
-        url = "http://www2.nphs.wales.nhs.uk:8080/CommunitySurveillanceDocs.nsf/3dc04669c9e1eaa880257062003b246b/77fdb9a33544aee88025855100300cab/$FILE/Rapid%20COVID-19%20surveillance%20data.xlsx"
         raise e
 
     r = requests.get(url, allow_redirects=True)

@@ -1,41 +1,25 @@
-from selenium import webdriver  # Import module
-from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import NoSuchElementException
-from webdriver_manager.chrome import ChromeDriverManager
-import time  # Waiting function
+import requests
+from bs4 import BeautifulSoup
 from warnings import warn
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_data_link():
-    """Use Selenium to open a Safari window and get the url link of most recent dataset"""
-    home_page_url = "https://public.tableau.com/views/RapidCOVID-19virology-Public/Headlinesummary?:display_count=y&:embed=y&:showAppBanner=false&:showVizHome=no"  # Define URL
+    """Get the link of the latest COVID dataset.
+    """
 
-    # Set chrome to be headless (i.e. doesn't open the webpage GUI)
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-
-    # Set browser to be headerless Chrome
-    browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-    browser.get(home_page_url)  # Go to the homepage url
-    time.sleep(5)  # Wait for it to load
-
-    def get_url():
-        element = browser.find_element_by_id("tabZoneId66")
-        xpath = '//*[@id="tabZoneId67"]/div/div/div/div[1]/div/span/div[3]/span/a'
-        result = element.find_element_by_xpath(xpath)
-        return result.get_attribute("href")
-
-    try:
-        url = get_url()
-    except NoSuchElementException:
-        warn(
-            "Can't find the element. I'm going to wait 10 seconds \n"
-            "in case the webpage still needs to load."
-        )
-        time.sleep(10)
-        url = get_url()
-    finally:
-        browser.quit()
+    # Get the content from the webpage
+    response = requests.get(
+        "http://www2.nphs.wales.nhs.uk:8080/CommunitySurveillanceDocs.nsf/PublicPage?OpenPage&AutoFramed"
+    )
+    # Parse the content using Beautiful Soup
+    soup = BeautifulSoup(response.content, "html.parser")
+    # Find the element with the title that we need, and get the parent row (<tr>)
+    element = soup.find(title="Rapid COVID-19 surveillance data").find_parent("tr")
+    # Extract the URL from the row element (it is the first href in the row.)
+    url = "http://www2.nphs.wales.nhs.uk:8080" + element.find("a").get("href")
 
     return url

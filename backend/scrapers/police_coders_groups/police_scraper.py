@@ -1,11 +1,14 @@
 """Main worker module for collecing the Police Rewired data from Google Sheets."""
 
+import logging
 import pickle
 import os.path
 import csv
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+
+logger = logging.getLogger(__name__)
 
 
 def police_coders_scrape(filename, root_path):
@@ -49,7 +52,7 @@ def police_coders_scrape(filename, root_path):
             with open(os.path.join(root_path, "token.pickle"), "wb") as token:
                 pickle.dump(creds, token)
 
-        service = build("sheets", "v4", credentials=creds)
+        service = build("sheets", "v4", credentials=creds, cache_discovery=False)
 
         # Call the Sheets API
         sheet = service.spreadsheets()
@@ -61,7 +64,7 @@ def police_coders_scrape(filename, root_path):
         values = result.get("values", [])
 
         if not values:
-            print("No data found.")
+            logger.warn("No data found.")
             return "No data found."
 
         else:
