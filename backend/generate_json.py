@@ -28,6 +28,7 @@ import pandas as pd
 from dataclasses import dataclass
 from typing import Sequence
 from warnings import warn
+from datetime import datetime
 import os
 import json
 
@@ -293,6 +294,7 @@ class DataDashboard:
             "variables": self.la_data.metadata_to_json(),
             "LAs": self.la_data.data_to_json(),
             "LSOAs": self.lsoa_data.data_to_json(),
+            "updated": datetime.today().strftime("%Y-%m-%d"),
         }
 
     def write(self):
