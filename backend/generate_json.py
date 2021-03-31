@@ -394,7 +394,7 @@ BELONGING = Variable(
 
 COVID_CASES = Variable(
     data=LA_LIVE_MASTER["covidIncidence_100k"],
-    label="COVID-19 Cases (per 100 pop)",
+    label="Cumulative COVID-19 Cases (per 100 pop)",
     data_class="challenge",
     la_and_lsoa=False,
     invert=False,
