@@ -22,7 +22,7 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://unpkg.com/d3-regression@1.3.4/dist/d3-regression.min.js"></script>
     <script src="./frontend/map/js/cc.js"></script>
-    <title>COVID-19 Community Response Map</title>
+    <title>COVID-19 Response Map</title>
     <link rel="shortcut icon" type="image/jpg" href="frontend/landing-page/img/logo-main-fav.png" />
   </head>
   <body>
@@ -33,7 +33,11 @@
         <h3 class="ui dividing header">
           <div class="content">
             <span class="landing-page-light">COVID-19 Response Map</span>
-            <div class="sub header">Local support in Wales during the outbreak</div>
+            <div class="sub header">Local support in Wales during the outbreak
+              <br />
+              <span id="last_upd"></span>
+            </div>
+
           </div>
         </h3>
         <div class=select_container id=support_container><h4>Local support</h4><i class="arrow circle up icon" id=y_axis></i><i class="arrow circle right icon" id=x_axis></i><a href="https://osf.io/c48hw/wiki/Data%20Records/" target="_blank"><i class="question circle icon help"></i></a>

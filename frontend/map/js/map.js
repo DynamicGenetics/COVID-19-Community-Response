@@ -62,6 +62,11 @@ Promise.all([data_promise, promiseLA, promiseLSOA, promiseGroups]).then( data =>
   let LAs, LSOAs, groups;
   [data, LAs, LSOAs, groups] = data;
 
+  // Set Last Update
+  let last_upd_text = "Last Update: " + data.updated;
+  let last_upd_placeholder = d3.select("#last_upd");
+  last_upd_placeholder.html(last_upd_text);
+
   const supports = data.variables.filter(d => d.class === "support");
   const needs = data.variables.filter(d => d.class === "challenge");
 

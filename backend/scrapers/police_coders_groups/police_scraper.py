@@ -24,9 +24,9 @@ def police_coders_scrape(filename, root_path):
     # If modifying these scopes, delete the file token.pickle.
     SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
-    # The ID and range of a sample spreadsheet.
-    SAMPLE_SPREADSHEET_ID = "1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY"
-    SAMPLE_RANGE_NAME = "Support groups v2"
+    # The ID and range of the spreadsheet.
+    SPREADSHEET_ID = "1iqOvNjRlHIpoRzd61BcBLVkSxGvbta6vrzH2Jgc50aY"
+    RANGE_NAME = "Support groups v2"
 
     def scrape():
         """Shows basic usage of the Sheets API.
@@ -57,9 +57,7 @@ def police_coders_scrape(filename, root_path):
         # Call the Sheets API
         sheet = service.spreadsheets()
         result = (
-            sheet.values()
-            .get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME)
-            .execute()
+            sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
         )
         values = result.get("values", [])
 
