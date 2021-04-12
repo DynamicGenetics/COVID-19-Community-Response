@@ -13,6 +13,7 @@ import sys
 from traceback import format_exc
 from slack import WebClient
 from schedule import Scheduler
+from argparse import ArgumentParser
 
 from slack_tokens import SLACK_TOKEN, SLACK_CHANNEL
 from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER, GEO_DATA_FOLDER
@@ -79,7 +80,6 @@ def with_logging(func):
         try:
             result = func(*args, **kwargs)
         except Exception as e:
-
             message = (
                 "Hello from ErrorBot! :tada: An exception "
                 "has been raised by the scheduling system, inside SafeScheduler. "
@@ -87,10 +87,12 @@ def with_logging(func):
             )
 
             client.chat_postMessage(
-                channel=SLACK_CHANNEL, text=message,
+                channel=SLACK_CHANNEL,
+                text=message,
             )
             raise e
-        logger.info('Job "%s" completed' % func.__name__)
+        finally:
+            logger.info('Job "%s" completed' % func.__name__)
 
         return result
 
@@ -107,14 +109,25 @@ def run_scrapers():
 
 
 @with_logging
-def update_json():
+def update_json(output_path: str):
     # Re-run the import each time to ensure the imported DATA object is not saved in memory
     from generate_json import DATA
 
-    DATA.write()
+    DATA.write(filepath=output_path)
 
 
 if __name__ == "__main__":
+
+    parser = ArgumentParser()
+    parser.add_argument(
+        "-st", "--run-scrapers-at", dest="scrapers_time", type=str, default="15:00"
+    )
+    parser.add_argument(
+        "-ut", "--run-updates-at", dest="update_time", type=str, default="15:05"
+    )
+    parser.add_argument("-o", "--output", type=str, default="", dest="json_output")
+
+    args = parser.parse_args()
 
     try:
         client.chat_postMessage(
@@ -125,8 +138,10 @@ if __name__ == "__main__":
         # Run safe scheduler every day at 4pm and 4.15pm BST
         scheduler = SafeScheduler()
 
-        scheduler.every().day.at("15:00").do(run_scrapers)
-        scheduler.every().day.at("15:05").do(update_json)
+        scheduler.every().day.at(args.scrapers_time).do(run_scrapers)
+        scheduler.every().day.at(args.update_time).do(
+            update_json, output_path=args.json_output
+        )
 
         # Sleep function
         while True:
@@ -134,10 +149,12 @@ if __name__ == "__main__":
             time.sleep(60)
 
     except KeyboardInterrupt:
-        message = "Hello there, the scheduler has been successfully stopped."
+        message = (
+            ":octagonal_sign: Hello there, the scheduler has been successfully stopped."
+        )
         client.chat_postMessage(channel=SLACK_CHANNEL, text=message)
 
-    except Exception as e:
+    except Exception:
         message = (
             ":skull: It's a me, ErrorBot! Unfortunately the scheduler script has stopped running. Here is the trackback: \n"
             "{}".format(traceback.format_exc())
