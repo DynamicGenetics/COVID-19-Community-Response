@@ -311,11 +311,11 @@ class Dataset:
             df_new = df[df[key_col].str.contains("W", na=False)].copy()
         else:
             # Assumes this means key is a name
-            df_new = df.dropna(subset=[key_col])
+            df_new = df.dropna(subset=[key_col]).copy()
         df_new.reset_index(drop=True, inplace=True)
 
         # Strip surrounding whitespace if there is any.
-        df_new[key_col] = df_new[key_col].apply(lambda x: x.strip()).copy()
+        df_new[key_col] = df_new[key_col].apply(lambda x: x.strip())
 
         # If the column-name doesn't match the standard keyname, change it to that
         if res == DataResolution.LA:
