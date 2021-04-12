@@ -82,8 +82,8 @@ def with_logging(func):
 
             message = (
                 "Hello from ErrorBot! :tada: An exception "
-                "has been raised by the scheduling system, inside SafeScheduler."
-                "Here is the traceback: {}".format(traceback.print_exc())
+                "has been raised by the scheduling system, inside SafeScheduler. "
+                "Here is the traceback: {}".format(traceback.format_exc())
             )
 
             client.chat_postMessage(
@@ -133,9 +133,13 @@ if __name__ == "__main__":
             scheduler.run_pending()
             time.sleep(60)
 
+    except KeyboardInterrupt:
+        message = "Hello there, the scheduler has been successfully stopped."
+        client.chat_postMessage(channel=SLACK_CHANNEL, text=message)
+
     except Exception as e:
         message = (
-            ":skull: It's a me, ErrorBot! Unfortunately the scheduler script has stopped running.\n"
+            ":skull: It's a me, ErrorBot! Unfortunately the scheduler script has stopped running. Here is the trackback: \n"
             "{}".format(traceback.format_exc())
         )
 
@@ -146,5 +150,3 @@ if __name__ == "__main__":
                 traceback.format_exc()
             )
         )
-
-        raise e
