@@ -509,8 +509,9 @@ class MasterDataset:
     @property
     def file_path(self):
         """Returns str filepath to write csv to, based on freq and res"""
+        freq_name = self.freq.name.lower()
         filename = self.res.name + "_" + self.freq.name + "_master.csv"
-        filepath = os.path.join(datasets.BASE_FOLDER, "data", self.freq.name, filename)
+        filepath = os.path.join(datasets.BASE_FOLDER, "data", freq_name, filename)
         return filepath
 
     @property
