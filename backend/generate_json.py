@@ -117,7 +117,7 @@ class Variable:
     @property
     def transformed_data(self):
         """Returns transformed data. Will return `None` if `transform` method
-        has not been applied. """
+        has not been applied."""
         if self.data_transformed_ is None:
             self.transform()
         return self.data_transformed_
@@ -232,8 +232,7 @@ class Variables:
             return False
 
     def metadata_to_json(self):
-        """Returns a list of metadata dictionaries for each variable
-        """
+        """Returns a list of metadata dictionaries for each variable"""
         return [var.meta_to_json() for var in self.variables]
 
     def data_to_json(self):
@@ -297,17 +296,25 @@ class DataDashboard:
             "updated": datetime.today().strftime("%Y-%m-%d"),
         }
 
-    def write(self):
+    def write(self, filepath: str = None):
         """Writes out the variables in the required json format to the frontend.
 
         Notes
         -------
         The frontend data folder is assumed to be: `frontend/map/data/data.json`
         """
-        JSON_OUT = os.path.join(
-            BASE_FOLDER, "..", "..", "frontend", "map", "data", "data.json",
-        )
-        with open(JSON_OUT, "w") as outfile:
+        if not filepath:
+            filepath = os.path.join(
+                BASE_FOLDER,
+                "..",
+                "..",
+                "frontend",
+                "map",
+                "data",
+                "data.json",
+            )
+
+        with open(filepath, "w") as outfile:
             json.dump(self.to_json(), outfile)
 
 
@@ -486,7 +493,13 @@ LA_VARBS = Variables(
     )
 )
 
-LSOA_VARBS = Variables((LSOA_WIMD, LSOA_OVER_65, LSOA_POPDENSITY,))
+LSOA_VARBS = Variables(
+    (
+        LSOA_WIMD,
+        LSOA_OVER_65,
+        LSOA_POPDENSITY,
+    )
+)
 
 # Finally, create the data with the json function!
 DATA = DataDashboard(la_data=LA_VARBS, lsoa_data=LSOA_VARBS)
