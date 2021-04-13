@@ -3,23 +3,37 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - beautifulsoup4>=4.9
+  - geojson>=2.5
+  - geopandas>=0.7
   - ipykernel>=5.1
   - matplotlib>=3.1
   - nltk>=3.4
   - numpy>=1.18
+  - openpyxl>=3.0
   - pandas>=1.0
   - pip>=21.0
   - plotnine>=0.6
   - python>=3.8
+  - schedule>=1.1
+  - shapely>=1.7
   - scikit-learn>=0.22
   - scipy>=1.4
+  - slackclient>=2.9
   - spacy>=2.2
-  - geopandas>=0.7
-  - geojson>=2.5
-  - shapely>=1.7
+  - sphinx>=3.5
+  - sphinx_rtd_theme>=0.5
+  - xlrd>=1.0
   - pip:
     - demoji>=0.1.5
     - vadersentiment>=3.3.1
     - black>=19.10b0
     - pre-commit>=2.12
     - flake8>=3.9.0
+    - google-api-core>=1.16
+    - google-api-python-client>=1.8
+    - google-auth>=1.13
+    - google-auth-httplib2>=0.0.3
+    - google-auth-oauthlib>=0.4
+    - googleapis-common-protos>=1.51
+    - tweet-preprocessor>=0.5
