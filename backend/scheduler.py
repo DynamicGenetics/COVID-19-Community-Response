@@ -1,5 +1,5 @@
-"""This module is responsible for the automated updating of the COVID cumulative
-cases data from Public Health Wales, and fetching groups from Police Coders.
+"""This module is responsible for the automated updating of the COVID and vaccination
+data from Public Health Wales, and fetching groups from Police Coders.
 When run as main it will execute both scrapers daily at 3pm, and update the JSON 5
 minutes later at 3.05pm. If a task raises an exception, it will
 send a notification to the lab Slack group to notify us to check the logs."""
@@ -18,7 +18,7 @@ from argparse import ArgumentParser
 from slack_tokens import SLACK_TOKEN, SLACK_CHANNEL
 from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER, GEO_DATA_FOLDER
 from scrapers.police_coders_groups.run_scraper import run_police_coders_scraper
-from scrapers.phw_covid_statement.phw_scraper import run_phw_scraper
+from scrapers.phw_data import PHWDownload, COVID_CASES, VAX_RATES
 
 # NB Necessary to set up the logging config before running the local imports
 logging.basicConfig(
@@ -82,13 +82,11 @@ def with_logging(func):
         except Exception as e:
             message = (
                 "Hello from ErrorBot! :tada: An exception "
-                "has been raised by the scheduling system, inside SafeScheduler. "
-                "Here is the traceback: {}".format(traceback.format_exc())
+                "has been raised by the scheduling system, inside SafeScheduler."
             )
 
             client.chat_postMessage(
-                channel=SLACK_CHANNEL,
-                text=message,
+                channel=SLACK_CHANNEL, text=message,
             )
             raise e
         finally:
@@ -104,7 +102,11 @@ def with_logging(func):
 # ----------------
 @with_logging
 def run_scrapers():
-    run_phw_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER)
+    # Get latest covid case data from PHW
+    PHWDownload(COVID_CASES, LIVE_RAW_DATA_FOLDER).save_data()
+    # Get the latest vaccination data from PHW
+    PHWDownload(VAX_RATES, LIVE_RAW_DATA_FOLDER).save_data()
+    # Run the Police Coders community group scraper
     run_police_coders_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_FOLDER)
 
 
