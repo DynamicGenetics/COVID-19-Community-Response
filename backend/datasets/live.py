@@ -20,13 +20,37 @@ import pandas as pd
 import os
 from functools import partial
 
-from datasets import LIVE_DATA_FOLDER
+from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER
 
 from datasets.dataset import DataResolution, DataFrequency, Dataset, MasterDataset
 
 p_live = partial(os.path.join, LIVE_DATA_FOLDER)
+p_raw = partial(os.path.join, LIVE_RAW_DATA_FOLDER)
 
-SOURCE_COVID_COUNT_LA = pd.read_csv(p_live("phwCovidStatement.csv"))
+# Get, and do some tidying, of the PHW data
+SOURCE_COVID_COUNT_LA = pd.read_excel(
+    p_raw("Rapid-COVID-19-surveillance-data.xlsx"),
+    sheet_name="Tests by specimen date",
+    usecols="A, B, E",
+)  # LA, date, cumulative cases per 100,000
+SOURCE_COVID_COUNT_LA["Specimen date"] = pd.to_datetime(
+    SOURCE_COVID_COUNT_LA["Specimen date"]
+)
+latest_date = SOURCE_COVID_COUNT_LA["Specimen date"].max()
+# Filter data by the latest date
+SOURCE_COVID_COUNT_LA = SOURCE_COVID_COUNT_LA[
+    SOURCE_COVID_COUNT_LA["Specimen date"] == latest_date
+]
+
+SOURCE_VAX_PCT_LA = pd.read_excel(
+    p_raw("COVID19-vaccination-downloadable-data-.xlsx"),
+    sheet_name="HealthBoard_LocalAuthority",
+    usecols="A, B, E, G",
+    skiprows=1,
+)
+SOURCE_VAX_PCT_LA = SOURCE_VAX_PCT_LA[
+    SOURCE_VAX_PCT_LA["Risk group"] == "Wales residents aged 18 years and older"
+]
 
 SOURCE_GROUP_COUNTS_LA = pd.read_csv(p_live("groupCount_LA.csv"))
 
@@ -37,13 +61,38 @@ SOURCE_TWEETS_LA = pd.read_csv(p_live("community_tweets.csv"))
 SOURCE_ZOE_SUPPORT_LA = pd.read_csv(p_live("help_need20200531.csv"), nrows=3).T
 SOURCE_ZOE_SUPPORT_LA.reset_index(level=0, inplace=True)
 
+
 LA_COVID = Dataset(
     data=SOURCE_COVID_COUNT_LA,
     res=DataResolution.LA,
-    key_col="la_name",
+    key_col="Local Authority",
     key_is_code=False,
     csv_name="covid_count",
+    rename={
+        "Cumulative incidence per 100,000 population": "covidIncidence_100k",
+        "Local Authority": "lad19nm",
+    },
     keep_cols=["lad19nm", "covidIncidence_100k"],
+)
+
+LA_VAX_1 = Dataset(
+    data=SOURCE_VAX_PCT_LA,
+    res=DataResolution.LA,
+    key_col="Area of residence",
+    key_is_code=False,
+    csv_name="vax1_pct",
+    rename={"Area of residence": "lad19nm", "Uptake(%) - Dose1": "vax1_pct"},
+    keep_cols=["lad19nm", "vax1_pct"],
+)
+
+LA_VAX_2 = Dataset(
+    data=SOURCE_VAX_PCT_LA,
+    res=DataResolution.LA,
+    key_col="Area of residence",
+    key_is_code=False,
+    csv_name="vax2_pct",
+    rename={"Area of residence": "lad19nm", "Uptake(%) - Dose2": "vax2_pct"},
+    keep_cols=["lad19nm", "vax2_pct"],
 )
 
 LA_GROUP_COUNTS = Dataset(
@@ -83,7 +132,15 @@ LA_ZOE_SUPPORT = Dataset(
 )
 
 LA_LIVE = MasterDataset(
-    datasets=[LA_COVID, LA_GROUP_COUNTS, LA_WCVA, LA_TWEETS, LA_ZOE_SUPPORT],
+    datasets=[
+        LA_COVID,
+        LA_GROUP_COUNTS,
+        LA_WCVA,
+        LA_TWEETS,
+        LA_ZOE_SUPPORT,
+        LA_VAX_1,
+        LA_VAX_2,
+    ],
     res=DataResolution.LA,
     freq=DataFrequency.LIVE,
     from_csv=False,
