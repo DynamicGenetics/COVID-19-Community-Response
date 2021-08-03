@@ -68,8 +68,11 @@ LA_COVID = Dataset(
     key_col="Local Authority",
     key_is_code=False,
     csv_name="covid_count",
-    rename={"Cumulative incidence per 100,000 population": "covidIncidence_100k"},
-    keep_cols=["Local Authority", "covidIncidence_100k"],
+    rename={
+        "Cumulative incidence per 100,000 population": "covidIncidence_100k",
+        "Local Authority": "lad19nm",
+    },
+    keep_cols=["lad19nm", "covidIncidence_100k"],
 )
 
 LA_VAX_1 = Dataset(
@@ -78,7 +81,8 @@ LA_VAX_1 = Dataset(
     key_col="Area of residence",
     key_is_code=False,
     csv_name="vax1_pct",
-    keep_cols=["Area of residence", "Uptake(%) - Dose1"],
+    rename={"Area of residence": "lad19nm", "Uptake(%) - Dose1": "vax1_pct"},
+    keep_cols=["lad19nm", "vax1_pct"],
 )
 
 LA_VAX_2 = Dataset(
@@ -87,7 +91,8 @@ LA_VAX_2 = Dataset(
     key_col="Area of residence",
     key_is_code=False,
     csv_name="vax2_pct",
-    keep_cols=["Area of residence", "Uptake(%) - Dose2"],
+    rename={"Area of residence": "lad19nm", "Uptake(%) - Dose2": "vax2_pct"},
+    keep_cols=["lad19nm", "vax2_pct"],
 )
 
 LA_GROUP_COUNTS = Dataset(
