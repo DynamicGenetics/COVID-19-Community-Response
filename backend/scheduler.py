@@ -17,8 +17,8 @@ from argparse import ArgumentParser
 
 from slack_tokens import SLACK_TOKEN, SLACK_CHANNEL
 from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER, GEO_DATA_FOLDER
-from scrapers.police_coders_groups.run_scraper import run_police_coders_scraper
-from scrapers.phw_data import PHWDownload, COVID_CASES, VAX_RATES
+from data_collection.police_coders_groups.run_scraper import run_police_coders_scraper
+from data_collection.phw_data import PHWDownload, COVID_CASES, VAX_RATES
 
 # NB Necessary to set up the logging config before running the local imports
 logging.basicConfig(
@@ -101,7 +101,7 @@ def with_logging(func):
 # Functions to run
 # ----------------
 @with_logging
-def run_scrapers():
+def run_data_collection():
     # Get latest covid case data from PHW
     PHWDownload(COVID_CASES, LIVE_RAW_DATA_FOLDER).save_data()
     # Get the latest vaccination data from PHW
@@ -140,7 +140,7 @@ if __name__ == "__main__":
         # Run safe scheduler every day at 4pm and 4.15pm BST
         scheduler = SafeScheduler()
 
-        scheduler.every().day.at(args.scrapers_time).do(run_scrapers)
+        scheduler.every().day.at(args.scrapers_time).do(run_data_collection)
         scheduler.every().day.at(args.update_time).do(
             update_json, output_path=args.json_output
         )

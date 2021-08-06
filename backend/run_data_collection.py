@@ -1,10 +1,10 @@
-"""When run as `__main__` this module will run the police coders scraper, and the PHW scraper. 
+"""When run as `__main__` this module will run the police coders scraper, and the PHW scraper.
 """
 
 from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER, GEO_DATA_FOLDER
 
-from scrapers.police_coders_groups.run_scraper import run_police_coders_scraper
-from scrapers.phw_data import PHWDownload, COVID_CASES, VAX_RATES
+from data_collection.police_coders_groups.run_scraper import run_police_coders_scraper
+from data_collection.phw_data import PHWDownload, COVID_CASES, VAX_RATES
 
 if __name__ == "__main__":
     # Get latest covid case data from PHW
