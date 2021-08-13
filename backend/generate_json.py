@@ -485,6 +485,15 @@ ZOE_SUPPORT = Variable(
     data_type="percentage",
 )
 
+VADER_SENTIMENT = Variable(
+    data=LA_LIVE_MASTER["vader_comp"],
+    label="Avg Twitter Sentiment Past 7 Days",
+    data_class="support",
+    la_and_lsoa=False,
+    invert=False,
+    data_type="percentage",
+)
+
 
 LA_VARBS = Variables(
     (
@@ -504,6 +513,7 @@ LA_VARBS = Variables(
         GP_DIGITAL,
         HAS_INTERNET,
         ZOE_SUPPORT,
+        VADER_SENTIMENT,
     )
 )
 

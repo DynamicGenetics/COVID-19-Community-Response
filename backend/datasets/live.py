@@ -19,6 +19,7 @@ definition defined in the `LA_LIVE` datasets list to ensure it is included.
 import pandas as pd
 import os
 from functools import partial
+import sqlite3
 
 from datasets import LIVE_DATA_FOLDER, LIVE_RAW_DATA_FOLDER
 
@@ -61,6 +62,31 @@ SOURCE_TWEETS_LA = pd.read_csv(p_live("community_tweets.csv"))
 SOURCE_ZOE_SUPPORT_LA = pd.read_csv(p_live("help_need20200531.csv"), nrows=3).T
 SOURCE_ZOE_SUPPORT_LA.reset_index(level=0, inplace=True)
 
+query = """SELECT AVG(vader_comp_avg),lsoa,lsoa_name from
+(
+SELECT AVG(tweets.vader_comp) as vader_comp_avg, tweets.author_id, matchedplaces.lsoa, matchedplaces.lsoa_name
+FROM tweets
+JOIN places ON tweets.place_id = places.id
+JOIN matchedplaces ON matchedplaces.place_id = places.id
+GROUP BY tweets.author_id,matchedplaces.lsoa
+) as A
+GROUP BY lsoa;
+"""
+
+SOURCE_TWEET_SENTIMENT_LA = pd.read_sql(
+    query, con=sqlite3.connect(os.path.join(LIVE_RAW_DATA_FOLDER, "phw_tweets.db")),
+)
+
+# Labelling this as a pct, it's not really but ensures it doesn't get changed.
+LA_VADER = Dataset(
+    data=SOURCE_TWEET_SENTIMENT_LA,
+    res=DataResolution.LA,
+    key_col="lsoa",
+    key_is_code=True,
+    csv_name="vader_pct",
+    rename={"AVG(vader_comp_avg)": "vader_comp", "lsoa": "lad19cd"},
+    keep_cols=["lad19cd", "vader_comp"],
+)
 
 LA_COVID = Dataset(
     data=SOURCE_COVID_COUNT_LA,
@@ -140,6 +166,7 @@ LA_LIVE = MasterDataset(
         LA_ZOE_SUPPORT,
         LA_VAX_1,
         LA_VAX_2,
+        LA_VADER,
     ],
     res=DataResolution.LA,
     freq=DataFrequency.LIVE,
