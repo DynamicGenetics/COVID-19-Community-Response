@@ -68,8 +68,9 @@ SELECT AVG(tweets.vader_comp) as vader_comp_avg, tweets.author_id, matchedplaces
 FROM tweets
 JOIN places ON tweets.place_id = places.id
 JOIN matchedplaces ON matchedplaces.place_id = places.id
+WHERE strftime("%Y-%m-%d %H:%M:%S", tweets.created_at) > date('now','start of day','-7 days')
 GROUP BY tweets.author_id,matchedplaces.lsoa
-) as A
+) as lastweek_tweets
 GROUP BY lsoa;
 """
 
