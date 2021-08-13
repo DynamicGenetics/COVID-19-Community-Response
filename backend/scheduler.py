@@ -82,7 +82,8 @@ def with_logging(func):
         except Exception as e:
             message = (
                 "Hello from ErrorBot! :tada: An exception "
-                "has been raised by the scheduling system, inside SafeScheduler."
+                "has been raised by the scheduling system, inside SafeScheduler. "
+                "I'll run again tomorrow."
             )
 
             client.chat_postMessage(
