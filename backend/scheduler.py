@@ -9,7 +9,6 @@ import functools
 import traceback
 import logging
 import datetime
-import sys
 from traceback import format_exc
 from slack import WebClient
 from schedule import Scheduler
