@@ -47,10 +47,14 @@ class PHWDownload:
         # Parse the content using Beautiful Soup
         soup = BeautifulSoup(response.content, "html.parser")
 
-        # Find the element with the title that we need, and get the parent row (<tr>)
-        element = soup.find(title=self.dataset).find_parent("tr")
-        # Extract the URL from the row element (it is the first href in the row.)
-        url = "http://www2.nphs.wales.nhs.uk:8080" + element.find("a").get("href")
+        try:
+            # Find the element with the title that we need, and get the parent row (<tr>)
+            element = soup.find(title=self.dataset).find_parent("tr")
+            # Extract the URL from the row element (it is the first href in the row.)
+            url = "http://www2.nphs.wales.nhs.uk:8080" + element.find("a").get("href")
+        except AttributeError:
+            # If the element can't be found then return url as None.
+            url = None
 
         return url
 
@@ -66,11 +70,12 @@ class PHWDownload:
         except Exception as e:
             raise e
 
-        r = requests.get(url, allow_redirects=True)
-
-        # Save in native xlsx format
-        output = open(self.path, "wb")
-        output.write(r.content)
-        output.close()
-
-        logger.info("Message (phwScraper): Scraped {}".format(self.dataset))
+        if url is not None:
+            r = requests.get(url, allow_redirects=True)
+            # Save in native xlsx format
+            output = open(self.path, "wb")
+            output.write(r.content)
+            output.close()
+            logger.info("Successfully saved {}".format(self.dataset))
+        elif url is None:
+            logger.error("Could not get URL to download {}".format(self.dataset))
