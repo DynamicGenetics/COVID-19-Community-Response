@@ -62,7 +62,9 @@ SOURCE_TWEETS_LA = pd.read_csv(p_live("community_tweets.csv"))
 SOURCE_ZOE_SUPPORT_LA = pd.read_csv(p_live("help_need20200531.csv"), nrows=3).T
 SOURCE_ZOE_SUPPORT_LA.reset_index(level=0, inplace=True)
 
-query = """SELECT AVG(vader_comp_avg),lsoa,lsoa_name from
+# This query gets the average sentiment for the past seven days, linked to local authority areas.
+# This is then queried from the twitter data collection database.
+VADER_QUERY = """SELECT AVG(vader_comp_avg),lsoa,lsoa_name from
 (
 SELECT AVG(tweets.vader_comp) as vader_comp_avg, tweets.author_id, matchedplaces.lsoa, matchedplaces.lsoa_name
 FROM tweets
@@ -75,7 +77,8 @@ GROUP BY lsoa;
 """
 
 SOURCE_TWEET_SENTIMENT_LA = pd.read_sql(
-    query, con=sqlite3.connect(os.path.join(LIVE_RAW_DATA_FOLDER, "phw_tweets.db")),
+    VADER_QUERY,
+    con=sqlite3.connect(os.path.join(LIVE_RAW_DATA_FOLDER, "phw_tweets.db")),
 )
 
 # Labelling this as a pct, it's not really but ensures it doesn't get changed.
