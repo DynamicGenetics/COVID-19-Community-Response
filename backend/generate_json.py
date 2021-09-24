@@ -33,11 +33,10 @@ import os
 import json
 
 # Local imports
-from dataset import LSOA_COUNT, LA_COUNT
 from datasets.live import LA_LIVE
 from datasets.static import LA_STATIC, LSOA_STATIC
-
 from datasets import BASE_FOLDER
+from datasets import LSOA_COUNT, LA_COUNT
 
 LA_STATIC_MASTER = LA_STATIC.master_dataset
 LSOA_STATIC_MASTER = LSOA_STATIC.master_dataset
