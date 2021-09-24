@@ -86,7 +86,8 @@ def with_logging(func):
             )
 
             client.chat_postMessage(
-                channel=SLACK_CHANNEL, text=message,
+                channel=SLACK_CHANNEL,
+                text=message,
             )
             raise e
         finally:
@@ -101,18 +102,22 @@ def with_logging(func):
 # Functions to run
 # ----------------
 @with_logging
-def run_data_collection():
+def run_data_collection(update_groups=False):
     # Get latest covid case data from PHW
     PHWDownload(COVID_CASES, LIVE_RAW_DATA_FOLDER).save_data()
     # Get the latest vaccination data from PHW
     PHWDownload(VAX_RATES, LIVE_RAW_DATA_FOLDER).save_data()
     # Run the Police Coders community group scraper
-    run_police_coders_scraper(LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_FOLDER)
+    if update_groups:
+        run_police_coders_scraper(
+            LIVE_RAW_DATA_FOLDER, LIVE_DATA_FOLDER, GEO_DATA_FOLDER
+        )
 
 
 @with_logging
 def update_json(output_path: str):
-    # Re-run the import each time to ensure the imported DATA object is not saved in memory
+    # Re-run the import each time to ensure the imported DATA object is not saved
+    # in memory
     from generate_json import DATA
 
     DATA.write(filepath=output_path)
@@ -140,7 +145,9 @@ if __name__ == "__main__":
         # Run safe scheduler every day at 4pm and 4.15pm BST
         scheduler = SafeScheduler()
 
-        scheduler.every().day.at(args.scrapers_time).do(run_data_collection)
+        scheduler.every().day.at(args.scrapers_time).do(
+            run_data_collection, update_groups=False
+        )
         scheduler.every().day.at(args.update_time).do(
             update_json, output_path=args.json_output
         )

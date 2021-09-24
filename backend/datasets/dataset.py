@@ -21,8 +21,12 @@ from dataclasses import field
 from typing import List
 from enum import Enum
 from functools import reduce
+from typing import ClassVar, Any
 
 import datasets
+
+LSOA_COUNT = 1909
+LA_COUNT = 22
 
 
 class DataResolution(Enum):
@@ -69,7 +73,7 @@ class Dataset:
     ----------
     data : pd.DataFrame
         The source dataset to standardise. Expected to have a row for each
-        goegraphic area with at least one column defining the area name or code.
+        geographic area with at least one column defining the area name or code.
     res : DataResolution
         The DataResolution type of the data. See the class for options.
     key_col: str
@@ -102,6 +106,9 @@ class Dataset:
     rename: dict = None  # Dictionary of columns that need renaming Cleaning
     std_data_: pd.DataFrame = field(init=False, default=None)
 
+    LA_REF: ClassVar[Any] = None  # geo-dataframe
+    LSOA_REF: ClassVar[Any] = None  # geo-dataframe
+
     def standardise(self):
         """Based on attributes, applies the correct functions to standardise the datasets.
 
@@ -116,12 +123,17 @@ class Dataset:
         # Validate step TBD
 
         # Filter the keycodes/names, remove whitespace, reset index
-        self.std_data_ = self.clean_keys(
+        std_data_ = self.clean_keys(
             df=self.data,
             res=self.res,
             key_col=self.key_col,
             key_is_code=self.key_is_code,
         )
+
+        if std_data_ is None:
+            return None
+
+        self.std_data_ = std_data_
 
         # Rename the columns as needed
         if self.rename:
@@ -234,35 +246,47 @@ class Dataset:
         return self
 
     def read_keys(self):
-        """ Reads and returns the LSOA and LA geopandas dataframes as constants 'LSOA', 'LA'."""
+        """Reads and returns the LSOA and LA geopandas dataframes as constants 'LSOA', 'LA'."""
 
         # TBD: Standardise for GeoPandas DataFrame
         # MAKE THIS A CLASS ATTRIBUTE
 
         data_folder = datasets.GEO_DATA_FOLDER
-        # Read data
-        LSOA = gpd.read_file(
-            os.path.join(
-                data_folder,
-                "Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson",
-            )
-        )
-        LA = gpd.read_file(
-            os.path.join(
-                data_folder,
-                "Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson",
-            )
-        )
+        if Dataset.LA_REF is None:
+            try:
+                LA = gpd.read_file(
+                    os.path.join(
+                        data_folder,
+                        "Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson",
+                    )
+                )
+                LA = self.clean_keys(LA, res=DataResolution.LA, key_col="lad19cd")
+            except Exception as e:
+                # clean_keys will raise an exception if the right number of rows are not
+                # merged.
+                raise e
+            else:
+                Dataset.LA_REF = LA
 
-        try:
-            LSOA = self.clean_keys(LSOA, res=DataResolution.LSOA, key_col="LSOA11CD")
-            LA = self.clean_keys(LA, res=DataResolution.LA, key_col="lad19cd")
-        except Exception as e:
-            # clean_keys will raise an exception if the right number of rows are not
-            # merged.
-            raise e
+        if Dataset.LSOA_REF is None:
+            try:
+                LSOA = gpd.read_file(
+                    os.path.join(
+                        data_folder,
+                        "Lower_Layer_Super_Output_Areas_December_2011_Boundaries_EW_BSC.geojson",
+                    )
+                )
+                LSOA = self.clean_keys(
+                    LSOA, res=DataResolution.LSOA, key_col="LSOA11CD"
+                )
+            except Exception as e:
+                # clean_keys will raise an exception if the right number of rows are not
+                # merged.
+                raise e
+            else:
+                Dataset.LSOA_REF = LSOA
 
-        return LSOA, LA
+        return Dataset.LSOA_REF, Dataset.LA_REF
 
     @staticmethod
     def clean_keys(df, res, key_col, key_is_code=True):
@@ -305,6 +329,9 @@ class Dataset:
         # if not isinstance(res, str):
         #     raise TypeError("Arg 'res' should be 'LA' or 'LSOA' as string")
 
+        if df is None or df.shape[0] == 0:
+            return None
+
         # For instances where the key column is a code (preferred)
         if key_is_code:
             # This will drop non Welsh LSOAs, and drop NAs.
@@ -328,9 +355,10 @@ class Dataset:
 
             # Do a final check that we still have the expected shape. Raise Exception
             # if not.
-            if df_new.shape[0] < 22:
+            if df_new.shape[0] < LA_COUNT:
                 raise Exception(
-                    "An error has occurred. There are not the expected 22 rows."
+                    "An error has occurred. There are not the "
+                    "expected {} rows.".format(LA_COUNT)
                 )
         elif res == DataResolution.LSOA:
             if key_is_code:
@@ -342,9 +370,10 @@ class Dataset:
 
             # Do a final check that we still have the expected shape. Raise Exception
             # if not.
-            if df_new.shape[0] < 1909:
+            if df_new.shape[0] < LSOA_COUNT:
                 raise Exception(
-                    "An error has occured. There are not the expected 1909 rows."
+                    "An error has occured. There are not the expected"
+                    " {} rows.".format(LSOA_COUNT)
                 )
 
         return df_new
@@ -392,9 +421,10 @@ class Dataset:
                 df[keep_cols], on="LSOA11CD", how="inner"
             )
             # Check the df has the expected number of rows after merging
-            if df_tidy.shape[0] != 1909:
+            if df_tidy.shape[0] != LSOA_COUNT:
                 raise Exception(
-                    "An error has occured. The full 1909 rows were not produced in merge."
+                    "An error has occured. "
+                    "The full {} rows were not produced in merge.".format(LSOA_COUNT)
                 )
         elif res == DataResolution.LA:
             if key_is_code:
@@ -406,9 +436,10 @@ class Dataset:
                 df[keep_cols], on=key, how="inner"
             )
             # Check the df has the expected number of rows after merging
-            if df_tidy.shape[0] != 22:
+            if df_tidy.shape[0] != LA_COUNT:
                 raise Exception(
-                    "An error has occured. The full 22 rows were not produced in merge."
+                    "An error has occured. "
+                    "The full {} rows were not produced in merge.".format(LA_COUNT)
                 )
         else:
             raise ValueError("Res provided does not match 'LSOA' or 'LA")
@@ -490,7 +521,7 @@ class MasterDataset:
     ----------
     datasets: List[Dataset]
         A list of Dataset instances to be merged into the master dataset.
-    res: DataResoltion
+    res: DataResolution
         The DataResolution of the data. Accepts LA or LSOA.
     freq: DataFrequency
         The DataFrequency of the data. Accepts STATIC or LIVE.
@@ -510,7 +541,7 @@ class MasterDataset:
     def file_path(self):
         """Returns str filepath to write csv to, based on freq and res"""
         freq_name = self.freq.name.lower()
-        filename = self.res.name + "_" + self.freq.name + "_master.csv"
+        filename = self.res.name + "_" + self.freq.name.lower() + "_master.csv"
         filepath = os.path.join(datasets.BASE_FOLDER, "data", freq_name, filename)
         return filepath
 
@@ -610,15 +641,19 @@ class MasterDataset:
 
         # First, standardise all the datasets
         datasets = map(lambda d: d.standardise(), self.datasets)
+        # we get rid of all empty dataset
+        datasets = filter(lambda d: d is not None, datasets)
         datasets = map(lambda d: d.standardised_data, datasets)
 
         if self.res == DataResolution.LSOA:
             datasets = map(
-                lambda d: d.set_index(["LSOA11CD", "LSOA11NM"]), list(datasets),
+                lambda d: d.set_index(["LSOA11CD", "LSOA11NM"]),
+                list(datasets),
             )
         elif self.res == DataResolution.LA:
             datasets = map(
-                lambda d: d.set_index(["lad19cd", "lad19nm"]), list(datasets),
+                lambda d: d.set_index(["lad19cd", "lad19nm"]),
+                list(datasets),
             )
 
         # Merge all the datasets into one dataframe called data
@@ -640,14 +675,18 @@ class MasterDataset:
         )
 
         if self.res == DataResolution.LA:
-            if data.shape[0] != 22:
+            if data.shape[0] != LA_COUNT:
                 raise Exception(
-                    "An error has occured. There are not the expected 22 rows in the LA dataset."
+                    "An error has occured. "
+                    "There are not the expected {} rows in the LA dataset.".format(
+                        LA_COUNT
+                    )
                 )
         elif self.res == DataResolution.LSOA:
-            if data.shape[0] != 1909:
+            if data.shape[0] != LSOA_COUNT:
                 raise Exception(
-                    "An error has occured. There are not the expected 1909 rows in the LA dataset."
+                    "An error has occured. There are not the expected {} "
+                    "rows in the LA dataset.".format(LSOA_COUNT)
                 )
         return data
 

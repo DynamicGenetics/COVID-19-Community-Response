@@ -33,6 +33,7 @@ import os
 import json
 
 # Local imports
+from dataset import LSOA_COUNT, LA_COUNT
 from datasets.live import LA_LIVE
 from datasets.static import LA_STATIC, LSOA_STATIC
 
@@ -84,9 +85,9 @@ class Variable:
     @property
     def res(self):
         """Guess and set the resolution of the data depending on no. of rows."""
-        if self.data.shape[0] == 22:
+        if self.data.shape[0] == LA_COUNT:
             return "LA"
-        elif self.data.shape[0] == 1909:
+        elif self.data.shape[0] == LSOA_COUNT:
             return "LSOA"
         else:
             warn(
@@ -146,25 +147,21 @@ class Variable:
         Exception
             When a data type is defined that is not yet supported.
         """
-        if self.data_type == "percentage":
+        if self.data_type in ("percentage", "density", "rank"):
             return self.data_transformed_
-        elif self.data_type == "count":
+
+        if self.data_type == "count":
             if self.res == "LA":
                 return (self.data_transformed_ / LA_POPULATION) * 100
             elif self.res == "LSOA":
                 return (self.data_transformed_ / LSOA_POPULATION) * 100
-        elif self.data_type == "density":
-            return self.data_transformed_
-        elif self.data_type == "rank":
-            return self.data_transformed_
-        elif self.data_type == "per100k":
+
+        if self.data_type == "per100k":
             return self.data_transformed_ / 1000
-        else:
-            raise Exception(
-                "Transformation of data type: {} are not suppored".format(
-                    self.data_type
-                )
-            )
+
+        raise Exception(
+            "Transform per 100 of data type {} is not supported".format(self.data_type)
+        )
 
     def invert_data(self):
         """Invert data direction AFTER transformation and set self.data_transformed_
@@ -181,14 +178,15 @@ class Variable:
         Exception
             When a data type is defined that is not yet supported.
         """
-        if self.data_type in ["percentage", "count", "per100k"]:
+        if self.data_type in ("percentage", "count", "per100k"):
             return 100 - self.data_transformed_
-        elif self.data_type == "rank":
+
+        if self.data_type == "rank":
             return (self.data_transformed_.max() + 1) - self.data_transformed_
-        else:
-            raise Exception(
-                "Inversion of data type: {} are not suppored".format(self.data_type)
-            )
+
+        raise Exception(
+            "Inversion of data type {} is not supported".format(self.data_type)
+        )
 
     def meta_to_json(self):
         """Creates a dict of the metadata, containing `name`, `label`, `class`, and
@@ -305,7 +303,13 @@ class DataDashboard:
         """
         if not filepath:
             filepath = os.path.join(
-                BASE_FOLDER, "..", "..", "frontend", "map", "data", "data.json",
+                BASE_FOLDER,
+                "..",
+                "..",
+                "frontend",
+                "map",
+                "data",
+                "data.json",
             )
 
         with open(filepath, "w") as outfile:
@@ -517,7 +521,13 @@ LA_VARBS = Variables(
     )
 )
 
-LSOA_VARBS = Variables((LSOA_WIMD, LSOA_OVER_65, LSOA_POPDENSITY,))
+LSOA_VARBS = Variables(
+    (
+        LSOA_WIMD,
+        LSOA_OVER_65,
+        LSOA_POPDENSITY,
+    )
+)
 
 # Finally, create the data with the json function!
 DATA = DataDashboard(la_data=LA_VARBS, lsoa_data=LSOA_VARBS)
