@@ -68,7 +68,8 @@ class SafeScheduler(Scheduler):
 # ---------------------
 # Logging wrap function
 # ---------------------
-# Note: logging wrapper taken from docs https://schedule.readthedocs.io/en/stable/faq.html
+# Note: logging wrapper taken from docs
+# https://schedule.readthedocs.io/en/stable/faq.html
 def with_logging(func):
     """This is a wrapper that logs the start and end of a function,
     and sends exceptions to Slack"""
@@ -79,21 +80,21 @@ def with_logging(func):
         try:
             result = func(*args, **kwargs)
         except Exception as e:
-            message = (
+            slack_msg = (
                 "Hello from ErrorBot! :tada: An exception "
                 "has been raised by the scheduling system, inside SafeScheduler. "
                 "I'll run again tomorrow."
             )
-
             client.chat_postMessage(
                 channel=SLACK_CHANNEL,
-                text=message,
+                text=slack_msg,
             )
-            raise e
-        finally:
-            logger.info('Job "%s" completed' % func.__name__)
-
-        return result
+            logger.error("Job '%s' terminated with Error" % func.__name__)
+            logger.error("Exception: %s" % str(e))
+            return None
+        else:
+            logger.info("Job '%s' completed" % func.__name__)
+            return result
 
     return wrapper
 
@@ -165,8 +166,10 @@ if __name__ == "__main__":
 
     except Exception:
         message = (
-            ":skull: It's a me, ErrorBot! Unfortunately the scheduler script has stopped running. Here is the trackback: \n"
-            "{}".format(traceback.format_exc())
+            ":skull: It's me, ErrorBot! Unfortunately the scheduler script has "
+            "stopped running. Here is the traceback: \n {}".format(
+                traceback.format_exc()
+            )
         )
 
         client.chat_postMessage(channel=SLACK_CHANNEL, text=message)
