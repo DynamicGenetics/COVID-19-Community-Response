@@ -230,7 +230,23 @@ class Variables:
 
     def metadata_to_json(self):
         """Returns a list of metadata dictionaries for each variable"""
-        return [var.meta_to_json() for var in self.variables]
+        vars_to_json = [var.meta_to_json() for var in self.variables]
+        metadata = list(
+            filter(
+                lambda jobj: "name" in jobj and len(jobj["name"].strip()) > 0,
+                vars_to_json,
+            )
+        )
+        if len(vars_to_json) > len(metadata):
+            # LOG ERROR
+            failed_labels = [
+                jobj.label
+                for jobj in filter(
+                    lambda jo: len(jo["name"].strip()) == 0, vars_to_json
+                )
+            ]
+            print("[Error] Metadata Generation: ", str(failed_labels))
+        return metadata
 
     def data_to_json(self):
         """Transforms the variables, merges them to one df, rounds them to 3dp,
