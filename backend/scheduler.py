@@ -119,9 +119,12 @@ def run_data_collection(update_groups=False):
 def update_json(output_path: str):
     # Re-run the import each time to ensure the imported DATA object is not saved
     # in memory
-    from generate_json import DATA
+    try:
+        from generate_json import DATA
 
-    DATA.write(filepath=output_path)
+        DATA.write(filepath=output_path)
+    except Exception as ex:
+        raise ex
 
 
 if __name__ == "__main__":
